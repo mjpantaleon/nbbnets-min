@@ -1,24 +1,44 @@
 <template>
   <div class="main-div">
+
+      <b-row>
+          <b-col>
+                <b-breadcrumb>
+                    <b-breadcrumb-item href="#home" active>
+                        <b-icon icon="card-checklist" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
+                        Donation
+                    </b-breadcrumb-item>
+                    <!-- <b-breadcrumb-item href="#foo">Select Donor</b-breadcrumb-item>
+                    <b-breadcrumb-item href="#bar">Donor Details</b-breadcrumb-item>
+                    <b-breadcrumb-item>Baz</b-breadcrumb-item> -->
+                </b-breadcrumb>
+          </b-col>
+      </b-row>
+
       <h4><b-icon icon="card-checklist"></b-icon> Donation</h4>
       <hr>
 
       <b-row>
             <b-col md="6">
-                <b-button
-                    variant="success">
+                <b-link class="btn btn-success" :to="{ path: 'search-donor' }">
                     <b-icon icon="person-plus"></b-icon>&nbsp;NEW WALK-IN
-                </b-button>
+                </b-link>
             </b-col>
 
-            <b-col md="auto">
-                <b-calendar v-model="value" @context="onContext" locale="en-US"></b-calendar>
+            <b-col md="auto" class="ml-auto">
+                <b-form-datepicker v-model="donation_dt"></b-form-datepicker>
             </b-col>
-            <!-- <b-col>
-                <p>Value: <b>'{{ value }}'</b></p>
-                <p class="mb-0">Context:</p>
-                <pre class="small">{{ context }}</pre>
-            </b-col> -->
+      </b-row>
+
+      <b-row>
+          <b-col>
+            <b-table class="mt-5"
+                sticky-header
+                :items="items"
+                striped
+                head-variant="dark"
+                table-variant="light"></b-table>
+          </b-col>
       </b-row>
 
   </div>
@@ -26,16 +46,29 @@
 
 <script>
 export default {
-    data() {
-      return {
-        value: '',
-        context: null
-      }
-    },
-    methods: {
-      onContext(ctx) {
-        this.context = ctx
-      }
+    data(){
+        return{
+            items: [
+                {   Donor: 'Cruz, Juan dela', 
+                    TypeOfDonor: 'Voluntary', 
+                    MHPE: 'Accepted', 
+                    Method: 'Apheresis', 
+                    Collection: 'Successful', 
+                    DonationID: 'NVBSP20209000001' },
+                {   Donor: 'Enrille, Juan Ponce', 
+                    TypeOfDonor: 'Voluntary', 
+                    MHPE: 'Accepted', 
+                    Method: 'Apheresis', 
+                    Collection: 'Successful', 
+                    DonationID: 'NVBSP20209000002' },
+                {   Donor: 'Saturnino, Jon Jon S.', 
+                    TypeOfDonor: 'Voluntary', 
+                    MHPE: 'Accepted', 
+                    Method: 'Apheresis', 
+                    Collection: 'Successful', 
+                    DonationID: 'NVBSP20209000005' },
+            ]
+        }
     }
 }
 </script>

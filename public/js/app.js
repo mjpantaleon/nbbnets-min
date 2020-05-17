@@ -1972,17 +1972,271 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      value: '',
-      context: null
+      items: [{
+        Donor: 'Cruz, Juan dela',
+        TypeOfDonor: 'Voluntary',
+        MHPE: 'Accepted',
+        Method: 'Apheresis',
+        Collection: 'Successful',
+        DonationID: 'NVBSP20209000001'
+      }, {
+        Donor: 'Enrille, Juan Ponce',
+        TypeOfDonor: 'Voluntary',
+        MHPE: 'Accepted',
+        Method: 'Apheresis',
+        Collection: 'Successful',
+        DonationID: 'NVBSP20209000002'
+      }, {
+        Donor: 'Saturnino, Jon Jon S.',
+        TypeOfDonor: 'Voluntary',
+        MHPE: 'Accepted',
+        Method: 'Apheresis',
+        Collection: 'Successful',
+        DonationID: 'NVBSP20209000005'
+      }]
     };
-  },
-  methods: {
-    onContext: function onContext(ctx) {
-      this.context = ctx;
-    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/DonorDetails.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Donation/DonorDetails.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      items: [{
+        DonorID: '130062020000005',
+        DonationStatus: 'May Donate',
+        DonorName: 'Ronald C. Mc Donald',
+        NameSuffix: 'Sr',
+        Gender: 'Male',
+        BirthDate: '1988-04-01',
+        CivilStatus: 'Married',
+        Occupation: '',
+        Nationality: 'Filipino',
+        TelephoneNo: '',
+        MobileNo: '',
+        Email: 'ronald.mcdonald@yahoo.com'
+      }],
+      history: [{
+        Facility: 'Davao Blood Center',
+        Date: '2020-01-07',
+        Remarks: ''
+      }, {
+        Facility: 'Philippine Blood Center',
+        Date: '2019-08-11',
+        Remarks: ''
+      }]
+    };
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/SelectDonor.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Donation/SelectDonor.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      items: [{
+        DonorID: '13006202000001',
+        Status: 'MAY DONATE',
+        Name: 'Cruz, Juan dela',
+        Gender: 'Male',
+        BirthDate: '1965-08-12',
+        Region: 'Region 03',
+        Province: 'Bulacan',
+        City: 'San Jose del Monte',
+        Brgy: 'Poblacion 1',
+        Address: 'Pleasant Ville',
+        Action: ''
+      }, {
+        DonorID: '',
+        Status: 'MAY DONATE',
+        Name: 'Dela Peña, Rosa Dy',
+        Gender: 'Female',
+        BirthDate: '1948-02-24',
+        Region: 'NCR',
+        Province: 'Metro Manila',
+        City: 'Manila',
+        Brgy: 'Rizal Ave.',
+        Address: '',
+        Action: ''
+      }]
+    };
   }
 });
 
@@ -80346,6 +80600,43 @@ var render = function() {
     { staticClass: "main-div" },
     [
       _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            [
+              _c(
+                "b-breadcrumb",
+                [
+                  _c(
+                    "b-breadcrumb-item",
+                    { attrs: { href: "#home", active: "" } },
+                    [
+                      _c("b-icon", {
+                        attrs: {
+                          icon: "card-checklist",
+                          scale: "1.25",
+                          "shift-v": "1.25",
+                          "aria-hidden": "true"
+                        }
+                      }),
+                      _vm._v(
+                        "\n                      Donation\n                  "
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
         "h4",
         [
           _c("b-icon", { attrs: { icon: "card-checklist" } }),
@@ -80364,8 +80655,11 @@ var render = function() {
             { attrs: { md: "6" } },
             [
               _c(
-                "b-button",
-                { attrs: { variant: "success" } },
+                "b-link",
+                {
+                  staticClass: "btn btn-success",
+                  attrs: { to: { path: "search-donor" } }
+                },
                 [
                   _c("b-icon", { attrs: { icon: "person-plus" } }),
                   _vm._v(" NEW WALK-IN\n              ")
@@ -80378,17 +80672,443 @@ var render = function() {
           _vm._v(" "),
           _c(
             "b-col",
-            { attrs: { md: "auto" } },
+            { staticClass: "ml-auto", attrs: { md: "auto" } },
             [
-              _c("b-calendar", {
-                attrs: { locale: "en-US" },
-                on: { context: _vm.onContext },
+              _c("b-form-datepicker", {
                 model: {
-                  value: _vm.value,
+                  value: _vm.donation_dt,
                   callback: function($$v) {
-                    _vm.value = $$v
+                    _vm.donation_dt = $$v
                   },
-                  expression: "value"
+                  expression: "donation_dt"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            [
+              _c("b-table", {
+                staticClass: "mt-5",
+                attrs: {
+                  "sticky-header": "",
+                  items: _vm.items,
+                  striped: "",
+                  "head-variant": "dark",
+                  "table-variant": "light"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/DonorDetails.vue?vue&type=template&id=39fe929e&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Donation/DonorDetails.vue?vue&type=template&id=39fe929e& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "main-div" },
+    [
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            [
+              _c(
+                "b-breadcrumb",
+                [
+                  _c(
+                    "b-breadcrumb-item",
+                    { attrs: { to: { path: "donation" } } },
+                    [
+                      _c("b-icon", {
+                        attrs: {
+                          icon: "card-checklist",
+                          scale: "1.25",
+                          "shift-v": "1.25",
+                          "aria-hidden": "true"
+                        }
+                      }),
+                      _vm._v(
+                        "\n                      Donation\n                  "
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-breadcrumb-item",
+                    { attrs: { to: { path: "search-donor" } } },
+                    [
+                      _c("b-icon", {
+                        attrs: {
+                          icon: "search",
+                          scale: "1.25",
+                          "shift-v": "1.25",
+                          "aria-hidden": "true"
+                        }
+                      }),
+                      _vm._v("\n                      Search Donor")
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-breadcrumb-item",
+                    { attrs: { active: "" } },
+                    [
+                      _c("b-icon", {
+                        attrs: {
+                          icon: "person-lines-fill",
+                          scale: "1.25",
+                          "shift-v": "1.25",
+                          "aria-hidden": "true"
+                        }
+                      }),
+                      _vm._v("\n                      Donor Details")
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "h4",
+        [
+          _c("b-icon", { attrs: { icon: "person-lines-fill" } }),
+          _vm._v(" Donor Details")
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            { attrs: { md: "6" } },
+            [
+              _c(
+                "b-button-group",
+                [
+                  _c(
+                    "b-button",
+                    { attrs: { size: "small", variant: "warning" } },
+                    [
+                      _c("b-icon", { attrs: { icon: "person-check-fill" } }),
+                      _vm._v(" UPDATE DETAILS")
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-button",
+                    { attrs: { size: "small", variant: "success" } },
+                    [
+                      _c("b-icon", { attrs: { icon: "person-plus" } }),
+                      _vm._v(" NEW WALK-IN")
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            { staticClass: "mt-3", attrs: { md: "6" } },
+            [
+              _c("b-table", {
+                attrs: {
+                  striped: "",
+                  stacked: "",
+                  items: _vm.items,
+                  "table-variant": "light"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "mt-3", attrs: { md: "6" } },
+            [
+              _c("b-table", {
+                attrs: {
+                  items: _vm.history,
+                  striped: "",
+                  "head-variant": "dark",
+                  "table-variant": "light"
+                }
+              })
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/SelectDonor.vue?vue&type=template&id=5ebf7a18&":
+/*!***********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Donation/SelectDonor.vue?vue&type=template&id=5ebf7a18& ***!
+  \***********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "main-div" },
+    [
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            [
+              _c(
+                "b-breadcrumb",
+                [
+                  _c(
+                    "b-breadcrumb-item",
+                    { attrs: { to: { path: "donation" } } },
+                    [
+                      _c("b-icon", {
+                        attrs: {
+                          icon: "card-checklist",
+                          scale: "1.25",
+                          "shift-v": "1.25",
+                          "aria-hidden": "true"
+                        }
+                      }),
+                      _vm._v(
+                        "\n                      Donation\n                  "
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-breadcrumb-item",
+                    { attrs: { href: "#foo", active: "" } },
+                    [
+                      _c("b-icon", {
+                        attrs: {
+                          icon: "search",
+                          scale: "1.25",
+                          "shift-v": "1.25",
+                          "aria-hidden": "true"
+                        }
+                      }),
+                      _vm._v("\n                      Search Donor")
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-breadcrumb-item",
+                    { attrs: { to: { path: "donor-details" } } },
+                    [
+                      _c("b-icon", {
+                        attrs: {
+                          icon: "person-lines-fill",
+                          scale: "1.25",
+                          "shift-v": "1.25",
+                          "aria-hidden": "true"
+                        }
+                      }),
+                      _vm._v("\n                      Donor Details")
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "h4",
+        [_c("b-icon", { attrs: { icon: "search" } }), _vm._v(" Search Donor")],
+        1
+      ),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            { attrs: { cols: "4" } },
+            [
+              _c(
+                "b-form-group",
+                {
+                  attrs: {
+                    id: "fieldset-horizontal",
+                    "label-cols-sm": "4",
+                    "label-cols-lg": "4",
+                    description: "Last name",
+                    label: "Donor name",
+                    "label-for": "input-horizontal"
+                  }
+                },
+                [_c("b-form-input", { attrs: { id: "input-horizontal" } })],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { attrs: { cols: "3" } },
+            [
+              _c(
+                "b-form-group",
+                {
+                  attrs: {
+                    id: "fieldset-horizontal",
+                    description: "First name",
+                    "label-for": "input-horizontal"
+                  }
+                },
+                [_c("b-form-input", { attrs: { id: "input-horizontal" } })],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { attrs: { cols: "3" } },
+            [
+              _c(
+                "b-form-group",
+                {
+                  attrs: {
+                    id: "fieldset-horizontal",
+                    description: "Middle name",
+                    "label-for": "input-horizontal"
+                  }
+                },
+                [_c("b-form-input", { attrs: { id: "input-horizontal" } })],
+                1
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "b-col",
+            { staticClass: "ml-auto", attrs: { cols: "2" } },
+            [
+              _c(
+                "b-button",
+                { attrs: { variant: "warning" } },
+                [
+                  _c("b-icon", { attrs: { icon: "search" } }),
+                  _vm._v(" SEARCH\n              ")
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            [
+              _c("b-table", {
+                staticClass: "mt-5",
+                attrs: {
+                  "sticky-header": "",
+                  items: _vm.items,
+                  striped: "",
+                  "head-variant": "dark",
+                  "table-variant": "light"
                 }
               })
             ],
@@ -96334,6 +97054,144 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Donation/DonorDetails.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/Donation/DonorDetails.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _DonorDetails_vue_vue_type_template_id_39fe929e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DonorDetails.vue?vue&type=template&id=39fe929e& */ "./resources/js/components/Donation/DonorDetails.vue?vue&type=template&id=39fe929e&");
+/* harmony import */ var _DonorDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DonorDetails.vue?vue&type=script&lang=js& */ "./resources/js/components/Donation/DonorDetails.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _DonorDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DonorDetails_vue_vue_type_template_id_39fe929e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _DonorDetails_vue_vue_type_template_id_39fe929e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Donation/DonorDetails.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Donation/DonorDetails.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/Donation/DonorDetails.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DonorDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./DonorDetails.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/DonorDetails.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DonorDetails_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Donation/DonorDetails.vue?vue&type=template&id=39fe929e&":
+/*!******************************************************************************************!*\
+  !*** ./resources/js/components/Donation/DonorDetails.vue?vue&type=template&id=39fe929e& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DonorDetails_vue_vue_type_template_id_39fe929e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./DonorDetails.vue?vue&type=template&id=39fe929e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/DonorDetails.vue?vue&type=template&id=39fe929e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DonorDetails_vue_vue_type_template_id_39fe929e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DonorDetails_vue_vue_type_template_id_39fe929e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Donation/SelectDonor.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/Donation/SelectDonor.vue ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SelectDonor_vue_vue_type_template_id_5ebf7a18___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SelectDonor.vue?vue&type=template&id=5ebf7a18& */ "./resources/js/components/Donation/SelectDonor.vue?vue&type=template&id=5ebf7a18&");
+/* harmony import */ var _SelectDonor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SelectDonor.vue?vue&type=script&lang=js& */ "./resources/js/components/Donation/SelectDonor.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SelectDonor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SelectDonor_vue_vue_type_template_id_5ebf7a18___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SelectDonor_vue_vue_type_template_id_5ebf7a18___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Donation/SelectDonor.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Donation/SelectDonor.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/Donation/SelectDonor.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectDonor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SelectDonor.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/SelectDonor.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectDonor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Donation/SelectDonor.vue?vue&type=template&id=5ebf7a18&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/Donation/SelectDonor.vue?vue&type=template&id=5ebf7a18& ***!
+  \*****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectDonor_vue_vue_type_template_id_5ebf7a18___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SelectDonor.vue?vue&type=template&id=5ebf7a18& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/SelectDonor.vue?vue&type=template&id=5ebf7a18&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectDonor_vue_vue_type_template_id_5ebf7a18___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectDonor_vue_vue_type_template_id_5ebf7a18___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/MainApp/Footer.vue":
 /*!****************************************************!*\
   !*** ./resources/js/components/MainApp/Footer.vue ***!
@@ -96555,6 +97413,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "routes", function() { return routes; });
 /* harmony import */ var _components_MainApp_Login_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/MainApp/Login.vue */ "./resources/js/components/MainApp/Login.vue");
 /* harmony import */ var _components_Donation_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Donation.vue */ "./resources/js/components/Donation.vue");
+/* harmony import */ var _components_Donation_SelectDonor_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Donation/SelectDonor.vue */ "./resources/js/components/Donation/SelectDonor.vue");
+/* harmony import */ var _components_Donation_DonorDetails_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Donation/DonorDetails.vue */ "./resources/js/components/Donation/DonorDetails.vue");
+
+
 
 
 var routes = [{
@@ -96565,6 +97427,14 @@ var routes = [{
   name: 'donation',
   path: '/donation',
   component: _components_Donation_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+}, {
+  name: 'search-donor',
+  path: '/search-donor',
+  component: _components_Donation_SelectDonor_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+}, {
+  name: 'donor-details',
+  path: '/donor-details',
+  component: _components_Donation_DonorDetails_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
 }];
 
 /***/ }),
