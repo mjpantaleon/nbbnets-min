@@ -1,5 +1,5 @@
 <template>
-    <b-navbar toggleable="lg" type="dark" variant="dark" sticky="true">
+    <b-navbar toggleable="lg" type="dark" variant="dark" sticky>
         <b-navbar-brand :to="{ path: '/' }" class="lead">
             <img src="img/favicon.ico" alt="">
             NBBNetS - Convalescent Plasma

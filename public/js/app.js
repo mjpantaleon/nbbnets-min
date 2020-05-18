@@ -2090,22 +2090,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      fields: ['donorID', 'donationStatus', 'donorName', 'donorSuffix', 'birthDate', 'civilStatu', 'occupation', 'nationality', 'telephoneNo', 'mobileNo', 'email'],
       items: [{
-        DonorID: '130062020000005',
-        DonationStatus: 'May Donate',
-        DonorName: 'Ronald C. Mc Donald',
-        NameSuffix: 'Sr',
-        Gender: 'Male',
-        BirthDate: '1988-04-01',
-        CivilStatus: 'Married',
-        Occupation: '',
-        Nationality: 'Filipino',
-        TelephoneNo: '',
-        MobileNo: '',
-        Email: 'ronald.mcdonald@yahoo.com'
+        donorID: '13006202000001',
+        donationStatus: 'MAY DONATE',
+        donorName: 'Juan dela Cruz',
+        nameSuffix: '',
+        gender: 'Male',
+        birthDate: '1965-08-12',
+        civilStatus: 'Married',
+        occupation: '',
+        nationality: 'Filipino',
+        telephoneNo: '',
+        mobileNo: '',
+        email: 'juan.dela.cruz@yahoo.com'
       }],
       history: [{
         Facility: 'Davao Blood Center',
@@ -2122,9 +2128,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/SelectDonor.vue?vue&type=script&lang=js&":
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/SearchDonor.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Donation/SelectDonor.vue?vue&type=script&lang=js& ***!
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Donation/SearchDonor.vue?vue&type=script&lang=js& ***!
   \*******************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -2208,33 +2214,72 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      fields: ['donorID', 'status', 'name', 'gender', 'birthDate', 'region', 'province', 'city', 'brgy', 'address', 'action'],
       items: [{
-        DonorID: '13006202000001',
-        Status: 'MAY DONATE',
-        Name: 'Cruz, Juan dela',
-        Gender: 'Male',
-        BirthDate: '1965-08-12',
-        Region: 'Region 03',
-        Province: 'Bulacan',
-        City: 'San Jose del Monte',
-        Brgy: 'Poblacion 1',
-        Address: 'Pleasant Ville',
-        Action: ''
+        donorID: '13006202000001',
+        status: 'MAY DONATE',
+        name: 'Cruz, Juan dela',
+        gender: 'Male',
+        birthDate: '1965-08-12',
+        region: ' 03',
+        province: 'Bulacan',
+        city: 'San Jose del Monte',
+        brgy: 'Poblacion 1',
+        address: 'Pleasant Ville'
       }, {
-        DonorID: '',
-        Status: 'MAY DONATE',
-        Name: 'Dela Peña, Rosa Dy',
-        Gender: 'Female',
-        BirthDate: '1948-02-24',
-        Region: 'NCR',
-        Province: 'Metro Manila',
-        City: 'Manila',
-        Brgy: 'Rizal Ave.',
-        Address: '',
-        Action: ''
+        donorID: '13006202000003',
+        status: 'CANNOT DONATE',
+        name: 'Enrile, Once Ponye',
+        gender: 'Male',
+        birthDate: '1949-02-28',
+        region: 'NCR',
+        province: 'Metro Manila',
+        city: 'Manila',
+        brgy: 'Rizal Ave.',
+        address: 'Enrile Residence'
       }]
     };
   }
@@ -80835,11 +80880,14 @@ var render = function() {
                 "b-button-group",
                 [
                   _c(
-                    "b-button",
-                    { attrs: { size: "small", variant: "warning" } },
+                    "b-link",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { to: { path: "edit-donor-details" } }
+                    },
                     [
-                      _c("b-icon", { attrs: { icon: "person-check-fill" } }),
-                      _vm._v(" UPDATE DETAILS")
+                      _c("b-icon", { attrs: { icon: "pencil" } }),
+                      _vm._v(" UPDATE INFO")
                     ],
                     1
                   ),
@@ -80874,9 +80922,26 @@ var render = function() {
                 attrs: {
                   striped: "",
                   stacked: "",
+                  fields: _vm.fields,
                   items: _vm.items,
                   "table-variant": "light"
-                }
+                },
+                scopedSlots: _vm._u([
+                  {
+                    key: "cell(donationStatus)",
+                    fn: function(data) {
+                      return [
+                        data.value == "MAY DONATE"
+                          ? _c("b", { staticClass: "text-success" }, [
+                              _vm._v(_vm._s(data.value))
+                            ])
+                          : _c("b", { staticClass: "text-danger" }, [
+                              _vm._v(_vm._s(data.value))
+                            ])
+                      ]
+                    }
+                  }
+                ])
               })
             ],
             1
@@ -80911,9 +80976,9 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/SelectDonor.vue?vue&type=template&id=5ebf7a18&":
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/SearchDonor.vue?vue&type=template&id=0fb24aec&":
 /*!***********************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Donation/SelectDonor.vue?vue&type=template&id=5ebf7a18& ***!
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Donation/SearchDonor.vue?vue&type=template&id=0fb24aec& ***!
   \***********************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -80971,23 +81036,6 @@ var render = function() {
                         }
                       }),
                       _vm._v("\n                      Search Donor")
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-breadcrumb-item",
-                    { attrs: { to: { path: "donor-details" } } },
-                    [
-                      _c("b-icon", {
-                        attrs: {
-                          icon: "person-lines-fill",
-                          scale: "1.25",
-                          "shift-v": "1.25",
-                          "aria-hidden": "true"
-                        }
-                      }),
-                      _vm._v("\n                      Donor Details")
                     ],
                     1
                   )
@@ -81102,14 +81150,58 @@ var render = function() {
             "b-col",
             [
               _c("b-table", {
-                staticClass: "mt-5",
+                staticClass: "mt-3",
                 attrs: {
-                  "sticky-header": "",
+                  fields: _vm.fields,
                   items: _vm.items,
+                  responsive: "sm",
                   striped: "",
                   "head-variant": "dark",
                   "table-variant": "light"
-                }
+                },
+                scopedSlots: _vm._u([
+                  {
+                    key: "cell(status)",
+                    fn: function(data) {
+                      return [
+                        data.value == "MAY DONATE"
+                          ? _c("b", { staticClass: "text-success" }, [
+                              _vm._v(_vm._s(data.value))
+                            ])
+                          : _c("b", { staticClass: "text-danger" }, [
+                              _vm._v(_vm._s(data.value))
+                            ])
+                      ]
+                    }
+                  },
+                  {
+                    key: "cell(action)",
+                    fn: function() {
+                      return [
+                        _c(
+                          "b-link",
+                          {
+                            staticClass: "btn btn-info btn-sm",
+                            attrs: { to: { path: "donor-details" } }
+                          },
+                          [_c("b-icon", { attrs: { icon: "search" } })],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "b-link",
+                          {
+                            staticClass: "btn btn-success btn-sm",
+                            attrs: { to: { path: "edit-donor-details" } }
+                          },
+                          [_c("b-icon", { attrs: { icon: "pencil" } })],
+                          1
+                        )
+                      ]
+                    },
+                    proxy: true
+                  }
+                ])
               })
             ],
             1
@@ -81496,9 +81588,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "b-navbar",
-    {
-      attrs: { toggleable: "lg", type: "dark", variant: "dark", sticky: "true" }
-    },
+    { attrs: { toggleable: "lg", type: "dark", variant: "dark", sticky: "" } },
     [
       _c(
         "b-navbar-brand",
@@ -97123,17 +97213,17 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/Donation/SelectDonor.vue":
+/***/ "./resources/js/components/Donation/SearchDonor.vue":
 /*!**********************************************************!*\
-  !*** ./resources/js/components/Donation/SelectDonor.vue ***!
+  !*** ./resources/js/components/Donation/SearchDonor.vue ***!
   \**********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _SelectDonor_vue_vue_type_template_id_5ebf7a18___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SelectDonor.vue?vue&type=template&id=5ebf7a18& */ "./resources/js/components/Donation/SelectDonor.vue?vue&type=template&id=5ebf7a18&");
-/* harmony import */ var _SelectDonor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SelectDonor.vue?vue&type=script&lang=js& */ "./resources/js/components/Donation/SelectDonor.vue?vue&type=script&lang=js&");
+/* harmony import */ var _SearchDonor_vue_vue_type_template_id_0fb24aec___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SearchDonor.vue?vue&type=template&id=0fb24aec& */ "./resources/js/components/Donation/SearchDonor.vue?vue&type=template&id=0fb24aec&");
+/* harmony import */ var _SearchDonor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SearchDonor.vue?vue&type=script&lang=js& */ "./resources/js/components/Donation/SearchDonor.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -97143,9 +97233,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _SelectDonor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _SelectDonor_vue_vue_type_template_id_5ebf7a18___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _SelectDonor_vue_vue_type_template_id_5ebf7a18___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _SearchDonor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SearchDonor_vue_vue_type_template_id_0fb24aec___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SearchDonor_vue_vue_type_template_id_0fb24aec___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -97155,38 +97245,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/Donation/SelectDonor.vue"
+component.options.__file = "resources/js/components/Donation/SearchDonor.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/Donation/SelectDonor.vue?vue&type=script&lang=js&":
+/***/ "./resources/js/components/Donation/SearchDonor.vue?vue&type=script&lang=js&":
 /*!***********************************************************************************!*\
-  !*** ./resources/js/components/Donation/SelectDonor.vue?vue&type=script&lang=js& ***!
+  !*** ./resources/js/components/Donation/SearchDonor.vue?vue&type=script&lang=js& ***!
   \***********************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectDonor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SelectDonor.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/SelectDonor.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectDonor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchDonor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SearchDonor.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/SearchDonor.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchDonor_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/Donation/SelectDonor.vue?vue&type=template&id=5ebf7a18&":
+/***/ "./resources/js/components/Donation/SearchDonor.vue?vue&type=template&id=0fb24aec&":
 /*!*****************************************************************************************!*\
-  !*** ./resources/js/components/Donation/SelectDonor.vue?vue&type=template&id=5ebf7a18& ***!
+  !*** ./resources/js/components/Donation/SearchDonor.vue?vue&type=template&id=0fb24aec& ***!
   \*****************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectDonor_vue_vue_type_template_id_5ebf7a18___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SelectDonor.vue?vue&type=template&id=5ebf7a18& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/SelectDonor.vue?vue&type=template&id=5ebf7a18&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectDonor_vue_vue_type_template_id_5ebf7a18___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchDonor_vue_vue_type_template_id_0fb24aec___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SearchDonor.vue?vue&type=template&id=0fb24aec& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/SearchDonor.vue?vue&type=template&id=0fb24aec&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchDonor_vue_vue_type_template_id_0fb24aec___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SelectDonor_vue_vue_type_template_id_5ebf7a18___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SearchDonor_vue_vue_type_template_id_0fb24aec___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -97413,7 +97503,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "routes", function() { return routes; });
 /* harmony import */ var _components_MainApp_Login_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/MainApp/Login.vue */ "./resources/js/components/MainApp/Login.vue");
 /* harmony import */ var _components_Donation_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Donation.vue */ "./resources/js/components/Donation.vue");
-/* harmony import */ var _components_Donation_SelectDonor_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Donation/SelectDonor.vue */ "./resources/js/components/Donation/SelectDonor.vue");
+/* harmony import */ var _components_Donation_SearchDonor_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Donation/SearchDonor.vue */ "./resources/js/components/Donation/SearchDonor.vue");
 /* harmony import */ var _components_Donation_DonorDetails_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Donation/DonorDetails.vue */ "./resources/js/components/Donation/DonorDetails.vue");
 
 
@@ -97430,7 +97520,7 @@ var routes = [{
 }, {
   name: 'search-donor',
   path: '/search-donor',
-  component: _components_Donation_SelectDonor_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+  component: _components_Donation_SearchDonor_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
 }, {
   name: 'donor-details',
   path: '/donor-details',
@@ -97457,8 +97547,8 @@ var routes = [{
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\mjdev\htdocs\covid-bnets\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\mjdev\htdocs\covid-bnets\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\mjdev\htdocs\nbbnets-cp\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\mjdev\htdocs\nbbnets-cp\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

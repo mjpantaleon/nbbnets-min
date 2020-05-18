@@ -1,6 +1,6 @@
 import Login from './components/MainApp/Login.vue';
 import Donation from './components/Donation.vue';
-import SelectDonor from './components/Donation/SelectDonor.vue';
+import SearchDonor from './components/Donation/SearchDonor.vue';
 import DonorDetails from './components/Donation/DonorDetails.vue';
 
 
@@ -15,7 +15,7 @@ export const routes = [
         path: '/donation',
         component: Donation
     },
-    { name: 'search-donor', path: '/search-donor', component: SelectDonor },
+    { name: 'search-donor', path: '/search-donor', component: SearchDonor },
     { name: 'donor-details', path: '/donor-details', component: DonorDetails },
 
 
