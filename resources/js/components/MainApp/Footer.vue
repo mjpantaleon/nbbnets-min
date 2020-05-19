@@ -80,13 +80,13 @@ export default {
 <style scoped>
 .footer {
     background: #231816;
-    color: #fffddb;
+    color: #eafffe;
 }
 .line {
-    border: 1px solid #fffddd;
+    border: 1px solid #eafffe;
 }
 #links {
     text-decoration: none;
-    color: #fffddb;
+    color: #eafffe;
 }
 </style>

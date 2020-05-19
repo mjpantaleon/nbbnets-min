@@ -12,15 +12,24 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// Route::get('/', function () {
+//     return view('layouts.app');
+// });
+
+// Route::get('/home', 'HomeController@index')->name('home');
+    
+Auth::routes();
+
+Route::get('/donor-list-data', 'DonorController@index');
+Route::get('/donor-profile/{id}', 'DonorController@donorDetails');
+Route::post('/get-searched-donor', 'DonorController@search');
+
+// ROUTES FOR AUTHENTICATED USERS
+// Route::group( ['middleware' => 'auth'], function() {
+
+// }
 
 Route::get('{any}', function () {
     return view('layouts.app');
 })->where('any', '.*');
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-
-// Auth::routes();
-
-// Route::get('/home', 'HomeController@index')->name('home');

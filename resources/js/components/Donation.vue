@@ -48,6 +48,7 @@
 export default {
     data(){
         return{
+            donation_dt: '',
             items: [
                 {   Donor: 'Cruz, Juan dela', 
                     TypeOfDonor: 'Voluntary', 
