@@ -5,7 +5,7 @@
             <b-card bg-variant="dark" text-variant="white" no-body class="overflow-hidden">
                 <b-row no-gutters>
                 <b-col md="6">
-                    <b-card-img src="../img/blood-donor.jpg" alt="Image" class="rounded-0"></b-card-img>
+                    <b-card-img src="../img/bg-login.png" alt="Image" class="rounded-0"></b-card-img>
                     <!-- <b-card-body :title="cardTitle">
                         <b-card-text>
                             This is a wider card with supporting text as a natural lead-in to additional content.

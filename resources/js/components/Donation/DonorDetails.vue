@@ -27,10 +27,8 @@
                 <b-button-group>
                     <b-link class="btn btn-primary" :to="{ path: 'edit-donor-details' }">
                         <b-icon icon="pencil"></b-icon> UPDATE INFO</b-link>
-                    <b-button
-                        size="small"
-                        variant="success">
-                        <b-icon icon="person-plus"></b-icon> NEW WALK-IN</b-button>
+                    <b-link class="btn btn-success" :to="{ path: 'new-walk-in' }">
+                        <b-icon icon="person-plus"></b-icon> NEW WALK-IN</b-link>
                 </b-button-group>
             </b-col>
         </b-row>
@@ -51,11 +49,13 @@
             </b-col>
 
             <b-col md="6" class="mt-3">
-                <b-table
-                :items="history"
-                striped
-                head-variant="dark"
-                table-variant="light"></b-table>
+                <b-card no-body bg-variant="success" text-variant="white" header="DONATION HISTORY">
+                    <b-table
+                    :items="history"
+                    striped
+                    head-variant="info"
+                    table-variant="light"></b-table>
+                </b-card>
             </b-col>
         </b-row>
   </div>

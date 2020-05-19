@@ -2128,10 +2128,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/SearchDonor.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Donation/SearchDonor.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/NewWalkin.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Donation/NewWalkin.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2152,6 +2152,249 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      selected_donor_type: 'V',
+      selected_mh_pe: 'A',
+      selected_method: 'WB',
+      selected_status: 'COL',
+      type_of_donor: [{
+        value: 'AU',
+        text: 'Autologous'
+      }, {
+        value: 'V',
+        text: 'Voluntary'
+      }, {
+        value: 'REP',
+        text: 'Family/ Replacement'
+      }, {
+        value: 'PAID',
+        text: 'Paid'
+      }],
+      mh_pe_result: [{
+        value: 'A',
+        text: 'ACCEPTED'
+      }, {
+        value: 'TD',
+        text: 'TEMPORARY DEFERRED'
+      }, {
+        value: 'PD',
+        text: 'PERMANENTLY DEFERRED'
+      }, {
+        value: 'ID',
+        text: 'INDEFINITELY DEFFERED'
+      }],
+      collection_method: [{
+        value: 'WB',
+        text: 'Whole Blood'
+      }, {
+        value: 'AP',
+        text: 'Apheresis'
+      }],
+      collection_status: [{
+        value: 'COL',
+        text: 'Successful'
+      }, {
+        value: 'UNS',
+        text: 'Unsuccessful'
+      }]
+    };
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/SearchDonor.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Donation/SearchDonor.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 //
 //
 //
@@ -2439,6 +2682,110 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       cardTitle: 'Blood Donation'
+    };
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RegisterBloodUnit.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/RegisterBloodUnit.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      selected: 'S',
+      options: [{
+        value: 'S',
+        text: 'Single'
+      }, {
+        value: 'D',
+        text: 'Double'
+      }, {
+        value: 'T',
+        text: 'Triple'
+      }, {
+        value: 'Q',
+        text: 'Quadruple'
+      }],
+      fields: ['index', 'donationID', 'bloodBag', 'action']
     };
   }
 });
@@ -80747,7 +81094,7 @@ var render = function() {
                   "sticky-header": "",
                   items: _vm.items,
                   striped: "",
-                  "head-variant": "dark",
+                  "head-variant": "light",
                   "table-variant": "light"
                 }
               })
@@ -80893,8 +81240,11 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c(
-                    "b-button",
-                    { attrs: { size: "small", variant: "success" } },
+                    "b-link",
+                    {
+                      staticClass: "btn btn-success",
+                      attrs: { to: { path: "new-walk-in" } }
+                    },
                     [
                       _c("b-icon", { attrs: { icon: "person-plus" } }),
                       _vm._v(" NEW WALK-IN")
@@ -80951,14 +81301,606 @@ var render = function() {
             "b-col",
             { staticClass: "mt-3", attrs: { md: "6" } },
             [
-              _c("b-table", {
-                attrs: {
-                  items: _vm.history,
-                  striped: "",
-                  "head-variant": "dark",
-                  "table-variant": "light"
-                }
-              })
+              _c(
+                "b-card",
+                {
+                  attrs: {
+                    "no-body": "",
+                    "bg-variant": "success",
+                    "text-variant": "white",
+                    header: "DONATION HISTORY"
+                  }
+                },
+                [
+                  _c("b-table", {
+                    attrs: {
+                      items: _vm.history,
+                      striped: "",
+                      "head-variant": "info",
+                      "table-variant": "light"
+                    }
+                  })
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/NewWalkin.vue?vue&type=template&id=50c97588&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Donation/NewWalkin.vue?vue&type=template&id=50c97588& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "main-div" },
+    [
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            [
+              _c(
+                "b-breadcrumb",
+                [
+                  _c(
+                    "b-breadcrumb-item",
+                    { attrs: { to: { path: "donation" } } },
+                    [
+                      _c("b-icon", {
+                        attrs: {
+                          icon: "card-checklist",
+                          scale: "1.25",
+                          "shift-v": "1.25",
+                          "aria-hidden": "true"
+                        }
+                      }),
+                      _vm._v(
+                        "\n                      Donation\n                  "
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-breadcrumb-item",
+                    { attrs: { to: { path: "search-donor" } } },
+                    [
+                      _c("b-icon", {
+                        attrs: {
+                          icon: "search",
+                          scale: "1.25",
+                          "shift-v": "1.25",
+                          "aria-hidden": "true"
+                        }
+                      }),
+                      _vm._v("\n                      Search Donor")
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-breadcrumb-item",
+                    { attrs: { to: { path: "donor-details" } } },
+                    [
+                      _c("b-icon", {
+                        attrs: {
+                          icon: "person-lines-fill",
+                          scale: "1.25",
+                          "shift-v": "1.25",
+                          "aria-hidden": "true"
+                        }
+                      }),
+                      _vm._v("\n                      Donor Details")
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-breadcrumb-item",
+                    { attrs: { active: "" } },
+                    [
+                      _c("b-icon", { attrs: { icon: "person-plus" } }),
+                      _vm._v(" New Walk-in Donation")
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "h4",
+        [
+          _c("b-icon", { attrs: { icon: "person-plus" } }),
+          _vm._v(" New Walkin Donation")
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            { attrs: { md: "6" } },
+            [
+              _c(
+                "b-card",
+                {
+                  attrs: {
+                    "no-body": "",
+                    "bg-variant": "dark",
+                    "text-variant": "light",
+                    header: "Donor Details"
+                  }
+                },
+                [
+                  _c(
+                    "table",
+                    { staticClass: "table table-bordered bg-light" },
+                    [
+                      _c("tr", [
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "b-form-group",
+                              {
+                                attrs: {
+                                  id: "fieldset-horizontal",
+                                  "label-cols-sm": "4",
+                                  "label-cols-lg": "3",
+                                  description: "Collection date",
+                                  label: "Date Collected",
+                                  "label-for": "collection_date"
+                                }
+                              },
+                              [
+                                _c("b-form-datepicker", {
+                                  attrs: { id: "collection_date" },
+                                  model: {
+                                    value: _vm.created_dt,
+                                    callback: function($$v) {
+                                      _vm.created_dt = $$v
+                                    },
+                                    expression: "created_dt"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "b-form-group",
+                              {
+                                attrs: {
+                                  id: "fieldset-horizontal",
+                                  "label-cols-sm": "4",
+                                  "label-cols-lg": "3",
+                                  description: "First Name",
+                                  label: "Donor",
+                                  "label-for": "fname"
+                                }
+                              },
+                              [
+                                _c("b-form-input", {
+                                  attrs: { id: "fname" },
+                                  model: {
+                                    value: _vm.fname,
+                                    callback: function($$v) {
+                                      _vm.fname = $$v
+                                    },
+                                    expression: "fname"
+                                  }
+                                })
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-form-group",
+                              {
+                                attrs: {
+                                  id: "fieldset-horizontal",
+                                  "label-cols-sm": "4",
+                                  "label-cols-lg": "3",
+                                  description: "Middle",
+                                  "label-for": "mname"
+                                }
+                              },
+                              [
+                                _c("b-form-input", {
+                                  attrs: { id: "mname" },
+                                  model: {
+                                    value: _vm.mname,
+                                    callback: function($$v) {
+                                      _vm.mname = $$v
+                                    },
+                                    expression: "mname"
+                                  }
+                                })
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-form-group",
+                              {
+                                attrs: {
+                                  id: "fieldset-horizontal",
+                                  "label-cols-sm": "4",
+                                  "label-cols-lg": "3",
+                                  description: "Last Name",
+                                  "label-for": "lname"
+                                }
+                              },
+                              [
+                                _c("b-form-input", {
+                                  attrs: { id: "lname" },
+                                  model: {
+                                    value: _vm.lname,
+                                    callback: function($$v) {
+                                      _vm.lname = $$v
+                                    },
+                                    expression: "lname"
+                                  }
+                                })
+                              ],
+                              1
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "b-form-group",
+                              {
+                                attrs: {
+                                  id: "fieldset-horizontal",
+                                  "label-cols-sm": "4",
+                                  "label-cols-lg": "3",
+                                  description: "Suffix",
+                                  "label-for": "suffix"
+                                }
+                              },
+                              [
+                                _c("b-form-input", {
+                                  attrs: { id: "suffix" },
+                                  model: {
+                                    value: _vm.suffix,
+                                    callback: function($$v) {
+                                      _vm.suffix = $$v
+                                    },
+                                    expression: "suffix"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "b-form-group",
+                              {
+                                attrs: {
+                                  id: "fieldset-horizontal",
+                                  "label-cols-sm": "4",
+                                  "label-cols-lg": "3",
+                                  description: "type of donor",
+                                  label: "Type of Donor",
+                                  "label-for": "type_of_donor"
+                                }
+                              },
+                              [
+                                _c("b-form-select", {
+                                  attrs: {
+                                    options: _vm.type_of_donor,
+                                    id: "type_of_donor"
+                                  },
+                                  model: {
+                                    value: _vm.selected_donor_type,
+                                    callback: function($$v) {
+                                      _vm.selected_donor_type = $$v
+                                    },
+                                    expression: "selected_donor_type"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "b-form-group",
+                              {
+                                attrs: {
+                                  id: "fieldset-horizontal",
+                                  "label-cols-sm": "4",
+                                  "label-cols-lg": "3",
+                                  description: "mh/ pe result",
+                                  label: "MH/ PE REsult",
+                                  "label-for": "mh_pe_result"
+                                }
+                              },
+                              [
+                                _c("b-form-select", {
+                                  attrs: {
+                                    options: _vm.mh_pe_result,
+                                    id: "mh_pe_result"
+                                  },
+                                  model: {
+                                    value: _vm.selected_mh_pe,
+                                    callback: function($$v) {
+                                      _vm.selected_mh_pe = $$v
+                                    },
+                                    expression: "selected_mh_pe"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "b-form-group",
+                              {
+                                attrs: {
+                                  id: "fieldset-horizontal",
+                                  "label-cols-sm": "4",
+                                  "label-cols-lg": "3",
+                                  description: "collection method",
+                                  label: "Method of Blood Collection",
+                                  "label-for": "collection_method"
+                                }
+                              },
+                              [
+                                _c("b-form-select", {
+                                  attrs: {
+                                    options: _vm.collection_method,
+                                    id: "collection_method"
+                                  },
+                                  model: {
+                                    value: _vm.selected_method,
+                                    callback: function($$v) {
+                                      _vm.selected_method = $$v
+                                    },
+                                    expression: "selected_method"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "b-form-group",
+                              {
+                                attrs: {
+                                  id: "fieldset-horizontal",
+                                  "label-cols-sm": "4",
+                                  "label-cols-lg": "3",
+                                  description: "collection status",
+                                  label: "Status of Collection",
+                                  "label-for": "collection_status"
+                                }
+                              },
+                              [
+                                _c("b-form-select", {
+                                  attrs: {
+                                    options: _vm.collection_status,
+                                    id: "collection_method"
+                                  },
+                                  model: {
+                                    value: _vm.selected_status,
+                                    callback: function($$v) {
+                                      _vm.selected_status = $$v
+                                    },
+                                    expression: "selected_status"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "b-form-group",
+                              {
+                                attrs: {
+                                  id: "fieldset-horizontal",
+                                  "label-cols-sm": "4",
+                                  "label-cols-lg": "3",
+                                  description: "Donation ID",
+                                  label: "Donation ID",
+                                  "label-for": "donation_id"
+                                }
+                              },
+                              [
+                                _c("b-form-input", {
+                                  attrs: { id: "donation_id" },
+                                  model: {
+                                    value: _vm.donation_id,
+                                    callback: function($$v) {
+                                      _vm.donation_id = $$v
+                                    },
+                                    expression: "donation_id"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "b-form-group",
+                              {
+                                attrs: {
+                                  id: "fieldset-horizontal",
+                                  "label-cols-sm": "4",
+                                  "label-cols-lg": "3",
+                                  description: "Verfier User ID",
+                                  label: "Verifier User ID",
+                                  "label-for": "updated_by"
+                                }
+                              },
+                              [
+                                _c("b-form-input", {
+                                  attrs: { id: "updated_by" },
+                                  model: {
+                                    value: _vm.updated_by,
+                                    callback: function($$v) {
+                                      _vm.updated_by = $$v
+                                    },
+                                    expression: "updated_by"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "b-form-group",
+                              {
+                                attrs: {
+                                  id: "fieldset-horizontal",
+                                  "label-cols-sm": "4",
+                                  "label-cols-lg": "3",
+                                  description: "Password",
+                                  label: "Password",
+                                  "label-for": "password"
+                                }
+                              },
+                              [
+                                _c("b-form-input", {
+                                  attrs: { type: "password", id: "password" },
+                                  model: {
+                                    value: _vm.password,
+                                    callback: function($$v) {
+                                      _vm.password = $$v
+                                    },
+                                    expression: "password"
+                                  }
+                                })
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("tr", [
+                        _c(
+                          "td",
+                          [
+                            _c(
+                              "b-button",
+                              { attrs: { block: "", variant: "success" } },
+                              [
+                                _c("b-icon", {
+                                  attrs: { icon: "check-circle" }
+                                }),
+                                _vm._v(" VERIFY AND PROCEED")
+                              ],
+                              1
+                            )
+                          ],
+                          1
+                        )
+                      ])
+                    ]
+                  )
+                ]
+              )
             ],
             1
           )
@@ -81156,7 +82098,7 @@ var render = function() {
                   items: _vm.items,
                   responsive: "sm",
                   striped: "",
-                  "head-variant": "dark",
+                  "head-variant": "light",
                   "table-variant": "light"
                 },
                 scopedSlots: _vm._u([
@@ -81181,8 +82123,18 @@ var render = function() {
                         _c(
                           "b-link",
                           {
+                            directives: [
+                              {
+                                name: "b-tooltip",
+                                rawName: "v-b-tooltip.hover",
+                                modifiers: { hover: true }
+                              }
+                            ],
                             staticClass: "btn btn-info btn-sm",
-                            attrs: { to: { path: "donor-details" } }
+                            attrs: {
+                              to: { path: "donor-details" },
+                              title: "View donor details"
+                            }
                           },
                           [_c("b-icon", { attrs: { icon: "search" } })],
                           1
@@ -81191,8 +82143,18 @@ var render = function() {
                         _c(
                           "b-link",
                           {
+                            directives: [
+                              {
+                                name: "b-tooltip",
+                                rawName: "v-b-tooltip.hover",
+                                modifiers: { hover: true }
+                              }
+                            ],
                             staticClass: "btn btn-success btn-sm",
-                            attrs: { to: { path: "edit-donor-details" } }
+                            attrs: {
+                              to: { path: "edit-donor-details" },
+                              title: "Update donor details"
+                            }
                           },
                           [_c("b-icon", { attrs: { icon: "pencil" } })],
                           1
@@ -81447,7 +82409,7 @@ var render = function() {
                   [
                     _c("b-card-img", {
                       staticClass: "rounded-0",
-                      attrs: { src: "../img/blood-donor.jpg", alt: "Image" }
+                      attrs: { src: "../img/bg-login.png", alt: "Image" }
                     })
                   ],
                   1
@@ -81608,9 +82570,38 @@ var render = function() {
           _c(
             "b-navbar-nav",
             [
-              _c("b-nav-item", { attrs: { to: { path: "donation" } } }, [
-                _vm._v("DONATION")
-              ]),
+              _c(
+                "b-nav-item-dropdown",
+                {
+                  attrs: { right: "" },
+                  scopedSlots: _vm._u([
+                    {
+                      key: "button-content",
+                      fn: function() {
+                        return [
+                          _vm._v("\n                DONATION\n            ")
+                        ]
+                      },
+                      proxy: true
+                    }
+                  ])
+                },
+                [
+                  _vm._v(" "),
+                  _c(
+                    "b-dropdown-item",
+                    { attrs: { to: { path: "donation" } } },
+                    [_vm._v("New Walk-in")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-dropdown-item",
+                    { attrs: { to: { path: "register-new-donor" } } },
+                    [_vm._v("Register New Donor")]
+                  )
+                ],
+                1
+              ),
               _vm._v(" "),
               _c(
                 "b-nav-item-dropdown",
@@ -81812,6 +82803,177 @@ var render = function() {
             ],
             1
           )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RegisterBloodUnit.vue?vue&type=template&id=5d0c1240&":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/RegisterBloodUnit.vue?vue&type=template&id=5d0c1240& ***!
+  \********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "main-div" },
+    [
+      _c(
+        "b-row",
+        [
+          _c(
+            "b-col",
+            [
+              _c(
+                "b-breadcrumb",
+                [
+                  _c(
+                    "b-breadcrumb-item",
+                    { attrs: { active: "" } },
+                    [
+                      _c("b-icon", {
+                        attrs: {
+                          icon: "droplet-half",
+                          scale: "1.25",
+                          "shift-v": "1.25",
+                          "aria-hidden": "true"
+                        }
+                      }),
+                      _vm._v(
+                        "\n                      Register Blood Unit\n                  "
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "h4",
+        [
+          _c("b-icon", { attrs: { icon: "droplet-half" } }),
+          _vm._v(" Register Blood Unit")
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("hr"),
+      _vm._v(" "),
+      _c(
+        "b-row",
+        [
+          _c("b-col", { attrs: { md: "6" } }, [
+            _c("table", { staticClass: "table table-striped bg-light" }, [
+              _c("tr", [
+                _c(
+                  "td",
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        attrs: {
+                          id: "fieldset-horizontal",
+                          "label-cols-sm": "4",
+                          "label-cols-lg": "3",
+                          description: "Scan Donation ID",
+                          label: "Donation ID",
+                          "label-for": "donation_id"
+                        }
+                      },
+                      [
+                        _c("b-form-input", {
+                          attrs: { id: "donation_id" },
+                          model: {
+                            value: _vm.donation_id,
+                            callback: function($$v) {
+                              _vm.donation_id = $$v
+                            },
+                            expression: "donation_id"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c(
+                  "td",
+                  [
+                    _c(
+                      "b-form-group",
+                      {
+                        attrs: {
+                          id: "fieldset-horizontal",
+                          "label-cols-sm": "4",
+                          "label-cols-lg": "3",
+                          description: "Select blood bag",
+                          label: "Blood Bag",
+                          "label-for": "blood_bag"
+                        }
+                      },
+                      [
+                        _c("b-form-radio-group", {
+                          attrs: { options: _vm.options, name: "blood_bag" },
+                          model: {
+                            value: _vm.selected,
+                            callback: function($$v) {
+                              _vm.selected = $$v
+                            },
+                            expression: "selected"
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _c("tr", [
+                _c(
+                  "td",
+                  [
+                    _c(
+                      "b-button",
+                      { attrs: { block: "", variant: "success" } },
+                      [_vm._v("REGISTER UNIT")]
+                    )
+                  ],
+                  1
+                )
+              ])
+            ])
+          ])
         ],
         1
       )
@@ -97213,6 +98375,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Donation/NewWalkin.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/Donation/NewWalkin.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _NewWalkin_vue_vue_type_template_id_50c97588___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./NewWalkin.vue?vue&type=template&id=50c97588& */ "./resources/js/components/Donation/NewWalkin.vue?vue&type=template&id=50c97588&");
+/* harmony import */ var _NewWalkin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./NewWalkin.vue?vue&type=script&lang=js& */ "./resources/js/components/Donation/NewWalkin.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _NewWalkin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _NewWalkin_vue_vue_type_template_id_50c97588___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _NewWalkin_vue_vue_type_template_id_50c97588___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Donation/NewWalkin.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Donation/NewWalkin.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/Donation/NewWalkin.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NewWalkin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./NewWalkin.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/NewWalkin.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_NewWalkin_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Donation/NewWalkin.vue?vue&type=template&id=50c97588&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/Donation/NewWalkin.vue?vue&type=template&id=50c97588& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewWalkin_vue_vue_type_template_id_50c97588___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./NewWalkin.vue?vue&type=template&id=50c97588& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Donation/NewWalkin.vue?vue&type=template&id=50c97588&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewWalkin_vue_vue_type_template_id_50c97588___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_NewWalkin_vue_vue_type_template_id_50c97588___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Donation/SearchDonor.vue":
 /*!**********************************************************!*\
   !*** ./resources/js/components/Donation/SearchDonor.vue ***!
@@ -97491,6 +98722,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/RegisterBloodUnit.vue":
+/*!*******************************************************!*\
+  !*** ./resources/js/components/RegisterBloodUnit.vue ***!
+  \*******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _RegisterBloodUnit_vue_vue_type_template_id_5d0c1240___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./RegisterBloodUnit.vue?vue&type=template&id=5d0c1240& */ "./resources/js/components/RegisterBloodUnit.vue?vue&type=template&id=5d0c1240&");
+/* harmony import */ var _RegisterBloodUnit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./RegisterBloodUnit.vue?vue&type=script&lang=js& */ "./resources/js/components/RegisterBloodUnit.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _RegisterBloodUnit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _RegisterBloodUnit_vue_vue_type_template_id_5d0c1240___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _RegisterBloodUnit_vue_vue_type_template_id_5d0c1240___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/RegisterBloodUnit.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/RegisterBloodUnit.vue?vue&type=script&lang=js&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/RegisterBloodUnit.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterBloodUnit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./RegisterBloodUnit.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RegisterBloodUnit.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterBloodUnit_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/RegisterBloodUnit.vue?vue&type=template&id=5d0c1240&":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/RegisterBloodUnit.vue?vue&type=template&id=5d0c1240& ***!
+  \**************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterBloodUnit_vue_vue_type_template_id_5d0c1240___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./RegisterBloodUnit.vue?vue&type=template&id=5d0c1240& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/RegisterBloodUnit.vue?vue&type=template&id=5d0c1240&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterBloodUnit_vue_vue_type_template_id_5d0c1240___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_RegisterBloodUnit_vue_vue_type_template_id_5d0c1240___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/routes.js":
 /*!********************************!*\
   !*** ./resources/js/routes.js ***!
@@ -97505,6 +98805,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Donation_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/Donation.vue */ "./resources/js/components/Donation.vue");
 /* harmony import */ var _components_Donation_SearchDonor_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Donation/SearchDonor.vue */ "./resources/js/components/Donation/SearchDonor.vue");
 /* harmony import */ var _components_Donation_DonorDetails_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Donation/DonorDetails.vue */ "./resources/js/components/Donation/DonorDetails.vue");
+/* harmony import */ var _components_Donation_NewWalkin_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Donation/NewWalkin.vue */ "./resources/js/components/Donation/NewWalkin.vue");
+/* harmony import */ var _components_RegisterBloodUnit_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/RegisterBloodUnit.vue */ "./resources/js/components/RegisterBloodUnit.vue");
+
+
 
 
 
@@ -97525,6 +98829,14 @@ var routes = [{
   name: 'donor-details',
   path: '/donor-details',
   component: _components_Donation_DonorDetails_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+}, {
+  name: 'new-walk-in',
+  path: '/new-walk-in',
+  component: _components_Donation_NewWalkin_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
+}, {
+  name: 'register-blood',
+  path: '/register-blood',
+  component: _components_RegisterBloodUnit_vue__WEBPACK_IMPORTED_MODULE_5__["default"]
 }];
 
 /***/ }),

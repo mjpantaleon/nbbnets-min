@@ -9,7 +9,13 @@
 
         <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-            <b-nav-item :to="{ path: 'donation' }">DONATION</b-nav-item>
+            <b-nav-item-dropdown right>
+                <template v-slot:button-content>
+                    DONATION
+                </template>
+                <b-dropdown-item :to="{ path: 'donation' }">New Walk-in</b-dropdown-item>
+                <b-dropdown-item :to="{ path: 'register-new-donor' }">Register New Donor</b-dropdown-item>
+            </b-nav-item-dropdown>
 
             <b-nav-item-dropdown right>
                 <!-- Using 'button-content' slot -->

@@ -36,7 +36,7 @@
                 sticky-header
                 :items="items"
                 striped
-                head-variant="dark"
+                head-variant="light"
                 table-variant="light"></b-table>
           </b-col>
       </b-row>

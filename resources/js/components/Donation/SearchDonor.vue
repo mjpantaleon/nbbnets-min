@@ -11,11 +11,6 @@
                     <b-breadcrumb-item href="#foo" active>
                         <b-icon icon="search" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
                         Search Donor</b-breadcrumb-item>
-                    <!-- <b-breadcrumb-item :to="{ path: 'donor-details' }">
-                        <b-icon icon="person-lines-fill" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
-                        Donor Details</b-breadcrumb-item> -->
-                    <!-- <b-breadcrumb-item href="#bar">Donor Details</b-breadcrumb-item> -->
-                    <!-- <b-breadcrumb-item>Baz</b-breadcrumb-item> -->
                 </b-breadcrumb>
             </b-col>
         </b-row>
@@ -62,36 +57,23 @@
             </b-col>
         </b-row>
 
+        <!-- <b-row>
+            <b-col>
+                <b-link class="btn btn-danger" :to="{ path: 'register-new-donor' }">
+                    <b-icon icon="person-plus"></b-icon>&nbsp;NEW DONOR
+                </b-link>
+            </b-col>
+        </b-row> -->
+
+        <!-- TABLE -->
         <b-row>
           <b-col>
-            <!-- <b-table class="mt-5"
-                :fields="fields"
-                :items="items"
-                responsive="sm"
-                striped
-                head-variant="dark"
-                table-variant="light">
-
-                <template v-slot:cell(index)="data">
-                    {{ data.index + 1 }}
-                </template>
-
-                <template v-slot:cell(Name)="data">
-                    <b class="text-info">{{ data.value.last.toUpperCase() }}</b>
-                </template>
-
-                <template v-slot:cell(nameage)="data">
-                    {{ data.item.name.first }} is {{ data.item.age }} years old
-                </template>  
-            
-            </b-table> -->
-
             <b-table class="mt-3"
                 :fields="fields"
                 :items="items"
                 responsive="sm"
                 striped
-                head-variant="dark"
+                head-variant="light"
                 table-variant="light">
 
                 <template v-slot:cell(status)="data">
@@ -100,18 +82,21 @@
                 </template>
 
                 <template v-slot:cell(action)>
-                    <b-link class="btn btn-info btn-sm" :to="{ path: 'donor-details' }">
+                    <b-link class="btn btn-info btn-sm" :to="{ path: 'donor-details' }"
+                        v-b-tooltip.hover title="View donor details">
                         <b-icon icon="search"></b-icon>
                     </b-link>
 
-                    <b-link class="btn btn-success btn-sm" :to="{ path: 'edit-donor-details' }">
+                    <b-link class="btn btn-success btn-sm" :to="{ path: 'edit-donor-details' }"
+                        v-b-tooltip.hover title="Update donor details">
                         <b-icon icon="pencil"></b-icon>
                     </b-link>
                 </template>     
 
             </b-table>
           </b-col>
-      </b-row>
+        </b-row>
+
   </div>
 </template>
 
