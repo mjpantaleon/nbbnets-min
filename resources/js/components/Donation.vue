@@ -32,12 +32,20 @@
 
       <b-row>
           <b-col>
+            <template v-if="!hasResult">
+                <div class="d-flex justify-content-center mb-3">
+                    <b-spinner label="Please wait..."></b-spinner>
+                </div>
+            </template>
+
+            <template v-else>
             <b-table class="mt-5"
                 sticky-header
                 :items="items"
                 striped
                 head-variant="light"
                 table-variant="light"></b-table>
+          </template>
           </b-col>
       </b-row>
 
@@ -48,7 +56,16 @@
 export default {
     data(){
         return{
-            donation_dt: '',
+            donation_dt: new Date(),
+            hasResult: false,
+            fields: [
+                { key: 'fullname', label: 'Donor'},
+                { key: 'typeOfDonor', label: 'Type of Donor'},
+                { key: 'mhpe', label: 'MH/ PE'},
+                { key: 'method', label: 'Collection Method'},
+                { key: 'collection', label: 'Collection Status'},
+                { key: 'donationID', label: 'Donation ID'},
+            ],
             items: [
                 {   Donor: 'Cruz, Juan dela', 
                     TypeOfDonor: 'Voluntary', 
@@ -70,7 +87,7 @@ export default {
                     DonationID: 'NVBSP20209000005' },
             ]
         }
-    }
+    },
 }
 </script>
 

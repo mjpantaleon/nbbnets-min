@@ -15,7 +15,7 @@ class CreateDonationsTable extends Migration
     {
         Schema::create('donations', function (Blueprint $table) {
             $table->string('seqno', 16)->primary();
-            $table->string('donation_id', 16)->nullable();
+            $table->string('donation_id', 16)->unique()->nullable();
             $table->string('approved_by', 30)->nullable();
             $table->char('donor_sn', 16)->nullable();
             $table->string('sched_id', 30)->nullable();

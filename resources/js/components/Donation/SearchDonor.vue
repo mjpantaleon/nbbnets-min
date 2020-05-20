@@ -62,6 +62,13 @@
         <!-- TABLE -->
         <b-row>
           <b-col>
+            <template v-if="!hasResult">
+                <div class="d-flex justify-content-center mb-3">
+                    <b-spinner variant="danger" label="Please wait..."></b-spinner>
+                </div>
+            </template>
+            
+            <template v-if="hasResult">
             <b-table class="mt-3" id="bulletin-table"
                 responsive="sm"
                 striped hover
@@ -98,6 +105,7 @@
                     </b-link>
                 </template>     
             </b-table>
+            </template>
 
             <b-pagination
                 v-model="currentPage"
@@ -117,6 +125,9 @@ export default {
         return{
             data: '',
             searched_donor: '',
+            hasResult: false,
+
+
             fname: '',
             mname: '',
             lname:  '',
@@ -156,6 +167,7 @@ export default {
             .get('/donor-list-data')
             .then(response => {
                 this.data = response.data
+                this.hasResult = true
             })
         },
 
@@ -176,4 +188,4 @@ export default {
 
 <style>
 
-</style>
+</style>    
