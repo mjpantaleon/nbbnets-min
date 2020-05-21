@@ -14,7 +14,7 @@
                     DONATION
                 </template>
                 <b-dropdown-item :to="{ path: 'donation' }">New Walk-in</b-dropdown-item>
-                <b-dropdown-item :to="{ path: 'register-new-donor' }">Register New Donor</b-dropdown-item>
+                <!-- <b-dropdown-item :to="{ path: 'register-new-donor' }">Register New Donor</b-dropdown-item> -->
             </b-nav-item-dropdown>
 
             <b-nav-item-dropdown right>

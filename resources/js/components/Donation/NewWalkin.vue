@@ -94,7 +94,7 @@
                                     description="type of donor"
                                     label="Type of Donor"
                                     label-for="type_of_donor">
-                                <b-form-select v-model="selected_donor_type" :options="type_of_donor" id="type_of_donor"></b-form-select>
+                                    <b-form-select v-model="selected_donor_type" :options="type_of_donor" id="type_of_donor"></b-form-select>
                                 </b-form-group>
                                 {{ selected_donor_type }}
                             </td>
@@ -221,7 +221,7 @@ export default {
         lname: '',
         name_suffix: '',
 
-        created_dt: '',
+        created_dt: new Date(),
         donation_id: '',
         updated_by: '',
         password: '',

@@ -28,7 +28,7 @@
                     description="First name"
                     label="Donor name"
                     label-for="first-name">
-                <b-form-input v-model="fname" id="first-name"></b-form-input>
+                    <b-form-input v-model="fname" id="first-name"></b-form-input>
                 </b-form-group>
             </b-col>
 
