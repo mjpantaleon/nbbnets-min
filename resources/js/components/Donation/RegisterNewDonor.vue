@@ -20,7 +20,7 @@
 
       <h4><b-icon icon="person-plus"></b-icon> Register New Donor</h4>
       <hr>
-        <!-- SHOW THIS MODAL AFTER SUCCESSFUL DONOR REGISTRY -->
+        <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
         <b-modal v-model="showSuccessMsg" centered
             title="Success!"
             header-bg-variant="success"

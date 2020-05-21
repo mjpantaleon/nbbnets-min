@@ -65,12 +65,13 @@ class DonorController extends Controller
 
         // GENERATE DONOR SEQUENCE NUMBER FORMAT: 130062020000001
         $facility_user = '13006_mj';
-        $facility_id = 13001;
+        $facility_cd = 13001;
+
         $year_now = date('Y');          // 2020
         $donors_count = Donor::count(); 
         $donors_count = $donors_count + 1;
 
-        $seqno = $facility_id . $year_now . sprintf("%06d", $donors_count); // 130062020000004
+        $seqno = $facility_cd . $year_now . sprintf("%06d", $donors_count); // 130062020000004
 
         // initialize data
         $fname = $data['fname'];
@@ -111,10 +112,7 @@ class DonorController extends Controller
         $created_user->save();
 
         return "OK";
-
-
         \Log::info($id);
+    } /* create new donor */
 
-
-    }
 }

@@ -23,6 +23,27 @@
         <h4><b-icon icon="person-plus"></b-icon>&nbsp;New Walkin Donation</h4>
         <hr>
 
+        <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
+        <b-modal v-model="showSuccessMsg" centered
+            title="Success!"
+            header-bg-variant="success"
+            body-bg-variant="light" 
+            footer-bg-variant="success"
+            header-text-variant="light"
+            hide-header-close>
+            
+            <h4 class="alert-heading text-center">
+                <b-icon icon="droplet-half"></b-icon>&nbsp;New Walk-in donation has been added!
+            </h4>
+            
+            <template v-slot:modal-footer="{ ok }">
+                <b-link class="btn btn-success" :to="{ path: '/donation' }"
+                    size="sm" variant="success" @click="ok()">
+                    OK
+                </b-link>
+            </template>
+        </b-modal>
+
         <b-row>
             <b-col md="6">
                 <!-- <b-card no-body bg-variant="dark" text-variant="light" header="Donor Details"></b-card> -->
@@ -33,13 +54,13 @@
                                     id="fieldset-horizontal"
                                     label-cols-sm="4"
                                     label-cols-lg="3"
-                                    description="Collection date"
+                                    description="Please select from the calendar"
                                     label="Date Collected"
                                     label-for="collection_date">
 
-                                <b-form-datepicker v-model="created_dt" id="collection_date"></b-form-datepicker>
-                                </b-form-group>  
-                                {{ created_dt }}
+                                <b-form-datepicker v-model="created_dt"
+                                    :state="checkDP" id="collection_date"></b-form-datepicker>
+                                </b-form-group>
                             </td>
                         </tr>
 
@@ -93,10 +114,9 @@
                                     label-cols-lg="3"
                                     description="type of donor"
                                     label="Type of Donor"
-                                    label-for="type_of_donor">
-                                    <b-form-select v-model="selected_donor_type" :options="type_of_donor" id="type_of_donor"></b-form-select>
+                                    label-for="donation_type_list">
+                                    <b-form-select v-model="donation_type" :options="donation_type_list" id="donation_type_list"></b-form-select>
                                 </b-form-group>
-                                {{ selected_donor_type }}
                             </td>
                         </tr>
 
@@ -108,10 +128,9 @@
                                     label-cols-lg="3"
                                     description="mh/ pe result"
                                     label="MH/ PE REsult"
-                                    label-for="mh_pe_result">
-                                <b-form-select v-model="selected_mh_pe" :options="mh_pe_result" id="mh_pe_result"></b-form-select>
+                                    label-for="mh_pe_stat_list">
+                                <b-form-select v-model="mh_pe_stat" :options="mh_pe_stat_list" id="mh_pe_stat_list"></b-form-select>
                                 </b-form-group>
-                                {{ selected_mh_pe }}
                             </td>
                         </tr>
 
@@ -124,10 +143,9 @@
                                     label-cols-lg="3"
                                     description="collection method"
                                     label="Method of Blood Collection"
-                                    label-for="collection_method">
-                                <b-form-select v-model="selected_method" :options="collection_method" id="collection_method"></b-form-select>
+                                    label-for="collection_method_list">
+                                <b-form-select v-model="collection_method" :options="collection_method_list" id="collection_method_list"></b-form-select>
                                 </b-form-group>
-                                {{ selected_method }}
                             </td>
                         </tr>
 
@@ -139,14 +157,13 @@
                                     label-cols-lg="3"
                                     description="collection status"
                                     label="Status of Collection"
-                                    label-for="collection_status">
-                                <b-form-select v-model="selected_status" :options="collection_status" id="collection_method"></b-form-select>
+                                    label-for="collection_stat_list">
+                                <b-form-select v-model="collection_stat" :options="collection_stat_list" id="collection_stat_list"></b-form-select>
                                 </b-form-group>
-                                {{ selected_status }}
                             </td>
                         </tr>
 
-                        <template v-if="selected_mh_pe == 'A'">
+                        <template v-if="mh_pe_stat == 'A'">
                         <!-- DONATION ID -->
                         <tr>
                             <td>
@@ -200,7 +217,9 @@
 
                         <tr>
                             <td>
-                                <b-button block variant="success">
+                                <b-button block variant="success"
+                                    :disabled="enableBtn"
+                                    @click.prevent="addNewWalkin()">
                                     <b-icon icon="check-circle"></b-icon> VERIFY AND PROCEED</b-button>
                             </td>
                         </tr>
@@ -216,41 +235,47 @@
 export default {
     data() {
       return {
+        enableBtn: false,
+        showSuccessMsg: false,
+
         fname: '',
         mname: '',
         lname: '',
         name_suffix: '',
 
-        created_dt: new Date(),
+        // FIELD VALUES TO SEND
+        created_dt: '',
+        donor_sn: this.$route.params.id,
+        donation_type: 'V',
+        mh_pe_stat: 'A',
+        collection_method: 'WB',
+        collection_stat: 'COL',
+
         donation_id: '',
         updated_by: '',
         password: '',
 
-        selected_donor_type: 'V',
-        selected_mh_pe: 'A',
-        selected_method: 'WB',
-        selected_status: 'COL',
-
-        type_of_donor: [
+        // SELECTION LISTS
+        donation_type_list: [
           { value: 'AU', text: 'Autologous' },
           { value: 'V', text: 'Voluntary' },
           { value: 'REP', text: 'Family/ Replacement' },
           { value: 'PAID', text: 'Paid' },
         ],
 
-        mh_pe_result: [
+        mh_pe_stat_list: [
             { value: 'A', text: 'ACCEPTED' },
             { value: 'TD', text: 'TEMPORARY DEFERRED' },
             { value: 'PD', text: 'PERMANENTLY DEFERRED' },
             { value: 'ID', text: 'INDEFINITELY DEFFERED' },
         ],
 
-        collection_method: [
+        collection_method_list: [
           { value: 'WB', text: 'Whole Blood' },
           { value: 'AP', text: 'Apheresis' },
         ],
 
-        collection_status: [
+        collection_stat_list: [
           { value: 'COL', text: 'Successful' },
           { value: 'UNS', text: 'Unsuccessful' },
         ],
@@ -267,6 +292,9 @@ export default {
         },
         checkPassword(){
             return this.password.length > 3 ? true : false
+        },
+        checkDP(){
+            return this.created_dt.length > 5 ? true : false
         }
     },
 
@@ -283,6 +311,25 @@ export default {
                 this.mname = response.data.mname,
                 this.lname = response.data.lname,
                 this.name_suffix = response.data.name_suffix
+            ))
+            .catch(error => console.log(error))
+        },
+
+        addNewWalkin(){
+            axios
+            .post('/create-new-walkin', {
+                created_dt: this.created_dt,
+                donor_sn: this.donor_sn,
+                donation_type: this.donation_type,
+                mh_pe_stat: this.mh_pe_stat,
+                collection_method: this.collection_method,
+                collection_stat: this.collection_stat,
+                donation_id: this.donation_id,
+                updated_by: this.updated_by
+            })
+            .then(response => (
+                this.enableBtn = true,
+                this.showSuccessMsg = true
             ))
             .catch(error => console.log(error))
         }

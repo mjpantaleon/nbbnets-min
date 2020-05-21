@@ -20,10 +20,14 @@ use Illuminate\Support\Facades\Route;
     
 Auth::routes();
 
+// DONOR
 Route::get('/donor-list-data', 'DonorController@index');
 Route::get('/donor-profile/{id}', 'DonorController@donorDetails');
 Route::post('/get-searched-donor', 'DonorController@search');
 Route::post('/create-new-donor', 'DonorController@create');
+
+// DONATION
+Route::post('/create-new-walkin','DonationController@create');
 
 // Route::get('/donor-id', 'DonorController@create');
 
