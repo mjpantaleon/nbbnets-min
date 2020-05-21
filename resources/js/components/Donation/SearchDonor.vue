@@ -52,59 +52,72 @@
 
             <b-col cols="2" class="ml-auto">
                 <b-button type="submit"
-                    variant="warning">
+                    variant="warning"
+                    @click="searchDonor()">
                     <b-icon icon="search"></b-icon>&nbsp;SEARCH
                 </b-button>
             </b-col>
         </b-row>
 
-        <!-- {{ searched_donor }} -->
+        <!-- {{ data }} -->
+        <b-link class="btn btn-success" :to="{ path: 'register-new-donor' }">
+            <b-icon icon="person-plus"></b-icon> Register New Donor
+        </b-link>
+
         <!-- TABLE -->
         <b-row>
           <b-col>
-            <template v-if="!hasResult">
+            <template v-if="isLoading">
                 <div class="d-flex justify-content-center mb-3">
                     <b-spinner variant="danger" label="Please wait..."></b-spinner>
                 </div>
             </template>
             
-            <template v-if="hasResult">
-            <b-table class="mt-3" id="bulletin-table"
-                responsive="sm"
-                striped hover
-                head-variant="light"
-                table-variant="light"
-                :fields="fields"
-                :items="data"
-                :per-page="perPage"
-                :current-page="currentPage">
+            <template>
+                <b-table class="mt-3" id="bulletin-table"
+                    responsive="sm"
+                    striped hover
+                    head-variant="light"
+                    table-variant="light"
+                    :fields="fields"
+                    :items="data"
+                    :per-page="perPage"
+                    :current-page="currentPage">
 
-                <template v-slot:cell(donorStatus)="data">
-                    <b v-if="data.item.donor_stat == 'Y'" class="text-success">MAY DONATE</b>
-                    <b v-else class="text-danger">CANNOT DONATE</b>
-                </template>
+                    <template v-slot:cell(donorStatus)="data">
+                        <b v-if="data.item.donor_stat == 'Y'" class="text-success">MAY DONATE</b>
+                        <b v-else class="text-danger">CANNOT DONATE</b>
+                    </template>
 
-                <template v-slot:cell(name)="data">
-                    {{ data.item.fname }} {{ data.item.mname }}, {{ data.item.lname }}
-                </template>
+                    <template v-slot:cell(name)="data">
+                        {{ data.item.fname }} {{ data.item.mname }}, {{ data.item.lname }}
+                    </template>
 
-                <template v-slot:cell(gender)="data">
-                    <span v-if="data.item.gender == 'M'">Male</span>
-                    <span v-else>Female</span>
-                </template>
+                    <template v-slot:cell(gender)="data">
+                        <span v-if="data.item.gender == 'M'">Male</span>
+                        <span v-else>Female</span>
+                    </template>
 
-                <template v-slot:cell(action)="data">
-                    <b-link class="btn btn-info btn-sm" :to="{ path: '/donor-details/' + data.item.seqno }"
-                        v-b-tooltip.hover title="View donor details">
-                        <b-icon icon="search"></b-icon>
-                    </b-link>
+                    <template v-slot:cell(action)="data">
+                        <b-link class="btn btn-info btn-sm" :to="{ path: '/donor-details/' + data.item.seqno }"
+                            v-b-tooltip.hover title="View donor details">
+                            <b-icon icon="search"></b-icon>
+                        </b-link>
 
-                    <b-link class="btn btn-success btn-sm" :to="{ path: '/edit-donor-details/' + data.item.seqno  }"
-                        v-b-tooltip.hover title="Update donor details">
-                        <b-icon icon="pencil"></b-icon>
-                    </b-link>
-                </template>     
-            </b-table>
+                        <b-link class="btn btn-success btn-sm" :to="{ path: '/edit-donor-details/' + data.item.seqno  }"
+                            v-b-tooltip.hover title="Update donor details">
+                            <b-icon icon="pencil"></b-icon>
+                        </b-link>
+                    </template>   
+
+                    <!--  SHOULD SHOW NO RECORDS FOUND IF
+                    <template v-else>
+                        <b-tr>
+                            <b-th colspan="11">No records found.</b-th>
+                        </b-tr>
+                    </template> -->
+
+                </b-table>
             </template>
 
             <b-pagination
@@ -112,9 +125,10 @@
                 :total-rows="rows"
                 :per-page="perPage"
                 aria-controls="bulletin-table">
-            </b-pagination>
-          </b-col>
+                </b-pagination>
+            </b-col>
         </b-row>
+
 
   </div>
 </template>
@@ -124,14 +138,12 @@ export default {
     data(){
         return{
             data: '',
-            searched_donor: '',
-            hasResult: false,
-
+            isLoading: false,
 
             fname: '',
             mname: '',
             lname:  '',
-            isLoading: false,
+
             fields: [
                 { key: 'seqno', label: 'Seqno' },
                 { key: 'donorStatus', label: 'Donor Status' },
@@ -158,30 +170,37 @@ export default {
     }, /* computed */
 
     mounted(){
-        this.getDonors()
+        // this.getDonors()
+        // if(this.data.length == 0){
+        //     this.showAddBtn = true
+        // }
     }, /* mounted */
 
     methods: {
-        getDonors(){
-            axios
-            .get('/donor-list-data')
-            .then(response => {
-                this.data = response.data
-                this.hasResult = true
-            })
-        },
+        searchDonor(){
+            this.isLoading = true
 
-        // searchDonor(){
+            axios
+            .post('/get-searched-donor',{
+                fname: this.fname,
+                mname: this.mname,
+                lname: this.lname,
+            })
+            .then(response => {
+                this.data = response.data;
+                this.isLoading = false
+                this.showAddBtn = false
+            })
+        }
+
+        // getDonors(){
         //     axios
-        //     .post('/get-searched-donor',{
-        //         fname: this.fname,
-        //         mname: this.mname,
-        //         lname: this.lname
-        //     })
+        //     .get('/donor-list-data')
         //     .then(response => {
-        //         this.searched_donor = response.data;
+        //         this.data = response.data
+        //         this.hasResult = true
         //     })
-        // }
+        // },
     }, /* methods */
 }
 </script>
