@@ -23,6 +23,9 @@ Auth::routes();
 Route::get('/donor-list-data', 'DonorController@index');
 Route::get('/donor-profile/{id}', 'DonorController@donorDetails');
 Route::post('/get-searched-donor', 'DonorController@search');
+Route::post('/create-new-donor', 'DonorController@create');
+
+// Route::get('/donor-id', 'DonorController@create');
 
 // ROUTES FOR AUTHENTICATED USERS
 // Route::group( ['middleware' => 'auth'], function() {

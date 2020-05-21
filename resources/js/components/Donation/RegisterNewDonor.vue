@@ -20,6 +20,26 @@
 
       <h4><b-icon icon="person-plus"></b-icon> Register New Donor</h4>
       <hr>
+        <!-- SHOW THIS MODAL AFTER SUCCESSFUL DONOR REGISTRY -->
+        <b-modal v-model="showSuccessMsg" centered
+            title="Success!"
+            header-bg-variant="success"
+            body-bg-variant="light" 
+            footer-bg-variant="success"
+            header-text-variant="light"
+            hide-header-close>
+            
+            <h4 class="alert-heading text-center">
+                <b-icon icon="person-check"></b-icon>&nbsp;New Donor has been added!
+            </h4>
+            
+            <template v-slot:modal-footer="{ ok }">
+                <b-link class="btn btn-success" :to="{ path: '/search-donor' }"
+                    size="sm" variant="success" @click="ok()">
+                    OK
+                </b-link>
+            </template>
+        </b-modal>
 
       <b-table table-variant="light" bordered></b-table>
       <b-row>
@@ -72,7 +92,7 @@
                     description="select gender"
                     label="Gender"
                     label-for="gerder_list">
-                    <b-form-select v-model="selected_gender" 
+                    <b-form-select v-model="gender" 
                         :options="gerder_list" id="gerder_list"></b-form-select>
                 </b-form-group>
           </b-col>
@@ -90,14 +110,6 @@
                     <b-form-input type="date" :state="checkBday" v-model="bdate" id="bdate"></b-form-input>
                 </b-form-group>
             </b-col>
-            <!-- <b-col cols="3">
-                <b-form-group
-                    id="fieldset-horizontal"
-                    description="Birth day Calendar"
-                    label-for="bdate">
-                    <b-form-datepicker v-model="bdate" id="bdate"></b-form-datepicker>
-                </b-form-group>
-            </b-col> -->
       </b-row>
 
       <b-row>
@@ -109,7 +121,7 @@
                     description="Select civil status"
                     label="Civil Status"
                     label-for="civil_status_list">
-                    <b-form-select v-model="selected_civil_stat" 
+                    <b-form-select v-model="civil_stat" 
                         :options="civil_status_list" id="civil_status_list"></b-form-select>
                 </b-form-group>
           </b-col>
@@ -138,8 +150,8 @@
                     description="Select Nationality"
                     label="Nationality"
                     label-for="nationality">
-                    <b-form-select v-model="selected_nationality" 
-                        :options="nationality" id="nationality"></b-form-select>
+                    <b-form-select v-model="nationality" 
+                        :options="nationality_list" id="nationality"></b-form-select>
                 </b-form-group>
           </b-col>
       </b-row>
@@ -191,7 +203,8 @@
               <b-button variant="success" 
                     block
                     type="submit"
-                    @click="submit()">
+                    :disabled="enableBtn"
+                    @click.prevent="addNewDonor()">
                     <b-icon icon="person-plus"></b-icon>&nbsp;REGISTER NEW DONOR
               </b-button>
           </b-col>
@@ -204,21 +217,21 @@
 export default {
     data(){
         return{
+            enableBtn: false,
+            showSuccessMsg: false,
+
             fname: '',
             mname: '',
             lname: '',
             name_suffix: '',
             gender: 'M',
             bdate: '',
+            civil_stat: 'S',
+            occupation: '',
+            nationality: '137',
             tel_no: '',
             mobile_no: '',
             email: '',
-
-            selected_gender: 'M',
-            selected_civil_stat: 'S',
-            selected_nationality: '137',
-
-            occupation: '',
 
             gerder_list: [
                 { value: 'M', text: 'Male' },
@@ -232,7 +245,7 @@ export default {
                 { value: 'X', text: 'Separated' },
             ],
 
-            nationality: [
+            nationality_list: [
                 { value: '137', text: 'Filipino' },
             ],
         }
@@ -250,6 +263,31 @@ export default {
         },
         checkBday(){
             return this.bdate.length > 4 ? true : false
+        }
+    }, /* computed */
+
+    methods: {
+        addNewDonor(){
+            axios
+            .post('/create-new-donor', {
+                fname : this.fname,
+                mname : this.mname,
+                lname : this.lname,
+                name_suffix : this.name_suffix,
+                gender : this.gender,
+                bdate : this.bdate,
+                civil_stat : this.civil_stat,
+                occupation : this.occupation,
+                nationality : this.nationality,
+                tel_no : this.tel_no,
+                mobile_no : this.mobile_no,
+                email : this.email,
+            })
+            .then(response => (
+                this.showSuccessMsg = true,
+                this.enableBtn = true
+            ))
+            .catch(error => console.log(error))
         }
     }
 }

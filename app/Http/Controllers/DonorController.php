@@ -57,38 +57,64 @@ class DonorController extends Controller
             return response()->json($keyword);
             \Log::info($keyword);
         }
-        // IF ALL FIELDS ARE EMPTY THEN
-        // SHOULD HAVE A RESPONSE IF EMPTY
-        
-        
-        // SELECT FROM donors WHERE fname, mname, lname like searched
-        // $query = "  SELECT * FROM donors 
-        //             WHERE 'fname' LIKE '%$fname%' 
-        //             OR 'mname' LIKE '%$mname%' 
-        //             OR 'lname' LIKE '%$lname%' ";
-        // $keyword = DB::select($query);
-        // return response()->json($keyword);
-        // \Log::info($keyword);
-        
-        // if( ($fname != '') || ($mname != '') || ($lname != '')){
-        //     $keyword = Donor::where(function ($q) use ($fname, $mname, $lname) {
-        //             $q->orwhere('fname', 'LIKE', '%' .$fname. '%');
-        //             $q->orWhere('mname', 'LIKE', '%' .$mname. '%');
-        //             $q->orWhere('lname', 'LIKE', '%' .$lname. '%');
-        //     })->get();
-        //     return response()->json($keyword);
-            
-        //     \Log::info($keyword);
-        // }
-        // ->orderBy('created_dt', 'desc');
-        
-        // $keyword = Donor::orderBy('created_dt', 'desc')
-        //     ->orWhere('fname', 'LIKE', '%' .$fname. '%')
-        //     ->orWhere('mname', 'LIKE', '%' .$mname. '%') 
-        //     ->orWhere('lname', 'LIKE', '%' .$lname. '%')
-        //     ->get();
-        // return response()->json($keyword);
-        // \Log::info($keyword);
+    } /* search */
+
+
+    public function create(Request $request){
+        $data = $request->except('_token');
+
+        // GENERATE DONOR SEQUENCE NUMBER FORMAT: 130062020000001
+        $facility_user = '13006_mj';
+        $facility_id = 13001;
+        $year_now = date('Y');          // 2020
+        $donors_count = Donor::count(); 
+        $donors_count = $donors_count + 1;
+
+        $seqno = $facility_id . $year_now . sprintf("%06d", $donors_count); // 130062020000004
+
+        // initialize data
+        $fname = $data['fname'];
+        $mname = $data['mname'];
+        $lname = $data['lname'];
+        $name_suffix = $data['name_suffix'];
+        $gender = $data['gender'];
+        $bdate = $data['bdate'];
+        $civil_stat = $data['civil_stat'];
+        $occupation = $data['occupation'];
+        $nationality = $data['nationality'];
+        $tel_no = $data['tel_no'];
+        $mobile_no = $data['mobile_no'];
+        $email = $data['email'];
+        $donation_stat = 'A';
+        $donor_stat = 'Y';
+        $created_dt = date('Y-m-d H:i:s');
+        $created_by = $facility_user;
+
+        $created_user = new Donor;
+        $created_user->seqno = $seqno;
+        $created_user->fname = $fname;
+        $created_user->mname = $mname;
+        $created_user->lname = $lname;
+        $created_user->name_suffix = $name_suffix;
+        $created_user->gender = $gender;
+        $created_user->bdate = $bdate;
+        $created_user->civil_stat = $civil_stat;
+        $created_user->occupation = $occupation;
+        $created_user->nationality = $nationality;
+        $created_user->tel_no = $tel_no;
+        $created_user->mobile_no = $mobile_no;
+        $created_user->email = $email;
+        $created_user->donation_stat = $donation_stat;
+        $created_user->donor_stat = $donor_stat;
+        $created_user->created_dt = $created_dt;
+        $created_user->created_by = $created_by;
+        $created_user->save();
+
+        return "OK";
+
+
+        \Log::info($id);
+
 
     }
 }

@@ -53,7 +53,7 @@
             <b-col cols="2" class="ml-auto">
                 <b-button type="submit"
                     variant="warning"
-                    @click="searchDonor()">
+                    @click.prevent="searchDonor()">
                     <b-icon icon="search"></b-icon>&nbsp;SEARCH
                 </b-button>
             </b-col>
