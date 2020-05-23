@@ -260,7 +260,7 @@ export default {
           { value: 'AU', text: 'Autologous' },
           { value: 'V', text: 'Voluntary' },
           { value: 'REP', text: 'Family/ Replacement' },
-          { value: 'PAID', text: 'Paid' },
+          { value: 'PA', text: 'Paid' },
         ],
 
         mh_pe_stat_list: [

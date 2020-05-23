@@ -27,6 +27,7 @@ Route::post('/get-searched-donor', 'DonorController@search');
 Route::post('/create-new-donor', 'DonorController@create');
 
 // DONATION
+Route::post('/donation-list-data','DonationController@index');
 Route::post('/create-new-walkin','DonationController@create');
 
 // Route::get('/donor-id', 'DonorController@create');

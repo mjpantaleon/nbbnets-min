@@ -86,30 +86,31 @@ class DonorController extends Controller
         $tel_no = $data['tel_no'];
         $mobile_no = $data['mobile_no'];
         $email = $data['email'];
-        $donation_stat = 'A';
-        $donor_stat = 'Y';
+        // $donation_stat = 'Y';
+        $donor_stat = 'A';
         $created_dt = date('Y-m-d H:i:s');
         $created_by = $facility_user;
 
-        $created_user = new Donor;
-        $created_user->seqno = $seqno;
-        $created_user->fname = $fname;
-        $created_user->mname = $mname;
-        $created_user->lname = $lname;
-        $created_user->name_suffix = $name_suffix;
-        $created_user->gender = $gender;
-        $created_user->bdate = $bdate;
-        $created_user->civil_stat = $civil_stat;
-        $created_user->occupation = $occupation;
-        $created_user->nationality = $nationality;
-        $created_user->tel_no = $tel_no;
-        $created_user->mobile_no = $mobile_no;
-        $created_user->email = $email;
-        $created_user->donation_stat = $donation_stat;
-        $created_user->donor_stat = $donor_stat;
-        $created_user->created_dt = $created_dt;
-        $created_user->created_by = $created_by;
-        $created_user->save();
+        $donor = new Donor;
+        $donor->seqno = $seqno;
+        $donor->fname = $fname;
+        $donor->mname = $mname;
+        $donor->lname = $lname;
+        $donor->name_suffix = $name_suffix;
+        $donor->gender = $gender;
+        $donor->bdate = $bdate;
+        $donor->civil_stat = $civil_stat;
+        $donor->occupation = $occupation;
+        $donor->nationality = $nationality;
+        $donor->tel_no = $tel_no;
+        $donor->mobile_no = $mobile_no;
+        $donor->email = $email;
+        // $donor->donation_stat = $donation_stat; // Y
+        $donor->donor_stat = $donor_stat;       // *for now use status
+        $donor->facility_cd = $facility_cd;
+        $donor->created_dt = $created_dt;
+        $donor->created_by = $created_by;
+        $donor->save();
 
         return "OK";
         \Log::info($id);

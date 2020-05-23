@@ -85,7 +85,7 @@
                     :current-page="currentPage">
 
                     <template v-slot:cell(donorStatus)="data">
-                        <b v-if="data.item.donor_stat == 'Y'" class="text-success">MAY DONATE</b>
+                        <b v-if="data.item.donor_stat == 'A'" class="text-success">MAY DONATE</b>
                         <b v-else class="text-danger">CANNOT DONATE</b>
                     </template>
 

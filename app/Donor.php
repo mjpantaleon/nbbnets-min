@@ -8,4 +8,8 @@ class Donor extends Model
 {
     protected $guarded = [];
     public $timestamps = false;
+
+    // public function donations(){
+    //     return $this->hasMany('App\Donation');
+    // }
 }

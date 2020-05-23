@@ -28,7 +28,7 @@
                     <b-link class="btn btn-primary" :to="{ path: '/edit-donor-details/' + this.$route.params.id }">
                         <b-icon icon="pencil"></b-icon> UPDATE INFO</b-link>
 
-                    <b-link v-if="donation_stat == 'A'" class="btn btn-success" 
+                    <b-link v-if="donor_stat == 'A'" class="btn btn-success" 
                         :to="{ path: '/new-walk-in/' + this.$route.params.id }">
                         <b-icon icon="person-plus"></b-icon> NEW WALK-IN</b-link>
 
@@ -48,9 +48,9 @@
                             <td>{{ donor_id ? donor_id : 'NULL' }}</td>
                         </tr>
                         <tr>
-                            <th>Donation Status</th>
+                            <th>Donor Status</th>
                             <td>
-                                <b v-if="donation_stat == 'A'" class="text-success">MAY DONATE</b>
+                                <b v-if="donor_stat == 'A'" class="text-success">MAY DONATE</b>
                                 <b v-else class="text-danger">CANNOT DONATE</b>
                             </td>
                         </tr>
@@ -116,7 +116,7 @@ export default {
     data() {
       return {
           donor_id: '',
-          donation_stat: '',
+          donor_stat: '',
           fname: '',
           mname: '',
           lname: '',
@@ -142,7 +142,7 @@ export default {
             .get('/donor-profile/' + this.$route.params.id)
             .then(response => (
                 this.donor_id = response.data.donor_id,
-                this.donation_stat = response.data.donation_stat,
+                this.donor_stat = response.data.donor_stat,
                 this.fname = response.data.fname,
                 this.mname = response.data.mname,
                 this.lname = response.data.lname,
