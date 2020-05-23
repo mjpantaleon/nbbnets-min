@@ -74,7 +74,7 @@
                                     label="Donor"
                                     label-for="fname"
                                     aria-readonly="true">
-                                <b-form-input v-model="fname" id="fname"></b-form-input>
+                                <b-form-input v-model="fname" id="fname" readonly></b-form-input>
                                 </b-form-group>
 
                                 <b-form-group
@@ -83,7 +83,7 @@
                                     label-cols-lg="3"
                                     description="Middle"
                                     label-for="mname">
-                                <b-form-input v-model="mname" id="mname"></b-form-input>
+                                <b-form-input v-model="mname" id="mname" readonly></b-form-input>
                                 </b-form-group>
 
                                 <b-form-group
@@ -92,7 +92,7 @@
                                     label-cols-lg="3"
                                     description="Last Name"
                                     label-for="lname">
-                                <b-form-input v-model="lname" id="lname"></b-form-input>
+                                <b-form-input v-model="lname" id="lname" readonly></b-form-input>
                                 </b-form-group>
 
                                 <b-form-group
@@ -101,7 +101,7 @@
                                     label-cols-lg="3"
                                     description="Suffix"
                                     label-for="suffix">
-                                <b-form-input v-model="name_suffix" id="suffix"></b-form-input>
+                                <b-form-input v-model="name_suffix" id="suffix" readonly></b-form-input>
                                 </b-form-group>
                             </td>
                         </tr>

@@ -45,7 +45,6 @@
                 sticky-header
                 :items="data"
                 :fields="fields"
-                aria-selected
                 striped
                 @context="onContext"
                 head-variant="light"

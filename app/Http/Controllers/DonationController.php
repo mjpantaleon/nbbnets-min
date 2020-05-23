@@ -28,12 +28,6 @@ class DonationController extends Controller
                     WHERE d.created_dt = '$donation_dt' 
                     ORDER by d.created_dt DESC ";
         $donations = DB::select($query);
-
-        // $donations = Donation::with('donor')
-        //             // ->where('seqno')
-        //             ->where('created_dt', 'LIKE' ,'%'.$donation_dt.'%')
-        //             ->orderBy('created_dt', 'desc')
-        //             ->get();
         
         \Log::info($donations);
         return response()->json($donations);
