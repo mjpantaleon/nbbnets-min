@@ -28,7 +28,7 @@
                     description="First name"
                     label="Donor name"
                     label-for="first-name">
-                    <b-form-input v-model="fname" id="first-name"></b-form-input>
+                    <b-form-input v-model="fname" :state="checkFname" id="first-name"></b-form-input>
                 </b-form-group>
             </b-col>
 
@@ -46,7 +46,7 @@
                     id="fieldset-horizontal"
                     description="Last name"
                     label-for="last-name">
-                <b-form-input v-model="lname" id="last-name"></b-form-input>
+                <b-form-input v-model="lname" :state="checkLname" id="last-name"></b-form-input>
                 </b-form-group>
             </b-col>
 
@@ -165,6 +165,12 @@ export default {
     computed: {
         rows() {
             return this.data.length
+        },
+        checkFname(){
+            return this.fname.length > 1 ? true : false;
+        },
+        checkLname(){
+            return this.lname.length > 1 ? true : false;
         }
 
     }, /* computed */

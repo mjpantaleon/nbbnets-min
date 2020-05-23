@@ -8,17 +8,12 @@
                         <b-icon icon="card-checklist" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
                         Donation
                     </b-breadcrumb-item>
-                    <!-- <b-breadcrumb-item href="#foo">Select Donor</b-breadcrumb-item>
-                    <b-breadcrumb-item href="#bar">Donor Details</b-breadcrumb-item>
-                    <b-breadcrumb-item>Baz</b-breadcrumb-item> -->
                 </b-breadcrumb>
           </b-col>
       </b-row>
 
       <h4><b-icon icon="card-checklist"></b-icon> Donation</h4>
       <hr>
-
-      {{donation_dt}}
 
       <b-row>
             <b-col md="6">
@@ -28,7 +23,32 @@
             </b-col>
 
             <b-col md="auto" class="ml-auto">
-                <b-form-datepicker v-model="donation_dt"></b-form-datepicker>
+                <label for="datepicker">Donation date</label>
+                <b-input-group class="mb-3">
+                    <b-form-datepicker
+                        :state="checkDate"
+                        v-model="donation_dt">
+                    </b-form-datepicker>
+                <!-- <b-form-input
+                    id="example-input"
+                    v-model="donation_dt"
+                    type="text"
+                    placeholder="YYYY-MM-DD"
+                    autocomplete="off"
+                    :state="checkDate">
+                    </b-form-input>
+
+                    <b-input-group-append>
+                        <b-form-datepicker
+                        v-model="donation_dt"
+                        button-only
+                        right
+                        aria-controls="example-input"
+                        @context="onContext"
+                        ></b-form-datepicker>
+                    </b-input-group-append> -->
+                    
+                </b-input-group>
             </b-col>
       </b-row>
 
@@ -75,7 +95,7 @@
 
                 <template v-slot:cell(collectionStat)="data">
                     <b class="text-success" v-if="data.item.collection_stat == 'COL'">Collected</b>
-                    <b v-if="data.item.collection_stat == 'UNS'">Un-successful</b>
+                    <b class="text-danger" v-if="data.item.collection_stat == 'UNS'">Un-successful</b>
                 </template>
                 
                 <template v-slot:cell()="data">
@@ -94,10 +114,13 @@
 <script>
 export default {
     data(){
+        // const now = new Date()
+        // const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
         return{
             data: '',
             // donation_dt: '2020-05-23',
-            donation_dt: null,
+            donation_dt: '',
             formatted: '',
             selected: '',
 
@@ -118,12 +141,12 @@ export default {
     }, /* mounted */
 
     methods: {
-        //  onContext(ctx) {
-        //     // The date formatted in the locale, or the `label-no-date-selected` string
-        //     this.formatted = ctx.selectedFormatted
-        //     // The following will be an empty string until a valid date is entered
-        //     this.selected = ctx.selectedYMD
-        // },
+        onContext(ctx) {
+            // The date formatted in the locale, or the `label-no-date-selected` string
+            this.formatted = ctx.selectedFormatted
+            // The following will be an empty string until a valid date is entered
+            this.selected = ctx.selectedYMD
+        },
         getDonations(){
             this.isLoading = true
 
@@ -142,6 +165,12 @@ export default {
         // watch the value of donation date as it change
         donation_dt: function (val){
             this.getDonations()
+        }
+    }, /* watch */
+
+    computed: {
+        checkDate(){
+            return this.donation_dt.length > 5 ? true : false;
         }
     }
 }
