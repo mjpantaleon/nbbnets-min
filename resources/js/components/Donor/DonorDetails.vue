@@ -28,7 +28,7 @@
                     <b-link class="btn btn-primary" :to="{ path: '/edit-donor-details/' + this.$route.params.id }">
                         <b-icon icon="pencil"></b-icon> UPDATE INFO</b-link>
 
-                    <b-link v-if="donor_stat == 'A'" class="btn btn-success" 
+                    <b-link v-if="donation_stat != 'REA'" class="btn btn-success" 
                         :to="{ path: '/new-walk-in/' + this.$route.params.id }">
                         <b-icon icon="person-plus"></b-icon> NEW WALK-IN</b-link>
 
@@ -48,9 +48,9 @@
                             <td>{{ donor_id ? donor_id : 'NULL' }}</td>
                         </tr>
                         <tr>
-                            <th>Donor Status</th>
+                            <th>Donation Status</th>
                             <td>
-                                <b v-if="donor_stat == 'A'" class="text-success">MAY DONATE</b>
+                                <b v-if="donation_stat != 'REA'" class="text-success">MAY DONATE</b>
                                 <b v-else class="text-danger">CANNOT DONATE</b>
                             </td>
                         </tr>
@@ -71,7 +71,10 @@
                         </tr>
                         <tr>
                             <th>Civil Status</th>
-                            <td>{{ civil_stat }}</td>
+                            <td v-if="civil_stat == 'S'"> SINGLE </td>
+                            <td v-if="civil_stat == 'M'"> MARRIED </td>
+                            <td v-if="civil_stat == 'W'"> WIDOWED </td>
+                            <td v-if="civil_stat == 'X'"> SEPARATED </td>
                         </tr>
                         <tr>
                             <th>Occupation</th>
@@ -116,7 +119,7 @@ export default {
     data() {
       return {
           donor_id: '',
-          donor_stat: '',
+          donation_stat: '',
           fname: '',
           mname: '',
           lname: '',

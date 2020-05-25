@@ -73,8 +73,8 @@
                 </div>
             </template>
             
-            <template>
-                <b-table class="mt-3" id="bulletin-table"
+            <template v-if="data.length != 0">
+                <b-table class="mt-3" id="main-table"
                     responsive="sm"
                     striped hover
                     head-variant="light"
@@ -84,8 +84,8 @@
                     :per-page="perPage"
                     :current-page="currentPage">
 
-                    <template v-slot:cell(donorStatus)="data">
-                        <b v-if="data.item.donor_stat == 'A'" class="text-success">MAY DONATE</b>
+                    <template v-slot:cell(donationStat)="data">
+                        <b v-if="data.item.donation_stat != 'REA'" class="text-success">MAY DONATE</b>
                         <b v-else class="text-danger">CANNOT DONATE</b>
                     </template>
 
@@ -109,23 +109,24 @@
                             <b-icon icon="pencil"></b-icon>
                         </b-link>
                     </template>   
-
-                    <!--  SHOULD SHOW NO RECORDS FOUND IF
-                    <template v-else>
-                        <b-tr>
-                            <b-th colspan="11">No records found.</b-th>
-                        </b-tr>
-                    </template> -->
-
                 </b-table>
+
+                <b-pagination
+                    v-model="currentPage"
+                    :total-rows="rows"
+                    :per-page="perPage"
+                    aria-controls="main-table">
+                </b-pagination>
             </template>
 
-            <b-pagination
-                v-model="currentPage"
-                :total-rows="rows"
-                :per-page="perPage"
-                aria-controls="bulletin-table">
-                </b-pagination>
+            <template v-else>
+                <div class="alert alert-info mt-3">
+                    <span class="text-center text-danger">
+                        <h5><b-icon icon="info-square"></b-icon> No records found</h5>
+                    </span>
+                </div>
+            </template>
+
             </b-col>
         </b-row>
 
@@ -139,6 +140,7 @@ export default {
         return{
             data: '',
             isLoading: false,
+            showBtn: false,
 
             fname: '',
             mname: '',
@@ -146,7 +148,7 @@ export default {
 
             fields: [
                 { key: 'seqno', label: 'Seqno' },
-                { key: 'donorStatus', label: 'Donor Status' },
+                { key: 'donationStat', label: 'Status' },
                 { key: 'name', label: 'Fullname' },
                 { key: 'gender', label: 'Gender' },
                 { key: 'bdate', label: 'Birthday' },
@@ -157,7 +159,7 @@ export default {
                 { key: 'address', label: 'Address' },
                 { key: 'action', label: '' }
             ],
-            perPage: 5,
+            perPage: 10,
             currentPage: 1,
         }
     }, /* data */

@@ -41,7 +41,10 @@
             </template>
         </b-modal>
 
-      <b-table table-variant="light" bordered></b-table>
+        <!-- <b-form-input type="text" name="txtBdate" v-model="bdate"></b-form-input> -->
+        {{ ngayon }}
+
+      <!-- <b-table table-variant="light" bordered></b-table> -->
       <b-row>
             <b-col cols="4">
                 <b-form-group
@@ -216,7 +219,12 @@
 <script>
 export default {
     data(){
+        // how to pass value of bday (date-picker) here???
+        const now = new Date(this.txtBdate)
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+
         return{
+            ngayon: now,
             enableBtn: false,
             showSuccessMsg: false,
 
@@ -248,6 +256,9 @@ export default {
             nationality_list: [
                 { value: '137', text: 'Filipino' },
             ],
+
+            // age: today.getFullYear() - '2020-06-25'
+            
         }
     }, /* data */
 
@@ -263,8 +274,12 @@ export default {
         },
         checkBday(){
             return this.bdate.length > 4 ? true : false
-        }
+        },
     }, /* computed */
+
+    watch:{
+        
+    },
 
     methods: {
         addNewDonor(){

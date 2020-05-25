@@ -30,8 +30,7 @@ class DonationController extends Controller
         $donations = DB::select($query);
         
         \Log::info($donations);
-        return response()->json($donations);
-        
+        return response()->json($donations);  
     }
 
     public function create(Request $request){

@@ -1,11 +1,11 @@
 import Login from './components/MainApp/Login.vue';
 
 import Donation from './components/Donation.vue';
-import SearchDonor from './components/Donation/SearchDonor.vue';
-import DonorDetails from './components/Donation/DonorDetails.vue';
 import NewWalkin from './components/Donation/NewWalkin.vue';
 
-import RegisterNewDonor from './components/Donation/RegisterNewDonor.vue';
+import SearchDonor from './components/Donor/SearchDonor.vue';
+import DonorDetails from './components/Donor/DonorDetails.vue';
+import RegisterNewDonor from './components/Donor/RegisterNewDonor.vue';
 
 import RegisterUnit from './components/RegisterBloodUnit.vue';
 

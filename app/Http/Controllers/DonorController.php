@@ -86,8 +86,8 @@ class DonorController extends Controller
         $tel_no = $data['tel_no'];
         $mobile_no = $data['mobile_no'];
         $email = $data['email'];
-        // $donation_stat = 'Y';
-        $donor_stat = 'A';
+        // $donation_stat = 'A';
+        // $donor_stat = 'A';
         $created_dt = date('Y-m-d H:i:s');
         $created_by = $facility_user;
 
@@ -105,8 +105,8 @@ class DonorController extends Controller
         $donor->tel_no = $tel_no;
         $donor->mobile_no = $mobile_no;
         $donor->email = $email;
-        // $donor->donation_stat = $donation_stat; // Y
-        $donor->donor_stat = $donor_stat;       // *for now use status
+        // $donor->donation_stat = $donation_stat; // A
+        // $donor->donor_stat = $donor_stat;       // *for now use status
         $donor->facility_cd = $facility_cd;
         $donor->created_dt = $created_dt;
         $donor->created_by = $created_by;

@@ -60,51 +60,67 @@
                 </div>
             </template>
 
-            <template>
-            <b-table class="mt-5"
-                sticky-header
-                :items="data"
-                :fields="fields"
-                striped
-                @context="onContext"
-                head-variant="light"
-                table-variant="light">
+            <template v-if="data.length != 0">
+                <b-table id="main-table" class="mt-5"
+                    sticky-header
+                    :items="data"
+                    :fields="fields"
+                    :per-page="perPage"
+                    :current-page="currentPage"
+                    striped
+                    @context="onContext"
+                    head-variant="light"
+                    table-variant="light">
 
-                <template v-slot:cell(fullname)="data">
-                    {{ data.item.fname }} {{ data.item.mname }}, {{ data.item.lname }}
-                </template>
+                    <template v-slot:cell(fullname)="data">
+                        {{ data.item.fname }} {{ data.item.mname }}, {{ data.item.lname }}
+                    </template>
 
-                <template v-slot:cell(donationType)="data">
-                    <span v-if="data.item.donation_type == 'V'">Voluntary</span>
-                    <span v-if="data.item.donation_type == 'AU'">Autologous</span>
-                    <span v-if="data.item.donation_type == 'REP'">Family/ Replacement</span>
-                    <span v-if="data.item.donation_type == 'PA'">Paid</span>
-                </template>
+                    <template v-slot:cell(donationType)="data">
+                        <span v-if="data.item.donation_type == 'V'">Voluntary</span>
+                        <span v-if="data.item.donation_type == 'AU'">Autologous</span>
+                        <span v-if="data.item.donation_type == 'REP'">Family/ Replacement</span>
+                        <span v-if="data.item.donation_type == 'PA'">Paid</span>
+                    </template>
 
-                <template v-slot:cell(mhpe)="data">
-                    <b class="text-success" v-if="data.item.mh_pe_stat == 'A'">ACCEPTED</b>
-                    <b v-if="data.item.mh_pe_stat == 'TD'">TEMPORARY DEFERRED</b>
-                    <b v-if="data.item.mh_pe_stat == 'PD'">PERMANENTLY DEFERRED</b>
-                    <b v-if="data.item.mh_pe_stat == 'ID'">INDEFINITELY DEFERRED</b>
-                </template>
+                    <template v-slot:cell(mhpe)="data">
+                        <b class="text-success" v-if="data.item.mh_pe_stat == 'A'">ACCEPTED</b>
+                        <b v-if="data.item.mh_pe_stat == 'TD'">TEMPORARY DEFERRED</b>
+                        <b v-if="data.item.mh_pe_stat == 'PD'">PERMANENTLY DEFERRED</b>
+                        <b v-if="data.item.mh_pe_stat == 'ID'">INDEFINITELY DEFERRED</b>
+                    </template>
 
-                <template v-slot:cell(collectionMethod)="data">
-                    <span v-if="data.item.collection_method == 'WB'">Whole Blood</span>
-                    <span v-if="data.item.collection_method == 'AP'">Apheresis</span>
-                </template>
+                    <template v-slot:cell(collectionMethod)="data">
+                        <span v-if="data.item.collection_method == 'WB'">Whole Blood</span>
+                        <span v-if="data.item.collection_method == 'AP'">Apheresis</span>
+                    </template>
 
-                <template v-slot:cell(collectionStat)="data">
-                    <b class="text-success" v-if="data.item.collection_stat == 'COL'">Collected</b>
-                    <b class="text-danger" v-if="data.item.collection_stat == 'UNS'">Un-successful</b>
-                </template>
-                
-                <template v-slot:cell()="data">
-                    {{ data.item.donation_id }}
-                </template>
-                
-            </b-table>
+                    <template v-slot:cell(collectionStat)="data">
+                        <b class="text-success" v-if="data.item.collection_stat == 'COL'">Collected</b>
+                        <b class="text-danger" v-if="data.item.collection_stat == 'UNS'">Un-successful</b>
+                    </template>
+                    
+                    <template v-slot:cell()="data">
+                        {{ data.item.donation_id }}
+                    </template>
+                    
+                </b-table>
 
-          </template>
+                <b-pagination
+                    v-model="currentPage"
+                    :total-rows="rows"
+                    :per-page="perPage"
+                    aria-controls="main-table">
+                </b-pagination>
+            </template>
+
+            <template v-else>
+                <div class="alert alert-info">
+                    <span class="text-center text-danger">
+                        <h5><b-icon icon="info-square"></b-icon> No records found</h5>
+                    </span>
+                </div>
+            </template>
           </b-col>
       </b-row>
 
@@ -121,7 +137,6 @@ export default {
             data: '',
             // donation_dt: '2020-05-23',
             donation_dt: '',
-            formatted: '',
             selected: '',
 
             isLoading: false,
@@ -133,6 +148,8 @@ export default {
                 { key: 'collectionStat', label: 'Collection Status'},
                 { key: 'donationID', label: 'Donation ID'},
             ],
+            perPage: 10,
+            currentPage: 1,
         }
     }, /* data */
 
@@ -169,6 +186,10 @@ export default {
     }, /* watch */
 
     computed: {
+        // pagination
+        rows() {
+            return this.data.length
+        },
         checkDate(){
             return this.donation_dt.length > 5 ? true : false;
         }
