@@ -86,34 +86,57 @@ class DonorController extends Controller
         $tel_no = $data['tel_no'];
         $mobile_no = $data['mobile_no'];
         $email = $data['email'];
-        // $donation_stat = 'A';
-        // $donor_stat = 'A';
         $created_dt = date('Y-m-d H:i:s');
         $created_by = $facility_user;
+        $valid = true;
 
-        $donor = new Donor;
-        $donor->seqno = $seqno;
-        $donor->fname = $fname;
-        $donor->mname = $mname;
-        $donor->lname = $lname;
-        $donor->name_suffix = $name_suffix;
-        $donor->gender = $gender;
-        $donor->bdate = $bdate;
-        $donor->civil_stat = $civil_stat;
-        $donor->occupation = $occupation;
-        $donor->nationality = $nationality;
-        $donor->tel_no = $tel_no;
-        $donor->mobile_no = $mobile_no;
-        $donor->email = $email;
-        // $donor->donation_stat = $donation_stat; // A
-        // $donor->donor_stat = $donor_stat;       // *for now use status
-        $donor->facility_cd = $facility_cd;
-        $donor->created_dt = $created_dt;
-        $donor->created_by = $created_by;
-        $donor->save();
+        $request->validate([
+            'fname' => 'required|min:2|max:50',
+            'lname' => 'required|min:2|max:50',
+            'bdate' => 'required|'
+        ]);
 
-        return "OK";
-        \Log::info($id);
+        // CHECK FIRST IF DONOR ALREADY EXIST
+        $check_donor = Donor::where('fname', '=', $fname)
+                        ->where('mname', '=', $mname)
+                        ->where('lname', '=', $lname)
+                        ->where('name_suffix', '=', $name_suffix)
+                        ->where('bdate', '=', $bdate)
+                        ->first();
+        \Log::info($check_donor);
+        
+        if($check_donor === null){       
+            $donor = new Donor;
+            $donor->seqno = $seqno;
+            $donor->fname = $fname;
+            $donor->mname = $mname;
+            $donor->lname = $lname;
+            $donor->name_suffix = $name_suffix;
+            $donor->gender = $gender;
+            $donor->bdate = $bdate;
+            $donor->civil_stat = $civil_stat;
+            $donor->occupation = $occupation;
+            $donor->nationality = $nationality;
+            $donor->tel_no = $tel_no;
+            $donor->mobile_no = $mobile_no;
+            $donor->email = $email;
+            $donor->facility_cd = $facility_cd;
+            $donor->created_dt = $created_dt;
+            $donor->created_by = $created_by;
+            $donor->save();
+            \Log::info($donor);
+
+            return response()->json([
+                'message' => 'New Donor has been added successfully.',
+                'status' => 1
+            ], 200);
+
+        } else{
+            return response()->json([
+                'message' => 'This donor already exists. Please avoid duplication of Donors.',
+                'status' => 0
+            ], 200);
+        }
     } /* create new donor */
 
 }

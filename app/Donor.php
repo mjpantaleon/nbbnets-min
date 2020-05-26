@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Donor extends Model
 {
-    protected $guarded = [];
+    protected $fillable = ['fname, mname, lname, bdate']; // white list
     public $timestamps = false;
 
     // public function donations(){

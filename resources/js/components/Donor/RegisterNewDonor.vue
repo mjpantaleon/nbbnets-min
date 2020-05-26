@@ -41,9 +41,7 @@
             </template>
         </b-modal>
 
-        <!-- <b-form-input type="text" name="txtBdate" v-model="bdate"></b-form-input> -->
-        {{ ngayon }}
-
+    
       <!-- <b-table table-variant="light" bordered></b-table> -->
       <b-row>
             <b-col cols="4">
@@ -299,6 +297,15 @@ export default {
                 email : this.email,
             })
             .then(response => (
+                // {
+
+                //     if(response.data.status){
+                //         this.isError = null
+                //         this.isRegistered = true
+                //     }
+                // }
+                // this.message = response.data.message
+
                 this.showSuccessMsg = true,
                 this.enableBtn = true
             ))

@@ -29,24 +29,6 @@
                         :state="checkDate"
                         v-model="donation_dt">
                     </b-form-datepicker>
-                <!-- <b-form-input
-                    id="example-input"
-                    v-model="donation_dt"
-                    type="text"
-                    placeholder="YYYY-MM-DD"
-                    autocomplete="off"
-                    :state="checkDate">
-                    </b-form-input>
-
-                    <b-input-group-append>
-                        <b-form-datepicker
-                        v-model="donation_dt"
-                        button-only
-                        right
-                        aria-controls="example-input"
-                        @context="onContext"
-                        ></b-form-datepicker>
-                    </b-input-group-append> -->
                     
                 </b-input-group>
             </b-col>
@@ -56,7 +38,7 @@
           <b-col>
             <template v-if="isLoading">
                 <div class="d-flex justify-content-center mb-3">
-                    <b-spinner variant="danger" label="Please wait..."></b-spinner>
+                    <b-spinner variant="danger" small label="Please wait..."></b-spinner>
                 </div>
             </template>
 
@@ -117,7 +99,7 @@
             <template v-else>
                 <div class="alert alert-info">
                     <span class="text-center text-danger">
-                        <h5><b-icon icon="info-square"></b-icon> No records found</h5>
+                        <h6><b-icon icon="info-square"></b-icon> No records to display</h6>
                     </span>
                 </div>
             </template>
