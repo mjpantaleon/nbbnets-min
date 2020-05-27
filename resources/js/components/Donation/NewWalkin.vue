@@ -70,20 +70,22 @@
                                     id="fieldset-horizontal"
                                     label-cols-sm="4"
                                     label-cols-lg="3"
-                                    description="First Name"
+                                    description="Full name"
                                     label="Donor"
                                     label-for="fname"
                                     aria-readonly="true">
-                                <b-form-input v-model="fname" id="fname" readonly></b-form-input>
+                                <!-- <b-form-input v-model="fname" id="fname" readonly></b-form-input> -->
+                                <h5>{{ fname }} {{ mname }} {{ lname }} {{ name_suffix }}</h5>
                                 </b-form-group>
 
-                                <b-form-group
+                                <!-- <b-form-group
                                     id="fieldset-horizontal"
                                     label-cols-sm="4"
                                     label-cols-lg="3"
                                     description="Middle"
                                     label-for="mname">
                                 <b-form-input v-model="mname" id="mname" readonly></b-form-input>
+                                <h5>{{ mname }}</h5>
                                 </b-form-group>
 
                                 <b-form-group
@@ -93,6 +95,7 @@
                                     description="Last Name"
                                     label-for="lname">
                                 <b-form-input v-model="lname" id="lname" readonly></b-form-input>
+                                <h5>{{ lname }}</h5>
                                 </b-form-group>
 
                                 <b-form-group
@@ -102,7 +105,8 @@
                                     description="Suffix"
                                     label-for="suffix">
                                 <b-form-input v-model="name_suffix" id="suffix" readonly></b-form-input>
-                                </b-form-group>
+                                <h5>{{ name_suffix }}</h5>
+                                </b-form-group> -->
                             </td>
                         </tr>
 

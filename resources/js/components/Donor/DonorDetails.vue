@@ -145,7 +145,7 @@ export default {
             .get('/donor-profile/' + this.$route.params.id)
             .then(response => (
                 this.donor_id = response.data.donor_id,
-                this.donor_stat = response.data.donor_stat,
+                this.donation_stat = response.data.donation_stat,
                 this.fname = response.data.fname,
                 this.mname = response.data.mname,
                 this.lname = response.data.lname,
@@ -157,7 +157,7 @@ export default {
                 this.nationality = response.data.nationality,
                 this.tel_no = response.data.tel_no,
                 this.mobile_no = response.data.mobile_no,
-                this.email = response.data.email7
+                this.email = response.data.email
             ))
             .catch(error => console.log(error))
         }

@@ -20,29 +20,8 @@
 
       <h4><b-icon icon="person-plus"></b-icon> Register New Donor</h4>
       <hr>
-        <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
-        <b-modal v-model="showSuccessMsg" centered
-            title="Success!"
-            header-bg-variant="success"
-            body-bg-variant="light" 
-            footer-bg-variant="success"
-            header-text-variant="light"
-            hide-header-close>
-            
-            <h4 class="alert-heading text-center">
-                <b-icon icon="person-check"></b-icon>&nbsp;New Donor has been added!
-            </h4>
-            
-            <template v-slot:modal-footer="{ ok }">
-                <b-link class="btn btn-success" :to="{ path: '/search-donor' }"
-                    size="sm" variant="success" @click="ok()">
-                    OK
-                </b-link>
-            </template>
-        </b-modal>
-
-    
-      <!-- <b-table table-variant="light" bordered></b-table> -->
+        
+      <!-- first name, middle, last name and suffix -->
       <b-row>
             <b-col cols="4">
                 <b-form-group
@@ -83,7 +62,7 @@
                 </b-form-group>
             </b-col>
       </b-row>
-
+        <!-- gender -->
       <b-row>
           <b-col cols="4">
                 <b-form-group
@@ -99,6 +78,7 @@
           </b-col>
       </b-row>
 
+        <!-- bdate -->
       <b-row>
             <b-col cols="4">
                 <b-form-group
@@ -111,8 +91,18 @@
                     <b-form-input type="date" :state="checkBday" v-model="bdate" id="bdate"></b-form-input>
                 </b-form-group>
             </b-col>
-      </b-row>
 
+            <b-col cols="3">
+                <b-form-group
+                    id="fieldset-horizontal"
+                    description="Computed age"
+                    label-for="age">
+                    <b class="text-danger">{{ calculateAge }} y/o</b>
+                </b-form-group>
+            </b-col>
+      </b-row>
+      
+        <!-- civil_stat -->
       <b-row>
           <b-col cols="4">
                 <b-form-group
@@ -128,6 +118,7 @@
           </b-col>
       </b-row>
 
+        <!-- occupation -->
       <b-row>
           <b-col md="8">
                 <b-form-group
@@ -142,6 +133,7 @@
           </b-col>
       </b-row>
 
+        <!-- nationality -->
       <b-row>
           <b-col cols="4">
                 <b-form-group
@@ -157,6 +149,7 @@
           </b-col>
       </b-row>
 
+        <!-- tel no -->
       <b-row>
           <b-col md="8">
                 <b-form-group
@@ -171,6 +164,7 @@
           </b-col>
       </b-row>
 
+        <!-- mobile no -->
       <b-row>
           <b-col md="8">
                 <b-form-group
@@ -185,6 +179,7 @@
           </b-col>
       </b-row>
 
+        <!-- email -->
       <b-row>
           <b-col md="8">
                 <b-form-group
@@ -210,6 +205,74 @@
               </b-button>
           </b-col>
       </b-row>
+
+
+      <!-- =============== MODALS ================ -->
+
+        <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
+        <b-modal v-model="showSuccessMsg" centered
+            title="SUCCESS"
+            header-bg-variant="success"
+            body-bg-variant="light" 
+            footer-bg-variant="success"
+            header-text-variant="light"
+            hide-header-close>
+            
+            <h5 class="alert-heading text-center">
+                <b-icon icon="person-check"></b-icon>&nbsp;New Donor has been added!
+            </h5>
+            
+            <template v-slot:modal-footer="{ ok }">
+                <b-link class="btn btn-success" :to="{ path: '/search-donor' }"
+                    size="sm" variant="success" @click="ok()">
+                    OK
+                </b-link>
+            </template>
+        </b-modal>
+
+        <!-- SHOW THIS MODAL IF AGE IS LESS THAN 18 Y/O -->
+        <b-modal v-model="showAgeError" centered
+            title="WARNING"
+            header-bg-variant="warning"
+            body-bg-variant="light" 
+            footer-bg-variant="warning"
+            header-text-variant="light"
+            hide-header-close>
+            
+            <h5 class="alert-heading text-center">
+                <b-icon icon="person-dash"></b-icon>&nbsp;Donors below 18 y/o cannot donate!
+            </h5>
+            
+            <template v-slot:modal-footer="{ ok }">
+                <b-link class="btn btn-warning"
+                    size="sm" variant="warning" @click="ok()">
+                    OK
+                </b-link>
+            </template>
+        </b-modal>
+
+        <!-- SHOW THIS MODAL IF DONOR ALREADY EXISTS -->
+        <b-modal v-model="donorAlreadyExist" centered
+            title="STOP"
+            header-bg-variant="danger"
+            body-bg-variant="light" 
+            footer-bg-variant="danger"
+            header-text-variant="light"
+            hide-header-close>
+            
+            <h5 class="alert-heading text-center">
+                <b-icon icon="person-bounding-box"></b-icon>&nbsp;This donor already exist!
+            </h5>
+            
+            <template v-slot:modal-footer="{ ok }">
+                <b-link class="btn btn-danger"
+                    size="sm" variant="danger" @click="ok()">
+                    OK
+                </b-link>
+            </template>
+        </b-modal>
+
+      <!-- =============== MODALS ================ -->
       
   </div>
 </template>
@@ -217,14 +280,13 @@
 <script>
 export default {
     data(){
-        // how to pass value of bday (date-picker) here???
-        const now = new Date(this.txtBdate)
-        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-
         return{
-            ngayon: now,
             enableBtn: false,
             showSuccessMsg: false,
+            showAgeError : false,
+            donorAlreadyExist: false,
+
+            age: '',
 
             fname: '',
             mname: '',
@@ -273,6 +335,14 @@ export default {
         checkBday(){
             return this.bdate.length > 4 ? true : false
         },
+
+        calculateAge: function() {
+          let currentDate = new Date();
+          let birthDate = new Date(this.bdate);
+          let difference = currentDate - birthDate;
+          let age = Math.floor(difference/(1000*60*60*24*365.25)); /* 31557600000 */
+          return this.age = age
+        },
     }, /* computed */
 
     watch:{
@@ -281,36 +351,40 @@ export default {
 
     methods: {
         addNewDonor(){
-            axios
-            .post('/create-new-donor', {
-                fname : this.fname,
-                mname : this.mname,
-                lname : this.lname,
-                name_suffix : this.name_suffix,
-                gender : this.gender,
-                bdate : this.bdate,
-                civil_stat : this.civil_stat,
-                occupation : this.occupation,
-                nationality : this.nationality,
-                tel_no : this.tel_no,
-                mobile_no : this.mobile_no,
-                email : this.email,
-            })
-            .then(response => (
-                // {
+            // check for age first
+            if(this.age < 18){
+                this.showAgeError = true
+            } else{
+                axios
+                .post('/create-new-donor', {
+                    fname : this.fname,
+                    mname : this.mname,
+                    lname : this.lname,
+                    name_suffix : this.name_suffix,
+                    gender : this.gender,
+                    bdate : this.bdate,
+                    civil_stat : this.civil_stat,
+                    occupation : this.occupation,
+                    nationality : this.nationality,
+                    tel_no : this.tel_no,
+                    mobile_no : this.mobile_no,
+                    email : this.email,
+                })
+                .then(response => {
+    
+                    if(response.data.status){
+                        this.showSuccessMsg = true,
+                        this.enableBtn = true
+                    } else {
+                        this.donorAlreadyExist = true
+                    }
+                    this.message = response.data.message
+                    
+                })
+                .catch(error => console.log(error))
+            }
 
-                //     if(response.data.status){
-                //         this.isError = null
-                //         this.isRegistered = true
-                //     }
-                // }
-                // this.message = response.data.message
-
-                this.showSuccessMsg = true,
-                this.enableBtn = true
-            ))
-            .catch(error => console.log(error))
-        }
+        },
     }
 }
 </script>

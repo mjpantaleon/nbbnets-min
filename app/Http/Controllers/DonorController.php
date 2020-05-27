@@ -74,14 +74,14 @@ class DonorController extends Controller
         $seqno = $facility_cd . $year_now . sprintf("%06d", $donors_count); // 130062020000004
 
         // initialize data
-        $fname = $data['fname'];
-        $mname = $data['mname'];
-        $lname = $data['lname'];
-        $name_suffix = $data['name_suffix'];
+        $fname = strtoupper($data['fname']);
+        $mname = strtoupper($data['mname']);
+        $lname = strtoupper($data['lname']);
+        $name_suffix = strtoupper($data['name_suffix']);
         $gender = $data['gender'];
         $bdate = $data['bdate'];
         $civil_stat = $data['civil_stat'];
-        $occupation = $data['occupation'];
+        $occupation = strtoupper($data['occupation']);
         $nationality = $data['nationality'];
         $tel_no = $data['tel_no'];
         $mobile_no = $data['mobile_no'];
