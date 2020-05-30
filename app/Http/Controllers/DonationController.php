@@ -51,15 +51,30 @@ class DonationController extends Controller
         $donor_sn = $data['donor_sn'];
         $sched_id = 'Walk-in';
         $pre_registered = 'N';
-        $donation_type = $data['donation_type'];
-        $collection_method = $data['collection_method'];
-        $mh_pe_stat = $data['mh_pe_stat'];
+        $donation_type = $data['donation_type'];            // Autologous, Voluntary, Fam/Replacement or Paid
+        $collection_method = $data['collection_method'];    // WB = Whole Blood, AP = Apheresis
+
+        // this section updates when donor is temporary, permanently or indefinitely deferred
+        $mh_pe_deferral = $data['mh_pe_deferral'];  // PE CHOICE/S
+        $mh_pe_question = $data['mh_pe_question'];  // MH CHOICE/S
+        $mh_pe_remark = $data['mh_pe_remark'];      // OPTIONAL
+        $mh_pe_stat = $data['mh_pe_stat'];          // A, TD, PD, ID
+
         $collection_stat = $data['collection_stat'];
+        // this section updates when collection status is not equals to COL = Collected
+        $coluns_res = $data['coluns_res'];          // BULGE, FAINT, CLOT
 
         $created_by = $facility_user;
         $created_dt = $data['created_dt'];
-        $updated_by = $data['updated_by'];
+        $approved_by = $data['approved_by'];
         $updated_dt = date('Y-m-d H:i:s');
+
+        // check required fields first
+        // $request->validate([
+        //     'created_dt' => 'required',
+        //     'donation_id' => 'required|unique:donations',
+        //     'approved_by' => 'required'
+        // ]);
 
         // SAVE RECORD
         $donation = new Donation;
@@ -71,13 +86,19 @@ class DonationController extends Controller
         $donation->donation_type = $donation_type;
         $donation->collection_method = $collection_method;
         $donation->facility_cd = $facility_cd;
-        $donation->mh_pe_stat = $mh_pe_stat;            // A
+        
+        $donation->mh_pe_deferral = $mh_pe_deferral;
+        $donation->mh_pe_question = $mh_pe_question;
+        $donation->mh_pe_remark = $mh_pe_remark;
+        $donation->mh_pe_stat = $mh_pe_stat;            
+        
         $donation->collection_stat = $collection_stat;
+        $donation->coluns_res = $coluns_res;
 
         $donation->created_by = $created_by;
         $donation->created_dt = $created_dt;
-        $donation->updated_by = $updated_by;
-        $donation->updated_dt = $updated_dt;
+        $donation->approved_by = $approved_by;
+        // $donation->updated_dt = $updated_dt;
         $donation->save();
 
         return "OK";

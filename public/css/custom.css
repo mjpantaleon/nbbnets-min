@@ -33,3 +33,9 @@
 .tortoise {
     color:#50c5d6;
 }
+
+#bb-crumb-sticky{
+    position: sticky;
+    top: 52px;
+    z-index: 50;
+}

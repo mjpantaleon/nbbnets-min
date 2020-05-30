@@ -1,7 +1,7 @@
 <template>
   <div class="main-div">
         
-        <b-row>
+        <b-row id="bb-crumb-sticky">
             <b-col>
                 <b-breadcrumb>
                     <b-breadcrumb-item :to="{ path: '/donation' }">
@@ -165,6 +165,7 @@ export default {
     }, /* data */
 
     computed: {
+        // pagination
         rows() {
             return this.data.length
         },
@@ -178,10 +179,7 @@ export default {
     }, /* computed */
 
     mounted(){
-        // this.getDonors()
-        // if(this.data.length == 0){
-        //     this.showAddBtn = true
-        // }
+        
     }, /* mounted */
 
     methods: {
@@ -200,15 +198,6 @@ export default {
                 this.showAddBtn = false
             })
         }
-
-        // getDonors(){
-        //     axios
-        //     .get('/donor-list-data')
-        //     .then(response => {
-        //         this.data = response.data
-        //         this.hasResult = true
-        //     })
-        // },
     }, /* methods */
 }
 </script>

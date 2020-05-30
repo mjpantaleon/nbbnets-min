@@ -19,13 +19,6 @@ class DonorController extends Controller
         return $donor;
     }
 
-    public function getAge($id){
-        $bdate = Donor::select('bdate')->where('seqno', $id)->first();
-        
-        $age = \Carbon::parse($bdate)->age;
-        return $age;
-    }
-
     public function search(Request $request){
         $data = $request->except('_token');
         

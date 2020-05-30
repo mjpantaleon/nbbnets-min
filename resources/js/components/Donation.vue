@@ -1,7 +1,7 @@
 <template>
   <div class="main-div">
 
-      <b-row>
+      <b-row id="bb-crumb-sticky">
           <b-col>
                 <b-breadcrumb>
                     <b-breadcrumb-item href="#home" active>
@@ -67,9 +67,9 @@
 
                     <template v-slot:cell(mhpe)="data">
                         <b class="text-success" v-if="data.item.mh_pe_stat == 'A'">ACCEPTED</b>
-                        <b v-if="data.item.mh_pe_stat == 'TD'">TEMPORARY DEFERRED</b>
-                        <b v-if="data.item.mh_pe_stat == 'PD'">PERMANENTLY DEFERRED</b>
-                        <b v-if="data.item.mh_pe_stat == 'ID'">INDEFINITELY DEFERRED</b>
+                        <b class="text-danger" v-if="data.item.mh_pe_stat == 'TD'">TEMPORARY DEFERRED</b>
+                        <b class="text-danger" v-if="data.item.mh_pe_stat == 'PD'">PERMANENTLY DEFERRED</b>
+                        <b class="text-danger" v-if="data.item.mh_pe_stat == 'ID'">INDEFINITELY DEFERRED</b>
                     </template>
 
                     <template v-slot:cell(collectionMethod)="data">
