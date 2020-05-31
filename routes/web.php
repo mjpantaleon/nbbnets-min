@@ -30,6 +30,9 @@ Route::post('/create-new-donor', 'DonorController@create');
 Route::post('/donation-list-data','DonationController@index');
 Route::post('/create-new-walkin','DonationController@create');
 
+Route::get('/mh-question-list', 'QuestionsController@getMH');
+Route::get('/pe-question-list', 'QuestionsController@getPE');
+
 // Route::get('/donor-id', 'DonorController@create');
 
 // ROUTES FOR AUTHENTICATED USERS
