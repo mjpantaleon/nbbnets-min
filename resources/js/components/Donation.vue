@@ -140,14 +140,21 @@ export default {
     }, /* mounted */
 
     methods: {
-        onContext(ctx) {
-            // The date formatted in the locale, or the `label-no-date-selected` string
-            this.formatted = ctx.selectedFormatted
-            // The following will be an empty string until a valid date is entered
-            this.selected = ctx.selectedYMD
-        },
+        // onContext(ctx) {
+        //     // The date formatted in the locale, or the `label-no-date-selected` string
+        //     this.formatted = ctx.selectedFormatted
+        //     // The following will be an empty string until a valid date is entered
+        //     this.selected = ctx.selectedYMD
+        // },
         getDonations(){
             this.isLoading = true
+
+            if(this.donation_dt == ''){
+                const now = new Date()
+                const today = now.getFullYear() + '-' + ('0' + (now.getMonth()+1)).slice(-2)+ '-'+ ('0' + now.getDate()).slice(-2);
+                this.donation_dt = today
+            }
+
 
             axios
             .post('/donation-list-data',{

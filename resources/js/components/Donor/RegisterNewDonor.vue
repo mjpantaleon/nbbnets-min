@@ -20,7 +20,7 @@
 
       <h4><b-icon icon="person-plus"></b-icon> Register New Donor</h4>
       <hr>
-        
+        {{age}}
       <!-- first name, middle, last name and suffix -->
       <b-row>
             <b-col cols="4">
@@ -98,6 +98,7 @@
                     description="Computed age"
                     label-for="age">
                     <b class="text-danger">{{ calculateAge }} y/o</b>
+                    <!-- <b class="text-danger">{{ age }} y/o</b> -->
                 </b-form-group>
             </b-col>
       </b-row>
@@ -337,11 +338,44 @@ export default {
         },
 
         calculateAge: function() {
-          let currentDate = new Date();
-          let birthDate = new Date(this.bdate);
-          let difference = currentDate - birthDate;
-          let age = Math.floor(difference/(1000*60*60*24*365.25)); /* 31557600000 */
-          return this.age = age
+            // let today = new Date();
+            let birthDate = new Date('1987-06-25');
+
+            // let difference = today - birthDate;
+            // let age = Math.ceil(difference/(3.15576e+10)); /* 31557600000 */
+
+            // return this.age = age
+            
+            // axios
+            // .post('/calculated-age', {
+            //     currentDate : currentDate,
+            //     birthDate : birthDate
+            // })
+            // .then(response => {
+            //     this.age = response.data
+            //     console.log(response.data)
+            // })
+
+            var now = new Date();
+        
+            function isLeap(year) {
+                return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+            }
+            
+            // days since the birthdate    
+            var days = Math.floor((now.getTime() - birthDate.getTime())/1000/60/60/24);
+            var age = 0;
+            // iterate the years
+            for (var y = birthDate.getFullYear(); y <= now.getFullYear(); y++){
+                var daysInYear = isLeap(y) ? 366 : 365;
+                if (days >= daysInYear){
+                days -= daysInYear;
+                age++;
+                // increment the age only if there are available enough days for the year.
+                }
+            }
+            return age;
+
         },
     }, /* computed */
 

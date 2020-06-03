@@ -110,8 +110,6 @@
                           <b-form-checkbox class="float-right" v-model="questions" value="16"></b-form-checkbox></td>
                       </tr>
                     </tbody>
-
-
                  </table>
 
                  <table class="table table-bordered table-striped">
@@ -182,7 +180,7 @@
             <!-- =============== PYSICAL EXAM TAB ================= -->
             <b-tab title="Physical Exam">
                 <b-card-text>
-                  {{mh_selected}}
+                  {{pe_selected}}
                   <!-- DYNAMIC -->
                  <!-- <table class="table table-bordered" v-for="(pe_question, i) in pe_questions" :key="i">
                     <th class="bg-info" colspan="2">{{ pe_question.header_text }}</th>
@@ -194,7 +192,7 @@
                        </td>
                      </tr>
                  </table> -->
-                 <table class="table table-bordered" v-for="(mh_question, i) in mh_questions" :key="i">
+                 <!-- <table class="table table-bordered" v-for="(mh_question, i) in mh_questions" :key="i">
                     <th class="bg-info" colspan="2">{{ mh_question.header_text }}</th>
                      <tr>
                        <td>
@@ -203,7 +201,38 @@
                             v-model="mh_selected" :value="mh_question.q_no"></b-form-checkbox>
                        </td>
                      </tr>
+                 </table> -->
+
+                 <table class="table table-bordered table-striped">
+                    <th class="bg-secondary text-light">
+                      Hemoglobin</th>
+                    <tbody>
+                      <tr>
+                        <td>Low Hemoglobin
+                          <b-form-radio class="float-right" v-model="pe_selected.Hemoglobin" value="Low Hemoglobin"></b-form-radio></td>
+                      </tr>
+                      <tr>
+                        <td>High Hemoglobin
+                          <b-form-radio class="float-right" v-model="pe_selected.Hemoglobin" value="High Hemoglobin"></b-form-radio></td>
+                      </tr>
+                   </tbody>
                  </table>
+
+                 <table class="table table-bordered table-striped">
+                    <th class="bg-secondary text-light">
+                      Body Weight</th>
+                    <tbody>
+                      <tr>
+                        <td>Low Body Weight
+                          <b-form-radio class="float-right" v-model="pe_selected.body_weight"  value="Low Hemoglobin"></b-form-radio></td>
+                      </tr>
+                      <tr>
+                        <td>High Body Weight
+                          <b-form-radio class="float-right" v-model="pe_selected.body_weight" value="High Hemoglobin"></b-form-radio></td>
+                      </tr>
+                   </tbody>
+                 </table>
+
                 </b-card-text>
             </b-tab>
             <!-- =============== PYSICAL EXAM TAB ================= -->
@@ -218,11 +247,20 @@ export default {
     return{
       // static fields
       questions: [],
+      
+      // PE
+      hemoglobin: '',
+      body_weight: '',
 
       // dynamic fields
       mh_questions: [],
       mh_selected: [],
+
       pe_questions: [],
+      pe_selected: [
+        { hemoglobin: '' },
+        { body_weight: '' },
+      ],
     }
   }, /* data */
 
