@@ -11,14 +11,14 @@
         <b-navbar-nav>
             <b-nav-item-dropdown right>
                 <template v-slot:button-content>
-                    DONATION
+                    DONOR & DONATION
                 </template>
+                <b-dropdown-item :to="{ path: '/candidate-donors' }">Candidate Donors</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/donation' }">New Walk-in</b-dropdown-item>
                 <!-- <b-dropdown-item :to="{ path: 'register-new-donor' }">Register New Donor</b-dropdown-item> -->
             </b-nav-item-dropdown>
 
-            <b-nav-item-dropdown right>
-                <!-- Using 'button-content' slot -->
+            <!-- <b-nav-item-dropdown right>
                 <template v-slot:button-content>
                     BLOOD UNIT
                 </template>
@@ -30,7 +30,6 @@
             </b-nav-item-dropdown>
 
             <b-nav-item-dropdown right>
-                <!-- Using 'button-content' slot -->
                 <template v-slot:button-content>
                     BLOOD STOCKS
                 </template>
@@ -40,7 +39,6 @@
             </b-nav-item-dropdown>
 
             <b-nav-item-dropdown right>
-                <!-- Using 'button-content' slot -->
                 <template v-slot:button-content>
                     REPORTS
                 </template>
@@ -50,14 +48,13 @@
             </b-nav-item-dropdown>
 
             <b-nav-item-dropdown right>
-                <!-- Using 'button-content' slot -->
                 <template v-slot:button-content>
                     ADMINISTRATION
                 </template>
                 <b-dropdown-item :to="{ path: '/manage-user' }">Manage Users</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/blood-bag-template' }">Blood Bag Template</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '' }"></b-dropdown-item>
-            </b-nav-item-dropdown>
+            </b-nav-item-dropdown> -->
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->

@@ -20,7 +20,7 @@
 
       <h4><b-icon icon="person-plus"></b-icon> Register New Donor</h4>
       <hr>
-        {{age}}
+      
       <!-- first name, middle, last name and suffix -->
       <b-row>
             <b-col cols="4">
@@ -338,26 +338,9 @@ export default {
         },
 
         calculateAge: function() {
-            // let today = new Date();
-            let birthDate = new Date('1987-06-25');
-
-            // let difference = today - birthDate;
-            // let age = Math.ceil(difference/(3.15576e+10)); /* 31557600000 */
-
-            // return this.age = age
-            
-            // axios
-            // .post('/calculated-age', {
-            //     currentDate : currentDate,
-            //     birthDate : birthDate
-            // })
-            // .then(response => {
-            //     this.age = response.data
-            //     console.log(response.data)
-            // })
-
             var now = new Date();
-        
+            let birthDate = new Date(this.bdate);
+
             function isLeap(year) {
                 return year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
             }
@@ -374,7 +357,7 @@ export default {
                 // increment the age only if there are available enough days for the year.
                 }
             }
-            return age;
+            return this.age = age;
 
         },
     }, /* computed */

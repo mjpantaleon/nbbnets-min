@@ -180,8 +180,83 @@
             <!-- =============== PYSICAL EXAM TAB ================= -->
             <b-tab title="Physical Exam">
                 <b-card-text>
-                  {{pe_selected}}
-                  <!-- DYNAMIC -->
+                  <!-- <b>Hemo:</b>{{ hemoglobin }}, <b>Body Weight:</b> {{ body_weight }}, <b>Blood Pressure:</b> {{ blood_pressure }}, <b>Pulse Rate:</b> {{ pulse_rate }},
+                  <b>Temparature:</b>{{ temperature }} -->
+                  <table class="table table-bordered table-striped">
+                    <th class="bg-secondary text-light">
+                      Hemoglobin</th>
+                    <tbody>
+                      <tr>
+                        <td>Low Hemoglobin
+                          <b-form-radio class="float-right" v-model="hemoglobin" value="Low Hemoglobin"></b-form-radio></td>
+                      </tr>
+                      <tr>
+                        <td>High Hemoglobin
+                          <b-form-radio class="float-right" v-model="hemoglobin" value="High Hemoglobin"></b-form-radio></td>
+                      </tr>
+                   </tbody>
+                  </table>
+
+                  <table class="table table-bordered table-striped">
+                    <th class="bg-secondary text-light">
+                      Body Weight</th>
+                    <tbody>
+                      <tr>
+                        <td>Low Body Weight
+                          <b-form-radio class="float-right" v-model="body_weight" value="Low Body Weight"></b-form-radio></td>
+                      </tr>
+                      <tr>
+                        <td>High Body Weight
+                          <b-form-radio class="float-right" v-model="body_weight" value="High Body Weight"></b-form-radio></td>
+                      </tr>
+                   </tbody>
+                  </table>
+
+                  <table class="table table-bordered table-striped">
+                    <th class="bg-secondary text-light">
+                      Blood Pressure</th>
+                    <tbody>
+                      <tr>
+                        <td>Low Blood Pressure
+                          <b-form-radio class="float-right" v-model="blood_pressure" value="Low Blood Pressure"></b-form-radio></td>
+                      </tr>
+                      <tr>
+                        <td>High Blood Pressure
+                          <b-form-radio class="float-right" v-model="blood_pressure" value="High Blood Pressure"></b-form-radio></td>
+                      </tr>
+                   </tbody>
+                  </table>
+
+                  <table class="table table-bordered table-striped">
+                    <th class="bg-secondary text-light">
+                      Pulse Rate</th>
+                    <tbody>
+                      <tr>
+                        <td>Low Pulse Rate
+                          <b-form-radio class="float-right" v-model="pulse_rate" value="Low Pulse Rate"></b-form-radio></td>
+                      </tr>
+                      <tr>
+                        <td>High Pulse Rate
+                          <b-form-radio class="float-right" v-model="pulse_rate" value="High Pulse Rate"></b-form-radio></td>
+                      </tr>
+                   </tbody>
+                  </table>
+
+                  <table class="table table-bordered table-striped">
+                    <th class="bg-secondary text-light">
+                      Temparature</th>
+                    <tbody>
+                      <tr>
+                        <td>Low Temparature
+                          <b-form-radio class="float-right" v-model="temperature" value="Low Temparature"></b-form-radio></td>
+                      </tr>
+                      <tr>
+                        <td>High PTemparature
+                          <b-form-radio class="float-right" v-model="temperature" value="High Temparature"></b-form-radio></td>
+                      </tr>
+                   </tbody>
+                  </table>
+                <!-- DYNAMIC -->
                  <!-- <table class="table table-bordered" v-for="(pe_question, i) in pe_questions" :key="i">
                     <th class="bg-info" colspan="2">{{ pe_question.header_text }}</th>
                      <tr>
@@ -203,36 +278,6 @@
                      </tr>
                  </table> -->
 
-                 <table class="table table-bordered table-striped">
-                    <th class="bg-secondary text-light">
-                      Hemoglobin</th>
-                    <tbody>
-                      <tr>
-                        <td>Low Hemoglobin
-                          <b-form-radio class="float-right" v-model="pe_selected.Hemoglobin" value="Low Hemoglobin"></b-form-radio></td>
-                      </tr>
-                      <tr>
-                        <td>High Hemoglobin
-                          <b-form-radio class="float-right" v-model="pe_selected.Hemoglobin" value="High Hemoglobin"></b-form-radio></td>
-                      </tr>
-                   </tbody>
-                 </table>
-
-                 <table class="table table-bordered table-striped">
-                    <th class="bg-secondary text-light">
-                      Body Weight</th>
-                    <tbody>
-                      <tr>
-                        <td>Low Body Weight
-                          <b-form-radio class="float-right" v-model="pe_selected.body_weight"  value="Low Hemoglobin"></b-form-radio></td>
-                      </tr>
-                      <tr>
-                        <td>High Body Weight
-                          <b-form-radio class="float-right" v-model="pe_selected.body_weight" value="High Hemoglobin"></b-form-radio></td>
-                      </tr>
-                   </tbody>
-                 </table>
-
                 </b-card-text>
             </b-tab>
             <!-- =============== PYSICAL EXAM TAB ================= -->
@@ -242,6 +287,7 @@
 </template>
 
 <script>
+
 export default {
   data(){
     return{
@@ -251,16 +297,14 @@ export default {
       // PE
       hemoglobin: '',
       body_weight: '',
+      blood_pressure: '',
+      pulse_rate: '',
+      temperature: '',
 
       // dynamic fields
-      mh_questions: [],
-      mh_selected: [],
+      // mh_questions: [],
+      // mh_selected: [],
 
-      pe_questions: [],
-      pe_selected: [
-        { hemoglobin: '' },
-        { body_weight: '' },
-      ],
     }
   }, /* data */
 
@@ -289,6 +333,34 @@ export default {
     }
     
   }, /* methods */
+
+  watch:{
+    questions(e){
+      this.$emit('questionSelected', e)
+    },
+
+    hemoglobin(e){
+      this.$emit('hemoglobinSelected', e)
+      // alert(e)
+    },
+
+    body_weight(e){
+      this.$emit('bodyWeightSelected', e)
+      // alert(e)
+    },
+
+    blood_pressure(e){
+      this.$emit('bloodPressureSelected', e)
+    },
+
+    pulse_rate(e){
+      this.$emit('pulseRateSelected', e)
+    },
+
+    temperature(e){
+      this.$emit('temparatureSelected', e)
+    }
+  }
 }
 </script>
 

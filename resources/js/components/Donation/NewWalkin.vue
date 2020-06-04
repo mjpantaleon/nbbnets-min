@@ -22,7 +22,7 @@
 
         <h4><b-icon icon="person-plus"></b-icon>&nbsp;New Walkin Donation</h4>
         <hr>
-
+        {{questions}} {{ hemoglobin }} {{body_weight}} {{blood_pressure}} {{pulse_rate}} {{temperature}}
         <b-row>
             <b-col md="6">
                 <!-- <b-card no-body bg-variant="dark" text-variant="light" header="Donor Details"></b-card> -->
@@ -201,7 +201,12 @@
             <!-- <b-col v-if="mh_pe_stat != 'A'" md="6"> -->
             <b-col md="6">
                 <!-- imported component -->
-                <mhpe-question></mhpe-question>
+                <mhpe-question @questionSelected="questionSelected" 
+                    @hemoglobinSelected="hemoglobinSelected"
+                    @bodyWeightSelected="bodyWeightSelected"
+                    @pulseRateSelected="pulseRateSelected"
+                    @bloodPressureSelected="bloodPressureSelected"
+                    @temparatureSelected="temparatureSelected"></mhpe-question>
             </b-col>
         </b-row>
 
@@ -268,6 +273,7 @@ export default {
         mname: '',
         lname: '',
         name_suffix: '',
+        
 
         // FIELD VALUES TO SEND
         created_dt: '',
@@ -275,9 +281,19 @@ export default {
         donation_type: 'V',
 
         mh_pe_deferral: '',
-        mh_pe_question: '',
+        // mh_pe_question: '',
         mh_pe_remark: '',
         mh_pe_stat: 'A',
+
+        // MH
+        questions: [],
+
+        // PE
+        hemoglobin: '',
+        body_weight: '',
+        blood_pressure: '',
+        pulse_rate: '',
+        temperature: '',
 
         collection_method: 'WB',
         collection_stat: 'COL',
@@ -368,10 +384,19 @@ export default {
                     created_dt: this.created_dt,
                     donor_sn: this.donor_sn,
                     donation_type: this.donation_type,
+
+                    // questions: this.questions,
+                    hemoglobin: this.hemoglobin,
+                    body_weight: this.body_weight,
+                    blood_pressure: this.blood_pressure,
+                    pulse_rate: this.pulse_rate,
+                    temperature: this.temperature,
+
                     mh_pe_deferral: this.mh_pe_deferral,
-                    mh_pe_question: this.mh_pe_question,
+                    mh_pe_question: this.questions,
                     mh_pe_remark: this.mh_pe_remark,
                     mh_pe_stat: this.mh_pe_stat,
+
                     collection_method: this.collection_method,
                     collection_stat: this.collection_stat,
                     coluns_res: this.coluns_res,
@@ -386,7 +411,35 @@ export default {
             } else{
                 this.showErrorMsg = true
             }
+        },
+
+
+        // MH QUESTION SELECTED
+        questionSelected(a){
+            this.questions = a
+        },
+
+        hemoglobinSelected(e){
+            this.hemoglobin = e
+            // alert(e)
+        },
+
+        bodyWeightSelected(e){
+            this.body_weight = e 
+        },
+
+        bloodPressureSelected(e){
+            this.blood_pressure = e
+        },
+
+        pulseRateSelected(e){
+            this.pulse_rate = e
+        },
+
+        temparatureSelected(e){
+            this.temperature = e
         }
+        
     }
 }
 </script>

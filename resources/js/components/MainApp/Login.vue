@@ -6,12 +6,6 @@
                 <b-row no-gutters>
                 <b-col md="6">
                     <b-card-img src="../img/bg-login.png" alt="Image" class="rounded-0"></b-card-img>
-                    <!-- <b-card-body :title="cardTitle">
-                        <b-card-text>
-                            This is a wider card with supporting text as a natural lead-in to additional content.
-                            This content is a little bit longer.
-                        </b-card-text>
-                    </b-card-body> -->
                 </b-col>
                 <b-col md="6">
                     <b-card-body title="User Login">
@@ -20,29 +14,23 @@
                             id="fieldset-1"
                             description="type-in your username."
                             label="Username"
-                            label-for="username"
-                            :invalid-feedback="invalidFeedback"
-                            :valid-feedback="validFeedback"
-                            :state="state">
-                        <b-form-input id="username" type="text" v-model="username" :state="state" trim></b-form-input>
+                            label-for="username">
+                        <b-form-input id="username" type="text" v-model="username" :state="checkUN" trim></b-form-input>
                         </b-form-group>
 
                         <b-form-group
                             id="fieldset-1"
                             description="type-in your password."
                             label="Password"
-                            label-for="password"
-                            :invalid-feedback="invalidFeedback"
-                            :valid-feedback="validFeedback"
-                            :state="state">
-                        <b-form-input id="password" type="password" v-model="password" :state="state" trim></b-form-input>
+                            label-for="password">
+                        <b-form-input id="password" type="password" v-model="password" :state="checkPW" trim></b-form-input>
                         </b-form-group>
 
                         <b-button block
                             b-icon="person"
                             variant="success"
                             size="small">
-                            <b-icon icon="person-bounding-box"></b-icon> LOGIN</b-button>
+                            <b-icon @click.prevent="login()" icon="person-bounding-box"></b-icon> LOGIN</b-button>
                     </b-card-body>
                 </b-col>
                 </b-row>
@@ -55,7 +43,24 @@
 export default {
     data(){
         return{
-            cardTitle: 'Blood Donation'
+            cardTitle: 'Blood Donation',
+            username: '',
+            password: '',
+        }
+    }, /* data */
+
+    computed:{
+        checkUN(){
+            return this.username.length >= 5 ? true : false
+        },
+        checkPW(){
+            return this.password.length > 3 ? true : false
+        }
+    }, /* computed */
+
+    methods: {
+        login(){
+            // code here
         }
     }
 }

@@ -112,12 +112,8 @@
 <script>
 export default {
     data(){
-        // const now = new Date()
-        // const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
-
         return{
             data: '',
-            // donation_dt: '2020-05-23',
             donation_dt: '',
             selected: '',
 
@@ -140,12 +136,6 @@ export default {
     }, /* mounted */
 
     methods: {
-        // onContext(ctx) {
-        //     // The date formatted in the locale, or the `label-no-date-selected` string
-        //     this.formatted = ctx.selectedFormatted
-        //     // The following will be an empty string until a valid date is entered
-        //     this.selected = ctx.selectedYMD
-        // },
         getDonations(){
             this.isLoading = true
 

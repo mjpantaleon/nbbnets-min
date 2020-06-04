@@ -55,7 +55,18 @@ class DonationController extends Controller
         $collection_method = $data['collection_method'];    // WB = Whole Blood, AP = Apheresis
 
         // this section updates when donor is temporary, permanently or indefinitely deferred
-        $mh_pe_deferral = $data['mh_pe_deferral'];  // PE CHOICE/S
+        $hemoglobin = $data['hemoglobin'];
+        $body_weight = $data['body_weight'];
+        $blood_pressure = $data['blood_pressure'];
+        $pulse_rate = $data['pulse_rate'];
+        $temperature = $data['temperature'];
+
+        $arr = [];
+
+        // if()
+
+        // $mh_pe_deferral = $data['mh_pe_deferral'];  // PE CHOICE/S
+        $mh_pe_deferral = array_push($arr, $hemoglobin, $body_weight, $blood_pressure, $pulse_rate, $temperature);  // PE CHOICE/S
         $mh_pe_question = $data['mh_pe_question'];  // MH CHOICE/S
         $mh_pe_remark = $data['mh_pe_remark'];      // OPTIONAL
         $mh_pe_stat = $data['mh_pe_stat'];          // A, TD, PD, ID

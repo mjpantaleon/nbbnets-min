@@ -131,36 +131,4 @@ class DonorController extends Controller
             ], 200);
         }
     } /* create new donor */
-
-    public function getAge(Request $request){
-        $data = $request->except('_token');
-        
-        // $currentDate = $data['currentDate'];
-        // $birthDate = $data['birthDate'];
-        // \Log::info($currentDate);
-
-        // $difference = $currentDate - $birthDate;
-        // $age = Math.floor(difference/(1000*60*60*24*365.25)); /* 31557600000 */
-
-        // return $age;
-
-        $currentDate = date('Y-m-d', strtotime($data['currentDate']));
-        $birthDate = date('Y-m-d', strtotime($data['birthDate']));
-
-        \Log::info($currentDate);
-        \Log::info($birthDate);
-        
-        $age = date_diff(date_create($birthDate),date_create($currentDate))->y;
-        \Log::info($age);
-        
-        // $age = Math.floor(difference/(1000*60*60*24*365.25)); /* 31557600000 */
-
-        return $age;
-
-
-        
-          
-
-    }
-
 }
