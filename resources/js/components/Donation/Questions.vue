@@ -309,8 +309,8 @@ export default {
   }, /* data */
 
   mounted() {
-    this.getMHQuestions();
-    this.getPEQuestions();
+    // this.getMHQuestions();
+    // this.getPEQuestions();
   }, /* mounted */
 
   methods:{

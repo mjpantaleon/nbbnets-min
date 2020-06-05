@@ -54,6 +54,7 @@ class DonationController extends Controller
         $donation_type = $data['donation_type'];            // Autologous, Voluntary, Fam/Replacement or Paid
         $collection_method = $data['collection_method'];    // WB = Whole Blood, AP = Apheresis
 
+        // \Log::info($mh_pe_deferral);
         // this section updates when donor is temporary, permanently or indefinitely deferred
         $hemoglobin = $data['hemoglobin'];
         $body_weight = $data['body_weight'];
@@ -61,13 +62,15 @@ class DonationController extends Controller
         $pulse_rate = $data['pulse_rate'];
         $temperature = $data['temperature'];
 
-        $arr = [];
-
-        // if()
-
-        // $mh_pe_deferral = $data['mh_pe_deferral'];  // PE CHOICE/S
-        $mh_pe_deferral = array_push($arr, $hemoglobin, $body_weight, $blood_pressure, $pulse_rate, $temperature);  // PE CHOICE/S
-        $mh_pe_question = $data['mh_pe_question'];  // MH CHOICE/S
+        // push all PE selection to an array using array_push
+        $mh_pe_deferral = array();
+        array_push($mh_pe_deferral, $hemoglobin, $body_weight, $blood_pressure, $pulse_rate, $temperature);
+        
+        // check if PE selection is empty
+    
+        // convert pushed array to string separated by ,
+        $mh_pe_deferral = implode(',',$mh_pe_deferral);
+        $mh_pe_question = implode(',', $data['mh_pe_question']);  // MH CHOICE/S *use implode to convert array to string
         $mh_pe_remark = $data['mh_pe_remark'];      // OPTIONAL
         $mh_pe_stat = $data['mh_pe_stat'];          // A, TD, PD, ID
 

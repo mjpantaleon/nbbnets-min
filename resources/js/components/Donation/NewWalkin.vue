@@ -198,8 +198,8 @@
 
 
             <!-- !ONLY SHOW THIS PART IF MH_PE_STAT IS NOT EQUAL TO A -->
-            <!-- <b-col v-if="mh_pe_stat != 'A'" md="6"> -->
-            <b-col md="6">
+            <!-- <b-col md="6"> -->
+            <b-col v-if="mh_pe_stat != 'A'" md="6">
                 <!-- imported component -->
                 <mhpe-question @questionSelected="questionSelected" 
                     @hemoglobinSelected="hemoglobinSelected"
@@ -261,6 +261,7 @@
 
 <script>
 import MhpeQuestion from './Questions.vue';
+
 export default {
     components: {MhpeQuestion},
     data() {
