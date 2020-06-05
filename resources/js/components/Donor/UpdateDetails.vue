@@ -10,9 +10,9 @@
                     <b-breadcrumb-item :to="{ path: '/search-donor' }">
                         <b-icon icon="search" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
                         Search Donor</b-breadcrumb-item>
-                    <b-breadcrumb-item :to="{ path: '/donor-details/' + this.$route.params.id }">
+                    <!-- <b-breadcrumb-item :to="{ path: '/donor-details/' + this.$route.params.id }">
                         <b-icon icon="person-lines-fill" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
-                        Donor Details</b-breadcrumb-item>
+                        Donor Details</b-breadcrumb-item> -->
                     <b-breadcrumb-item active>
                         <b-icon icon="pencil" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
                         Update Donor Information</b-breadcrumb-item>

@@ -104,7 +104,7 @@
                             <b-icon icon="search"></b-icon>
                         </b-link>
 
-                        <b-link class="btn btn-success btn-sm" :to="{ path: '/edit-donor-details/' + data.item.seqno  }"
+                        <b-link class="btn btn-success btn-sm" :to="{ path: '/update-donor-details/' + data.item.seqno  }"
                             v-b-tooltip.hover title="Update donor details">
                             <b-icon icon="pencil"></b-icon>
                         </b-link>
