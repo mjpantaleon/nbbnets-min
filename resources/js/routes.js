@@ -7,8 +7,9 @@ import CandidateDonor from './components/Donor/CandidateDonor.vue';
 import SearchDonor from './components/Donor/SearchDonor.vue';
 import DonorDetails from './components/Donor/DonorDetails.vue';
 import RegisterNewDonor from './components/Donor/RegisterNewDonor.vue';
+import UpdateDonorInfo from './components/Donor/UpdateDetails.vue';
 
-import RegisterUnit from './components/RegisterBloodUnit.vue';
+// import RegisterUnit from './components/RegisterBloodUnit.vue';
 
 
 export const routes = [
@@ -18,6 +19,7 @@ export const routes = [
     { name: 'search-donor', path: '/search-donor', component: SearchDonor },
     { name: 'donor-details', path: '/donor-details/:id', component: DonorDetails },
     { name: 'register-new-donor', path: '/register-new-donor', component: RegisterNewDonor },
+    { name: 'update-donor-details', path: '/update-donor-details/:id', component: UpdateDonorInfo },
     
     { name: 'donation', path: '/donation', component: Donation },
     { name: 'new-walk-in', path: '/new-walk-in/:id', component: NewWalkin },

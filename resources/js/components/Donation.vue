@@ -50,7 +50,6 @@
                     :per-page="perPage"
                     :current-page="currentPage"
                     striped
-                    @context="onContext"
                     head-variant="light"
                     table-variant="light">
 

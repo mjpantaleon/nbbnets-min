@@ -25,7 +25,7 @@
         <b-row>
             <b-col md="6">
                 <b-button-group>
-                    <b-link class="btn btn-primary" :to="{ path: '/edit-donor-details/' + this.$route.params.id }">
+                    <b-link class="btn btn-primary" :to="{ path: '/update-donor-details/' + this.$route.params.id }">
                         <b-icon icon="pencil"></b-icon> UPDATE INFO</b-link>
 
                     <b-link v-if="donation_stat != 'REA'" class="btn btn-success" 
@@ -43,6 +43,7 @@
                 <!-- <b-card header-bg-variant="dark" text-variant="light" header="Donor Details"
                     no-body></b-card> -->
                     <table class="table table-striped bg-light">
+                        <tbody>
                         <tr>
                             <th>Donor ID</th>
                             <td>{{ donor_id ? donor_id : 'NULL' }}</td>
@@ -50,13 +51,14 @@
                         <tr>
                             <th>Donation Status</th>
                             <td>
-                                <b v-if="donation_stat != 'REA'" class="text-success">MAY DONATE</b>
-                                <b v-else class="text-danger">CANNOT DONATE</b>
+                                <h5 v-if="donation_stat != 'REA'" class="text-success">MAY DONATE</h5>
+                                <h5 v-else class="text-danger">CANNOT DONATE</h5>
                             </td>
                         </tr>
                         <tr>
                             <th>Donor Name</th>
-                            <td>{{ fname }} {{ mname ? mname : '' }} {{ lname }} {{ name_suffix ? name_suffix : '' }} </td>
+                            <td>
+                                <h5 class="lead">{{ fname }} {{ mname ? mname : '' }} {{ lname }} {{ name_suffix ? name_suffix : '' }}</h5></td>
                         </tr>
                         <tr>
                             <th>Gender</th>
@@ -96,7 +98,7 @@
                             <th>Email</th>
                             <td>{{ email ? email : '' }}</td>
                         </tr>
-                        
+                        </tbody>
                     </table>
                     
             </b-col>
