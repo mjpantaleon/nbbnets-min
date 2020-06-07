@@ -13,7 +13,7 @@
                 <template v-slot:button-content>
                     DONOR & DONATION
                 </template>
-                <b-dropdown-item :to="{ path: '/candidate-donors' }">Candidate Donors</b-dropdown-item>
+                <b-dropdown-item :to="{ path: '/pre-screened-list' }">Pre-Screened Donors</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/donation' }">New Walk-in</b-dropdown-item>
                 <!-- <b-dropdown-item :to="{ path: 'register-new-donor' }">Register New Donor</b-dropdown-item> -->
             </b-nav-item-dropdown>

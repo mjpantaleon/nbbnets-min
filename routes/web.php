@@ -34,6 +34,11 @@ Route::post('/create-new-walkin','DonationController@create');
 Route::get('/mh-question-list', 'QuestionsController@getMH');
 Route::get('/pe-question-list', 'QuestionsController@getPE');
 
+// CANDIDATE DONORS
+Route::get('/pre-screened-donors', 'PreScreenedDonorController@index');
+Route::get('/pre-screened-donor/{id}', 'PreScreenedDonorController@getDetails');
+Route::post('/pre-screened-update/{id}', 'PreScreenedDonorController@update');
+
 // Route::get('/donor-id', 'DonorController@create');
 
 // ROUTES FOR AUTHENTICATED USERS
