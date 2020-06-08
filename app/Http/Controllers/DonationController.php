@@ -23,9 +23,9 @@ class DonationController extends Controller
         // ORDER by created_dt DESC
         $query = "  SELECT d.donation_type, d.mh_pe_stat, d.collection_method, d.collection_stat,  d.donation_id,  
                     dd.fname, dd.mname, dd.lname
-                    FROM donations d
-                    LEFT JOIN donors dd ON d.donor_sn = dd.seqno 
-                    WHERE d.created_dt = '$donation_dt' 
+                    FROM donation d
+                    LEFT JOIN donor dd ON d.donor_sn = dd.seqno 
+                    WHERE d.created_dt = '$donation_dt' AND d.sched_id = 'Walk-in'
                     ORDER by d.created_dt DESC ";
         $donations = DB::select($query);
         

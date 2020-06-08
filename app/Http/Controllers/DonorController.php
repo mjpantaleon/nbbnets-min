@@ -48,6 +48,7 @@ class DonorController extends Controller
             $keyword = $query->get();
             // return a response
             return response()->json($keyword);
+            // return response()->json(["keyword" => $keyword]);
             \Log::info($keyword);
         }
     } /* search */
