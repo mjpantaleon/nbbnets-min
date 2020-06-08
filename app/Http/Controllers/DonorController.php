@@ -64,7 +64,7 @@ class DonorController extends Controller
         $donors_count = Donor::count(); 
         $donors_count = $donors_count + 1;
 
-        $seqno = $facility_cd . $year_now . sprintf("%06d", $donors_count); // 130062020000004
+        $seqno = $facility_cd . $year_now . sprintf("%07d", $donors_count); // 130062020000004
 
         // initialize data
         $fname = strtoupper($data['fname']);

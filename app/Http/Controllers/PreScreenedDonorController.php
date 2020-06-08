@@ -39,7 +39,7 @@ class PreScreenedDonorController extends Controller
         $donors_count = Donor::count(); 
         $donors_count = $donors_count + 1;
 
-        $seqno = $facility_cd . $year_now . sprintf("%06d", $donors_count); // 130062020000004
+        $seqno = $facility_cd . $year_now . sprintf("%07d", $donors_count); // 1300620200000004
 
         $fname = strtoupper($data['fname']);
         $mname = strtoupper($data['mname']);
@@ -92,6 +92,8 @@ class PreScreenedDonorController extends Controller
             $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
             $pre_screened_donor->donor_sn = $seqno;
             $pre_screened_donor->approval_status = 1;
+            $pre_screened_donor->approved_by = $created_by;
+            $pre_screened_donor->approval_dt = $created_dt;
             $pre_screened_donor->save();
             \Log::info($pre_screened_donor);
 
@@ -99,30 +101,32 @@ class PreScreenedDonorController extends Controller
                 'message' => 'New Donor has been added successfully.',
                 'status' => 1
             ], 200);
-
-
-            // ELSE IF THIS DONOR ALREADY EXIST THEN
-        } else{
-            // get the donor_sn first before updating the pre-screened-donor table
+        } 
+        
+        // ELSE IF THIS DONOR ALREADY EXIST THEN
+        else{
             /*
             SELECT seqno FROM donors 
             WHERE fname = $fname, mname = $mname, lname = $lname, name_suffix = $name_suffix, bdate = $bdate
             */
-            $seqno = DB::select('seqno')->where('fname', '=', $fname)
+            $seqno = Donor::select('seqno')
+                    ->where('fname', '=', $fname)
                     ->where('mname', '=', $mname)
                     ->where('lname', '=', $lname)
                     ->where('name_suffix', '=', $name_suffix)
                     ->where('bdate', '=', $bdate)
                     ->first();
             \Log::info($seqno);
-            
 
-            // UPDATE PRE-SCREENED DONOR TABLE
-            $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
-            $pre_screened_donor->donor_sn = $seqno;
-            $pre_screened_donor->approval_status = 1;
-            $pre_screened_donor->save();
-            \Log::info($pre_screened_donor);
+             // UPDATE PRE-SCREENED DONOR TABLE
+             $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
+             $pre_screened_donor->donor_sn = $seqno->seqno;
+             $pre_screened_donor->approval_status = 1;
+             $pre_screened_donor->approved_by = $created_by;
+             $pre_screened_donor->approval_dt = $created_dt;
+             $pre_screened_donor->save();
+             \Log::info($pre_screened_donor);
+ 
 
             return response()->json([
                 'message' => 'This donor already exists. Can only update the pre-screened donor details',

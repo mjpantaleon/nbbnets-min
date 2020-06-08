@@ -84,9 +84,15 @@ class CreatePreScreenedDonorsTable extends Migration
             $table->date('screen_dt')->nullable();                  // date screened from app
             $table->boolean('approval_status', 1)->default(0);      // 1 = YES, 0 = NO
 
+            // $table->string('created_by', 50)->nullable();
+            // $table->date('created_dt')->nullable();
+
+            $table->string('approved_by', 50)->nullable();
+            $table->date('approval_dt')->nullable();
+
             // $table->timestamps();
             // donors.seqno = candidates.donor_sn
-            $table->foreign('donor_sn')->references('seqno')->on('donors');
+            // $table->foreign('donor_sn')->references('seqno')->on('donors');
         });
     }
 
