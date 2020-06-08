@@ -82,7 +82,6 @@ class DonorController extends Controller
         $email = $data['email'];
         $created_dt = date('Y-m-d H:i:s');
         $created_by = $facility_user;
-        $valid = true;
 
         $request->validate([
             'fname' => 'required|min:2|max:50',
