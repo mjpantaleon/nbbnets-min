@@ -128,6 +128,7 @@ export default {
                 .then(response => {
                     if(response.data.status){
                         this.$store.state.isLogged = false
+                        this.$store.state.userInfo = ''
                         this.showMenu = false
                         this.$router.push('/')
                     } else{

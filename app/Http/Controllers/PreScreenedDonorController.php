@@ -32,8 +32,9 @@ class PreScreenedDonorController extends Controller
         // \Log::info($data);
 
         // initialize data
-        $facility_user = '13001_mj';
-        $facility_cd = 13001;
+        $facility_user = $data['facility_user'];
+        $facility_cd = $data['facility_cd'];
+        \Log::info($facility_cd);
 
         $year_now = date('Y');          // 2020
         $donors_count = Donor::count(); 

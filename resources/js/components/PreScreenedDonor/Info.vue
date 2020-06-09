@@ -105,6 +105,8 @@
             </b-col>
         </b-row>
 
+        {{facility_cd}} {{facility_user}}
+
         <!-- PRE - SCREENING DETAILS -->
         <b-row>
             <b-col md="8">
@@ -297,6 +299,9 @@ export default {
             showSuccessMsg: false,
             enableBtn: false,
 
+            facility_cd: '',
+            facility_user: '',
+
             fname: '',
             mname: '',
             lname: '',
@@ -383,6 +388,7 @@ export default {
 
                 this.screen_dt = response.data.screen_dt,
                 this.approval_status = response.data.approval_status
+
             ))
         },
 
@@ -401,6 +407,8 @@ export default {
                 tel_no : this.tel_no,
                 mobile_no : this.mobile_no,
                 email : this.email,
+                facility_cd : this.$store.state.userInfo.facility_cd,
+                facility_user : this.$store.state.userInfo.user_id
             })
             .then(response => {
                 this.showSuccessMsg = true,
