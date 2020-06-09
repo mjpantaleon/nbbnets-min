@@ -76,6 +76,7 @@ export default {
 
                     if(response.data.status){
                         this.$store.state.isLogged = true
+                        this.$store.state.userInfo = response.data.user
                         this.$router.push('pre-screened-list')
                     } else{
                         this.showError = true

@@ -79,7 +79,7 @@ export default {
     data(){
         return{
             // user: '',
-            showMenu: true,
+            showMenu: false,
             fullname: ''
         }
     }, /* data */
@@ -140,7 +140,6 @@ export default {
 
     watch:{
         isUserLogged: function(val){
-            console.log(val)
             this.getUser()
         }
     }

@@ -10,7 +10,8 @@ class LoginController extends Controller
 {
     public function login(Request $request){
 
-        $user = User::whereUserId($request->get('userId'))
+        $user = User::with('facility','level')
+                    ->whereUserId($request->get('userId'))
                     ->whereDisableFlag('N')
                     ->first();
 
