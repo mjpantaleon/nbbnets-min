@@ -5,10 +5,10 @@
             NBBNetS - Convalescent Plasma
         </b-navbar-brand>
 
-        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        <b-navbar-toggle target="nav-collapse" v-if="showMenu"></b-navbar-toggle>
 
-        <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav>
+        <b-collapse id="nav-collapse" is-nav v-if="showMenu">
+        <b-navbar-nav v-if="showMenu">
             <b-nav-item-dropdown right>
                 <template v-slot:button-content>
                     DONOR & DONATION
@@ -58,18 +58,92 @@
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
-        <b-navbar-nav class="ml-auto">
+        <b-navbar-nav class="ml-auto" v-if="showMenu">
             <!-- <b-nav-item :to="{ path:'about' }">About</b-nav-item> -->
 
             <b-nav-item-dropdown right>
             <!-- Using 'button-content' slot -->
             <template v-slot:button-content>
-                <b-icon icon="person-bounding-box"></b-icon>&nbsp;&nbsp;<em>User</em>
+                <b-icon icon="person-bounding-box"></b-icon>&nbsp;&nbsp;<em>{{ fullname }}</em>
             </template>
-            <b-dropdown-item :to="{ path: '' }">Change Password</b-dropdown-item>
-            <b-dropdown-item :to="{ path: '' }">Logout</b-dropdown-item>
+            <!-- <b-dropdown-item :to="{ path: '' }">Change Password</b-dropdown-itemsssss> -->
+            <b-dropdown-item @click.prevent="logout()">Logout</b-dropdown-item>
             </b-nav-item-dropdown>
         </b-navbar-nav>
         </b-collapse>
     </b-navbar>
 </template>
+
+<script>
+export default {
+    data(){
+        return{
+            // user: '',
+            showMenu: true,
+            fullname: ''
+        }
+    }, /* data */
+
+    computed: {
+        isUserLogged: {
+            get(){
+                return this.$store.state.isLogged
+            },
+            set(value){
+                this.value = this.$store.state.isLogged
+            }
+            // if(this.$store.state.fullName){
+            //     return this.$store.state.fullName
+            // }
+        }
+    }, /* computed */
+
+    mounted(){
+        // this.getUser()
+    },
+
+    methods: {
+
+        getUser(){
+
+            axios
+                .get('/get-user')
+                .then(response => {
+
+                    if(response.data.status){
+                        this.fullname = response.data.name,
+                        this.showMenu = true,
+                        this.$forceUpdate()
+                    } else{
+                        console.log(response.data.error)
+                    }
+
+                })
+        },
+
+        logout(){
+
+            axios
+                .get('/logout')
+                .then(response => {
+                    if(response.data.status){
+                        this.$store.state.isLogged = false
+                        this.showMenu = false
+                        this.$router.push('/')
+                    } else{
+                        this.showError = true
+                        this.errorMessage = response.data.error
+                    }
+                })
+        }
+    },
+
+    watch:{
+        isUserLogged: function(val){
+            console.log(val)
+            this.getUser()
+        }
+    }
+
+}
+</script>

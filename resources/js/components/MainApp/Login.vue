@@ -9,6 +9,7 @@
                 </b-col>
                 <b-col md="6">
                     <b-card-body title="User Login">
+                    <b-alert :show="showError" variant="danger" v-if="errorMessage">{{errorMessage}}</b-alert>
                     <hr>
                         <b-form-group
                             id="fieldset-1"
@@ -29,8 +30,9 @@
                         <b-button block
                             b-icon="person"
                             variant="success"
-                            size="small">
-                            <b-icon @click.prevent="login()" icon="person-bounding-box"></b-icon> LOGIN</b-button>
+                            size="small"
+                            @click.prevent="login()">
+                            <b-icon icon="person-bounding-box"></b-icon> LOGIN</b-button>
                     </b-card-body>
                 </b-col>
                 </b-row>
@@ -46,6 +48,8 @@ export default {
             cardTitle: 'Blood Donation',
             username: '',
             password: '',
+            showError: false,
+            errorMessage: '',
         }
     }, /* data */
 
@@ -60,7 +64,24 @@ export default {
 
     methods: {
         login(){
-            // code here
+
+            this.showError = false
+
+            axios
+                .post('/login-attempt', {
+                    userId: this.username,
+                    password: this.password
+                })
+                .then(response => {
+
+                    if(response.data.status){
+                        this.$store.state.isLogged = true
+                        this.$router.push('pre-screened-list')
+                    } else{
+                        this.showError = true
+                        this.errorMessage = response.data.error
+                    }
+                })
         }
     }
 }

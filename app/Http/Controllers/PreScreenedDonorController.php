@@ -16,20 +16,20 @@ class PreScreenedDonorController extends Controller
                     FROM `pre_screened_donors` ORDER BY `screen_dt` DESC ";
         $pre_screened_donors = DB::select($query);
 
-        \Log::info($pre_screened_donors);
+        // \Log::info($pre_screened_donors);
         // $candidates = Candidate::orderBy('screen_dt', 'desc')->get();
         return $pre_screened_donors;
     }
 
     public function getDetails($id){
         $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
-        \Log::info($pre_screened_donor);
+        // \Log::info($pre_screened_donor);
         return $pre_screened_donor;
     }
     
     public function update(Request $request, $id){
         $data = $request->except('_token');
-        \Log::info($data);
+        // \Log::info($data);
 
         // initialize data
         $facility_user = '13001_mj';
@@ -64,7 +64,7 @@ class PreScreenedDonorController extends Controller
                         ->where('name_suffix', '=', $name_suffix)
                         ->where('bdate', '=', $bdate)
                         ->first();
-        \Log::info($check_donor);
+        // \Log::info($check_donor);
         
         // IF THIS DONOR DOESNT EXIST IN THE DATABASE THEN
         if($check_donor === null){       
@@ -86,7 +86,7 @@ class PreScreenedDonorController extends Controller
             $donor->created_dt = $created_dt;
             $donor->created_by = $created_by;
             $donor->save();
-            \Log::info($donor);
+            // \Log::info($donor);
             
             // UPDATE PRE-SCREENED DONOR TABLE
             $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
@@ -95,7 +95,7 @@ class PreScreenedDonorController extends Controller
             $pre_screened_donor->approved_by = $created_by;
             $pre_screened_donor->approval_dt = $created_dt;
             $pre_screened_donor->save();
-            \Log::info($pre_screened_donor);
+            // \Log::info($pre_screened_donor);
 
             return response()->json([
                 'message' => 'New Donor has been added successfully.',
@@ -116,7 +116,7 @@ class PreScreenedDonorController extends Controller
                     ->where('name_suffix', '=', $name_suffix)
                     ->where('bdate', '=', $bdate)
                     ->first();
-            \Log::info($seqno);
+            // \Log::info($seqno);
 
              // UPDATE PRE-SCREENED DONOR TABLE
              $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
@@ -125,7 +125,7 @@ class PreScreenedDonorController extends Controller
              $pre_screened_donor->approved_by = $created_by;
              $pre_screened_donor->approval_dt = $created_dt;
              $pre_screened_donor->save();
-             \Log::info($pre_screened_donor);
+            //  \Log::info($pre_screened_donor);s
  
 
             return response()->json([
