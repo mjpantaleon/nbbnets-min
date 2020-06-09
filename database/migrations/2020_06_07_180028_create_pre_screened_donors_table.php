@@ -29,7 +29,6 @@ class CreatePreScreenedDonorsTable extends Migration
             $table->string('email', 50)->nullable();
             $table->string('nationality', 5); # 137
             $table->string('occupation', 100)->nullable();
-
             // ADDRESS
             $table->string('home_region', 2)->nullable();
             $table->text('address')->nullable();
@@ -66,10 +65,10 @@ class CreatePreScreenedDonorsTable extends Migration
             $table->boolean('q_4', 1)->default(1);      // Q#4
             $table->boolean('q_5', 1)->default(1);      // Q#5
             $table->boolean('q_6', 1)->default(1);      // Q#6
-            $table->boolean('q_7', 1)->default(1);      // Q#7
-            $table->boolean('q_8', 1)->default(1);      // Q#8
-            $table->boolean('q_9', 1)->default(1);      // Q#9
-            $table->boolean('q_10', 1)->default(1);      // Q#10
+            $table->boolean('q_7', 1)->default(0);      // Q#7
+            $table->boolean('q_8', 1)->default(0);      // Q#8
+            $table->boolean('q_9', 1)->default(0);      // Q#9
+            $table->boolean('q_10', 1)->default(0);      // Q#10
             $table->binary('vein')->nullable();
 
             // ITPCR TEST
