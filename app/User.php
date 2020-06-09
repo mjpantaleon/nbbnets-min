@@ -43,5 +43,13 @@ class User extends Authenticatable
 
     public function getAuthPassword(){
 		return bcrypt($this->password);
-	}
+    }
+    
+    function facility(){
+        return $this->belongsTo('App\Facility','facility_cd','facility_cd');
+    }
+
+    function level(){
+        return $this->belongsTo('App\UserLevel','ulevel','userlevelid');
+    }
 }
