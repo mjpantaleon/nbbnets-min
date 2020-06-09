@@ -20,6 +20,11 @@ use Illuminate\Support\Facades\Route;
     
 Auth::routes();
 
+//LOGIN
+Route::post('/login-attempt', 'LoginController@login');
+Route::get('/get-user', 'LoginController@getUser');
+Route::get('/logout', 'LoginController@logout');
+
 // DONOR
 Route::get('/donor-list-data', 'DonorController@index');
 Route::get('/donor-profile/{id}', 'DonorController@donorDetails');

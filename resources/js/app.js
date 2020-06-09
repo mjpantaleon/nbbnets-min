@@ -10,6 +10,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import {routes} from './routes';
 
+import {store} from './store.js'
+
 // Use BootstrapVue
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
@@ -24,5 +26,6 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: '#app',
+    store,
     router: router,
 });

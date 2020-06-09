@@ -63,7 +63,7 @@
             <b-col>
                 <p class="text-center mt-3 mb-3">
                     NBBNetS - Convalescent Plasma, developed by NVBSP - Information Management Unit<br>
-                    Copyright &copy 2020 - All Rights Reserved 
+                    Copyright &copy; 2020 - All Rights Reserved 
                 </p>
             </b-col>
         </b-row>
