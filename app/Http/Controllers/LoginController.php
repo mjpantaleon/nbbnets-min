@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Auth;
+use Session;
 
 class LoginController extends Controller
 {
@@ -40,6 +41,8 @@ class LoginController extends Controller
 
         // \Log::info(Auth::user()->user_id);
 
+        Session::put('userInfo', $user);
+
         return [
             'status' => $status,
             'error' => $error,
@@ -51,9 +54,12 @@ class LoginController extends Controller
     public function getUser(){
 
         if(Auth::check()){
+
+            $session = Session::get('userInfo');
+
             return array(
                 'status' => true,
-                'name' => Auth::user()->user_fname . " " . Auth::user()->user_mname . " " . Auth::user()->user_lname,
+                'name' => $session['user_fname'] . " " . $session['user_mname'] . " " . $session['user_lname'],
             );
         } else{
             return array(
@@ -66,6 +72,8 @@ class LoginController extends Controller
 
     public function logout(){
 
+        Session::forget('userInfo');
+        
         $status = Auth::logout();
 
         // \Log::info($status);
