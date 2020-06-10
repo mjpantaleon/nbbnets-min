@@ -99,7 +99,7 @@ export default {
     }, /* computed */
 
     mounted(){
-        // this.getUser()
+        this.getUser()
     },
 
     methods: {
@@ -127,8 +127,8 @@ export default {
                 .get('/logout')
                 .then(response => {
                     if(response.data.status){
-                        this.$store.state.isLogged = false
-                        this.$store.state.userInfo = ''
+                        // this.$store.state.isLogged = false
+                        // this.$store.state.userInfo = ''
                         this.showMenu = false
                         this.$router.push('/')
                     } else{
