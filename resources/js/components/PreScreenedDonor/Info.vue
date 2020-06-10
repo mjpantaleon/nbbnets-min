@@ -1,14 +1,14 @@
 <template>
   <div class="main-div">
-      <b-row id="bb-crumb-sticky">
+        <b-row id="bb-crumb-sticky">
           <b-col>
                 <b-breadcrumb>
                     <b-breadcrumb-item :to="{ path: '/pre-screened-list' }">
-                        <b-icon icon="person-lines-fill" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
-                        Pre-Screened Donors
+                        <b-icon icon="file-text" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
+                        Pre-Screened List
                     </b-breadcrumb-item>
                     <b-breadcrumb-item active>
-                        <b-icon icon="person-bounding-box" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
+                        <b-icon icon="file-richtext" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
                         Pre-Screened Information
                     </b-breadcrumb-item>
                     <!-- <b-breadcrumb-item href="#home" active>
@@ -19,7 +19,7 @@
           </b-col>
         </b-row>
 
-        <h4><b-icon icon="person-bounding-box"></b-icon> Pre-Screened Information</h4>
+        <h4><b-icon icon="file-richtext"></b-icon> Pre-Screened Information</h4>
         <hr>
 
         <!-- DONOR DETAILS -->

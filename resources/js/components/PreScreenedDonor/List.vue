@@ -4,8 +4,8 @@
           <b-col>
                 <b-breadcrumb>
                     <b-breadcrumb-item active>
-                        <b-icon icon="person-lines-fill" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
-                        Pre-Screened Donors
+                        <b-icon icon="file-text" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
+                        Pre-Screened List
                     </b-breadcrumb-item>
                     <!-- <b-breadcrumb-item href="#home" active>
                         <b-icon icon="person-plus" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
@@ -15,7 +15,7 @@
           </b-col>
         </b-row>
 
-        <h4><b-icon icon="person-lines-fill"></b-icon> Pre-Screened Donors</h4>
+        <h4><b-icon icon="file-text"></b-icon> Pre-Screened List</h4>
         <hr>
 
         <b-row>
@@ -87,7 +87,7 @@ export default {
                 { key: 'gender', label: 'Gender' },
                 { key: 'bdate', label: 'Birthday' },
                 { key: 'address', label: 'Address' },
-                { key: 'screen_dt', label: 'Date Screened' },
+                { key: 'created_dt', label: 'Date Screened' },
                 { key: 'approval_status', label: 'Status' },
                 { key: 'action', label: 'Action' },
             ],
@@ -101,7 +101,7 @@ export default {
             gender: '',
             bdate: '',
             address: '',
-            screen_dt: '',
+            created_dt: '',
             approval_status: '',
 
             // pagination

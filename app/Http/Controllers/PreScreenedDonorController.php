@@ -13,8 +13,8 @@ use Session;
 class PreScreenedDonorController extends Controller
 {
     public function index(){
-        $query = "  SELECT id, fname, mname, lname, name_suffix, gender, bdate, address, screen_dt, approval_status
-                    FROM `pre_screened_donors` ORDER BY `screen_dt` DESC ";
+        $query = "  SELECT id, fname, mname, lname, name_suffix, gender, bdate, address, created_dt, approval_status
+                    FROM `pre_screened_donors` ORDER BY `created_dt` DESC ";
         $pre_screened_donors = DB::select($query);
 
         // \Log::info($pre_screened_donors);

@@ -1,6 +1,6 @@
 <template>
     <b-navbar toggleable="lg" type="dark" variant="dark" sticky>
-        <b-navbar-brand :to="{ path: '/' }" class="lead">
+        <b-navbar-brand class="lead">
             <img src="img/favicon.ico" alt="">
             NBBNetS - Convalescent Plasma
         </b-navbar-brand>
@@ -13,12 +13,13 @@
                 <template v-slot:button-content>
                     DONOR & DONATION
                 </template>
-                <b-dropdown-item :to="{ path: '/pre-screened-list' }">Pre-Screened Donors</b-dropdown-item>
+                <b-dropdown-item :to="{ path: '/pre-screened-list' }">Pre-Screened List</b-dropdown-item>
+                <b-dropdown-item :to="{ path: '/pre-screening' }">Pre-Screening</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/donation' }">New Walk-in</b-dropdown-item>
                 <!-- <b-dropdown-item :to="{ path: 'register-new-donor' }">Register New Donor</b-dropdown-item> -->
             </b-nav-item-dropdown>
 
-            <!-- <b-nav-item-dropdown right>
+            <b-nav-item-dropdown right>
                 <template v-slot:button-content>
                     BLOOD UNIT
                 </template>
@@ -29,6 +30,7 @@
                 <b-dropdown-item :to="{ path: '/labeling' }">Labeling</b-dropdown-item>
             </b-nav-item-dropdown>
 
+            <!-- 
             <b-nav-item-dropdown right>
                 <template v-slot:button-content>
                     BLOOD STOCKS
