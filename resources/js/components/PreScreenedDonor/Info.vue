@@ -407,8 +407,8 @@ export default {
                 tel_no : this.tel_no,
                 mobile_no : this.mobile_no,
                 email : this.email,
-                facility_cd : this.$store.state.userInfo.facility_cd,
-                facility_user : this.$store.state.userInfo.user_id
+                // facility_cd : this.$store.state.userInfo.facility_cd,
+                // facility_user : this.$store.state.userInfo.user_id
             })
             .then(response => {
                 this.showSuccessMsg = true,

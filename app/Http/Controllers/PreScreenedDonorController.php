@@ -8,6 +8,7 @@ use App\PreScreenedDonor;
 use DB;
 
 use App\Donor;
+use Session;
 
 class PreScreenedDonorController extends Controller
 {
@@ -31,12 +32,17 @@ class PreScreenedDonorController extends Controller
         $data = $request->except('_token');
         // \Log::info($data);
 
-        // initialize data
-        $facility_user = $data['facility_user'];
-        $facility_cd = $data['facility_cd'];
-        \Log::info($facility_cd);
+        // GET THE USER INFO
+        $session = Session::get('userInfo');
+        $facility_user = Session::get('userInfo')['user_id'];
+        $facility_cd = Session::get('userInfo')['facility_cd'];
 
-        $year_now = date('Y');          // 2020
+        // initialize data
+        $facility_user = $facility_user;
+        $facility_cd = $facility_cd;
+        \Log::info($facility_user);
+
+        $year_now = date('Y');              // 2020
         $donors_count = Donor::count(); 
         $donors_count = $donors_count + 1;
 
