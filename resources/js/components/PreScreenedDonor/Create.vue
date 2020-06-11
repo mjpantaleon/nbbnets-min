@@ -22,50 +22,88 @@
         <h4><b-icon icon="file-earmark-ruled"></b-icon> Pre-Screening</h4>
         <hr>
 
-         <!-- first name, middle, last name and suffix -->
         <b-row>
-                <b-col cols="4">
-                    <b-form-group
-                        id="fieldset-horizontal"           
-                        label-cols-sm="4"
-                        label-cols-lg="4"
-                        description="First name"
-                        label="Full name"
-                        label-for="first-name">
-                        <b-form-input :state="checkFirstName" v-model="fname" id="first-name"></b-form-input>
-                    </b-form-group>
-                </b-col>
-
-                <b-col cols="3">
-                    <b-form-group
-                        id="fieldset-horizontal"
-                        description="Middle name"
-                        label-for="middle-name">
-                    <b-form-input :state="checkMiddleName" v-model="mname" id="middle-name"></b-form-input>
-                    </b-form-group>
-                </b-col>
-
-                <b-col cols="3">
-                    <b-form-group
-                        id="fieldset-horizontal"
-                        description="Last name"
-                        label-for="last-name">
-                    <b-form-input :state="checkLastName" v-model="lname" id="last-name"></b-form-input>
-                    </b-form-group>
-                </b-col>
-
-                <b-col cols="2">
-                    <b-form-group
-                        id="fieldset-horizontal"
-                        description="Suffix"
-                        label-for="name-suffix">
-                    <b-form-input v-model="name_suffix" id="name-suffix"></b-form-input>
-                    </b-form-group>
-                </b-col>
+            <b-col md="6">
+                <b-jumbotron bg-variant="light"> 
+                    <template v-slot:lead>
+                        <b>Have you been diagnosed to have COVID-19?</b>
+                        <hr>
+                        <b-form-group>
+                            <b-form-radio v-model="selected" name="first_answer" value="0">Yes</b-form-radio>
+                            <b-form-radio v-model="selected" name="first_answer" value="1">Not sure</b-form-radio>
+                        </b-form-group>
+                    </template>
+                </b-jumbotron>
+            </b-col>
+            <b-col md="6" v-if="selected">
+                <span v-if="selected == '0'">Do you have the following tests results? 
+                    <!-- CHECKBOXES -->
+                    <ul>
+                        <li>A. Initial posiive RT - PCR result</li>
+                        <li>B. Repeat RT - PCR Negative result</li>
+                        <li>C. No test results</li>
+                    </ul>
+                </span>
+                <span v-if="selected == '1'">For the past 28 weeks have ever had the following?
+                    <!-- CHECKBOXES -->
+                    <ul>
+                        <li>a. Cough</li>
+                        <li>b. Fever (C 38.0)</li>
+                        <li>c. Difficulty breathing</li>
+                        <li>d. Diarrhea</li>
+                        <li>e. Fatigue</li>
+                        <li>f. Body aches and pain</li>
+                    </ul>
+                </span>
+                
+            </b-col>
         </b-row>
+        
+
+        <!-- first name, middle, last name and suffix -->
+        <!-- <b-row>
+            <b-col cols="4">
+                <b-form-group
+                    id="fieldset-horizontal"           
+                    label-cols-sm="4"
+                    label-cols-lg="4"
+                    description="First name"
+                    label="Full name"
+                    label-for="first-name">
+                    <b-form-input :state="checkFirstName" v-model="fname" id="first-name"></b-form-input>
+                </b-form-group>
+            </b-col>
+
+            <b-col cols="3">
+                <b-form-group
+                    id="fieldset-horizontal"
+                    description="Middle name"
+                    label-for="middle-name">
+                <b-form-input :state="checkMiddleName" v-model="mname" id="middle-name"></b-form-input>
+                </b-form-group>
+            </b-col>
+
+            <b-col cols="3">
+                <b-form-group
+                    id="fieldset-horizontal"
+                    description="Last name"
+                    label-for="last-name">
+                <b-form-input :state="checkLastName" v-model="lname" id="last-name"></b-form-input>
+                </b-form-group>
+            </b-col>
+
+            <b-col cols="2">
+                <b-form-group
+                    id="fieldset-horizontal"
+                    description="Suffix"
+                    label-for="name-suffix">
+                <b-form-input v-model="name_suffix" id="name-suffix"></b-form-input>
+                </b-form-group>
+            </b-col>
+        </b-row> -->
 
         <!-- gender -->
-        <b-row>
+        <!-- <b-row>
             <b-col cols="4">
                     <b-form-group
                         id="fieldset-horizontal"
@@ -78,10 +116,10 @@
                             :options="gerder_list" id="gerder_list"></b-form-select>
                     </b-form-group>
             </b-col>
-        </b-row>
+        </b-row> -->
 
         <!-- bdate -->
-        <b-row>
+        <!-- <b-row>
             <b-col cols="4">
                 <b-form-group
                     id="fieldset-horizontal"
@@ -100,10 +138,9 @@
                     description="Computed age"
                     label-for="age">
                     <b class="text-danger">{{ calculateAge }} y/o</b>
-                    <!-- <b class="text-danger">{{ age }} y/o</b> -->
                 </b-form-group>
             </b-col>
-        </b-row>
+        </b-row> -->
   </div>
 </template>
 
@@ -133,10 +170,8 @@ export default {
 
             contact_me_at: '',              // When is the best time to call you?
 
-            // QUESTIONAIRE
-            $symptoms: '',                  // Has the following
-            $diagnosed_with_covid: '',      // QUESTION #1
-            $test_results: '',              // QUESTION #2
+            // first_answer
+            selected: '',
 
             gerder_list: [
                 { value: 'M', text: 'Male' },
