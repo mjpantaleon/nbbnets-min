@@ -26,8 +26,9 @@
                 <b-dropdown-item :to="{ path: '/register-blood' }">Register Blood Unit</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/blood-typing' }">Blood Typing</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/blood-processing' }">Blood Processing</b-dropdown-item>
+                <b-dropdown-item :to="{ path: '/aliquote' }">Aliquote</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/blood-testing' }">Blood Testing</b-dropdown-item>
-                <b-dropdown-item :to="{ path: '/labeling' }">Labeling</b-dropdown-item>
+                <b-dropdown-item :to="{ path: '/labelling' }">Labelling</b-dropdown-item>
             </b-nav-item-dropdown>
 
             <!-- 
