@@ -4,8 +4,8 @@
           <b-col>
                 <b-breadcrumb>
                     <b-breadcrumb-item active>
-                        <b-icon icon="person-lines-fill" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
-                        Pre-Screened Donors
+                        <b-icon icon="file-text" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
+                        Pre-Screened List
                     </b-breadcrumb-item>
                     <!-- <b-breadcrumb-item href="#home" active>
                         <b-icon icon="person-plus" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
@@ -15,7 +15,7 @@
           </b-col>
         </b-row>
 
-        <h4><b-icon icon="person-lines-fill"></b-icon> Pre-Screened Donors</h4>
+        <h4><b-icon icon="file-text"></b-icon> Pre-Screened List</h4>
         <hr>
 
         <b-row>
@@ -35,7 +35,7 @@
                     striped>
 
                     <template v-slot:cell(fullname)="data">
-                        {{ data.item.fname }} {{ data.item.mname }}, {{ data.item.lname }}
+                        {{ data.item.first_name }} {{ data.item.middle_name }}, {{ data.item.last_name }}
                     </template>
 
                     <template v-slot:cell(gender)="data">
@@ -43,8 +43,8 @@
                         <span v-else>Female</span>
                     </template>
 
-                    <template v-slot:cell(approval_status)="data">
-                        <b-badge variant="danger" v-if="data.item.approval_status == '0'">FOR REVIEW</b-badge>
+                    <template v-slot:cell(status)="data">
+                        <b-badge variant="danger" v-if="data.item.status == '0'">FOR REVIEW</b-badge>
                         <b-badge variant="success" v-else>APPROVED</b-badge>
                     </template>
 
@@ -87,22 +87,22 @@ export default {
                 { key: 'gender', label: 'Gender' },
                 { key: 'bdate', label: 'Birthday' },
                 { key: 'address', label: 'Address' },
-                { key: 'screen_dt', label: 'Date Screened' },
-                { key: 'approval_status', label: 'Status' },
+                { key: 'created_dt', label: 'Date Screened' },
+                { key: 'status', label: 'Status' },
                 { key: 'action', label: 'Action' },
             ],
             data: '',
             isLoading: false,
 
-            fname: '',
-            mname: '',
-            lname: '',
+            first_name: '',
+            middle_name: '',
+            last_name: '',
             name_suffix: '',
             gender: '',
             bdate: '',
             address: '',
-            screen_dt: '',
-            approval_status: '',
+            created_dt: '',
+            status: '',
 
             // pagination
             perPage: 10,
@@ -125,7 +125,19 @@ export default {
                 this.isLoading = false
             ))
             .catch(error => console.log(error))
-        }
+        },
+
+        getUser(){
+            axios
+            .get('/pre-screened-donors')
+            .then(response => (
+                this.data = response.data,
+                this.isLoading = false
+            ))
+            .catch(error => console.log(error))
+        }, 
+
+
     }, /* methods */
 
     computed: {

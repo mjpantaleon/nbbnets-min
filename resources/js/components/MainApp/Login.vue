@@ -2,7 +2,11 @@
     <div class="main-div">
         <div class="row justify-content-center mb-5">
 
-            <b-card bg-variant="dark" text-variant="white" no-body class="overflow-hidden">
+            <div v-if="displayBlank">
+
+            </div>
+
+            <b-card v-else bg-variant="dark" text-variant="white" no-body class="overflow-hidden">
                 <b-row no-gutters>
                 <b-col md="6">
                     <b-card-img src="../img/bg-login.png" alt="Image" class="rounded-0"></b-card-img>
@@ -50,6 +54,8 @@ export default {
             password: '',
             showError: false,
             errorMessage: '',
+            displayBlank: true,
+            
         }
     }, /* data */
 
@@ -62,7 +68,24 @@ export default {
         }
     }, /* computed */
 
+    mounted(){
+        this.getUser()
+    }, /* mounted */
+
     methods: {
+        getUser(){
+            axios
+                .get('/get-user')
+                .then(response => {
+
+                    if(response.data.status){
+                        this.$router.push('pre-screened-list')
+                    } else{
+                        this.displayBlank = false
+                    }
+                })
+        },
+        
         login(){
 
             this.showError = false
@@ -76,7 +99,7 @@ export default {
 
                     if(response.data.status){
                         this.$store.state.isLogged = true
-                        this.$store.state.userInfo = response.data.user
+                        // this.$store.state.userInfo = response.data.user
                         this.$router.push('pre-screened-list')
                     } else{
                         this.showError = true

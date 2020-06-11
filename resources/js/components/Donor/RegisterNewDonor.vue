@@ -21,65 +21,66 @@
       <h4><b-icon icon="person-plus"></b-icon> Register New Donor</h4>
       <hr>
       
-      <!-- first name, middle, last name and suffix -->
-      <b-row>
-            <b-col cols="4">
-                <b-form-group
-                    id="fieldset-horizontal"           
-                    label-cols-sm="4"
-                    label-cols-lg="4"
-                    description="First name"
-                    label="Donor name"
-                    label-for="first-name">
-                    <b-form-input :state="checkFirstName" v-model="fname" id="first-name"></b-form-input>
-                </b-form-group>
-            </b-col>
+        <!-- first name, middle, last name and suffix -->
+        <b-row>
+                <b-col cols="4">
+                    <b-form-group
+                        id="fieldset-horizontal"           
+                        label-cols-sm="4"
+                        label-cols-lg="4"
+                        description="First name"
+                        label="Donor name"
+                        label-for="first-name">
+                        <b-form-input :state="checkFirstName" v-model="fname" id="first-name"></b-form-input>
+                    </b-form-group>
+                </b-col>
 
-            <b-col cols="3">
-                <b-form-group
-                    id="fieldset-horizontal"
-                    description="Middle name"
-                    label-for="middle-name">
-                <b-form-input :state="checkMiddleName" v-model="mname" id="middle-name"></b-form-input>
-                </b-form-group>
-            </b-col>
+                <b-col cols="3">
+                    <b-form-group
+                        id="fieldset-horizontal"
+                        description="Middle name"
+                        label-for="middle-name">
+                    <b-form-input :state="checkMiddleName" v-model="mname" id="middle-name"></b-form-input>
+                    </b-form-group>
+                </b-col>
 
-            <b-col cols="3">
-                <b-form-group
-                    id="fieldset-horizontal"
-                    description="Last name"
-                    label-for="last-name">
-                <b-form-input :state="checkLastName" v-model="lname" id="last-name"></b-form-input>
-                </b-form-group>
-            </b-col>
+                <b-col cols="3">
+                    <b-form-group
+                        id="fieldset-horizontal"
+                        description="Last name"
+                        label-for="last-name">
+                    <b-form-input :state="checkLastName" v-model="lname" id="last-name"></b-form-input>
+                    </b-form-group>
+                </b-col>
 
-            <b-col cols="2">
-                <b-form-group
-                    id="fieldset-horizontal"
-                    description="Suffix"
-                    label-for="name-suffix">
-                <b-form-input v-model="name_suffix" id="name-suffix"></b-form-input>
-                </b-form-group>
-            </b-col>
-      </b-row>
+                <b-col cols="2">
+                    <b-form-group
+                        id="fieldset-horizontal"
+                        description="Suffix"
+                        label-for="name-suffix">
+                    <b-form-input v-model="name_suffix" id="name-suffix"></b-form-input>
+                    </b-form-group>
+                </b-col>
+        </b-row>
+
         <!-- gender -->
-      <b-row>
-          <b-col cols="4">
-                <b-form-group
-                    id="fieldset-horizontal"
-                    label-cols-sm="4"
-                    label-cols-lg="4"
-                    description="select gender"
-                    label="Gender"
-                    label-for="gerder_list">
-                    <b-form-select v-model="gender" 
-                        :options="gerder_list" id="gerder_list"></b-form-select>
-                </b-form-group>
-          </b-col>
-      </b-row>
+        <b-row>
+            <b-col cols="4">
+                    <b-form-group
+                        id="fieldset-horizontal"
+                        label-cols-sm="4"
+                        label-cols-lg="4"
+                        description="select gender"
+                        label="Gender"
+                        label-for="gerder_list">
+                        <b-form-select v-model="gender" 
+                            :options="gerder_list" id="gerder_list"></b-form-select>
+                    </b-form-group>
+            </b-col>
+        </b-row>
 
         <!-- bdate -->
-      <b-row>
+        <b-row>
             <b-col cols="4">
                 <b-form-group
                     id="fieldset-horizontal"
@@ -104,108 +105,109 @@
       </b-row>
       
         <!-- civil_stat -->
-      <b-row>
-          <b-col cols="4">
-                <b-form-group
-                    id="fieldset-horizontal"
-                    label-cols-sm="4"
-                    label-cols-lg="4"
-                    description="Select civil status"
-                    label="Civil Status"
-                    label-for="civil_status_list">
-                    <b-form-select v-model="civil_stat" 
-                        :options="civil_status_list" id="civil_status_list"></b-form-select>
-                </b-form-group>
-          </b-col>
-      </b-row>
+        <b-row>
+            <b-col cols="4">
+                    <b-form-group
+                        id="fieldset-horizontal"
+                        label-cols-sm="4"
+                        label-cols-lg="4"
+                        description="Select civil status"
+                        label="Civil Status"
+                        label-for="civil_status_list">
+                        <b-form-select v-model="civil_stat" 
+                            :options="civil_status_list" id="civil_status_list"></b-form-select>
+                    </b-form-group>
+            </b-col>
+        </b-row>
 
         <!-- occupation -->
-      <b-row>
-          <b-col md="8">
-                <b-form-group
-                    id="fieldset-horizontal"
-                    label-cols-sm="2"
-                    label-cols-lg="2"
-                    description="Type-in occupation"
-                    label="Occupation"
-                    label-for="occupation">
-                    <b-form-input v-model="occupation" id="occupation"></b-form-input>
-                </b-form-group>
-          </b-col>
-      </b-row>
+        <b-row>
+            <b-col md="8">
+                    <b-form-group
+                        id="fieldset-horizontal"
+                        label-cols-sm="2"
+                        label-cols-lg="2"
+                        description="Type-in occupation"
+                        label="Occupation"
+                        label-for="occupation">
+                        <b-form-input v-model="occupation" id="occupation"></b-form-input>
+                    </b-form-group>
+            </b-col>
+        </b-row>
 
         <!-- nationality -->
-      <b-row>
-          <b-col cols="4">
-                <b-form-group
-                    id="fieldset-horizontal"
-                    label-cols-sm="4"
-                    label-cols-lg="4"
-                    description="Select Nationality"
-                    label="Nationality"
-                    label-for="nationality">
-                    <b-form-select v-model="nationality" 
-                        :options="nationality_list" id="nationality"></b-form-select>
-                </b-form-group>
-          </b-col>
-      </b-row>
+        <b-row>
+            <b-col cols="4">
+                    <b-form-group
+                        id="fieldset-horizontal"
+                        label-cols-sm="4"
+                        label-cols-lg="4"
+                        description="Select Nationality"
+                        label="Nationality"
+                        label-for="nationality">
+                        <b-form-select v-model="nationality" 
+                            :options="nationality_list" id="nationality"></b-form-select>
+                    </b-form-group>
+            </b-col>
+        </b-row>
 
         <!-- tel no -->
-      <b-row>
-          <b-col md="8">
-                <b-form-group
-                    id="fieldset-horizontal"
-                    label-cols-sm="2"
-                    label-cols-lg="2"
-                    description="Type-in Telephone No."
-                    label="Telephone No."
-                    label-for="tel_no">
-                    <b-form-input v-model="tel_no" id="tel_no"></b-form-input>
-                </b-form-group>
-          </b-col>
-      </b-row>
+        <b-row>
+            <b-col md="8">
+                    <b-form-group
+                        id="fieldset-horizontal"
+                        label-cols-sm="2"
+                        label-cols-lg="2"
+                        description="Type-in Telephone No."
+                        label="Telephone No."
+                        label-for="tel_no">
+                        <b-form-input v-model="tel_no" id="tel_no"></b-form-input>
+                    </b-form-group>
+            </b-col>
+        </b-row>
 
         <!-- mobile no -->
-      <b-row>
-          <b-col md="8">
-                <b-form-group
-                    id="fieldset-horizontal"
-                    label-cols-sm="2"
-                    label-cols-lg="2"
-                    description="Type-in Mobile No."
-                    label="Mobile No."
-                    label-for="mobile_no">
-                    <b-form-input v-model="mobile_no" id="mobile_no"></b-form-input>
-                </b-form-group>
-          </b-col>
-      </b-row>
+        <b-row>
+            <b-col md="8">
+                    <b-form-group
+                        id="fieldset-horizontal"
+                        label-cols-sm="2"
+                        label-cols-lg="2"
+                        description="Type-in Mobile No."
+                        label="Mobile No."
+                        label-for="mobile_no">
+                        <b-form-input v-model="mobile_no" id="mobile_no"></b-form-input>
+                    </b-form-group>
+            </b-col>
+        </b-row>
 
         <!-- email -->
-      <b-row>
-          <b-col md="8">
-                <b-form-group
-                    id="fieldset-horizontal"
-                    label-cols-sm="2"
-                    label-cols-lg="2"
-                    description="Type-in Email"
-                    label="Email"
-                    label-for="email">
-                    <b-form-input  type="email" v-model="email" id="email"></b-form-input>
-                </b-form-group>
-          </b-col>
-      </b-row>
+        <b-row>
+            <b-col md="8">
+                    <b-form-group
+                        id="fieldset-horizontal"
+                        label-cols-sm="2"
+                        label-cols-lg="2"
+                        description="Type-in Email"
+                        label="Email"
+                        label-for="email">
+                        <b-form-input  type="email" v-model="email" id="email"></b-form-input>
+                    </b-form-group>
+            </b-col>
+        </b-row>
 
-      <b-row>
-          <b-col md="4">
-              <b-button variant="success" 
-                    block
-                    type="submit"
-                    :disabled="enableBtn"
-                    @click.prevent="addNewDonor()">
-                    <b-icon icon="person-plus"></b-icon>&nbsp;REGISTER NEW DONOR
-              </b-button>
-          </b-col>
-      </b-row>
+        <!-- button -->
+        <b-row>
+            <b-col md="4">
+                <b-button variant="success" 
+                        block
+                        type="submit"
+                        :disabled="enableBtn"
+                        @click.prevent="addNewDonor()">
+                        <b-icon icon="person-plus"></b-icon>&nbsp;REGISTER NEW DONOR
+                </b-button>
+            </b-col>
+        </b-row>
 
 
       <!-- =============== MODALS ================ -->
