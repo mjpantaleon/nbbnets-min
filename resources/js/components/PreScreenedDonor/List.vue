@@ -35,7 +35,7 @@
                     striped>
 
                     <template v-slot:cell(fullname)="data">
-                        {{ data.item.fname }} {{ data.item.mname }}, {{ data.item.lname }}
+                        {{ data.item.first_name }} {{ data.item.middle_name }}, {{ data.item.last_name }}
                     </template>
 
                     <template v-slot:cell(gender)="data">
@@ -43,8 +43,8 @@
                         <span v-else>Female</span>
                     </template>
 
-                    <template v-slot:cell(approval_status)="data">
-                        <b-badge variant="danger" v-if="data.item.approval_status == '0'">FOR REVIEW</b-badge>
+                    <template v-slot:cell(status)="data">
+                        <b-badge variant="danger" v-if="data.item.status == '0'">FOR REVIEW</b-badge>
                         <b-badge variant="success" v-else>APPROVED</b-badge>
                     </template>
 
@@ -88,21 +88,21 @@ export default {
                 { key: 'bdate', label: 'Birthday' },
                 { key: 'address', label: 'Address' },
                 { key: 'created_dt', label: 'Date Screened' },
-                { key: 'approval_status', label: 'Status' },
+                { key: 'status', label: 'Status' },
                 { key: 'action', label: 'Action' },
             ],
             data: '',
             isLoading: false,
 
-            fname: '',
-            mname: '',
-            lname: '',
+            first_name: '',
+            middle_name: '',
+            last_name: '',
             name_suffix: '',
             gender: '',
             bdate: '',
             address: '',
             created_dt: '',
-            approval_status: '',
+            status: '',
 
             // pagination
             perPage: 10,

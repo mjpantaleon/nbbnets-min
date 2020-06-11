@@ -14,51 +14,38 @@ class CreatePreScreenedDonorsTable extends Migration
     public function up()
     {
         Schema::create('pre_screened_donors', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('donor_sn', 16)->nullable();
+            $table->bigIncrements('id');                                // auto increment
+            $table->string('donor_sn', 16)->nullable();                 // tag this record after approval
 
-            $table->string('lname', 50)->nullable();
-            $table->string('fname', 50)->nullable();
-            $table->string('mname', 50)->nullable();
+            $table->string('last_name', 50)->nullable();
+            $table->string('first_name', 50)->nullable();
+            $table->string('middle_name', 50)->nullable();
             $table->string('name_suffix', 30)->nullable();
 
-            $table->char('gender', 1)->nullable();              // M = MALE, F = FEMALE
-            $table->date('bdate');
-            $table->integer('age')->nullable();
+            $table->string('nationality', 191)->nullable();             // 137 = FILIPINO
 
+            $table->char('gender', 1)->nullable();                      // M = MALE, F = FEMALE
+            $table->date('bdate')->nullable();                          
+            $table->integer('age')->nullable();                         // auto compute from date
+            
             $table->integer('weight')->nullable();
-            $table->string('nationality', 5);                   // 137
-            $table->char('region_cd')->nullable();              // 13 = NCR
+
             $table->text('address')->nullable();
             
-            $table->string('email', 50)->nullable();
+            $table->string('email', 191)->nullable();
             $table->string('fb', 191)->nullable();
             $table->string('mobile_no', 20)->nullable();
             
-            $table->dateTime('time_to_call')->nullable();
-            
-            // PRE-SCREENING QUESTIONS
-            $table->text('symptoms')->nullable();                   // Had the following
-            $table->char('diagnosed_with_covid', 1)->nullable();    // 1 = YES, 2 = NOT SURE, 0 = NO
-            $table->char('test_results',1)->nullable();             // p = POSTIVE, N = NEGATIVE, X = NO TEST RESULTS
-            
-            $table->date('created_dt')->nullable();                  // get from app
+            $table->dateTime('time_availability')->nullable();
+    
+            $table->char('first_answer',1)->nullable();                 // "first_answer" : 0 = yes, 1 = not sure, 2 = no
+            $table->string('second_answer',191)->nullable();            // "second_answer" : a = Initial positive, b = Repeat negative, c = no test result
+            $table->string('not_sure_answer', 191)->nullable();         // if test_results_available is equal to '1 = not sure'
+            $table->date('created_dt')->nullable();                     // get from app
 
-            // PRE-SCREENING QUESTIONS
-            // $table->boolean('q_1', 1)->default(1);      // Q#1      1 = YES, 0 = NO
-            // $table->text('q_2')->nullable();            // Q#2
-            // $table->boolean('q_3', 1)->default(1);      // Q#3      1 = YES, 0 = NO
-            // $table->boolean('q_4', 1)->default(1);      // Q#4
-            // $table->boolean('q_5', 1)->default(1);      // Q#5
-            // $table->boolean('q_6', 1)->default(1);      // Q#6
-            // $table->boolean('q_7', 1)->default(0);      // Q#7
-            // $table->boolean('q_8', 1)->default(0);      // Q#8
-            // $table->boolean('q_9', 1)->default(0);      // Q#9
-            // $table->boolean('q_10', 1)->default(0);      // Q#10
-            // $table->binary('vein')->nullable();
-            
             // APPROVAL 
-            $table->boolean('approval_status', 1)->default(0);      // 1 = YES, 0 = NO
+            $table->boolean('status', 1)->default(0);                   // 1 = YES, "" / 0 = NO
+
             $table->string('approved_by', 50)->nullable();
             $table->date('approval_dt')->nullable();
 

@@ -9,11 +9,12 @@ use DB;
 
 use App\Donor;
 use Session;
+use Carbon;
 
 class PreScreenedDonorController extends Controller
 {
     public function index(){
-        $query = "  SELECT id, fname, mname, lname, name_suffix, gender, bdate, address, created_dt, approval_status
+        $query = "  SELECT id, first_name, middle_name, last_name, name_suffix, gender, bdate, address, created_dt, status
                     FROM `pre_screened_donors` ORDER BY `created_dt` DESC ";
         $pre_screened_donors = DB::select($query);
 
@@ -48,15 +49,15 @@ class PreScreenedDonorController extends Controller
 
         $seqno = $facility_cd . $year_now . sprintf("%07d", $donors_count); // 1300620200000004
 
-        $fname = strtoupper($data['fname']);
-        $mname = strtoupper($data['mname']);
-        $lname = strtoupper($data['lname']);
+        $first_name = strtoupper($data['first_name']);
+        $middle_name = strtoupper($data['middle_name']);
+        $last_name = strtoupper($data['last_name']);
         $name_suffix = strtoupper($data['name_suffix']);
         $gender = $data['gender'];
         $bdate = $data['bdate'];
         $civil_stat = $data['civil_stat'];
         $occupation = strtoupper($data['occupation']);
-        $nationality = 137;     // equivalent for filipino
+        $nationality = 137;                                                 // equivalent for filipino
         $tel_no = $data['tel_no'];
         $mobile_no = $data['mobile_no'];
         $email = $data['email'];
@@ -65,9 +66,9 @@ class PreScreenedDonorController extends Controller
 
         // check if this record already exist
         // CHECK FIRST IF DONOR ALREADY EXIST
-        $check_donor = Donor::where('fname', '=', $fname)
-                        ->where('mname', '=', $mname)
-                        ->where('lname', '=', $lname)
+        $check_donor = Donor::where('first_name', '=', $first_name)
+                        ->where('middle_name', '=', $middle_name)
+                        ->where('last_name', '=', $last_name)
                         ->where('name_suffix', '=', $name_suffix)
                         ->where('bdate', '=', $bdate)
                         ->first();
@@ -77,9 +78,9 @@ class PreScreenedDonorController extends Controller
         if($check_donor === null){       
             $donor = new Donor;
             $donor->seqno = $seqno;
-            $donor->fname = $fname;
-            $donor->mname = $mname;
-            $donor->lname = $lname;
+            $donor->first_name = $first_name;
+            $donor->middle_name = $middle_name;
+            $donor->last_name = $last_name;
             $donor->name_suffix = $name_suffix;
             $donor->gender = $gender;
             $donor->bdate = $bdate;
@@ -98,7 +99,7 @@ class PreScreenedDonorController extends Controller
             // UPDATE PRE-SCREENED DONOR TABLE
             $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
             $pre_screened_donor->donor_sn = $seqno;
-            $pre_screened_donor->approval_status = 1;
+            $pre_screened_donor->status = 1;
             $pre_screened_donor->approved_by = $created_by;
             $pre_screened_donor->approval_dt = $created_dt;
             $pre_screened_donor->save();
@@ -117,9 +118,9 @@ class PreScreenedDonorController extends Controller
             WHERE fname = $fname, mname = $mname, lname = $lname, name_suffix = $name_suffix, bdate = $bdate
             */
             $seqno = Donor::select('seqno')
-                    ->where('fname', '=', $fname)
-                    ->where('mname', '=', $mname)
-                    ->where('lname', '=', $lname)
+                    ->where('first_name', '=', $first_name)
+                    ->where('middle_name', '=', $middle_name)
+                    ->where('last_name', '=', $last_name)
                     ->where('name_suffix', '=', $name_suffix)
                     ->where('bdate', '=', $bdate)
                     ->first();
@@ -128,7 +129,7 @@ class PreScreenedDonorController extends Controller
              // UPDATE PRE-SCREENED DONOR TABLE
              $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
              $pre_screened_donor->donor_sn = $seqno->seqno;
-             $pre_screened_donor->approval_status = 1;
+             $pre_screened_donor->status = 1;
              $pre_screened_donor->approved_by = $created_by;
              $pre_screened_donor->approval_dt = $created_dt;
              $pre_screened_donor->save();

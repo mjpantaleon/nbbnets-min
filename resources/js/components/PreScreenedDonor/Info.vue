@@ -27,7 +27,7 @@
             <b-col md="8">
                 <b-jumbotron bg-variant="light">
                     <template v-slot:header>
-                        {{fname}} {{mname ? mname : ''}} {{lname}} {{name_suffix ? name_suffix : ''}}
+                        {{first_name}} {{middle_name ? middle_name : ''}} {{last_name}} {{name_suffix ? name_suffix : ''}}
                     </template>
 
                     <template v-slot:lead>
@@ -105,8 +105,6 @@
             </b-col>
         </b-row>
 
-        {{facility_cd}} {{facility_user}}
-
         <!-- PRE - SCREENING DETAILS -->
         <b-row>
             <b-col md="8">
@@ -121,128 +119,6 @@
                                 </b-col>
                             </b-row>
                             <hr>
-
-                            <b-row>
-                                <b-col>2. History of Travel in the last 12 months, where and how long?</b-col>
-                                <b-col>
-                                    <span class="float-right">{{ q_2 }}</span>
-                                </b-col>
-                            </b-row>
-                            <hr>
-
-                            <b-row>
-                                <b-col>3. In the past 28 days, have you ever had close contact 
-                                    (lived with, worked with, travelled with, or cared for) a confirmed
-                                    COVID - 19 patient, or of a person who travelled to contries with 
-                                    COVID - 19 local
-                                </b-col>
-                                <b-col>
-                                    <span v-if="q_3 == 1" class="text-success float-right"><b>YES</b></span>
-                                    <span v-else class="text-danger float-right"><b>NO</b></span>
-                                </b-col>
-                            </b-row>
-                            <hr>
-
-                            <b-row>
-                                <b-col>4. Have you ever had a close contact with a person exhibiting symptoms of acture?
-                                </b-col>
-                                <b-col>
-                                    <span v-if="q_4 == 1" class="text-success float-right"><b>YES</b></span>
-                                    <span v-else class="text-danger float-right"><b>NO</b></span>
-                                </b-col>
-                            </b-row>
-                            <hr>
-
-                            <b-row>
-                                <b-col>5. Did you develope any respiratory track infection symptoms like
-                                    cough, colds?
-                                </b-col>
-                                <b-col>
-                                    <span v-if="q_5 == 1" class="text-success float-right"><b>YES</b></span>
-                                    <span v-else class="text-danger float-right"><b>NO</b></span>
-                                </b-col>
-                            </b-row>
-                            <hr>
-
-                            <b-row>
-                                <b-col>6. Did you develope fever or diarrhea in the last 14 days?
-                                </b-col>
-                                <b-col>
-                                    <span v-if="q_6 == 1" class="text-success float-right"><b>YES</b></span>
-                                    <span v-else class="text-danger float-right"><b>NO</b></span>
-                                </b-col>
-                            </b-row>
-                            <hr>
-
-                            <b-row>
-                                <b-col>7. Any recent surgery and/ or tooth?
-                                </b-col>
-                                <b-col>
-                                    <span v-if="q_7 == 1" class="text-success float-right"><b>YES</b></span>
-                                    <span v-else class="text-danger float-right"><b>NO</b></span>
-                                </b-col>
-                            </b-row>
-                            <hr>
-
-                            <b-row>
-                                <b-col>8. Any recent tattoo or body piercing?
-                                </b-col>
-                                <b-col>
-                                    <span v-if="q_8 == 1" class="text-success float-right"><b>YES</b></span>
-                                    <span v-else class="text-danger float-right"><b>NO</b></span>
-                                </b-col>
-                            </b-row>
-                            <hr>
-
-                            <b-row>
-                                <b-col>9. Any health conditions?
-                                </b-col>
-                                <b-col>
-                                    <span v-if="q_9 == 1" class="text-success float-right"><b>YES</b></span>
-                                    <span v-else class="text-danger float-right"><b>NO</b></span>
-                                </b-col>
-                            </b-row>
-                            <hr>
-
-                            <b-row>
-                                <b-col>10. Any medications?
-                                </b-col>
-                                <b-col>
-                                    <span v-if="q_10 == 1" class="text-success float-right"><b>YES</b></span>
-                                    <span v-else class="text-danger float-right"><b>NO</b></span>
-                                </b-col>
-                            </b-row>
-                        </b-tab>
-
-                        <b-tab title="ITPCR test details">
-                            <b-row>
-                                <b-col>ITPCR test result:</b-col>
-                                <b-col>
-                                    <span v-if="positive_with_itpcr == 1" 
-                                        class="text-success float-right"><b>POSITIVE</b></span>
-                                    <span v-else class="text-danger float-right"><b>NEGATIVE</b></span>
-                                </b-col>
-                            </b-row>
-                            <hr>
-
-                            <b-row>
-                                <b-col>IGM result:</b-col>
-                                <b-col>
-                                    <span v-if="igm_level == 'P'" 
-                                        class="text-success float-right"><b>POSITIVE</b></span>
-                                    <span v-else class="text-danger float-right"><b>NEGATIVE</b></span>
-                                </b-col>
-                            </b-row>
-                            <hr>
-
-                            <b-row>
-                                <b-col>IGG result:</b-col>
-                                <b-col>
-                                    <span v-if="igg_level == 'P'" 
-                                        class="text-success float-right"><b>POSITIVE</b></span>
-                                    <span v-else class="text-danger float-right"><b>NEGATIVE</b></span>
-                                </b-col>
-                            </b-row>
 
                         </b-tab>
                     </b-tabs>
@@ -302,9 +178,9 @@ export default {
             facility_cd: '',
             facility_user: '',
 
-            fname: '',
-            mname: '',
-            lname: '',
+            first_name: '',
+            middle_name: '',
+            last_name: '',
             name_suffix: '',
 
             gender: '',
@@ -319,18 +195,6 @@ export default {
             occupation: '',
             home_region: '',
             address: '',
-
-            q_1: '',
-            q_2: '',
-            q_3: '',
-            q_4: '',
-            q_5: '',
-            q_6: '',
-            q_7: '',
-            q_8: '',
-            q_9: '',
-            q_10: '',
-            vein: '',
 
             positive_with_itpcr: '',
             igm_level: '',
@@ -353,9 +217,9 @@ export default {
             axios
             .get('/pre-screened-donor/' + this.$route.params.id)
             .then(response => (
-                this.fname = response.data.fname,
-                this.mname = response.data.mname,
-                this.lname = response.data.lname,
+                this.first_name = response.data.first_name,
+                this.middle_name = response.data.middle_name,
+                this.last_name = response.data.last_name,
                 this.name_suffix = response.data.name_suffix,
 
                 this.gender = response.data.gender,
@@ -395,9 +259,9 @@ export default {
         submitVerdict(){
             axios
             .post('/pre-screened-update/' + this.$route.params.id, {
-                fname : this.fname,
-                mname : this.mname,
-                lname : this.lname,
+                first_name : this.first_name,
+                middle_name : this.middle_name,
+                last_name : this.last_name,
                 name_suffix : this.name_suffix,
                 gender : this.gender,
                 bdate : this.bdate,
