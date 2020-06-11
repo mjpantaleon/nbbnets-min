@@ -53,22 +53,25 @@ class PreScreenedDonorController extends Controller
         $middle_name = strtoupper($data['middle_name']);
         $last_name = strtoupper($data['last_name']);
         $name_suffix = strtoupper($data['name_suffix']);
+
         $gender = $data['gender'];
         $bdate = $data['bdate'];
-        $civil_stat = $data['civil_stat'];
-        $occupation = strtoupper($data['occupation']);
-        $nationality = 137;                                                 // equivalent for filipino
-        $tel_no = $data['tel_no'];
-        $mobile_no = $data['mobile_no'];
+
+        // $civil_stat = $data['civil_stat'];
+        // $occupation = strtoupper($data['occupation']);
+
         $email = $data['email'];
+        $nationality = 137;                                                 // equivalent for filipino
+        // $tel_no = $data['tel_no'];
+        $mobile_no = $data['mobile_no'];
         $created_dt = date('Y-m-d H:i:s');
         $created_by = $facility_user;
 
         // check if this record already exist
         // CHECK FIRST IF DONOR ALREADY EXIST
-        $check_donor = Donor::where('first_name', '=', $first_name)
-                        ->where('middle_name', '=', $middle_name)
-                        ->where('last_name', '=', $last_name)
+        $check_donor = Donor::where('fname', '=', $first_name)
+                        ->where('mname', '=', $middle_name)
+                        ->where('lname', '=', $last_name)
                         ->where('name_suffix', '=', $name_suffix)
                         ->where('bdate', '=', $bdate)
                         ->first();
@@ -78,16 +81,17 @@ class PreScreenedDonorController extends Controller
         if($check_donor === null){       
             $donor = new Donor;
             $donor->seqno = $seqno;
-            $donor->first_name = $first_name;
-            $donor->middle_name = $middle_name;
-            $donor->last_name = $last_name;
+            $donor->fname = $first_name;
+            $donor->mname = $middle_name;
+            $donor->lname = $last_name;
             $donor->name_suffix = $name_suffix;
+
             $donor->gender = $gender;
             $donor->bdate = $bdate;
-            $donor->civil_stat = $civil_stat;
-            $donor->occupation = $occupation;
+            // $donor->civil_stat = $civil_stat;
+            // $donor->occupation = $occupation;
             $donor->nationality = $nationality;
-            $donor->tel_no = $tel_no;
+            // $donor->tel_no = $tel_no;
             $donor->mobile_no = $mobile_no;
             $donor->email = $email;
             $donor->facility_cd = $facility_cd;
@@ -137,7 +141,7 @@ class PreScreenedDonorController extends Controller
  
 
             return response()->json([
-                'message' => 'This donor already exists. Can only update the pre-screened donor details',
+                'message' => 'This donor already exists, tagged donor with sequence number.',
                 'status' => 0
             ], 200);
         }

@@ -10,7 +10,7 @@ import UpdateDonorInfo from './components/Donor/UpdateDetails.vue';
 
 import PreScreenedList from './components/PreScreenedDonor/List.vue';
 import PreScreenedInfo from './components/PreScreenedDonor/Info.vue';
-// import PreScreening from './components/PreScreenedDonor/Create.vue';
+import PreScreening from './components/PreScreenedDonor/Create.vue';
 // import RegisterUnit from './components/RegisterBloodUnit.vue';
 
 //BLOOD UNIT
@@ -31,7 +31,7 @@ export const routes = [
     
     { name: 'pre-screened-list', path: '/pre-screened-list', component: PreScreenedList },
     { name: 'pre-screened-info', path: '/pre-screened-info/:id', component: PreScreenedInfo },
-    // { name: 'pre-screening', path: '/pre-screening', component: PreScreening },
+    { name: 'pre-screening', path: '/pre-screening', component: PreScreening },
 
     { name: 'donation', path: '/donation', component: Donation },
     { name: 'new-walk-in', path: '/new-walk-in/:id', component: NewWalkin },
