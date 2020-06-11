@@ -125,7 +125,7 @@ export default {
                 { key: 'collectionStat', label: 'Collection Status'},
                 { key: 'donationID', label: 'Donation ID'},
             ],
-            perPage: 5,
+            perPage: 10,
             currentPage: 1,
         }
     }, /* data */

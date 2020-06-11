@@ -21,35 +21,40 @@
 
         <h4><b-icon icon="file-richtext"></b-icon> Pre-Screened Information</h4>
         <hr>
-        {{time_availability}}
+        
         <!-- DONOR DETAILS -->
         <b-row>
             <b-col md="8">
                 <b-jumbotron bg-variant="light">
                     <template v-slot:header>
+                        <b-icon icon="person-bounding-box"></b-icon>&nbsp;
                         {{first_name}} {{middle_name ? middle_name : ''}} {{last_name}} {{name_suffix ? name_suffix : ''}}
                     </template>
 
                     <template v-slot:lead>
-                        <b>Screening date:</b> {{ created_dt }}
+                        <b><b-icon icon="calendar"></b-icon>&nbsp;Screening date:</b> {{ created_dt }}
                         
                         <b-badge class="float-right" v-if="status == 0" variant="danger">FOR REVIEW</b-badge>
                         <b-badge class="float-right" v-else variant="success">APPROVED</b-badge>
 
                         <b-row>
-                            <b-col class="lead"><b>Contact preferences:</b></b-col>
+                            <b-col class="lead"><b><b-icon icon="chat"></b-icon>&nbsp;Contact preferences:</b></b-col>
+                        </b-row>
+                        <b-row>
                             <b-col class="lead">
-                                <span v-if="email != ''" class="text-success float-right"><b>{{email}}</b></span>
-                                <span v-if="fb != ''" class="text-success float-right"><b>{{fb}}</b></span>
-                                <span v-if="mobile_no != ''" class="text-success float-right"><b>{{mobile_no}}</b></span>
+                                <ul>
+                                    <li v-if="email != ''" class="text-success"><b>{{email}}</b></li>
+                                    <li v-if="fb != ''" class="text-success"><b>{{fb}}</b></li>
+                                    <li v-if="mobile_no != ''" class="text-success"><b>{{mobile_no}}</b></li>
+                                </ul>
                             </b-col>
                         </b-row>
 
                         <b-row>
-                            <b-col>&nbsp;</b-col>
-                            <b-col>
-                                <span>{{ time_availability }}</span>
-                            </b-col>
+                            <b-col class="lead">
+                                <b><b-icon icon="phone"></b-icon>&nbsp;Prefered Date/Time:&nbsp;
+                                    <span class="text-primary">{{ time_availability }}</span></b>
+                                </b-col>
                         </b-row>
 
                     </template>
@@ -67,7 +72,7 @@
                         </b-col>
                     </b-row>
 
-                     <b-row>
+                    <!-- <b-row>
                         <b-col class="lead">
                             <span><b>Email:</b> {{ email ? email : '' }}</span>
                         </b-col>
@@ -84,7 +89,7 @@
                         <b-col class="lead">
                             <span><b>Mobile #:</b> {{ mobile_no ? mobile_no : '' }}</span>
                         </b-col>
-                    </b-row>
+                    </b-row> -->
                     
 
                     <b-row>
@@ -123,11 +128,15 @@
                     <b-tabs card active-nav-item-class="font-weight-bold text-primary">
                         <b-tab title="Pre - Screening Details" active>
                             <b-row>
-                                <b-col class="lead">1. Have you been diagnosed to have COVID-19?</b-col>
+                                <b-col class="lead">1. Have been diagnosed to have COVID-19?</b-col>
+                            </b-row>
+                            <b-row>
                                 <b-col class="lead">
-                                    <span v-if="first_answer == 0" class="text-success float-right"><b>YES</b></span>
-                                    <span v-else-if="first_answer == 2" class="text-success float-right"><b>NO</b></span>
-                                    <span v-else class="text-success float-right"><b>NOT SURE</b></span>
+                                    <ul>
+                                        <li v-if="first_answer == 0" class="text-success"><b><b-icon icon="check"></b-icon>&nbsp;YES</b></li>
+                                        <li v-else-if="first_answer == 2" class="text-success"><b><b-icon icon="check"></b-icon>&nbsp;NO</b></li>
+                                        <li v-else class="text-success"><b><b-icon icon="check"></b-icon>&nbsp;NOT SURE</b></li>
+                                    </ul>
                                 </b-col>
                             </b-row>
                             <hr>
@@ -139,12 +148,11 @@
                             </b-row>
                             <b-row>
                                 <b-col class="lead">
-                                        <ul class="float-left" v-for="(second_answer, i) in second_answers" :key="i">
-                                            <li class="text-success" v-if="second_answer == 'a'"><b><b-icon icon="check"></b-icon>&nbsp;RT-PCR POSITIVE&nbsp;</b></li> 
-                                            <li class="text-success" v-if="second_answer == 'b'"><b><b-icon icon="check"></b-icon>&nbsp;RT-PCR NEGATIVE&nbsp;</b></li> 
-                                            <li class="text-success" v-if="second_answer == 'c'"><b><b-icon icon="check"></b-icon>&nbsp;NO TEST RESULTS</b></li> 
-                                        </ul>
-                                    
+                                    <ul v-for="(second_answer, i) in second_answers" :key="i">
+                                        <li class="text-success" v-if="second_answer == 'a'"><b><b-icon icon="check"></b-icon>&nbsp;RT-PCR POSITIVE&nbsp;</b></li> 
+                                        <li class="text-success" v-if="second_answer == 'b'"><b><b-icon icon="check"></b-icon>&nbsp;RT-PCR NEGATIVE&nbsp;</b></li> 
+                                        <li class="text-success" v-if="second_answer == 'c'"><b><b-icon icon="check"></b-icon>&nbsp;NO TEST RESULTS</b></li> 
+                                    </ul>
                                 </b-col>
                             </b-row>
                             <hr>
@@ -249,7 +257,7 @@ export default {
             first_answer: '',
             second_answers: '',
             not_sure_answers: '',
-            time_availability: '',
+            availability: ''
         }
     }, /* data */
 
@@ -286,7 +294,7 @@ export default {
                 this.first_answer = response.data.first_answer,
                 this.second_answers = response.data.second_answer,
                 this.not_sure_answers = response.data.not_sure_answer,
-                this.time_availability = response.time_availability
+                this.time_availability = response.data.time_availability
 
             ))
         },

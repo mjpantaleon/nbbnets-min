@@ -21,12 +21,12 @@
 
         <h4><b-icon icon="file-earmark-ruled"></b-icon> Pre-Screening</h4>
         <hr>
-
+        {{test_results}} {{symptoms}}
         <b-row>
             <b-col md="6">
                 <b-jumbotron bg-variant="light"> 
                     <template v-slot:lead>
-                        <b>Have you been diagnosed to have COVID-19?</b>
+                        <b><b-icon icon="info-square-fill" class="text-primary"></b-icon>&nbsp;Have you been diagnosed to have COVID-19?</b>
                         <hr>
                         <b-form-group>
                             <b-form-radio v-model="selected" name="first_answer" value="0">Yes</b-form-radio>
@@ -36,26 +36,36 @@
                 </b-jumbotron>
             </b-col>
             <b-col md="6" v-if="selected">
-                <span v-if="selected == '0'">Do you have the following tests results? 
-                    <!-- CHECKBOXES -->
-                    <ul>
-                        <li>A. Initial posiive RT - PCR result</li>
-                        <li>B. Repeat RT - PCR Negative result</li>
-                        <li>C. No test results</li>
-                    </ul>
-                </span>
-                <span v-if="selected == '1'">For the past 28 weeks have ever had the following?
-                    <!-- CHECKBOXES -->
-                    <ul>
-                        <li>a. Cough</li>
-                        <li>b. Fever (C 38.0)</li>
-                        <li>c. Difficulty breathing</li>
-                        <li>d. Diarrhea</li>
-                        <li>e. Fatigue</li>
-                        <li>f. Body aches and pain</li>
-                    </ul>
-                </span>
-                
+
+                <b-jumbotron v-if="selected == '0'" bg-variant="light"> 
+                    <template v-slot:lead>
+                        <b><b-icon icon="info-square-fill" class="text-warning"></b-icon>&nbsp;Do you have the following tests results? </b>
+                        <hr>
+                        <b-form-group>
+                            <b-form-checkbox-group
+                                id="checkbox-group-1"
+                                v-model="test_results"
+                                :options="test_result_list"
+                                name="test_results">
+                                </b-form-checkbox-group>
+                        </b-form-group>
+                    </template>
+                </b-jumbotron>
+
+                <b-jumbotron v-if="selected == '1'" bg-variant="light"> 
+                    <template v-slot:lead>
+                        <b><b-icon icon="info-square-fill" class="text-warning"></b-icon>&nbsp;For the past 28 weeks have ever had the following? </b>
+                        <hr>
+                        <b-form-group label="please select atleast 5 from the items below">
+                            <b-form-checkbox-group stacked
+                                id="checkbox-group-1"
+                                v-model="symptoms"
+                                :options="symptoms_list"
+                                name="symptoms">
+                                </b-form-checkbox-group>
+                        </b-form-group>
+                    </template>
+                </b-jumbotron>
             </b-col>
         </b-row>
         
@@ -181,6 +191,23 @@ export default {
             nationality_list: [
                 { value: '137', text: 'Filipino' },
             ],
+
+            test_results: [],
+            test_result_list: [
+                { text: 'A. Initial posiive RT - PCR result', value: 'a' },
+                { text: 'B. Repeat RT - PCR Negative result', value: 'b' },
+                { text: 'C. No test results', value: 'c' }
+            ],
+
+            symptoms: [],
+            symptoms_list:[
+                { text: 'a. Cough', value: 'a' },
+                { text: 'b. Fever (C 38.0)', value: 'b' },
+                { text: 'c. Difficulty breathing', value: 'c' },
+                { text: 'd. Diarrhea', value: 'd' },
+                { text: 'e. Fatigue', value: 'e' },
+                { text: 'f. Body aches and pain', value: 'f' },
+            ]
 
         }
     }
