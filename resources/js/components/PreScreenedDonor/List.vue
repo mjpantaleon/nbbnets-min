@@ -43,6 +43,15 @@
                         <span v-else>Female</span>
                     </template>
 
+                    <template v-slot:cell(bdate)="data">
+                        {{ data.item.bdate | moment("MMMM Do YYYY") }}
+                    </template>
+
+                    <template v-slot:cell(created_dt)="data">
+                        <!-- {{ data.item.created_dt | moment("dddd, MMMM Do YYYY, h:mm:ss a") }} -->
+                        {{ data.item.created_dt | moment("MMMM Do YYYY, h:mm:ss a") }}
+                    </template>
+
                     <template v-slot:cell(status)="data">
                         <b-badge variant="danger" v-if="data.item.status == '0'">FOR REVIEW</b-badge>
                         <b-badge variant="success" v-else>APPROVED</b-badge>

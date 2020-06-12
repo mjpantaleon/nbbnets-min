@@ -17,6 +17,8 @@ Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueRouter)
 
+Vue.use(require('vue-moment'));
+
 Vue.component('main-app', require('./MainApp.vue').default);
 
 const router = new VueRouter({

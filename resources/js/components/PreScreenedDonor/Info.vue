@@ -32,18 +32,31 @@
                     </template>
 
                     <template v-slot:lead>
-                        <b><b-icon icon="calendar"></b-icon>&nbsp;Screening date:</b> {{ created_dt }}
-                        
-                        <b-badge class="float-right" v-if="status == 0" variant="danger">FOR REVIEW</b-badge>
-                        <b-badge class="float-right" v-else variant="success">APPROVED</b-badge>
+                        <b-row>
+                            <b-col><b><b-icon icon="info-square"></b-icon>&nbsp;Status:</b></b-col>
+                            <b-col>
+                                <b-badge class="float-right" v-if="status == 0" variant="danger">FOR REVIEW</b-badge>
+                                <b-badge class="float-right" v-else variant="success">APPROVED</b-badge>
+                            </b-col>
+                        </b-row>
+
+                        <b-row>
+                            <b-col>
+                                <b><b-icon icon="calendar"></b-icon>&nbsp;Screening date:</b> 
+                            </b-col>
+                            <b-col>
+                               <span class="float-right">
+                                   <b class="text-primary">{{ created_dt | moment("MMMM DD, YYYY - h:mm:ss a") }}</b></span>
+                            </b-col>
+                        </b-row>
 
                         <b-row>
                             <b-col class="lead"><b><b-icon icon="chat"></b-icon>&nbsp;Contact preferences:</b></b-col>
                             <b-col class="lead">
                                 <ul>
-                                    <li v-if="email != ''" class="text-success  float-right"><b>{{email}}</b></li>
-                                    <li v-if="fb != ''" class="text-success  float-right"><b>{{fb}}</b></li>
-                                    <li v-if="mobile_no != ''" class="text-success  float-right"><b>{{mobile_no}}</b></li>
+                                    <li v-if="email != ''" class="text-primary  float-right"><b>{{email}}</b></li>
+                                    <li v-if="fb != ''" class="text-primary  float-right"><b>{{fb}}</b></li>
+                                    <li v-if="mobile_no != ''" class="text-primary  float-right"><b>{{mobile_no}}</b></li>
                                 </ul>
                             </b-col>
                         </b-row>
@@ -52,8 +65,8 @@
 
                         <b-row>
                             <b-col class="lead">
-                                <b><b-icon icon="phone"></b-icon>&nbsp;Prefered Date/Time:&nbsp;
-                                    <span class="text-primary float-right">{{ time_availability }}</span></b>
+                                <b><b-icon icon="phone"></b-icon>&nbsp;Time of Availability:&nbsp;
+                                    <span class="text-primary float-right">{{ time_availability | moment("h:mm:ss a") }}</span></b>
                                 </b-col>
                         </b-row>
 
@@ -62,7 +75,7 @@
 
                     <b-row>
                         <b-col class="lead">
-                            <span><b>Weight:</b> {{ weight }}</span>
+                            <span><b>Birthday:</b> {{ bdate | moment("MMMM DD, YYYY") }}</span>
                         </b-col>
                     </b-row>
 
@@ -70,27 +83,13 @@
                         <b-col class="lead">
                             <span><b>Age:</b> {{ age }} y/o</span>
                         </b-col>
-                    </b-row>
-
-                    <!-- <b-row>
-                        <b-col class="lead">
-                            <span><b>Email:</b> {{ email ? email : '' }}</span>
-                        </b-col>
-                    </b-row>
-
+                    </b-row>    
 
                     <b-row>
                         <b-col class="lead">
-                            <span><b>Facebook:</b> {{ fb ? fb : '' }}</span>
+                            <span><b>Weight:</b> {{ weight }} kg</span>
                         </b-col>
                     </b-row>
-
-                    <b-row>
-                        <b-col class="lead">
-                            <span><b>Mobile #:</b> {{ mobile_no ? mobile_no : '' }}</span>
-                        </b-col>
-                    </b-row> -->
-                    
 
                     <b-row>
                         <b-col class="lead">
@@ -99,12 +98,6 @@
                         </b-col>
                     </b-row>
                     
-                    <b-row>
-                        <b-col class="lead">
-                            <span><b>Birthday:</b> {{ bdate }}</span>
-                        </b-col>
-                    </b-row>
-
                     <b-row>
                         <b-col class="lead">
                             <span><b>Nationality:</b> {{ nationality ? nationality = 'Filipino' : ''}}</span>
