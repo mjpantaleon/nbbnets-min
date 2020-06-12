@@ -51,6 +51,14 @@ Route::post('/pre-screened-update/{id}', 'PreScreenedDonorController@update');
 
 // }
 
+// ---------------- BLOOD UNIT ------------------------ //
+
+//BLOOD TYPING
+Route::post('/get-donation-id', 'BloodTypingController@getDonationId');
+
+
+
+
 Route::get('{any}', function () {
     return view('layouts.app');
 })->where('any', '.*');

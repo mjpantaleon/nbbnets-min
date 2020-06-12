@@ -23,7 +23,7 @@
                 <template v-slot:button-content>
                     BLOOD UNIT
                 </template>
-                <b-dropdown-item :to="{ path: '/register-blood' }">Register Blood Unit</b-dropdown-item>
+                <!-- <b-dropdown-item :to="{ path: '/register-blood' }">Register Blood Unit</b-dropdown-item> -->
                 <b-dropdown-item :to="{ path: '/blood-typing' }">Blood Typing</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/blood-processing' }">Blood Processing</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/aliquote' }">Aliquote</b-dropdown-item>
