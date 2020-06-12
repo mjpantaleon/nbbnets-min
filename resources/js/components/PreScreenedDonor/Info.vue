@@ -39,21 +39,21 @@
 
                         <b-row>
                             <b-col class="lead"><b><b-icon icon="chat"></b-icon>&nbsp;Contact preferences:</b></b-col>
-                        </b-row>
-                        <b-row>
                             <b-col class="lead">
                                 <ul>
-                                    <li v-if="email != ''" class="text-success"><b>{{email}}</b></li>
-                                    <li v-if="fb != ''" class="text-success"><b>{{fb}}</b></li>
-                                    <li v-if="mobile_no != ''" class="text-success"><b>{{mobile_no}}</b></li>
+                                    <li v-if="email != ''" class="text-success  float-right"><b>{{email}}</b></li>
+                                    <li v-if="fb != ''" class="text-success  float-right"><b>{{fb}}</b></li>
+                                    <li v-if="mobile_no != ''" class="text-success  float-right"><b>{{mobile_no}}</b></li>
                                 </ul>
                             </b-col>
+                        </b-row>
+                        <b-row>
                         </b-row>
 
                         <b-row>
                             <b-col class="lead">
                                 <b><b-icon icon="phone"></b-icon>&nbsp;Prefered Date/Time:&nbsp;
-                                    <span class="text-primary">{{ time_availability }}</span></b>
+                                    <span class="text-primary float-right">{{ time_availability }}</span></b>
                                 </b-col>
                         </b-row>
 
