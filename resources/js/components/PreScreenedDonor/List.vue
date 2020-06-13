@@ -43,9 +43,9 @@
                         <span v-else>Female</span>
                     </template>
 
-                    <template v-slot:cell(bdate)="data">
+                    <!-- <template v-slot:cell(bdate)="data">
                         {{ data.item.bdate | moment("MMMM DD, YYYY") }}
-                    </template>
+                    </template> -->
 
                     <template v-slot:cell(created_dt)="data">
                         <!-- {{ data.item.created_dt | moment("dddd, MMMM Do YYYY, h:mm:ss a") }} -->
@@ -94,7 +94,7 @@ export default {
             fields: [
                 { key: 'fullname', label: 'Fullname' },
                 { key: 'gender', label: 'Gender' },
-                { key: 'bdate', label: 'Birthday' },
+                // { key: 'bdate', label: 'Birthday' },
                 { key: 'address', label: 'Address' },
                 { key: 'created_dt', label: 'Date Screened' },
                 { key: 'status', label: 'Status' },
@@ -108,7 +108,7 @@ export default {
             last_name: '',
             name_suffix: '',
             gender: '',
-            bdate: '',
+            // bdate: '',
             address: '',
             created_dt: '',
             status: '',
