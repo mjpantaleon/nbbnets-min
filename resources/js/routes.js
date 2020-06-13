@@ -38,7 +38,7 @@ export const routes = [
 
 
     // BLOOD UNIT
-    { name: 'register-blood', path: '/register-blood', component: RegisterBloodUnit },
+    // { name: 'register-blood', path: '/register-blood', component: RegisterBloodUnit },
     { name: 'blood-typing', path: '/blood-typing', component: BloodTyping },
     { name: 'blood-processing', path: '/blood-processing', component: BloodProcessing },
     { name: 'aliquote', path: '/aliquote', component: Aliquote },

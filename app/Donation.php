@@ -15,4 +15,8 @@ class Donation extends Model
     public function donor(){
         return $this->belongsTo('App\Donor', 'seqno');
     }
+
+    // function bloodtyping(){
+    //     return $this->hasOne('App\BloodTyping','donation_id','donation_id');
+    // }
 }
