@@ -236,13 +236,13 @@
                                 description="Type-in Time of availability"
                                 label="Time of Availability"
                                 label-for="time_availability">
-                                <b-form-input v-model="time_availability" id="time_availability"></b-form-input>
+                                <!-- <b-form-input v-model="time_availability" id="time_availability"></b-form-input> -->
+                                <b-time v-model="time_availability" show-seconds locale="en"></b-time>
                             </b-form-group>
                     </b-col>
                 </b-row>
 
             </b-col>  
-
             
             <!-- PRE - SCREENING QUESTIONAIRE -->
             <b-col md="6">
@@ -259,8 +259,6 @@
                         </b-form-group>
                     </template>
                 </b-jumbotron>
-
-                {{test_results}} {{symptoms}}
 
                 <!--  TEST RESULTS -->
                 <b-row>
@@ -309,11 +307,60 @@
 
         <b-row>
             <b-col md="4">
-                <b-button block variant="success"
-                    @click.prevent="">
-                    <b-icon icon="check-circle"></b-icon>&nbsp;SUBMIT</b-button>
+                <b-button variant="success"
+                    block
+                    type="submit"
+                    :disabled="disableBtn"
+                    @click.prevent="submitEntry()">
+                    <b-icon icon="check-circle"></b-icon>&nbsp;SUBMIT ENTRY</b-button>
             </b-col>
         </b-row>
+
+        <!-- =============== MODALS ================ -->
+
+        <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
+        <b-modal v-model="showSuccessMsg" centered
+            title="SUCCESS"
+            header-bg-variant="success"
+            body-bg-variant="light" 
+            footer-bg-variant="success"
+            header-text-variant="light"
+            hide-header-close>
+            
+            <h5 class="alert-heading text-center">
+                <b-icon icon="person-check"></b-icon>&nbsp;New Entry has been added!
+            </h5>
+            
+            <template v-slot:modal-footer="{ ok }">
+                <b-link class="btn btn-success" :to="{ path: '/pre-screened-list' }"
+                    size="sm" variant="success" @click="ok()">
+                    OK
+                </b-link>
+            </template>
+        </b-modal>
+
+        <!-- IF SOME FIELDS ARE MISSING -->
+        <b-modal v-model="showNoAnswer" centered
+            title="STOP"
+            header-bg-variant="danger"
+            body-bg-variant="light" 
+            footer-bg-variant="danger"
+            header-text-variant="light"
+            hide-header-close>
+            
+            <h5 class="alert-heading text-center">
+                <b-icon icon="info-square" class="text-warning"></b-icon>&nbsp;
+                Please dont forget to answer the Personnal Information/ Pre-screening Questionaire!
+            </h5>
+            
+            <template v-slot:modal-footer="{ ok }">
+                <b-link class="btn btn-danger"
+                    size="sm" variant="danger" @click="ok()">
+                    OK
+                </b-link>
+            </template>
+        </b-modal>
+
   </div>
 </template>
 
@@ -321,6 +368,11 @@
 export default {
     data(){
         return{
+            // confirmation
+            showSuccessMsg: false,
+            disableBtn: false,
+            showNoAnswer: false,
+
             //  Donor Details
             fname: '',
             mname: '',
@@ -333,7 +385,7 @@ export default {
 
             weight: '',
 
-            nationality: '137',
+            nationality: 'Filipino',
             address: '',
             
             // How would you like us to reach you
@@ -352,7 +404,7 @@ export default {
             ],
 
             nationality_list: [
-                { value: '137', text: 'Filipino' },
+                { value: 'Filipino', text: 'Filipino' },
             ],
 
             test_results: [],
@@ -418,6 +470,48 @@ export default {
             return this.age = age;
 
         },
+    }, /* computed */
+
+    methods: {
+        submitEntry(){
+            // check if has answered the personnal info/ questionaire
+            if(this.first_answer == '' || this.fname == '' || this.mname == '' || this.lname == '' || this.bdate == ''){
+                this.showNoAnswer = true
+            } else{
+                axios
+                .post('/submit-entry', {
+                    fname : this.fname,
+                    mname : this.mname,
+                    lname : this.lname,
+                    name_suffix : this.name_suffix,
+    
+                    nationality : this.nationality,
+                    gender : this.gender,
+    
+                    bdate : this.bdate,
+                    age : this.age,
+    
+                    weight : this.weight,
+                    address : this.address,
+    
+                    email : this.email,
+                    fb : this.fb,
+                    mobile_no : this.mobile_no,
+    
+                    time_availability : this.time_availability,
+    
+                    first_answer : this.first_answer,
+                    test_results : this.test_results,
+                    symptoms : this.symptoms
+                })
+                .then(response =>{
+                    this.showSuccessMsg = true,
+                    this.disableBtn = true
+                })
+                .catch(error => console.log(error))
+            }
+
+        }
     }
 }
 </script>

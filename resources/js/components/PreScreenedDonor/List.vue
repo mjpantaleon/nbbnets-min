@@ -44,12 +44,12 @@
                     </template>
 
                     <template v-slot:cell(bdate)="data">
-                        {{ data.item.bdate | moment("MMMM Do YYYY") }}
+                        {{ data.item.bdate | moment("MMMM DD, YYYY") }}
                     </template>
 
                     <template v-slot:cell(created_dt)="data">
                         <!-- {{ data.item.created_dt | moment("dddd, MMMM Do YYYY, h:mm:ss a") }} -->
-                        {{ data.item.created_dt | moment("MMMM Do YYYY, h:mm:ss a") }}
+                        {{ data.item.created_dt | moment("MMMM DD, YYYY - h:mm:ss a") }}
                     </template>
 
                     <template v-slot:cell(status)="data">

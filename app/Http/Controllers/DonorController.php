@@ -57,9 +57,14 @@ class DonorController extends Controller
     public function create(Request $request){
         $data = $request->except('_token');
 
-        // GENERATE DONOR SEQUENCE NUMBER FORMAT: 130062020000001
-        $facility_user = '13006_mj';
-        $facility_cd = 13001;
+        // GET THE USER INFO
+        $session = Session::get('userInfo');
+        $facility_user = Session::get('userInfo')['user_id'];
+        $facility_cd = Session::get('userInfo')['facility_cd'];
+
+        // initialize data
+        $facility_user = $facility_user;
+        $facility_cd = $facility_cd;
 
         $year_now = date('Y');          // 2020
         $donors_count = Donor::count(); 

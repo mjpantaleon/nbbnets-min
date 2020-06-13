@@ -36,17 +36,19 @@ class CreatePreScreenedDonorsTable extends Migration
             $table->string('fb', 191)->nullable();
             $table->string('mobile_no', 20)->nullable();
             
-            $table->dateTime('time_availability')->nullable();          // varchar on lester's part
+            $table->string('time_availability', 50)->nullable();          // varchar on lester's part
     
             $table->char('first_answer',1)->nullable();                 // "first_answer" : 0 = yes, 1 = not sure, 2 = no
             $table->string('second_answer',191)->nullable();            // "second_answer" : a = Initial positive, b = Repeat negative, c = no test result
             $table->string('not_sure_answer', 191)->nullable();         // if first_answer is equal to '1 = not sure'
-            $table->dateTime('created_dt')->nullable();                     // get from app
+            
+            $table->string('created_by', 50)->nullable();               // if created on web otherwise null
+            $table->dateTime('created_dt')->nullable();                 // get from app/ web
 
             // APPROVAL 
             $table->boolean('status', 1)->default(0);                   // 1 = YES, "" / 0 = NO
 
-            $table->string('approved_by', 50)->nullable();
+            $table->string('approved_by', 50)->nullable();              
             $table->dateTime('approval_dt')->nullable();
 
             // $table->timestamps();
