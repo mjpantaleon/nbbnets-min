@@ -36,7 +36,7 @@ class CreatePreScreenedDonorsTable extends Migration
             $table->string('fb', 191)->nullable();
             $table->string('mobile_no', 20)->nullable();
             
-            $table->dateTime('time_availability')->nullable();
+            $table->dateTime('time_availability')->nullable();          // varchar on lester's part
     
             $table->char('first_answer',1)->nullable();                 // "first_answer" : 0 = yes, 1 = not sure, 2 = no
             $table->string('second_answer',191)->nullable();            // "second_answer" : a = Initial positive, b = Repeat negative, c = no test result
