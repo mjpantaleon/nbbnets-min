@@ -474,7 +474,7 @@ export default {
 
     methods: {
         submitEntry(){
-            // check if has answered the personnal info/ questionaire
+            // check if has answered the personnal info/questionaire
             if(this.first_answer == '' || this.fname == '' || this.mname == '' || this.lname == '' || this.bdate == ''){
                 this.showNoAnswer = true
             } else{
