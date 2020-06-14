@@ -59,9 +59,9 @@
 
                     <template v-slot:cell(donationType)="data">
                         <span v-if="data.item.donation_type == 'V'">Voluntary</span>
-                        <span v-if="data.item.donation_type == 'AU'">Autologous</span>
-                        <span v-if="data.item.donation_type == 'REP'">Family/ Replacement</span>
-                        <span v-if="data.item.donation_type == 'PA'">Paid</span>
+                        <span v-if="data.item.donation_type == 'A'">Autologous</span>
+                        <span v-if="data.item.donation_type == 'R'">Family/ Replacement</span>
+                        <span v-if="data.item.donation_type == 'P'">Paid</span>
                     </template>
 
                     <template v-slot:cell(mhpe)="data">
@@ -73,7 +73,7 @@
 
                     <template v-slot:cell(collectionMethod)="data">
                         <span v-if="data.item.collection_method == 'WB'">Whole Blood</span>
-                        <span v-if="data.item.collection_method == 'AP'">Apheresis</span>
+                        <span v-if="data.item.collection_method == 'P'">Pheresis</span>
                     </template>
 
                     <template v-slot:cell(collectionStat)="data">

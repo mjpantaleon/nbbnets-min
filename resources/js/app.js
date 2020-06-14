@@ -26,6 +26,7 @@ const router = new VueRouter({
     routes: routes
 });
 
+// avoid illegal access of routes
 router.beforeEach((to, from , next) => {
     axios
         .get('/get-user')
