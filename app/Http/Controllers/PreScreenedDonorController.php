@@ -123,9 +123,9 @@ class PreScreenedDonorController extends Controller
             WHERE fname = $fname, mname = $mname, lname = $lname, name_suffix = $name_suffix, bdate = $bdate
             */
             $seqno = Donor::select('seqno')
-                    ->where('first_name', '=', $first_name)
-                    ->where('middle_name', '=', $middle_name)
-                    ->where('last_name', '=', $last_name)
+                    ->where('fname', '=', $first_name)
+                    ->where('mname', '=', $middle_name)
+                    ->where('lname', '=', $last_name)
                     ->where('name_suffix', '=', $name_suffix)
                     ->where('bdate', '=', $bdate)
                     ->first();
@@ -223,8 +223,10 @@ class PreScreenedDonorController extends Controller
             $pre_screened_donor->time_availability = $time_availability;
             
             $pre_screened_donor->first_answer = $first_answer;
-            $pre_screened_donor->second_answer = implode(',', $test_results);
-            $pre_screened_donor->not_sure_answer = implode(',', $symptoms);
+            $pre_screened_donor->second_answer = $test_results != null ? json_encode($test_results) : "";
+            $pre_screened_donor->not_sure_answer = $symptoms != null ? json_encode($symptoms) : "";
+            // $pre_screened_donor->second_answer = implode(',', $test_results);
+            // $pre_screened_donor->not_sure_answer = implode(',', $symptoms);
 
             $pre_screened_donor->created_by = $created_by;
             $pre_screened_donor->created_dt = $created_dt;

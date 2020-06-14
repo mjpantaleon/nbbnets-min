@@ -66,18 +66,18 @@
                         <b-row>
                             <b-col class="lead">
                                 <b><b-icon icon="phone"></b-icon>&nbsp;Time of Availability:&nbsp;
-                                    <span class="text-primary float-right">{{ time_availability | moment("h:mm:ss a") }}</span></b>
+                                    <span class="text-primary float-right">{{ time_availability }}</span></b>
                                 </b-col>
                         </b-row>
 
                     </template>
                     <hr>
 
-                    <b-row>
+                    <!-- <b-row>
                         <b-col class="lead">
                             <span><b>Birthday:</b> {{ bdate | moment("MMMM DD, YYYY") }}</span>
                         </b-col>
-                    </b-row>
+                    </b-row> -->
 
                     <b-row>
                         <b-col class="lead">
@@ -243,6 +243,8 @@ export default {
 
             nationality: '',
             address: '',
+
+            time_availability: '',
 
             created_dt: '',
             status: '',
