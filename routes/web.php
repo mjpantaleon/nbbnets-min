@@ -44,6 +44,7 @@ Route::get('/pre-screened-donors', 'PreScreenedDonorController@index');
 Route::get('/pre-screened-donor/{id}', 'PreScreenedDonorController@getDetails');
 Route::post('/pre-screened-update/{id}', 'PreScreenedDonorController@update');
 Route::post('/submit-entry', 'PreScreenedDonorController@create');
+Route::post('/android-submit-entry', 'PreScreenedDonorController@androidCreate');
 
 // Route::get('/donor-id', 'DonorController@create');
 

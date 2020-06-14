@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.lerealouise.project",
+    "sha256_cert_fingerprints":
+    ["E5:93:8A:74:98:89:01:0A:CD:79:77:64:2E:A1:CC:86:67:71:42:6B:E2:6D:36:FF:F0:A5:80:75:1A:B1:3D:A7"]
+  }
+}]

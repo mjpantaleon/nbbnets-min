@@ -95,7 +95,7 @@
                         </template>
                         
                         <template v-if="data.length != 0">
-                            <b-table class="mt-3" 
+                            <b-table
                                 id="main-table"
                                 responsive="sm"
                                 striped hover
@@ -108,7 +108,6 @@
 
                                 <template v-slot:cell(donationId)="data">
                                     {{ data.item.donation_id }}
-                                    <!-- {{ data.item }} -->
                                 </template>
 
                                 <template v-slot:cell(abo)="data">
@@ -121,12 +120,12 @@
  
                             </b-table>
 
-                            <b-pagination
+                            <!-- <b-pagination
                                 v-model="currentPage"
                                 :total-rows="rows"
                                 :per-page="perPage"
                                 aria-controls="main-table">
-                            </b-pagination>
+                            </b-pagination> -->
 
                             <b-row>
                                 <b-col class="text-right">
@@ -138,7 +137,7 @@
                         </template>
 
                         <template v-else>
-                            <div class="alert alert-info mt-3">
+                            <div class="alert alert-info">
                                 <span class="text-center text-danger">
                                     <h5><b-icon icon="info-square"></b-icon>&nbsp;&nbsp;No selected donation ID</h5>
                                 </span>
@@ -152,7 +151,49 @@
         </b-row>
 
 
+        <b-modal id="verifier-login" centered>
+            <template v-slot:modal-header>
+                <h5>Enter Verifier Credentials</h5>
+            </template>
+
+            <template v-slot:default>
+
+                <b-form-group
+                    id="fieldset-1"
+                    label="Verifier Username"
+                    label-for="username">
+                        <b-form-input id="username" type="text" v-model="verifierUname" :state="checkUN" trim></b-form-input>
+                </b-form-group>
+
+                <b-form-group
+                    id="fieldset-1"
+                    description="type-in your password."
+                    label="Verifier Password"
+                    label-for="password">
+                        <b-form-input id="password" type="password" v-model="verifierPass" :state="checkPW" trim></b-form-input>
+                </b-form-group>
+
+
+            </template>
+
+            <template v-slot:modal-footer>
+            <!-- Emulate built in modal footer ok and cancel button actions -->
+                <b-button 
+                    size="sm" 
+                    variant="success" 
+                    @click="ok()">
+                        Login
+                </b-button>
+                <b-button 
+                    size="sm" 
+                    variant="danger" 
+                    @click="cancel()">
+                        Cancel
+                </b-button>
+            </template>
+        </b-modal>
     </div>
+
 </template>
 
 <script>
@@ -193,6 +234,9 @@ export default {
             perPage: 10,
             currentPage: 1,
 
+            verifierUname: '',
+            verifierPass: '',
+
         }
     }, /* data */
 
@@ -212,7 +256,6 @@ export default {
 
                     if(response.data){
                         this.donation_ids = response.data
-                        console.log(this.donation_ids)
                     } else{
                         this.donation_ids = []
                         this.select_id_notice = "No Data Found"
@@ -223,20 +266,42 @@ export default {
         },
 
         showModal(){
-            
+
+            var err
+
+            err = this.checkError()
+
+            if(err){
+
+            } else{
+                this.$bvModal.show('verifier-login')
+            }
+
+        },
+
+        checkError(){
+
             var err = false;
 
-            
+            this.final_data.forEach((v) => {
+                if(v.abo == "" || v.rh == ""){
+                    return err = true
+                }
+            })
+
+            return err
 
         },
 
     }, /* methods */
 
-    computed: {
-        // pagination
-        rows() {
-
+    computed:{
+        checkUN(){
+            return this.verifierUname.length >= 5 ? true : false
         },
+        checkPW(){
+            return this.verifierPass.length > 3 ? true : false
+        }
     }, /* computed */
 
     watch:{
