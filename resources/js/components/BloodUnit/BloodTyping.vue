@@ -56,6 +56,8 @@
             </b-col>
         </b-row>
 
+        <b-alert show variant="danger" v-if="errMessage">{{ errMessage }}</b-alert>
+
         <b-row>
             <b-col cols="4">
                 <b-card-group deck v-if="donation_ids">
@@ -158,6 +160,8 @@
 
             <template v-slot:default>
 
+                <b-alert show variant="danger" v-if="errCredentials">{{ errCredentials }}</b-alert>
+
                 <b-form-group
                     id="fieldset-1"
                     label="Verifier Username"
@@ -167,7 +171,6 @@
 
                 <b-form-group
                     id="fieldset-1"
-                    description="type-in your password."
                     label="Verifier Password"
                     label-for="password">
                         <b-form-input id="password" type="password" v-model="verifierPass" :state="checkPW" trim></b-form-input>
@@ -181,13 +184,13 @@
                 <b-button 
                     size="sm" 
                     variant="success" 
-                    @click="ok()">
+                    @click="verifierLogin()">
                         Login
                 </b-button>
                 <b-button 
                     size="sm" 
                     variant="danger" 
-                    @click="cancel()">
+                    @click="cancelModal()">
                         Cancel
                 </b-button>
             </template>
@@ -236,6 +239,8 @@ export default {
 
             verifierUname: '',
             verifierPass: '',
+            errMessage: '',
+            errCredentials: ''
 
         }
     }, /* data */
@@ -268,11 +273,12 @@ export default {
         showModal(){
 
             var err
+            this.errMessage = ''
 
             err = this.checkError()
 
             if(err){
-
+                this.errMessage = 'Please fill up all fields'
             } else{
                 this.$bvModal.show('verifier-login')
             }
@@ -291,6 +297,21 @@ export default {
 
             return err
 
+        },
+
+        verifierLogin(){
+
+            this.errCredentials = ''
+
+            if(this.verifierUname && this.verifierPass){
+
+            } else{
+                this.errCredentials = 'Please fill up all fields'
+            }
+        },
+
+        cancelModal(){
+            this.$bvModal.hide('verifier-login')
         },
 
     }, /* methods */
