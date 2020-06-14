@@ -26,6 +26,24 @@ const router = new VueRouter({
     routes: routes
 });
 
+router.beforeEach((to, from , next) => {
+    axios
+        .get('/get-user')
+        .then(response => {
+
+            if(response.data.status){
+                next()
+            } else{
+                if (to.path !== '/') {
+                    next('/')
+                } else{
+                    next()
+                }
+            }
+
+        })
+});
+
 const app = new Vue({
     el: '#app',
     store,
