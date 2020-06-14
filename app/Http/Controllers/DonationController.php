@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Donation;
-
+use Session;
 use DB;
 
 class DonationController extends Controller
@@ -75,8 +75,10 @@ class DonationController extends Controller
         // check if PE selection is empty
     
         // convert pushed array to string separated by ,
-        $mh_pe_deferral = implode(',',$mh_pe_deferral);
-        $mh_pe_question = implode(',', $data['mh_pe_question']);  // MH CHOICE/S *use implode to convert array to string
+        $mh_pe_deferral = $mh_pe_deferral != null ? json_encode($mh_pe_deferral) : '';
+        // $mh_pe_deferral = implode(',',$mh_pe_deferral);
+        $mh_pe_question = $data['mh_pe_question'] != null ? json_encode($data['mh_pe_question']) : '';  // MH CHOICE/S *use implode to convert array to string
+        // $mh_pe_question = implode(',', $data['mh_pe_question']);  // MH CHOICE/S *use implode to convert array to string
         $mh_pe_remark = $data['mh_pe_remark'];      // OPTIONAL
         $mh_pe_stat = $data['mh_pe_stat'];          // A, TD, PD, ID
 

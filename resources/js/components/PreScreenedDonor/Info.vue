@@ -177,17 +177,22 @@
             </b-col>
         </b-row>
 
-        <template v-if="status == '0'">
         <b-row class="mt-3">
             <b-col md="4">
+                <template v-if="status == '0'">
                 <b-button block type="submit" variant="success"
                     :disabled="enableBtn"
                     @click.prevent="submitVerdict()">
-                        <b-icon icon="check-circle"></b-icon>&nbsp;APPROVE 
-                    </b-button>
+                    <b-icon icon="check-circle"></b-icon>&nbsp;APPROVE 
+                </b-button>
+                </template>
+            </b-col>
+            <b-col md="4">
+                <b-link class="btn btn-warning float-right" :to="{ path: '/pre-screened-list' }">
+                    <b-icon icon="box-arrow-left"></b-icon>&nbsp;BACK TO LIST 
+                </b-link>
             </b-col>
         </b-row>
-        </template>
 
         <!-- =============== MODALS ================ -->
 

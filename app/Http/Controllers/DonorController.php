@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Donor;
+use Session;
 
-use Illuminate\Support\Facades\DB;
+use DB;
 
 class DonorController extends Controller
 {
