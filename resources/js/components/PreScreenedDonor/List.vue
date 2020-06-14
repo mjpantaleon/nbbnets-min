@@ -136,17 +136,6 @@ export default {
             .catch(error => console.log(error))
         },
 
-        getUser(){
-            axios
-            .get('/pre-screened-donors')
-            .then(response => (
-                this.data = response.data,
-                this.isLoading = false
-            ))
-            .catch(error => console.log(error))
-        }, 
-
-
     }, /* methods */
 
     computed: {

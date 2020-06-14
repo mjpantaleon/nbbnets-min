@@ -22,44 +22,43 @@ Auth::routes();
 
 //LOGIN
 Route::post('/login-attempt', 'LoginController@login');
-Route::get('/get-user', 'LoginController@getUser');
-Route::get('/logout', 'LoginController@logout');
-
-// DONOR
-Route::get('/donor-list-data', 'DonorController@index');
-Route::get('/donor-profile/{id}', 'DonorController@donorDetails');
-Route::post('/get-searched-donor', 'DonorController@search');
-Route::post('/create-new-donor', 'DonorController@create');
-Route::post('/calculated-age', 'DonorController@getAge');
-
-// DONATION
-Route::post('/donation-list-data','DonationController@index');
-Route::post('/create-new-walkin','DonationController@create');
-
-Route::get('/mh-question-list', 'QuestionsController@getMH');
-Route::get('/pe-question-list', 'QuestionsController@getPE');
-
-// CANDIDATE DONORS
-Route::get('/pre-screened-donors', 'PreScreenedDonorController@index');
-Route::get('/pre-screened-donor/{id}', 'PreScreenedDonorController@getDetails');
-Route::post('/pre-screened-update/{id}', 'PreScreenedDonorController@update');
-Route::post('/submit-entry', 'PreScreenedDonorController@create');
 Route::post('/android-submit-entry', 'PreScreenedDonorController@androidCreate');
+Route::get('/get-user', 'LoginController@getUser');
+
+Route::group(['middleware' => ['auth']], function () {
+
+    // DONOR
+    Route::get('/donor-list-data', 'DonorController@index');
+    Route::get('/donor-profile/{id}', 'DonorController@donorDetails');
+    Route::post('/get-searched-donor', 'DonorController@search');
+    Route::post('/create-new-donor', 'DonorController@create');
+    Route::post('/calculated-age', 'DonorController@getAge');
+
+    // DONATION
+    Route::post('/donation-list-data','DonationController@index');
+    Route::post('/create-new-walkin','DonationController@create');
+
+    Route::get('/mh-question-list', 'QuestionsController@getMH');
+    Route::get('/pe-question-list', 'QuestionsController@getPE');
+
+    // CANDIDATE DONORS
+    Route::get('/pre-screened-donors', 'PreScreenedDonorController@index');
+    Route::get('/pre-screened-donor/{id}', 'PreScreenedDonorController@getDetails');
+    Route::post('/pre-screened-update/{id}', 'PreScreenedDonorController@update');
+    Route::post('/submit-entry', 'PreScreenedDonorController@create');
+    
+    // ---------------- BLOOD UNIT ------------------------ //
+
+    //BLOOD TYPING
+    Route::post('/get-donation-id', 'BloodTypingController@getDonationId');
+
+
+
+    Route::get('/logout', 'LoginController@logout');
+
+});
 
 // Route::get('/donor-id', 'DonorController@create');
-
-// ROUTES FOR AUTHENTICATED USERS
-// Route::group( ['middleware' => 'auth'], function() {
-
-// }
-
-// ---------------- BLOOD UNIT ------------------------ //
-
-//BLOOD TYPING
-Route::post('/get-donation-id', 'BloodTypingController@getDonationId');
-
-
-
 
 Route::get('{any}', function () {
     return view('layouts.app');
