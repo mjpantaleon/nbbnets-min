@@ -4,7 +4,7 @@
         <b-tabs card active-nav-item-class="font-weight-bold text-danger">
             <!-- =============== MEDICAL HISTORY TAB ================= -->
             <b-tab title="Medical History" active>
-            {{ questions }}
+            <!-- {{ questions }} -->
                 <b-card-text>
                   <!-- STATIC -->
                   <table class="table table-bordered table-striped">

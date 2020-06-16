@@ -22,7 +22,7 @@
 
         <h4><b-icon icon="person-plus"></b-icon>&nbsp;New Walkin Donation</h4>
         <hr>
-        {{questions}} {{ hemoglobin }} {{body_weight}} {{blood_pressure}} {{pulse_rate}} {{temperature}}
+        <!-- {{questions}} {{ hemoglobin }} {{body_weight}} {{blood_pressure}} {{pulse_rate}} {{temperature}} -->
         <b-row>
             <b-col md="6">
                 <!-- <b-card no-body bg-variant="dark" text-variant="light" header="Donor Details"></b-card> -->

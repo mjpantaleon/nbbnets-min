@@ -15,6 +15,7 @@
                 </template>
                 <b-dropdown-item :to="{ path: '/pre-screened-list' }">Pre-Screened List</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/pre-screening' }">Pre-Screening</b-dropdown-item>
+                <b-dropdown-divider></b-dropdown-divider>
                 <b-dropdown-item :to="{ path: '/donation' }">New Walk-in</b-dropdown-item>
                 <!-- <b-dropdown-item :to="{ path: 'register-new-donor' }">Register New Donor</b-dropdown-item> -->
             </b-nav-item-dropdown>
