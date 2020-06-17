@@ -122,11 +122,13 @@
                                 </template>
 
                                 <template v-slot:cell(abo)="data">
-                                    <b-form-select :name="'abo-' + data.item.donation_id" v-model="final_data[data.index]['abo']" :options="abo" size="sm"></b-form-select>
+                                    <b-form-select :name="'abo-' + data.item.donation_id" v-model="final_data[data.index]['abo']" 
+                                        :options="abo" size="sm"></b-form-select>
                                 </template>
 
                                 <template v-slot:cell(rhType)="data">
-                                    <b-form-select :name="'rh-' + data.item.donation_id" v-model="final_data[data.index]['rh']" :options="rhType" size="sm"></b-form-select>
+                                    <b-form-select :name="'rh-' + data.item.donation_id" v-model="final_data[data.index]['rh']" 
+                                        :options="rhType" size="sm"></b-form-select>
                                 </template>
  
                             </b-table>
@@ -201,7 +203,6 @@ export default {
     data(){
         return{
             showSuccessMsg: false,
-            isLoading: false,
 
             fields: [
                 { key: 'donationId', label: 'Donation ID' },
