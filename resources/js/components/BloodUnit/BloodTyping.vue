@@ -249,8 +249,6 @@ export default {
     methods: {
         getDonationId (){
 
-            console.log(this.date_from + " " + this.date_to)
-
             axios
                 .post('/get-donation-id', {
                     date_from: this.date_from,
@@ -263,7 +261,6 @@ export default {
                     } else{
                         this.donation_ids = null
                         this.select_id_notice = "No Data Found"
-                        this.data.length = ''
                     }
                     
                 })
@@ -316,14 +313,12 @@ export default {
                     if(response.data){
                         // this.donation_ids = response.data
                         this.showSuccessMsg = true
-                        this.data = []
-                        this.final_data = []
+                        this.checked = []
                     }
                     
                 })
 
             this.getDonationId()
-
 
         }
 
@@ -335,6 +330,7 @@ export default {
 
     watch:{
         checked: function(val){
+
             this.data = []
             this.final_data = []
 
