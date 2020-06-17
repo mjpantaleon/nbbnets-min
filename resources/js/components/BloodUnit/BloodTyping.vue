@@ -62,6 +62,14 @@
             <b-col cols="4">
                 <b-card-group deck v-if="donation_ids">
                     <b-card header="CLICK TO SELECT ID">
+
+                        <b-form-checkbox
+                            v-model="checkAll"
+                            v-if="donation_ids"
+                            style="margin-bottom: 10px;">
+                            Check All
+                        </b-form-checkbox>
+
                         <b-list-group>
                             <b-list-group-item  
                                 v-for="(value, key) in donation_ids" 
@@ -74,6 +82,7 @@
                                     >
                                     {{ key }}
                                 </b-form-checkbox>
+                                
                             </b-list-group-item>
                         </b-list-group>
                     </b-card>
@@ -152,55 +161,20 @@
 
         </b-row>
 
+        <verifier-modal @setUname="setUname"></verifier-modal>
 
-        <b-modal id="verifier-login" centered>
-            <template v-slot:modal-header>
-                <h5>Enter Verifier Credentials</h5>
-            </template>
-
-            <template v-slot:default>
-
-                <b-alert show variant="danger" v-if="errCredentials">{{ errCredentials }}</b-alert>
-
-                <b-form-group
-                    id="fieldset-1"
-                    label="Verifier Username"
-                    label-for="username">
-                        <b-form-input id="username" type="text" v-model="verifierUname" :state="checkUN" trim></b-form-input>
-                </b-form-group>
-
-                <b-form-group
-                    id="fieldset-1"
-                    label="Verifier Password"
-                    label-for="password">
-                        <b-form-input id="password" type="password" v-model="verifierPass" :state="checkPW" trim></b-form-input>
-                </b-form-group>
-
-
-            </template>
-
-            <template v-slot:modal-footer>
-            <!-- Emulate built in modal footer ok and cancel button actions -->
-                <b-button 
-                    size="sm" 
-                    variant="success" 
-                    @click="verifierLogin()">
-                        Login
-                </b-button>
-                <b-button 
-                    size="sm" 
-                    variant="danger" 
-                    @click="cancelModal()">
-                        Cancel
-                </b-button>
-            </template>
-        </b-modal>
     </div>
 
 </template>
 
 <script>
+
+import VerifierModal from "../Tools/VerifierModal.vue";
+
 export default {
+    components: {
+        VerifierModal
+    },
     data(){
         return{
 
@@ -228,19 +202,18 @@ export default {
             date_from: '',
             date_to: '',
 
-            donation_ids: [],
+            donation_ids: null,
             select_id_notice: "No Items to display",
             displayStatus: 0,
 
             checked: [],
+            checkAll: 1,
 
             perPage: 10,
             currentPage: 1,
 
-            verifierUname: '',
-            verifierPass: '',
             errMessage: '',
-            errCredentials: ''
+            
 
         }
     }, /* data */
@@ -281,6 +254,7 @@ export default {
                 this.errMessage = 'Please fill up all fields'
             } else{
                 this.$bvModal.show('verifier-login')
+                // this.modalOpen = !this.modalOpen;
             }
 
         },
@@ -299,30 +273,33 @@ export default {
 
         },
 
-        verifierLogin(){
-
-            this.errCredentials = ''
-
-            if(this.verifierUname && this.verifierPass){
-
-            } else{
-                this.errCredentials = 'Please fill up all fields'
-            }
+        openModal() {
+            this.modalOpen = !this.modalOpen;
         },
 
-        cancelModal(){
-            this.$bvModal.hide('verifier-login')
-        },
+        setUname(e){
+
+            axios
+                .post('/save-blood-typing', {
+                    blood_typing: this.final_data,
+                    verifier: e,
+                })
+                .then(response => {
+
+                    if(response.data){
+                        this.donation_ids = response.data
+                        this.getDonationId()
+                    }
+                    
+                })
+
+
+        }
 
     }, /* methods */
 
     computed:{
-        checkUN(){
-            return this.verifierUname.length >= 5 ? true : false
-        },
-        checkPW(){
-            return this.verifierPass.length > 3 ? true : false
-        }
+
     }, /* computed */
 
     watch:{
@@ -334,11 +311,37 @@ export default {
                 this.data.splice(v,0,this.donation_ids[v])
                 this.final_data.splice(v,0,this.donation_ids[v])
             })
+
         },
 
         data: function(val){
-            console.log(val)   
+            
         },
+
+        checkAll: function(val){
+
+            if(val){
+                this.data = []
+                this.final_data = []
+
+                var checked_list = []
+
+                Object.keys(this.donation_ids).forEach(function (key){
+                    checked_list.splice(key,0,key)
+                })
+
+                this.checked = checked_list
+
+            } else{
+
+                this.checked = []
+
+            }
+        },
+
+        verifierUsername: function(val){
+
+        }
         
     }
 }
