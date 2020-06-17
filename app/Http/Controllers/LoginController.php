@@ -76,9 +76,6 @@ class LoginController extends Controller
         
         $status = Auth::logout();
 
-        // \Log::info($status);
-
-        // if($status){
         return [
             'status' => true,
         ];

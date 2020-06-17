@@ -46,13 +46,20 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/pre-screened-donor/{id}', 'PreScreenedDonorController@getDetails');
     Route::post('/pre-screened-update/{id}', 'PreScreenedDonorController@update');
     Route::post('/submit-entry', 'PreScreenedDonorController@create');
+
+    // VERIFIER
+
+    Route::post('/verifier-credentials', 'VerifierController@getVerifier');
     
     // ---------------- BLOOD UNIT ------------------------ //
 
     //BLOOD TYPING
     Route::post('/get-donation-id', 'BloodTypingController@getDonationId');
+    Route::post('/save-blood-typing', 'BloodTypingController@save');
 
-
+    // Route::get('/getUserInfo', function () {
+    //     return \Session::get('userInfo');
+    // });
 
     Route::get('/logout', 'LoginController@logout');
 
