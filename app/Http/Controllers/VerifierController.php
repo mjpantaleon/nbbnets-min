@@ -16,6 +16,7 @@ class VerifierController extends Controller
         $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
         $current        = Session::get('userInfo')['user_id'];
 
+        // IF CURRENT USER IS EQUAL TO USERNAME
         if($current === $username){
             return array(
                 'status' => false,

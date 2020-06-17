@@ -30,7 +30,7 @@ class BloodTypingController extends Controller
         //                     ->whereBetween('created_dt', [$from, $to])
         //                     ->where('collection_stat', 'COL')
         //                     ->get();
-
+       
         $sql = "SELECT t1.donation_id
                 FROM donation t1
             LEFT JOIN blood_typing t2 ON t1.donation_id = t2.donation_id
@@ -42,6 +42,7 @@ class BloodTypingController extends Controller
         AND t1.collection_stat = '$col_stat'";
 
         $donation = DB::select($sql);
+        // \Log::info($donation);
 
         $donation = json_decode(json_encode($donation), true);
         
@@ -82,12 +83,17 @@ class BloodTypingController extends Controller
             $t->created_dt = date('Y-m-d H:i:s');
             $t->save();
             
-            Component::whereDonationId($d['donation_id'])
-                ->update(['blood_type' => $d['abo'].' '.$d['rh']]);
+            // Component::whereDonationId($d['donation_id'])
+            //     ->update(['blood_type' => $d['abo'].' '.$d['rh']]);
 
         }
 
+        return 'Blood unit/s with Blood type/s has been successfully added.';
 
+        // return response()->json([
+        //     'message' => 'Blood Typing has been successfully added.',
+        //     'status' => 1
+        // ], 200);
 
     }
 

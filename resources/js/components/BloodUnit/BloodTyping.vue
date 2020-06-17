@@ -163,6 +163,29 @@
 
         <verifier-modal @setUname="setUname"></verifier-modal>
 
+        <!-- =============== MODALS ================ -->
+        <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
+        <b-modal v-model="showSuccessMsg" centered
+            title="SUCCESS"
+            header-bg-variant="success"
+            body-bg-variant="light" 
+            footer-bg-variant="success"
+            header-text-variant="light"
+            hide-header-close>
+            
+            <h5 class="alert-heading text-center">
+                <b-icon icon="person-check"></b-icon>&nbsp;Blood Typing entry has been successfully added!
+            </h5>
+            
+            <template v-slot:modal-footer="{ ok }">
+                <b-link class="btn btn-success"
+                    size="sm" variant="success" @click="ok()">
+                    OK
+                </b-link>
+            </template>
+        </b-modal>
+        <!-- =============== MODALS ================ -->
+
     </div>
 
 </template>
@@ -177,6 +200,7 @@ export default {
     },
     data(){
         return{
+            showSuccessMsg: false,
 
             fields: [
                 { key: 'donationId', label: 'Donation ID' },
@@ -225,6 +249,8 @@ export default {
     methods: {
         getDonationId (){
 
+            console.log(this.date_from + " " + this.date_to)
+
             axios
                 .post('/get-donation-id', {
                     date_from: this.date_from,
@@ -235,8 +261,9 @@ export default {
                     if(response.data){
                         this.donation_ids = response.data
                     } else{
-                        this.donation_ids = []
+                        this.donation_ids = null
                         this.select_id_notice = "No Data Found"
+                        this.data.length = ''
                     }
                     
                 })
@@ -287,11 +314,15 @@ export default {
                 .then(response => {
 
                     if(response.data){
-                        this.donation_ids = response.data
-                        this.getDonationId()
+                        // this.donation_ids = response.data
+                        this.showSuccessMsg = true
+                        this.data = []
+                        this.final_data = []
                     }
                     
                 })
+
+            this.getDonationId()
 
 
         }
