@@ -24,12 +24,13 @@ class VerifierController extends Controller
             );
         }
 
+
         $verifier_username =  User::whereUserId($username)
                                 ->wherePassword(md5($password))
                                 ->whereFacilityCd($facility_cd)
                                 ->whereDisableFlag('N')
                                 ->first();
-
+        
         if($verifier_username){
 
             return array(

@@ -201,6 +201,7 @@ export default {
     data(){
         return{
             showSuccessMsg: false,
+            isLoading: false,
 
             fields: [
                 { key: 'donationId', label: 'Donation ID' },
@@ -248,7 +249,7 @@ export default {
 
     methods: {
         getDonationId (){
-
+                       
             axios
                 .post('/get-donation-id', {
                     date_from: this.date_from,
@@ -258,6 +259,7 @@ export default {
 
                     if(response.data){
                         this.donation_ids = response.data
+                        this.isLoading = false
                     } else{
                         this.donation_ids = null
                         this.select_id_notice = "No Data Found"
@@ -314,6 +316,7 @@ export default {
                         // this.donation_ids = response.data
                         this.showSuccessMsg = true
                         this.checked = []
+                        
                     }
                     
                 })
@@ -330,6 +333,8 @@ export default {
 
     watch:{
         checked: function(val){
+            this.isLoading = true;
+            // console.log(this.isLoading)
 
             this.data = []
             this.final_data = []
@@ -338,6 +343,8 @@ export default {
                 this.data.splice(v,0,this.donation_ids[v])
                 this.final_data.splice(v,0,this.donation_ids[v])
             })
+
+            this.isLoading = false
 
         },
 
