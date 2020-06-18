@@ -250,7 +250,7 @@ export default {
 
     methods: {
         getDonationId (){
-                       
+               
             axios
                 .post('/get-donation-id', {
                     date_from: this.date_from,
@@ -334,7 +334,7 @@ export default {
 
     watch:{
         checked: function(val){
-            this.isLoading = true;
+            // this.isLoading = true;
             // console.log(this.isLoading)
 
             this.data = []
@@ -345,7 +345,7 @@ export default {
                 this.final_data.splice(v,0,this.donation_ids[v])
             })
 
-            this.isLoading = false
+            // this.isLoading = false
 
         },
 

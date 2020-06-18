@@ -73,6 +73,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 // Route::get('/donor-id', 'DonorController@create');
 
+// !!! REMEMBER TO PLACE THIS AT A CONTROLLER
 Route::get('{any}', function () {
     return view('layouts.app');
 })->where('any', '.*');
