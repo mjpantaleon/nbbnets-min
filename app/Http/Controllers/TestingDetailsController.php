@@ -63,5 +63,13 @@ class TestingDetailsController extends Controller
         } else{
             return false;
         }
+    } // getDonationId
+
+    public function save(Request $request){
+        $blood_testing = $request->get('blood_testing');
+        \Log::info($blood_testing);
+        
+
+        $separate_result = explode(" ",$blood_testing);
     }
 }

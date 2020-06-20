@@ -56,7 +56,7 @@
             </b-col>
         </b-row>
 
-         <b-alert show variant="danger" v-if="errMessage">{{ errMessage }}</b-alert>
+        <b-alert show variant="danger" v-if="errMessage"><h3>{{ errMessage }}</h3></b-alert>
 
         <b-row>
             <b-col cols="4">
@@ -181,13 +181,46 @@
 
         </b-row>
 
+        <!-- VERFIER MODAL POP-UP -->
+        <verifier-modal @setUname="setUname"></verifier-modal>
+
+        <!-- =============== MODALS ================ -->
+        <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
+        <b-modal v-model="showSuccessMsg" centered
+            title="SUCCESS"
+            header-bg-variant="success"
+            body-bg-variant="light" 
+            footer-bg-variant="success"
+            header-text-variant="light"
+            hide-header-close>
+            
+            <h5 class="alert-heading text-center">
+                <b-icon icon="person-check"></b-icon>&nbsp;Blood Testing result/s has been successfully saved!
+            </h5>
+            
+            <template v-slot:modal-footer="{ ok }">
+                <b-link class="btn btn-success"
+                    size="sm" variant="success" @click="ok()">
+                    OK
+                </b-link>
+            </template>
+        </b-modal>
+        <!-- =============== MODALS ================ -->
+
   </div>
 </template>
 
 <script>
+import VerifierModal from "../Tools/VerifierModal.vue";
+
 export default {
+    components: {
+        VerifierModal
+    },
     data(){
         return{
+            showSuccessMsg: false,
+
             fields: [
                 { key: 'donationId', label: 'Donation ID' },
                 { key: 'HBSAG', label: 'HepB' },
@@ -266,6 +299,8 @@ export default {
 
         },
 
+
+        // MODAL
         showModal(){
 
             var err
@@ -274,13 +309,56 @@ export default {
             err = this.checkError()
 
             if(err){
-                this.errMessage = 'Please fill up all fields'
+                this.errMessage = 'Please do not leave any blank inputs...'
             } else{
                 this.$bvModal.show('verifier-login')
                 // this.modalOpen = !this.modalOpen;
             }
 
         },
+
+        checkError(){
+
+            var err = false;
+
+            this.final_data.forEach((v) => {
+                if(v.HBSAG == "" || v.HCV == "" || v.HIV == "" || v.MALA == "" || v.RPR == ""){
+                    return err = true
+                }
+            })
+
+            return err
+
+        },
+
+        openModal() {
+            this.modalOpen = !this.modalOpen;
+        },
+
+        // LAST METHOD
+        setUname(e){
+
+            axios
+                .post('/save-blood-testing', {
+                    blood_testing: this.final_data,
+                    verifier: e,
+                })
+                .then(response => {
+
+                    if(response.data){
+                        // this.donation_ids = response.data
+                        this.showSuccessMsg = true
+                        this.checked = []
+                        
+                    }
+                    
+                })
+
+            this.getDonationId()
+
+        }
+
+        
     }, /* methods */
 
     computed: {
@@ -305,6 +383,27 @@ export default {
 
             // this.isLoading = false
 
+        },
+
+        checkAll: function(val){
+
+            if(val){
+                this.data = []
+                this.final_data = []
+
+                var checked_list = []
+
+                Object.keys(this.donation_ids).forEach(function (key){
+                    checked_list.splice(key,0,key)
+                })
+
+                this.checked = checked_list
+
+            } else{
+
+                this.checked = []
+
+            }
         },
     }, /* watch */
 }
