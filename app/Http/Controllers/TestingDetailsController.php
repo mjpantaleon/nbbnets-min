@@ -67,9 +67,9 @@ class TestingDetailsController extends Controller
 
     public function save(Request $request){
         $blood_testing = $request->get('blood_testing');
-        \Log::info($blood_testing);
         
-
-        $separate_result = explode(" ",$blood_testing);
+        \Log::info($donation_ids_arr);
     }
+
+    
 }
