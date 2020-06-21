@@ -54,14 +54,19 @@ Route::group(['middleware' => ['auth']], function () {
     // ---------------- BLOOD UNIT ------------------------ //
     // BLOOD TESTING
     Route::post('/get-donation-id-testing-details', 'TestingDetailsController@getDonationId');
+    Route::post('/save-blood-testing', 'TestingDetailsController@save');
 
     //BLOOD TYPING
     Route::post('/get-donation-id', 'BloodTypingController@getDonationId');
     Route::post('/save-blood-typing', 'BloodTypingController@save');
 
-    //BLOOD TYPING
+    //BLOOD PROCESSING
     Route::post('/get-donation-id-processing', 'BloodProcessingController@getDonationId');
     Route::post('/save-blood-processing', 'BloodProcessingController@save');
+
+    //BLOOD LABELLING
+    Route::post('/get-donation-id-labelling', 'BloodLabellingController@getDonationId');
+    Route::post('/save-blood-labelling', 'BloodLabellingController@save');
 
     // Route::get('/getUserInfo', function () {
     //     return \Session::get('userInfo');

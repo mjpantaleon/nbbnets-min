@@ -9,13 +9,13 @@
                     </b-breadcrumb-item>
                     <b-breadcrumb-item active>
                         <!-- <b-icon icon="person-plus"></b-icon>  -->
-                        Blood Typing
+                        Blood Processing
                     </b-breadcrumb-item>
                 </b-breadcrumb>
           </b-col>
         </b-row>
 
-        <h4><b-icon icon="file-text"></b-icon> Blood Typing</h4>
+        <h4><b-icon icon="file-text"></b-icon> Blood Processing</h4>
         <hr>
 
         <b-row>
@@ -121,12 +121,24 @@
                                     {{ data.item.donation_id }}
                                 </template>
 
-                                <template v-slot:cell(abo)="data">
-                                    <b-form-select :name="'abo-' + data.item.donation_id" v-model="final_data[data.index]['abo']" :options="abo" size="sm"></b-form-select>
+                                <template v-slot:cell(plasma)="data">
+                                    <b-form-input v-model="final_data[data.index]['plasma']" :name="'plasma-' + data.item.donation_id" size="sm"></b-form-input>
                                 </template>
 
-                                <template v-slot:cell(rhType)="data">
-                                    <b-form-select :name="'rh-' + data.item.donation_id" v-model="final_data[data.index]['rh']" :options="rhType" size="sm"></b-form-select>
+                                <template v-slot:cell(platelets)="data">
+                                    <b-form-input v-model="final_data[data.index]['platelets']" :name="'platelets-' + data.item.donation_id" size="sm"></b-form-input>
+                                </template>
+
+                                <template v-slot:cell(redcell)="data">
+                                    <b-form-input v-model="final_data[data.index]['redcell']" :name="'redcell-' + data.item.donation_id" size="sm"></b-form-input>
+                                </template>
+
+                                <template v-slot:cell(whiteblood)="data">
+                                    <b-form-input v-model="final_data[data.index]['whiteblood']" :name="'whiteblood-' + data.item.donation_id" size="sm"></b-form-input>
+                                </template>
+
+                                <template v-slot:cell(stemcell)="data">
+                                    <b-form-input v-model="final_data[data.index]['stemcell']" :name="'stemcell-' + data.item.donation_id" size="sm"></b-form-input>
                                 </template>
  
                             </b-table>
@@ -203,21 +215,14 @@ export default {
             showSuccessMsg: false,
 
             fields: [
-                { key: 'donationId', label: 'Donation ID' },
-                { key: 'abo', label: 'ABO' },
-                { key: 'rhType', label: 'RH Type' },
+                { key: 'donationId', label: 'Donation ID'},
+                { key: 'plasma', label: 'Plasma', thClass: 'text-center', tdClass: 'text-center' },
+                { key: 'platelets', label: 'Platelets', thClass: 'text-center', tdClass: 'text-center' },
+                { key: 'redcell', label: 'Red Cell', thClass: 'text-center', tdClass: 'text-center' },
+                { key: 'whiteblood', label: 'White Blood Cell', thClass: 'text-center', tdClass: 'text-center' },
+                { key: 'stemcell', label: 'Stem Cell', thClass: 'text-center', tdClass: 'text-center' },
             ],
 
-            abo: [
-                { text: 'A', value: 'A' },
-                { text: 'B', value: 'B' },
-                { text: 'AB', value: 'AB' },
-                { text: 'O', value: 'O' },
-            ],
-            rhType: [
-                { text: 'Positive', value: 'Pos' },
-                { text: 'Negative', value: 'Neg' },
-            ],
             data: [],
             isLoading: false,
 
@@ -250,7 +255,7 @@ export default {
         getDonationId (){
 
             axios
-                .post('/get-donation-id', {
+                .post('/get-donation-id-processing', {
                     date_from: this.date_from,
                     date_to: this.date_to,
                 })
@@ -269,33 +274,35 @@ export default {
 
         showModal(){
 
-            var err
-            this.errMessage = ''
+            // var err
+            // this.errMessage = ''
 
-            err = this.checkError()
+            // err = this.checkError()
 
-            if(err){
-                this.errMessage = 'Please fill up all fields'
-            } else{
+            console.log(this.final_data)
+
+            // if(err){
+            //     this.errMessage = 'Please fill up all fields'
+            // } else{
                 this.$bvModal.show('verifier-login')
                 // this.modalOpen = !this.modalOpen;
-            }
+            // }
 
         },
 
-        checkError(){
+        // checkError(){
 
-            var err = false;
+        //     var err = false;
 
-            this.final_data.forEach((v) => {
-                if(v.abo == "" || v.rh == ""){
-                    return err = true
-                }
-            })
+        //     this.final_data.forEach((v) => {
+        //         if(v.plasma == "" || v.platelets == "" || v.redcell == "" || v.whiteblood == "" || v.stemcell == ""){
+        //             return err = true
+        //         }
+        //     })
 
-            return err
+        //     return err
 
-        },
+        // },
 
         openModal() {
             this.modalOpen = !this.modalOpen;
@@ -304,8 +311,8 @@ export default {
         setUname(e){
 
             axios
-                .post('/save-blood-typing', {
-                    blood_typing: this.final_data,
+                .post('/save-blood-processing', {
+                    blood_processing: this.final_data,
                     verifier: e,
                 })
                 .then(response => {
@@ -341,7 +348,7 @@ export default {
 
         },
 
-        data: function(val){
+        final_data: function(val){
             
         },
 
@@ -365,10 +372,6 @@ export default {
 
             }
         },
-
-        verifierUsername: function(val){
-
-        }
         
     }
 }
