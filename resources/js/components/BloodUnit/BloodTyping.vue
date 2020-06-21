@@ -334,8 +334,8 @@ export default {
 
     watch:{
         checked: function(val){
-            // this.isLoading = true;
-            // console.log(this.isLoading)
+            this.isLoading = true;
+            console.log(this.isLoading)
 
             this.data = []
             this.final_data = []
@@ -345,7 +345,7 @@ export default {
                 this.final_data.splice(v,0,this.donation_ids[v])
             })
 
-            // this.isLoading = false
+            this.isLoading = false
 
         },
 
