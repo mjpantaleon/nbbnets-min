@@ -18,7 +18,15 @@ class BloodLabellingController extends Controller
         $sched_id       = 'Walk-in';
         $col_stat       = 'COL';
 
-        $donation = Donation::select('donation_id')
+        // $donation = Donation::with('type','labels','processing','test','additionaltest','units','donor_min')
+        //                     ->whereNotNull('donation_id')
+        //                     ->whereFacilityCd($facility_cd)
+        //                     ->whereSchedId($sched_id)
+        //                     ->whereBetween('created_dt', [$from, $to])
+        //                     ->where('collection_stat', $col_stat)
+        //                     ->get();
+
+        $donation = Donation::with('type','labels','test','additionaltest','units','donor_min')
                             ->whereNotNull('donation_id')
                             ->whereFacilityCd($facility_cd)
                             ->whereSchedId($sched_id)
