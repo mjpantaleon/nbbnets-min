@@ -9,6 +9,7 @@ use App\Component;
 use Session;
 use DB;
 use PDO;
+use Carbon\Carbon;
 
 class BloodTypingController extends Controller
 {
@@ -69,24 +70,42 @@ class BloodTypingController extends Controller
         $verifier       = $request->get('verifier');
         $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
         $user_id        = Session::get('userInfo')['user_id'];
+
+        $bloodtyping_arr = [];
  
         foreach($blood_typing as $d){
 
-            $t = new BloodTyping;
-            $t->bloodtyping_no = BloodTyping::generateNo($facility_cd);
-            $t->facility_cd = $facility_cd;
-            $t->bloodtyping_dt = date('Y-m-d H:i:s');
-            $t->donation_id = $d['donation_id'];
-            $t->blood_type = $d['abo'].' '.$d['rh'];
-            $t->reviewed_endorsed_by = $verifier;
-            $t->created_by = $user_id;
-            $t->created_dt = date('Y-m-d H:i:s');
-            $t->save();
+            // $bloodtyping_arr[] = array(
+            //     'facility_cd'           => $facility_cd,
+            //     'bloodtyping_dt'        => date('Y-m-d H:i:s'),
+            //     'donation_id'           => $d['donation_id'],
+            //     'blood_type'            => $d['abo'].' '.$d['rh'],
+            //     'reviewed_endorsed_by'  => $verifier,
+            //     'created_by'            => $user_id,
+            //     'created_dt'            => date('Y-m-d H:i:s'),
+            // );
+
+            $bloodtype = new BloodTyping;
+            // $bloodtype->bloodtyping_no = BloodTyping::generateNo($facility_cd);
+            $bloodtype->facility_cd = $facility_cd;
+            $bloodtype->bloodtyping_dt = date('Y-m-d H:i:s');
+            $bloodtype->donation_id = $d['donation_id'];
+            $bloodtype->blood_type = $d['abo'].' '.$d['rh'];
+            $bloodtype->reviewed_endorsed_by = $verifier;
+            $bloodtype->created_by = $user_id;
+            $bloodtype->created_dt = date('Y-m-d H:i:s');
+            $res = $bloodtype->save();
+
+            \Log::info($res);
             
-            // Component::whereDonationId($d['donation_id'])
-            //     ->update(['blood_type' => $d['abo'].' '.$d['rh']]);
+            $res2 = Component::whereDonationId($d['donation_id'])
+                ->update(['blood_type' => $d['abo'].' '.$d['rh']]);
+
+            \Log::info($res2);
 
         }
+
+        // return $status;
 
         return 'Blood unit/s with Blood type/s has been successfully added.';
 
