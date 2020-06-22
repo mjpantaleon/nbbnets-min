@@ -176,7 +176,7 @@
             hide-header-close>
             
             <h5 class="alert-heading text-center">
-                <b-icon icon="person-check"></b-icon>&nbsp;Blood Typing entry has been successfully added!
+                <b-icon icon="person-check"></b-icon>&nbsp;Blood Typing result/s has been successfully added!
             </h5>
             
             <template v-slot:modal-footer="{ ok }">
@@ -337,7 +337,7 @@ export default {
             this.isLoading = true;
             console.log(this.isLoading)
 
-            this.data = []
+            this.data = []  
             this.final_data = []
 
             val.forEach((v) => {
