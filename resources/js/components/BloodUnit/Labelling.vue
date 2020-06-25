@@ -84,74 +84,91 @@
                                     {{ data.item.donation_id }}
                                 </template>
                                 <template v-slot:cell(donor)="data">
-                                    Done, PENDING 
+                                    <span v-if="data.item.donor_min">Done</span>
+                                    <span v-else class="text-danger">PENDING</span>
                                 </template>
 
                                 <template v-slot:cell(bloodtype)="data">
-                                    A pos, PENDING
+                                    <span v-if="data.item.type">{{ data.item.type.blood_type }}</span> 
+                                    <span v-else class="text-danger">PENDING</span>
                                 </template>
 
                                 <template v-slot:cell(bloodtest)="data">
-                                    NR, REA, PENDING
+                                    <!-- {{ hasAdditionalTest(data.item) }} -->
+                                    <!-- <span v-if="data.item.test && hasAdditionalTest(data.item)">
+                                        <span class="text-success" v-if="data.item.test.result == 'N'">NR</span>
+                                        <span class="text-danger" v-if="data.item.test.result == 'R'">R</span>
+                                    </span>
+                                    <span v-if="!data.item.test || !hasAdditionalTest(data.item)" class="text-danger">PENDING</span> -->
+                                    <span v-if="data.item.test && hasAdditionalTest(data.item) == false">
+                                        <span class="text-success" v-if="data.item.test.result == 'N'">NR</span>
+                                        <span class="text-danger" v-if="data.item.test.result == 'R'">R</span>
+                                    </span>
+                                    <span v-else class="text-danger">PENDING</span>
                                 </template>
 
                                 <template v-slot:cell(plasma)="data">
+                                    <!-- {{ data.item.units }} -->
                                     <b-form-checkbox
+                                        v-if="data.item.units.plasma"
                                         v-model="checked"
-                                        :value="key"
+                                        :value="'plasma-' + data.item.donation_id"
                                         unchecked-value="0"
+                                        :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                        class="text-center"
                                         >
                                     </b-form-checkbox>
                                 </template>
 
                                 <template v-slot:cell(platelets)="data">
                                     <b-form-checkbox
+                                        v-if="data.item.units.platelets"
                                         v-model="checked"
-                                        :value="key"
+                                        :value="'platelets-' + data.item.donation_id"
                                         unchecked-value="0"
+                                        :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
                                         >
                                     </b-form-checkbox>                                    
                                 </template>
 
                                 <template v-slot:cell(redcell)="data">
                                     <b-form-checkbox
+                                        v-if="data.item.units.red_cell"
                                         v-model="checked"
-                                        :value="key"
+                                        :value="'redcell-' + data.item.donation_id"
                                         unchecked-value="0"
+                                        :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
                                         >
                                     </b-form-checkbox>                                    
                                 </template>
 
                                 <template v-slot:cell(whiteblood)="data">
                                     <b-form-checkbox
+                                        v-if="data.item.units.white_blood_cell"
                                         v-model="checked"
-                                        :value="key"
+                                        :value="'whiteblood-' + data.item.donation_id"
                                         unchecked-value="0"
+                                        :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
                                         >
                                     </b-form-checkbox>                                    
                                 </template>
 
                                 <template v-slot:cell(stemcell)="data">
                                     <b-form-checkbox
+                                        v-if="data.item.units.stem_cell"
                                         v-model="checked"
-                                        :value="key"
+                                        :value="'stemcell-' + data.item.donation_id"
                                         unchecked-value="0"
+                                        :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
                                         >
                                     </b-form-checkbox>                                    
                                 </template>
  
                             </b-table>
 
-                            <!-- <b-pagination
-                                v-model="currentPage"
-                                :total-rows="rows"
-                                :per-page="perPage"
-                                aria-controls="main-table">
-                            </b-pagination> -->
-
                             <b-row>
                                 <b-col class="text-right">
-                                    <b-button variant="success" @click="showModal">Submit</b-button>
+                                    <b-button variant="success" @click="proceed()">Submit</b-button>
                                     <b-button variant="danger">Cancel</b-button>
                                 </b-col>
                             </b-row>
@@ -172,7 +189,7 @@
 
         </b-row>
 
-        <verifier-modal @setUname="setUname"></verifier-modal>
+        <donation-id-modal @fromModalId="fromModalId" :item="lastChecked"></donation-id-modal>
 
         <!-- =============== MODALS ================ -->
         <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
@@ -203,11 +220,11 @@
 
 <script>
 
-import VerifierModal from "../Tools/VerifierModal.vue";
+import DonationIdModal from "../Tools/DonationIdModal.vue";
 
 export default {
     components: {
-        VerifierModal
+        DonationIdModal
     },
     data(){
         return{
@@ -244,6 +261,9 @@ export default {
             currentPage: 1,
 
             errMessage: '',
+            key: '',
+            lastChecked: '',
+            prev_checked: [],
             
 
         }
@@ -264,7 +284,11 @@ export default {
                 .then(response => {
 
                     if(response.data){
-                        this.data = response.data
+                        this.data = response.data.data
+                        // this.checked = response.data.checked
+                        // console.log()
+
+
                     } else{
                         this.data = null
                         // this.select_id_notice = "No Data Found"
@@ -274,62 +298,75 @@ export default {
 
         },
 
-        showModal(){
-
-            // var err
-            // this.errMessage = ''
-
-            // err = this.checkError()
-
-            console.log(this.final_data)
-
-            // if(err){
-            //     this.errMessage = 'Please fill up all fields'
-            // } else{
-                this.$bvModal.show('verifier-login')
-                // this.modalOpen = !this.modalOpen;
-            // }
-
-        },
-
-        // checkError(){
-
-        //     var err = false;
-
-        //     this.final_data.forEach((v) => {
-        //         if(v.plasma == "" || v.platelets == "" || v.redcell == "" || v.whiteblood == "" || v.stemcell == ""){
-        //             return err = true
-        //         }
-        //     })
-
-        //     return err
-
-        // },
-
         openModal() {
             this.modalOpen = !this.modalOpen;
         },
 
-        setUname(e){
+        // setUname(e){
 
-            axios
-                .post('/save-blood-processing', {
-                    blood_processing: this.final_data,
-                    verifier: e,
-                })
-                .then(response => {
+        //     axios
+        //         .post('/save-blood-processing', {
+        //             blood_processing: this.final_data,
+        //             verifier: e,
+        //         })
+        //         .then(response => {
 
-                    if(response.data){
-                        // this.donation_ids = response.data
-                        this.showSuccessMsg = true
-                        this.checked = []
-                    }
+        //             if(response.data){
+        //                 // this.donation_ids = response.data
+        //                 this.showSuccessMsg = true
+        //                 this.checked = []
+        //             }
                     
-                })
+        //         })
 
-            this.getDonationId()
+        //     this.getDonationId()
 
-        }
+        // },
+
+        hasAdditionalTest(d){
+
+            if(!d.additionaltest){
+                return false
+            }else{
+            //   if(d.additionaltest.nat != null && d.additionaltest.antibody != null){
+                if(d.additionaltest.nat  && d.additionaltest.antibody){
+                    return true
+                }else{
+                    return false
+                }
+            }
+        },
+
+        proceed(){
+
+        },
+
+        fromModalId(data){
+
+            if(data[1]){
+                console.log('TRUE')
+            } else{
+                this.deleteChecked(data[0])
+                console.log('FALSE')
+            }
+            
+        },
+
+        deleteChecked(data){
+
+            var index = this.prev_checked.indexOf(data);
+
+            if (index >= 0) {
+                this.prev_checked.splice( index, 1 );
+            }
+
+            var index = this.checked.indexOf(data);
+
+            if (index >= 0) {
+                this.checked.splice( index, 1 );
+            }
+
+        },
 
     }, /* methods */
 
@@ -338,42 +375,70 @@ export default {
     }, /* computed */
 
     watch:{
-        // checked: function(val){
 
-        //     this.data = []
-        //     this.final_data = []
+        checked: function(val){
 
-        //     val.forEach((v) => {
-        //         this.data.splice(v,0,this.donation_ids[v])
-        //         this.final_data.splice(v,0,this.donation_ids[v])
-        //     })
+            //check if this.checked has an added check or removed check
 
-        // },
+            // if(this.prev_checked.length == 0){
 
-        // final_data: function(val){
+            //     this.prev_checked = val
+            //     this.lastChecked = val[0]
+            //     this.$bvModal.show('verifier-id')
+
+            // } else 
             
-        // },
+            if(val.length > this.prev_checked.length){  // Added check
 
-        // checkAll: function(val){
+                for (let i = 0; i < val.length; i++) {
+                    if(this.prev_checked.includes(val[i])){
+                        continue;
+                    } else{
+                        this.lastChecked = val[i]
+                        this.prev_checked = val
+                        break;
+                    }
+                }
 
-        //     if(val){
-        //         this.data = []
-        //         this.final_data = []
+                this.$bvModal.show('verifier-id')
 
-        //         var checked_list = []
 
-        //         Object.keys(this.donation_ids).forEach(function (key){
-        //             checked_list.splice(key,0,key)
-        //         })
+            } else{ // Removed check
 
-        //         this.checked = checked_list
+                 for (let i = 0; i < this.prev_checked.length; i++) {
+                    if(val.includes(this.prev_checked[i])){
+                        continue;
+                    } else{
+                        this.deleteChecked(this.prev_checked[i])
+                        break;
+                    }
+                }               
 
-        //     } else{
 
-        //         this.checked = []
+            }
 
-        //     }
-        // },
+            // if(this.prev_checked.length){
+
+            //     for (let i = 0; i < val.length; i++) {
+            //         if(this.prev_checked.includes(val[i])){
+            //             continue;
+            //         } else{
+            //             this.lastChecked = val[i]
+            //             this.prev_checked = val
+            //             break;
+            //         }
+            //     }
+
+            //     this.$bvModal.show('verifier-id')
+
+            // } else{
+
+            // }
+
+            // var last = this.lastChecked.split("-")
+            // console.log(this.checked[0])
+
+        },
         
     }
 }
