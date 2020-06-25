@@ -68,25 +68,103 @@ class TestingDetailsController extends Controller
         }
     } // getDonationId
 
-    public function save(Request $request){
-        $blood_testing = $request->get('blood_testing');
-        $verifier      = $request->get('verifier');
+    // public function save(Request $request){
+    //     $blood_testing = $request->get('blood_testing');
+    //     $verifier      = $request->get('verifier');
 
-        $facility_user = Session::get('userInfo')['user_id'];
+    //     $facility_user = Session::get('userInfo')['user_id'];
+    //     $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
+    //     $exams = Exam::whereDisableFlg('N')->pluck('exam_name','exam_cd');
+
+    //     foreach($blood_testing as $d){
+    //         $bloodtest_no = Testing::generateNo($facility_cd);
+    //         $t = new Testing;
+    //         $t->facility_cd = $facility_cd;
+    //         $t->bloodtest_no = $bloodtest_no;
+    //         $t->bloodtest_dt = date('Y-m-d H:i:s');
+    //         $t->donation_id = $d['donation_id'];
+
+    //         $fail = 0;
+    //         foreach($exams as $exam_cd => $exam_name){
+    //             if(strtoupper($d[$exam_cd]) == 'R'){
+    //                 $fail++;
+    //             }
+    //         }
+
+    //         $t->result = $fail ? 'R' : 'N';
+    //         $t->created_by = $facility_user;
+    //         $t->created_dt = date('Y-m-d H:i:s');
+    //         $t->updated_by = $verifier;
+
+    //         $t->save();
+
+    //         foreach($exams as $exam_cd => $exam_name){
+    //             $t2 = new TestingDetails;
+    //             $t2->bloodtest_no = $bloodtest_no;
+    //             $t2->donation_id = $d['donation_id'];
+    //             $t2->exam_cd = $exam_cd;
+    //             $t2->result_int = $d[$exam_cd] == 'r' ? 'r' : 'n';
+    //             $t2->created_by = $facility_user;
+    //             $t2->created_dt = date('Y-m-d H:i:s');
+    //             $t2->save();
+    //         }
+
+    //         if($fail){
+    //             FlagReactiveController::flagReactive($d['donation_id']);
+    //         }else{
+    //             FlagReactiveController::flagNonReactive($d['donation_id'],$facility_cd);
+    //         }
+
+    //     }
+    //     return response('Testing Details has been saved.', 200);
+    // } // save
+
+    public function addResult(Request $request, $id){
+        $facility_user  = Session::get('userInfo')['user_id'];
         $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
-        $exams = Exam::whereDisableFlg('N')->pluck('exam_name','exam_cd');
 
-        foreach($blood_testing as $d){
-            $bloodtest_no = Testing::generateNo($facility_cd);
+        $donor_sn       = $request->get('donor_sn');
+        $verifier       = $request->get('verifier');
+        
+        $exams = Exam::whereDisableFlg('N')->pluck('exam_name','exam_cd');
+        // \Log::info($exams);
+
+        $donation_id    = $request['donation_id'];
+        $TTI = [
+            'HBSAG'          => $request['HBSAG'],
+            'HCV'            => $request['HCV'],
+            'HIV'            => $request['HIV'],
+            'MALA'           => $request['MALA'],
+            'RPR'            => $request['RPR']
+        ];
+        
+        $bloodtest_no = Testing::generateNo($facility_cd);
+
+        // check first if donationID already exists
+        $check_donation_id = TestingDetails::where('donation_id', '=', $donation_id)->first();
+        
+        if($check_donation_id === null){
+            foreach($TTI as $key => $value){
+                $t2 = new TestingDetails;
+                $t2->bloodtest_no = $bloodtest_no;
+                $t2->donation_id = $donation_id;
+                $t2->exam_cd = $key;
+                $t2->result_int = $value == 'n' ? 'n' : 'r';
+                $t2->created_by = $facility_user;
+                $t2->created_dt = date('Y-m-d H:i:s');
+                $t2->save();
+            }
+
             $t = new Testing;
             $t->facility_cd = $facility_cd;
             $t->bloodtest_no = $bloodtest_no;
             $t->bloodtest_dt = date('Y-m-d H:i:s');
-            $t->donation_id = $d['donation_id'];
+            $t->donation_id = $donation_id;
 
             $fail = 0;
-            foreach($exams as $exam_cd => $exam_name){
-                if(strtoupper($d[$exam_cd]) == 'R'){
+            foreach($TTI as $key => $value){
+                if(strtoupper($value) == 'R'){
+                    \Log::info($key);
                     $fail++;
                 }
             }
@@ -95,29 +173,27 @@ class TestingDetailsController extends Controller
             $t->created_by = $facility_user;
             $t->created_dt = date('Y-m-d H:i:s');
             $t->updated_by = $verifier;
-
             $t->save();
 
-            foreach($exams as $exam_cd => $exam_name){
-                $t2 = new TestingDetails;
-                $t2->bloodtest_no = $bloodtest_no;
-                $t2->donation_id = $d['donation_id'];
-                $t2->exam_cd = $exam_cd;
-                $t2->result_int = $d[$exam_cd] == 'r' ? 'r' : 'n';
-                $t2->created_by = $facility_user;
-                $t2->created_dt = date('Y-m-d H:i:s');
-                $t2->save();
-            }
 
-            if($fail){
-                FlagReactiveController::flagReactive($d['donation_id']);
-            }else{
-                FlagReactiveController::flagNonReactive($d['donation_id'],$facility_cd);
-            }
-
+    
+            return response()->json([
+                'message' => 'Testing Details has been saved.',
+                'status' => 1
+            ], 200);
         }
-        return response('Testing Details has been saved.', 200);
-    } // save
+
+        else{
+            
+            // return response('This donation ID already exists!', 200);
+            return response()->json([
+                'message' => 'This donation ID already exists!',
+                'status' => 0
+            ], 200);
+        }
+    }
+
+    
     
             
             // foreach($blood_testing as $d){

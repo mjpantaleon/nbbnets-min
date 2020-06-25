@@ -14,7 +14,7 @@ use Carbon;
 class PreScreenedDonorController extends Controller
 {
     public function index(){
-        $query = "  SELECT id, first_name, middle_name, last_name, name_suffix, gender, 
+        $query = "  SELECT id, donor_sn, first_name, middle_name, last_name, name_suffix, gender, 
                     bdate, address, created_dt, status
                     FROM `pre_screened_donors` ORDER BY `created_dt` DESC ";
         $pre_screened_donors = DB::select($query);

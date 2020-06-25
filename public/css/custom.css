@@ -1,5 +1,6 @@
 .main-div {
     padding-bottom: 50px;
+    min-height: 550px;
 }
 
 #app{
