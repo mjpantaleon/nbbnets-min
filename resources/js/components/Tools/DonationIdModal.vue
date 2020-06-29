@@ -41,6 +41,7 @@
             return{
                 donationId: '',
                 errCredentials: '',
+                modalHide: true,
             }
         },
 
@@ -49,14 +50,25 @@
         }, /* computed */
 
         mounted(){
+            this.$root.$on('bv::modal::show', (bvEvent, modalId) => {
+                if(modalId == 'verifier-id'){
+                    this.donationId = ''
+                    this.errCredentials = ''
+                }
+            })
+            this.$root.$on('bv::modal::shown', (bvEvent, modalId) => {
+                if(modalId == 'verifier-id'){
+                    this.modalHide = false
+                }
+            })
 
         }, /* mounted */
 
         methods: {
 
             cancelModal(){
-                this.$emit('fromModalId', [this.item, false])
                 this.$bvModal.hide('verifier-id')
+                this.$emit('fromModalId', [this.item, false])
             },
 
         },
@@ -69,16 +81,17 @@
 
                 var id = this.item.split("-")
 
-                console.log(id[1])
-                console.log(this.donationId)
-                console.log(this.errCredentials)
-
-                if(this.donationId == id[1]){
-                    this.$emit('fromModalId', [this.item, true])
-                    this.$forceUpdate()
-                    this.$bvModal.hide('verifier-id')
+                if(this.donationId && this.modalHide == false){
+                    if(this.donationId == id[1]){
+                        this.$emit('fromModalId', [this.item, true])
+                        this.modalHide = true
+                        this.$bvModal.hide('verifier-id')
+                    } else{
+                        this.errCredentials = 'Donation ID did not match'
+                    }
                 } else{
-                    this.errCredentials = 'Donation ID did not match'
+                    this.donationId = ''
+                    this.errCredentials = ''
                 }
 
             }

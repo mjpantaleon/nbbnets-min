@@ -112,7 +112,7 @@
                                     <b-form-checkbox
                                         v-if="data.item.units.plasma"
                                         v-model="checked"
-                                        :value="'plasma-' + data.item.donation_id"
+                                        :value="'80-' + data.item.donation_id"
                                         unchecked-value="0"
                                         :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
                                         class="text-center"
@@ -124,7 +124,7 @@
                                     <b-form-checkbox
                                         v-if="data.item.units.platelets"
                                         v-model="checked"
-                                        :value="'platelets-' + data.item.donation_id"
+                                        :value="'81-' + data.item.donation_id"
                                         unchecked-value="0"
                                         :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
                                         >
@@ -135,7 +135,7 @@
                                     <b-form-checkbox
                                         v-if="data.item.units.red_cell"
                                         v-model="checked"
-                                        :value="'redcell-' + data.item.donation_id"
+                                        :value="'82-' + data.item.donation_id"
                                         unchecked-value="0"
                                         :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
                                         >
@@ -146,7 +146,7 @@
                                     <b-form-checkbox
                                         v-if="data.item.units.white_blood_cell"
                                         v-model="checked"
-                                        :value="'whiteblood-' + data.item.donation_id"
+                                        :value="'83-' + data.item.donation_id"
                                         unchecked-value="0"
                                         :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
                                         >
@@ -157,7 +157,7 @@
                                     <b-form-checkbox
                                         v-if="data.item.units.stem_cell"
                                         v-model="checked"
-                                        :value="'stemcell-' + data.item.donation_id"
+                                        :value="'84-' + data.item.donation_id"
                                         unchecked-value="0"
                                         :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
                                         >
@@ -190,6 +190,7 @@
         </b-row>
 
         <donation-id-modal @fromModalId="fromModalId" :item="lastChecked"></donation-id-modal>
+        <preview-modal :data="previewData"></preview-modal>
 
         <!-- =============== MODALS ================ -->
         <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
@@ -221,10 +222,12 @@
 <script>
 
 import DonationIdModal from "../Tools/DonationIdModal.vue";
+import PreviewModal from "../Tools/PreviewModal.vue";
 
 export default {
     components: {
-        DonationIdModal
+        DonationIdModal,
+        PreviewModal
     },
     data(){
         return{
@@ -263,6 +266,7 @@ export default {
             errMessage: '',
             key: '',
             lastChecked: '',
+            previewData: '',
             prev_checked: [],
             
 
@@ -298,31 +302,6 @@ export default {
 
         },
 
-        openModal() {
-            this.modalOpen = !this.modalOpen;
-        },
-
-        // setUname(e){
-
-        //     axios
-        //         .post('/save-blood-processing', {
-        //             blood_processing: this.final_data,
-        //             verifier: e,
-        //         })
-        //         .then(response => {
-
-        //             if(response.data){
-        //                 // this.donation_ids = response.data
-        //                 this.showSuccessMsg = true
-        //                 this.checked = []
-        //             }
-                    
-        //         })
-
-        //     this.getDonationId()
-
-        // },
-
         hasAdditionalTest(d){
 
             if(!d.additionaltest){
@@ -344,10 +323,24 @@ export default {
         fromModalId(data){
 
             if(data[1]){
-                console.log('TRUE')
+
+                this.printBloodBagLabel(data[0]);
+
+                // display preview
+
+                // this.previewData = data[0]
+
+                // let url =  'http://'+window.location.host+window.location.pathname+'label?facility_cd='+facility_cd+'&donation_id='+donation_id+'&component_cd='+component_cd;
+                // let url =  'http://'+window.location.host+'/preview?data='+data[0];
+
+                // let winname = window.open(url,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=375,height=270');
+                // winname.onload = () => {
+                //     // winname.print();
+                //     winname.close();
+                // };
+
             } else{
                 this.deleteChecked(data[0])
-                console.log('FALSE')
             }
             
         },
@@ -378,16 +371,6 @@ export default {
 
         checked: function(val){
 
-            //check if this.checked has an added check or removed check
-
-            // if(this.prev_checked.length == 0){
-
-            //     this.prev_checked = val
-            //     this.lastChecked = val[0]
-            //     this.$bvModal.show('verifier-id')
-
-            // } else 
-            
             if(val.length > this.prev_checked.length){  // Added check
 
                 for (let i = 0; i < val.length; i++) {
@@ -396,6 +379,7 @@ export default {
                     } else{
                         this.lastChecked = val[i]
                         this.prev_checked = val
+                        // this.last
                         break;
                     }
                 }
@@ -416,27 +400,6 @@ export default {
 
 
             }
-
-            // if(this.prev_checked.length){
-
-            //     for (let i = 0; i < val.length; i++) {
-            //         if(this.prev_checked.includes(val[i])){
-            //             continue;
-            //         } else{
-            //             this.lastChecked = val[i]
-            //             this.prev_checked = val
-            //             break;
-            //         }
-            //     }
-
-            //     this.$bvModal.show('verifier-id')
-
-            // } else{
-
-            // }
-
-            // var last = this.lastChecked.split("-")
-            // console.log(this.checked[0])
 
         },
         
