@@ -102,11 +102,11 @@
 
                                 <template v-slot:cell(plasma)="data">
                                     <div v-if="data.item.units.plasma"> 
-                                        <div v-if="data.item.units.has80">
+                                        <!-- <div v-if="data.item.units.has82">
                                             <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
-                                        </div>
+                                        </div> -->
                                         <b-form-checkbox
-                                            v-else
+                                            v-if="data.item.units.plasma"
                                             v-model="checked"
                                             :value="'80-' + data.item.donation_id"
                                             unchecked-value="0"
@@ -114,72 +114,76 @@
                                             class="text-center"
                                             >
                                         </b-form-checkbox>
+                                        <div v-else>
+                                            <b-icon :icon="bvicon" class="h5 rounded"></b-icon>
+                                        </div>
                                     </div>
 
                                 </template>
 
                                 <template v-slot:cell(platelets)="data">
                                     <div v-if="data.item.units.platelets"> 
-                                        <div v-if="data.item.units.has81">
-                                            <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
-                                        </div>
                                         <b-form-checkbox
-                                            v-else
+                                            v-if="data.item.units.has81"
                                             v-model="checked"
                                             :value="'81-' + data.item.donation_id"
                                             unchecked-value="0"
                                             :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
                                             >
                                         </b-form-checkbox>
+                                        <div v-else>
+                                            <b-icon :icon="bvicon" class="h5 rounded"></b-icon>
+                                        </div>
                                     </div>                                   
                                 </template>
 
                                 <template v-slot:cell(redcell)="data">
                                     <div v-if="data.item.units.red_cell"> 
-                                        <div v-if="data.item.units.has82">
-                                            <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
-                                        </div>
                                         <b-form-checkbox
-                                            v-else
+                                            v-if="data.item.units.has82"
                                             v-model="checked"
                                             :value="'82-' + data.item.donation_id"
                                             unchecked-value="0"
                                             :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
                                             >
                                         </b-form-checkbox>
+                                        <div v-else>
+                                            <b-icon :icon="bvicon" class="h5 rounded"></b-icon>
+                                        </div>
                                     </div>                                  
                                 </template>
 
                                 <template v-slot:cell(whiteblood)="data">
                                     <div v-if="data.item.units.white_blood_cell">
-                                        <div v-if="data.item.units.has83">
-                                            <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
-                                        </div>
                                         <b-form-checkbox
-                                            v-else
+                                            v-if="data.item.units.has83"
                                             v-model="checked"
                                             :value="'83-' + data.item.donation_id"
                                             unchecked-value="0"
                                             :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
                                             >
                                         </b-form-checkbox>
+                                        <div v-else>
+                                            <b-icon :icon="bvicon" class="h5 rounded"></b-icon>
+                                        </div>
                                     </div>                                
                                 </template>
 
                                 <template v-slot:cell(stemcell)="data">
                                     <div v-if="data.item.units.stem_cell">
-                                        <div v-if="data.item.units.has84">
-                                            <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
-                                        </div>
                                         <b-form-checkbox
-                                            v-else
+                                            v-if="data.item.units.has84"
                                             v-model="checked"
                                             :value="'84-' + data.item.donation_id"
                                             unchecked-value="0"
                                             :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
                                             >
                                         </b-form-checkbox>
-                                    </div>                                   
+                                        <div v-else>
+                                            <b-icon :icon="bvicon" class="h5 rounded"></b-icon>
+                                        </div>
+                                    </div>
+
                                 </template>
  
                             </b-table>
@@ -206,7 +210,6 @@
 
         </b-row>
 
-        <donation-id-modal @fromModalId="fromModalId" :item="lastChecked"></donation-id-modal>
         <verifier-modal @setUname="setUname"></verifier-modal>
 
         <!-- =============== MODALS ================ -->
@@ -238,12 +241,10 @@
 
 <script>
 
-import DonationIdModal from "../Tools/DonationIdModal.vue";
 import VerifierModal from "../Tools/VerifierModal.vue";
 
 export default {
     components: {
-        DonationIdModal,
         VerifierModal
     },
     data(){
@@ -286,6 +287,8 @@ export default {
             previewData: '',
             prev_checked: [],
             proceed_disabled: true,
+
+            bvicon: 'upc-scan',
             
 
         }
@@ -299,7 +302,7 @@ export default {
         getDonationId (){
 
             axios
-                .post('/get-donation-id-labelling', {
+                .post('/get-donation-id-release', {
                     date_from: this.date_from,
                     date_to: this.date_to,
                 })
@@ -307,9 +310,6 @@ export default {
 
                     if(response.data){
                         this.data = response.data.data
-                        console.log(response.data.data)
-
-
                     } else{
                         this.data = null
                     }
@@ -324,7 +324,7 @@ export default {
                 return false
             }else{
             //   if(d.additionaltest.nat != null && d.additionaltest.antibody != null){
-                if(d.additionaltest.nat  && d.additionaltest.antibody){
+                if(d.additionaltest.nat && d.additionaltest.antibody){
                     return true
                 }else{
                     return false
