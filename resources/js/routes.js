@@ -22,6 +22,8 @@ import Aliquote from './components/BloodUnit/Aliquote.vue';
 import BloodTestMin from './components/BloodUnit/BloodTestingMin.vue';
 import Labelling from './components/BloodUnit/Labelling.vue';
 
+import InventoryRelease from './components/BloodUnit/InventoryRelease.vue';
+
 export const routes = [
     { name: 'login', path: '/', component: Login },
 
@@ -46,6 +48,8 @@ export const routes = [
     // { name: 'blood-testing', path: '/blood-testing', component: BloodTesting },
     { name: 'blood-testing', path: '/blood-testing/:id', component: BloodTestMin },
     { name: 'labelling', path: '/labelling', component: Labelling },
+
+    { name: 'inventory-release', path: '/release-to-inventory', component: InventoryRelease },
 
 
     // { name: 'register-blood', path: '/register-blood', component: RegisterUnit },
