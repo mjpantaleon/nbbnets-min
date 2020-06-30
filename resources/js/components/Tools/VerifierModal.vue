@@ -83,7 +83,7 @@
                 if(this.verifierUname && this.verifierPass){
 
                     axios
-                        .post('verifier-credentials', {
+                        .post('/verifier-credentials', {
                             username: this.verifierUname,
                             password: this.verifierPass,
                         })

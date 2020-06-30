@@ -221,6 +221,7 @@ export default {
         // LAST METHOD
         setUname(e){
 
+            // console.log(e)
             axios
                 .post('/save-blood-test-result/' + this.$route.params.id, {
                     donor_sn :  this.$route.params.id,

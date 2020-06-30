@@ -38,8 +38,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/donation-list-data','DonationController@index');
     Route::post('/create-new-walkin','DonationController@create');
 
-    Route::get('/mh-question-list', 'QuestionsController@getMH');
-    Route::get('/pe-question-list', 'QuestionsController@getPE');
+    // Route::get('/mh-question-list', 'QuestionsController@getMH');
+    // Route::get('/pe-question-list', 'QuestionsController@getPE');
 
     // CANDIDATE DONORS
     Route::get('/pre-screened-donors', 'PreScreenedDonorController@index');
@@ -81,7 +81,5 @@ Route::group(['middleware' => ['auth']], function () {
 // Route::get('/donor-id', 'DonorController@create');
 
 // !!! REMEMBER TO PLACE THIS AT A CONTROLLER
-Route::get('{any}', function () {
-    return view('layouts.app');
-})->where('any', '.*');
+Route::get('{any}', 'HomeController@home')->where('any', '.*');
 
