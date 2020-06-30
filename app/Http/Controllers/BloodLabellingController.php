@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Donation;
 use App\ComponentCode;
+use App\Label;
 use Session;
 
 class BloodLabellingController extends Controller
@@ -42,7 +43,13 @@ class BloodLabellingController extends Controller
 
                         if($code){
                             $donation[$key]['units'][$code] = $code;
-                            $checked[$val['donation_id']][$code] = array('checked' => 0);
+                            $checked_status = self::labelChecked($val['labels'], $v['component_cd']);
+                            if($checked_status){
+                                $donation[$key]['units'][$checked_status] = true;
+                            }
+                            // $checked[$val['donation_id']][$code] = array('checked' => 0);
+                            // $donation[$key]['units'][$code]['hasChecked'] = '$code';
+                            // \Log::info($val['labels']);
                         }
                         
                     }
@@ -73,5 +80,46 @@ class BloodLabellingController extends Controller
         return null;
     }
 
+    public function save(Request $request){
+
+        $label_data     = $request->get('label_data');
+        $verifier       = $request->get('verifier');
+        $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
+        $user_id        = Session::get('userInfo')['user_id'];
+
+        foreach($label_data as $key => $val){
+
+            $split = explode("-", $val);
+
+            $label = new Label;
+            $label->label_no = Label::generateNo($facility_cd);
+            $label->facility_cd = $facility_cd;
+            $label->label_dt = date('Y-m-d H:i:s');
+            $label->label_by = $user_id;
+            $label->donation_id = $split[1];
+            $label->component_cd = $split[0];
+            $label->reprint_count = 0;
+            $label->reason = null;
+            $label->save();
+
+        }
+
+        return response()->json([
+            'message' => 'Blood Label has been saved.',
+            'status' => 1
+        ], 200);
+
+    }
+
+    private function labelChecked($data, $cd){
+
+        foreach($data as $key => $val){
+            if($val['component_cd'] == $cd)
+                return "has" . $cd;
+        }
+
+        return null;
+
+    }
 
 }
