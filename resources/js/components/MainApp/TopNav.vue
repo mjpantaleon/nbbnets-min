@@ -17,18 +17,25 @@
                 <b-dropdown-item :to="{ path: '/pre-screening' }">Pre-Screening</b-dropdown-item>
                 <b-dropdown-divider></b-dropdown-divider>
                 <b-dropdown-item :to="{ path: '/donation' }">New Walk-in</b-dropdown-item>
-                <!-- <b-dropdown-item :to="{ path: 'register-new-donor' }">Register New Donor</b-dropdown-item> -->
             </b-nav-item-dropdown>
 
             <b-nav-item-dropdown right>
                 <template v-slot:button-content>
                     BLOOD UNIT
                 </template>
-                <!-- <b-dropdown-item :to="{ path: '/register-blood' }">Register Blood Unit</b-dropdown-item> -->
-                <b-dropdown-item :to="{ path: '/blood-testing' }">Blood Testing</b-dropdown-item>
+                <!-- <b-dropdown-item :to="{ path: '/blood-testing' }">Blood Testing</b-dropdown-item> -->
                 <b-dropdown-item :to="{ path: '/blood-typing' }">Blood Typing</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/blood-processing' }">Blood Processing</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/labelling' }">Blood Label</b-dropdown-item>
+                <b-dropdown-item :to="{ path: '/aliquote' }">Aliquote</b-dropdown-item>
+                
+            </b-nav-item-dropdown>
+
+            <b-nav-item-dropdown right>
+                <template v-slot:button-content>
+                    BLOOD STOCKS
+                </template>
+                <b-dropdown-item :to="{ path: '/release-to-inventory' }">Release to Inventory</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/aliquote' }">Aliquote</b-dropdown-item>
                 
             </b-nav-item-dropdown>
