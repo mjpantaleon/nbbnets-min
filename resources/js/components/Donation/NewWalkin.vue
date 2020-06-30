@@ -22,6 +22,9 @@
 
         <h4><b-icon icon="person-plus"></b-icon>&nbsp;New Walkin Donation</h4>
         <hr>
+
+        <b-alert show variant="danger" v-if="errMessage"><h3>{{ errMessage }}</h3></b-alert>
+        
         <!-- {{questions}} {{ hemoglobin }} {{body_weight}} {{blood_pressure}} {{pulse_rate}} {{temperature}} -->
         <b-row>
             <b-col md="6">
@@ -150,7 +153,7 @@
                         </template>
 
                         <!-- VERFIER USER ID -->
-                        <tr>
+                        <!-- <tr>
                             <td>
                                 <b-form-group
                                     id="fieldset-horizontal"
@@ -164,10 +167,10 @@
                                         :state="checkVerifier" id="approved_by"></b-form-input>
                                 </b-form-group>
                             </td>
-                        </tr>
+                        </tr> -->
 
                         <!-- PASSWORD -->
-                        <tr>
+                        <!-- <tr>
                             <td>
                                 <b-form-group
                                     id="fieldset-horizontal"
@@ -181,14 +184,14 @@
                                         :state="checkPassword" id="password"></b-form-input>
                                 </b-form-group>
                             </td>
-                        </tr>
+                        </tr> -->
                         
 
                         <tr>
                             <td>
                                 <b-button block variant="success"
                                     :disabled="enableBtn"
-                                    @click.prevent="addNewWalkin()">
+                                    @click.prevent="showModal">
                                     <b-icon icon="check-circle"></b-icon> VERIFY AND PROCEED</b-button>
                             </td>
                         </tr>
@@ -212,8 +215,10 @@
 
 
 
-
         <!-- ================== MODALS =================== -->
+        <!-- VERFIER MODAL POP-UP -->
+        <verifier-modal @setUname="setUname"></verifier-modal>
+
         <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
         <b-modal v-model="showSuccessMsg" centered
             title="Success!"
@@ -245,7 +250,8 @@
             hide-header-close>
             
             <h4 class="alert-heading text-center">
-                <b-icon icon="calendar"></b-icon>&nbsp;Please select the Date of Collection!
+                <b-icon variant="danger" icon="exclamation-octagon-fill"></b-icon>&nbsp;
+                This Donation ID already exist! You cannot proceed the New Walk-in Donation registry.
             </h4>
             
             <template v-slot:modal-footer="{ ok }">
@@ -261,14 +267,16 @@
 
 <script>
 import MhpeQuestion from './Questions.vue';
+import VerifierModal from "../Tools/VerifierModal.vue";
 
 export default {
-    components: {MhpeQuestion},
+    components: {MhpeQuestion, VerifierModal},
     data() {
       return {
         enableBtn: false,
         showSuccessMsg: false,
         showErrorMsg: false,
+        errMessage: '',
 
         fname: '',
         mname: '',
@@ -373,14 +381,43 @@ export default {
             .catch(error => console.log(error))
         },
 
-        addNewWalkin(){
-            // check donation id if unique
+        // MODAL
+        showModal(){
+            // alert('button has been clicked');
+            var err
+            this.errMessage = ''
 
-            // check verifier if correct credentials and not the currently loggedin user
+            // check first for errors
+            err = this.checkError()
 
-            // check if created date is not missing before sending the request
-            if(this.created_dt.length != 0){
-                axios
+            // if there were errors found
+            if(err){
+                // return this error message
+                this.errMessage = 'Please do not leave any blank inputs...';
+            } else{
+                // show verifier form
+                this.$bvModal.show('verifier-login');
+                // this.modalOpen = !this.modalOpen;
+            }
+
+        },
+
+        checkError(){
+
+            var err = false;
+            
+            if(this.donation_id == "" || this.created_dt == ""){
+                return err = true
+            }
+            
+            return err
+
+        },
+
+
+        // LAST METHOD
+        setUname(e){
+            axios
                 .post('/create-new-walkin', {
                     created_dt: this.created_dt,
                     donor_sn: this.donor_sn,
@@ -402,18 +439,20 @@ export default {
                     collection_stat: this.collection_stat,
                     coluns_res: this.coluns_res,
                     donation_id: this.donation_id,
-                    approved_by: this.approved_by
+                    approved_by: this.approved_by,
+                    verifier: e,
                 })
-                .then(response => (
-                    this.enableBtn = true,
-                    this.showSuccessMsg = true
-                ))
+                .then(response => {
+                    
+                    if(response.data.status){
+                        this.enableBtn = true,
+                        this.showSuccessMsg = true
+                    } else {
+                        this.showErrorMsg = true
+                    }
+                })
                 .catch(error => console.log(error))
-            } else{
-                this.showErrorMsg = true
-            }
         },
-
 
         // MH QUESTION SELECTED
         questionSelected(a){

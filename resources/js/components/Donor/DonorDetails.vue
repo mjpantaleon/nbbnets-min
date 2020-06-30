@@ -28,7 +28,7 @@
                     <b-link class="btn btn-primary" :to="{ path: '/update-donor-details/' + this.$route.params.id }">
                         <b-icon icon="pencil"></b-icon> UPDATE INFO</b-link>
 
-                    <b-link v-if="donation_stat != 'REA'" class="btn btn-success" 
+                    <b-link v-if="donation_stat != '' && donation_stat != 'N'" class="btn btn-success" 
                         :to="{ path: '/new-walk-in/' + this.$route.params.id }">
                         <b-icon icon="person-plus"></b-icon> NEW WALK-IN</b-link>
 
@@ -51,7 +51,7 @@
                         <tr>
                             <th>Donation Status</th>
                             <td>
-                                <h5 v-if="donation_stat != 'REA'" class="text-success">MAY DONATE</h5>
+                                <h5 v-if="donation_stat != '' && donation_stat != 'N'" class="text-success">MAY DONATE</h5>
                                 <h5 v-else class="text-danger">CANNOT DONATE</h5>
                             </td>
                         </tr>

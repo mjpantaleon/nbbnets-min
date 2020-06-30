@@ -40,17 +40,18 @@ class DonationController extends Controller
         $session = Session::get('userInfo');
         $facility_user = Session::get('userInfo')['user_id'];
         $facility_cd = Session::get('userInfo')['facility_cd'];
+        $verifier    = $request->get('verifier');
 
         // initialize data
-        $facility_user = $facility_user;
-        $facility_cd = $facility_cd;
+        // $facility_user = $facility_user;
+        // $facility_cd = $facility_cd;
         
         // GENERATE A SEQNO BASED ON FACILITY CODE.YEAR.6DIGIT'
-        $year_now = date('Y');
-        $donation_count = Donation::count();
-        $donation_count = $donation_count + 1;
-
-        $seqno = $facility_cd.$year_now. sprintf("%06d", $donation_count); //130012020000001
+        // $year_now = date('Y');
+        // $donation_count = Donation::count();
+        // $donation_count = $donation_count + 1;
+        // $seqno = $facility_cd.$year_now. sprintf("%06d", $donation_count); //130012020000001
+        $seqno = Donation::generateSeqno($facility_cd);
 
         // initialize data
         $donation_id = $data['donation_id'];
@@ -88,43 +89,51 @@ class DonationController extends Controller
 
         $created_by = $facility_user;
         $created_dt = $data['created_dt'];
-        $approved_by = $data['approved_by'];
+        $approved_by = $verifier;
         $updated_dt = date('Y-m-d H:i:s');
 
-        // check required fields first
-        // $request->validate([
-        //     'created_dt' => 'required',
-        //     'donation_id' => 'required|unique:donations',
-        //     'approved_by' => 'required'
-        // ]);
+        // CHECK IF DONATION ID ALREADY EXIST
+        // check first if donationID already exists
+        $check_donation_id = Donation::where('donation_id', '=', $donation_id)->first();
 
         // SAVE RECORD
-        $donation = new Donation;
-        $donation->seqno = $seqno;
-        $donation->donation_id = $donation_id;
-        $donation->donor_sn = $donor_sn;
-        $donation->sched_id = $sched_id;
-        $donation->pre_registered = $pre_registered;
-        $donation->donation_type = $donation_type;
-        $donation->collection_method = $collection_method;
-        $donation->facility_cd = $facility_cd;
-        
-        $donation->mh_pe_deferral = $mh_pe_deferral;
-        $donation->mh_pe_question = $mh_pe_question;
-        $donation->mh_pe_remark = $mh_pe_remark;
-        $donation->mh_pe_stat = $mh_pe_stat;            
-        
-        $donation->collection_stat = $collection_stat;
-        $donation->coluns_res = $coluns_res;
-
-        $donation->created_by = $created_by;
-        $donation->created_dt = $created_dt;
-        $donation->approved_by = $approved_by;
-        // $donation->updated_dt = $updated_dt;
-        $donation->save();
-
-        return "OK";
-        \Log::info($id);
+        if($check_donation_id === null){
+            $donation = new Donation;
+            $donation->seqno = $seqno;
+            $donation->donation_id = $donation_id;
+            $donation->donor_sn = $donor_sn;
+            $donation->sched_id = $sched_id;
+            $donation->pre_registered = $pre_registered;
+            $donation->donation_type = $donation_type;
+            $donation->collection_method = $collection_method;
+            $donation->facility_cd = $facility_cd;
+            
+            $donation->mh_pe_deferral = $mh_pe_deferral;
+            $donation->mh_pe_question = $mh_pe_question;
+            $donation->mh_pe_remark = $mh_pe_remark;
+            $donation->mh_pe_stat = $mh_pe_stat;            
+            
+            $donation->collection_stat = $collection_stat;
+            $donation->coluns_res = $coluns_res;
+    
+            $donation->created_by = $created_by;
+            $donation->created_dt = $created_dt;
+            $donation->approved_by = $approved_by;
+            $donation->save();
+    
+            return response()->json([
+                'message' => 'New Donation has been added successfully.',
+                'status' => 1
+            ], 200);
+            \Log::info($id);
+        }
+        else{
+            // return response('This donation ID already exists!', 200);
+            return response()->json([
+                'message' => 'This donation ID already exists!',
+                'status' => 0
+            ], 200);
+        } 
     }
 
 }

@@ -19,7 +19,7 @@
         <hr>
 
         <b-alert show variant="danger" v-if="errMessage"><h3>{{ errMessage }}</h3></b-alert>
-        {{HBSAG}}
+        <!-- {{HBSAG}} -->
         <b-row>
             <b-col>
                 <table class="table table-bordered table-light">
