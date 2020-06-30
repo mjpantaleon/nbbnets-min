@@ -74,6 +74,11 @@ Route::group(['middleware' => ['auth']], function () {
     //     return \Session::get('userInfo');
     // });
 
+
+    //SHOW PREVIEW
+    Route::get('/preview', 'PreviewController@showPreview');
+    Route::get('/barcode/{donation_id}','PreviewController@barcode');
+
     Route::get('/logout', 'LoginController@logout');
 
 });

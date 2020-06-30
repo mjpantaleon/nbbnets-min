@@ -8,7 +8,6 @@
                         Blood Unit
                     </b-breadcrumb-item>
                     <b-breadcrumb-item active>
-                        <!-- <b-icon icon="person-plus"></b-icon>  -->
                         Blood Label
                     </b-breadcrumb-item>
                 </b-breadcrumb>
@@ -84,75 +83,110 @@
                                     {{ data.item.donation_id }}
                                 </template>
                                 <template v-slot:cell(donor)="data">
-                                    Done, PENDING 
+                                    <span v-if="data.item.donor_min">Done</span>
+                                    <span v-else class="text-danger">PENDING</span>
                                 </template>
 
                                 <template v-slot:cell(bloodtype)="data">
-                                    A pos, PENDING
+                                    <span v-if="data.item.type">{{ data.item.type.blood_type }}</span> 
+                                    <span v-else class="text-danger">PENDING</span>
                                 </template>
 
                                 <template v-slot:cell(bloodtest)="data">
-                                    NR, REA, PENDING
+                                    <span v-if="data.item.test && hasAdditionalTest(data.item) == false">
+                                        <span class="text-success" v-if="data.item.test.result == 'N'">NR</span>
+                                        <span class="text-danger" v-if="data.item.test.result == 'R'">R</span>
+                                    </span>
+                                    <span v-else class="text-danger">PENDING</span>
                                 </template>
 
                                 <template v-slot:cell(plasma)="data">
-                                    <b-form-checkbox
-                                        v-model="checked"
-                                        :value="key"
-                                        unchecked-value="0"
-                                        >
-                                    </b-form-checkbox>
+                                    <div v-if="data.item.units.plasma"> 
+                                        <div v-if="data.item.units.has80">
+                                            <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
+                                        </div>
+                                        <b-form-checkbox
+                                            v-else
+                                            v-model="checked"
+                                            :value="'80-' + data.item.donation_id"
+                                            unchecked-value="0"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            class="text-center"
+                                            >
+                                        </b-form-checkbox>
+                                    </div>
+
                                 </template>
 
                                 <template v-slot:cell(platelets)="data">
-                                    <b-form-checkbox
-                                        v-model="checked"
-                                        :value="key"
-                                        unchecked-value="0"
-                                        >
-                                    </b-form-checkbox>                                    
+                                    <div v-if="data.item.units.platelets"> 
+                                        <div v-if="data.item.units.has81">
+                                            <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
+                                        </div>
+                                        <b-form-checkbox
+                                            v-else
+                                            v-model="checked"
+                                            :value="'81-' + data.item.donation_id"
+                                            unchecked-value="0"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            >
+                                        </b-form-checkbox>
+                                    </div>                                   
                                 </template>
 
                                 <template v-slot:cell(redcell)="data">
-                                    <b-form-checkbox
-                                        v-model="checked"
-                                        :value="key"
-                                        unchecked-value="0"
-                                        >
-                                    </b-form-checkbox>                                    
+                                    <div v-if="data.item.units.red_cell"> 
+                                        <div v-if="data.item.units.has82">
+                                            <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
+                                        </div>
+                                        <b-form-checkbox
+                                            v-else
+                                            v-model="checked"
+                                            :value="'82-' + data.item.donation_id"
+                                            unchecked-value="0"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            >
+                                        </b-form-checkbox>
+                                    </div>                                  
                                 </template>
 
                                 <template v-slot:cell(whiteblood)="data">
-                                    <b-form-checkbox
-                                        v-model="checked"
-                                        :value="key"
-                                        unchecked-value="0"
-                                        >
-                                    </b-form-checkbox>                                    
+                                    <div v-if="data.item.units.white_blood_cell">
+                                        <div v-if="data.item.units.has83">
+                                            <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
+                                        </div>
+                                        <b-form-checkbox
+                                            v-else
+                                            v-model="checked"
+                                            :value="'83-' + data.item.donation_id"
+                                            unchecked-value="0"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            >
+                                        </b-form-checkbox>
+                                    </div>                                
                                 </template>
 
                                 <template v-slot:cell(stemcell)="data">
-                                    <b-form-checkbox
-                                        v-model="checked"
-                                        :value="key"
-                                        unchecked-value="0"
-                                        >
-                                    </b-form-checkbox>                                    
+                                    <div v-if="data.item.units.stem_cell">
+                                        <div v-if="data.item.units.has84">
+                                            <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
+                                        </div>
+                                        <b-form-checkbox
+                                            v-else
+                                            v-model="checked"
+                                            :value="'84-' + data.item.donation_id"
+                                            unchecked-value="0"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            >
+                                        </b-form-checkbox>
+                                    </div>                                   
                                 </template>
  
                             </b-table>
 
-                            <!-- <b-pagination
-                                v-model="currentPage"
-                                :total-rows="rows"
-                                :per-page="perPage"
-                                aria-controls="main-table">
-                            </b-pagination> -->
-
                             <b-row>
                                 <b-col class="text-right">
-                                    <b-button variant="success" @click="showModal">Submit</b-button>
-                                    <b-button variant="danger">Cancel</b-button>
+                                    <b-button variant="success" @click="proceed()" :disabled="proceed_disabled">Proceed</b-button>
                                 </b-col>
                             </b-row>
 
@@ -172,6 +206,7 @@
 
         </b-row>
 
+        <donation-id-modal @fromModalId="fromModalId" :item="lastChecked"></donation-id-modal>
         <verifier-modal @setUname="setUname"></verifier-modal>
 
         <!-- =============== MODALS ================ -->
@@ -185,7 +220,7 @@
             hide-header-close>
             
             <h5 class="alert-heading text-center">
-                <b-icon icon="person-check"></b-icon>&nbsp;Blood Typing entry has been successfully added!
+                <b-icon icon="person-check"></b-icon>&nbsp;Blood Label entry has been successfully added!
             </h5>
             
             <template v-slot:modal-footer="{ ok }">
@@ -203,10 +238,12 @@
 
 <script>
 
+import DonationIdModal from "../Tools/DonationIdModal.vue";
 import VerifierModal from "../Tools/VerifierModal.vue";
 
 export default {
     components: {
+        DonationIdModal,
         VerifierModal
     },
     data(){
@@ -244,6 +281,11 @@ export default {
             currentPage: 1,
 
             errMessage: '',
+            key: '',
+            lastChecked: '',
+            previewData: '',
+            prev_checked: [],
+            proceed_disabled: true,
             
 
         }
@@ -264,7 +306,11 @@ export default {
                 .then(response => {
 
                     if(response.data){
-                        this.data = response.data
+                        this.data = response.data.data
+                        // this.checked = response.data.checked
+                        console.log(response.data.data)
+
+
                     } else{
                         this.data = null
                         // this.select_id_notice = "No Data Found"
@@ -274,53 +320,62 @@ export default {
 
         },
 
-        showModal(){
+        hasAdditionalTest(d){
 
-            // var err
-            // this.errMessage = ''
-
-            // err = this.checkError()
-
-            console.log(this.final_data)
-
-            // if(err){
-            //     this.errMessage = 'Please fill up all fields'
-            // } else{
-                this.$bvModal.show('verifier-login')
-                // this.modalOpen = !this.modalOpen;
-            // }
-
+            if(!d.additionaltest){
+                return false
+            }else{
+            //   if(d.additionaltest.nat != null && d.additionaltest.antibody != null){
+                if(d.additionaltest.nat  && d.additionaltest.antibody){
+                    return true
+                }else{
+                    return false
+                }
+            }
         },
 
-        // checkError(){
+        proceed(){
+            this.$bvModal.show('verifier-login')
+        },
 
-        //     var err = false;
+        fromModalId(data){
 
-        //     this.final_data.forEach((v) => {
-        //         if(v.plasma == "" || v.platelets == "" || v.redcell == "" || v.whiteblood == "" || v.stemcell == ""){
-        //             return err = true
-        //         }
-        //     })
+            if(data[1]){
+                // display preview
+                this.printBloodBagLabel(data[0]);
 
-        //     return err
+            } else{
+                this.deleteChecked(data[0])
+            }
+            
+        },
 
-        // },
+        deleteChecked(data){
 
-        openModal() {
-            this.modalOpen = !this.modalOpen;
+            var index = this.prev_checked.indexOf(data);
+
+            if (index >= 0) {
+                this.prev_checked.splice( index, 1 );
+            }
+
+            var index = this.checked.indexOf(data);
+
+            if (index >= 0) {
+                this.checked.splice( index, 1 );
+            }
+
         },
 
         setUname(e){
 
             axios
-                .post('/save-blood-processing', {
-                    blood_processing: this.final_data,
+                .post('/save-blood-labelling', {
+                    label_data: this.checked,
                     verifier: e,
                 })
                 .then(response => {
 
                     if(response.data){
-                        // this.donation_ids = response.data
                         this.showSuccessMsg = true
                         this.checked = []
                     }
@@ -328,6 +383,28 @@ export default {
                 })
 
             this.getDonationId()
+
+        },
+
+        hasNotSaved(cid, data){
+
+            var ret = true
+
+            if(data){
+                for (let i = 0; i < data.length; i++) {
+                    if(data[i].component_cd == cid){
+                        ret = false
+                        break;   
+                    }
+                }
+                
+                return ret
+
+            } else{
+                return ret
+            }
+
+            console.log(cid + ' ' + ret)
 
         }
 
@@ -338,42 +415,46 @@ export default {
     }, /* computed */
 
     watch:{
-        // checked: function(val){
 
-        //     this.data = []
-        //     this.final_data = []
+        checked: function(val){
 
-        //     val.forEach((v) => {
-        //         this.data.splice(v,0,this.donation_ids[v])
-        //         this.final_data.splice(v,0,this.donation_ids[v])
-        //     })
+            if(val.length > this.prev_checked.length){  // Added check
 
-        // },
+                for (let i = 0; i < val.length; i++) {
+                    if(this.prev_checked.includes(val[i])){
+                        continue;
+                    } else{
+                        this.lastChecked = val[i]
+                        this.prev_checked = val
+                        // this.last
+                        break;
+                    }
+                }
 
-        // final_data: function(val){
-            
-        // },
+                this.$bvModal.show('verifier-id')
 
-        // checkAll: function(val){
 
-        //     if(val){
-        //         this.data = []
-        //         this.final_data = []
+            } else{ // Removed check
 
-        //         var checked_list = []
+                 for (let i = 0; i < this.prev_checked.length; i++) {
+                    if(val.includes(this.prev_checked[i])){
+                        continue;
+                    } else{
+                        this.deleteChecked(this.prev_checked[i])
+                        break;
+                    }
+                }               
 
-        //         Object.keys(this.donation_ids).forEach(function (key){
-        //             checked_list.splice(key,0,key)
-        //         })
 
-        //         this.checked = checked_list
+            }
 
-        //     } else{
+            if(val.length){
+                this.proceed_disabled = false
+            } else{
+                this.proceed_disabled = true
+            }
 
-        //         this.checked = []
-
-        //     }
-        // },
+        },
         
     }
 }

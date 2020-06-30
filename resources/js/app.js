@@ -26,6 +26,22 @@ const router = new VueRouter({
     routes: routes
 });
 
+Vue.mixin({
+    methods : {
+        printBloodBagLabel(component){
+        //    let url =  'http://'+window.location.host+window.location.pathname+'label?facility_cd='+facility_cd+'&donation_id='+donation_id+'&component_cd='+component_cd;
+            // let url =  'http://'+window.location.host+window.location.pathname+'/preview?data='+component;
+            let url =  'http://'+window.location.host+'/preview?data='+component;
+           
+            let w = window.open(url,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=375,height=270');
+            w.onload = () => {
+                w.print();
+                w.close();
+            };
+        },
+    }
+});
+
 // avoid illegal access of routes
 router.beforeEach((to, from , next) => {
     axios
