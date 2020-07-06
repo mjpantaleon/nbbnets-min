@@ -42,12 +42,11 @@ class ReleaseInventoryController extends Controller
                         $code = self::setComponentCode($v['component_cd']);
 
                         if($code){
-                            $donation[$key]['units'][$code] = $code;
+                            $donation[$key]['units'][$code] = $v['comp_stat'];
                             $checked_status = self::labelChecked($val['labels'], $v['component_cd']);
                             if($checked_status){
                                 $donation[$key]['units'][$checked_status] = true;
                             }
-
                         }
                         
                     }
@@ -79,7 +78,7 @@ class ReleaseInventoryController extends Controller
 
     public function update(Request $request){
 
-        $comp_data     = $request->get('label_data');
+        $comp_data      = $request->get('release_data');
         $verifier       = $request->get('verifier');
         $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
         $user_id        = Session::get('userInfo')['user_id'];

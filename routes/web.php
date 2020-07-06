@@ -83,6 +83,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/get-donation-id-release', 'ReleaseInventoryController@getDonationId');
     Route::post('/update-blood-inventory', 'ReleaseInventoryController@update');
 
+    //AVAILABLE BLOOD STOCKS
+    Route::get('/get-available-blood-stocks', 'AvailableBloodStocksController@getList');
+
     Route::get('/logout', 'LoginController@logout');
 
 });

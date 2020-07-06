@@ -96,12 +96,12 @@ class BloodTypingController extends Controller
             $bloodtype->created_dt = date('Y-m-d H:i:s');
             $res = $bloodtype->save();
 
-            \Log::info($res);
+            // \Log::info($res);
             
             $res2 = Component::whereDonationId($d['donation_id'])
                 ->update(['blood_type' => $d['abo'].' '.$d['rh']]);
 
-            \Log::info($res2);
+            // \Log::info($res2);
 
         }
 
