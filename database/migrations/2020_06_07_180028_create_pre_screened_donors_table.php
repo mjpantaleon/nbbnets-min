@@ -41,7 +41,8 @@ class CreatePreScreenedDonorsTable extends Migration
             $table->char('first_answer',1)->nullable();                 // "first_answer" : 0 = yes, 1 = not sure, 2 = no
             $table->string('second_answer',191)->nullable();            // "second_answer" : a = Initial positive, b = Repeat negative, c = no test result
             $table->string('not_sure_answer', 191)->nullable();         // if first_answer is equal to '1 = not sure'
-            
+
+            $table->string('facility_cd')->nullable();                  
             $table->string('created_by', 50)->nullable();               // if created on web otherwise null
             $table->dateTime('created_dt')->nullable();                 // get from app/ web
 

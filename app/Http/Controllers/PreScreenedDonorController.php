@@ -14,9 +14,20 @@ use Carbon;
 class PreScreenedDonorController extends Controller
 {
     public function index(){
+         // GET THE USER INFO
+        $session = Session::get('userInfo');
+        $facility_cd = Session::get('userInfo')['facility_cd'];
+
+        /*  SELECT id, donor_sn, first_name, middle_name, last_name, name_suffix, gender, 
+            bdate, address, created_dt, status
+            FROM `pre_screened_donors`
+            WHERE `created_by` LIKE '000000' 
+            ORDER BY `created_dt` DESC 
+        */
         $query = "  SELECT id, donor_sn, first_name, middle_name, last_name, name_suffix, gender, 
                     bdate, address, created_dt, status
-                    FROM `pre_screened_donors` 
+                    FROM `pre_screened_donors`
+                    WHERE `facility_cd` LIKE '$facility_cd' 
                     ORDER BY `created_dt` DESC ";
         $pre_screened_donors = DB::select($query);
 
@@ -188,6 +199,7 @@ class PreScreenedDonorController extends Controller
         $test_results = $data['test_results'];
         $symptoms = $data['symptoms'];
 
+        $facility_cd = $facility_cd;
         $created_by = $facility_user;
         $created_dt = date('Y-m-d H:i:s');
 
@@ -229,6 +241,7 @@ class PreScreenedDonorController extends Controller
             // $pre_screened_donor->second_answer = implode(',', $test_results);
             // $pre_screened_donor->not_sure_answer = implode(',', $symptoms);
 
+            $pre_screened_donor->facility_cd = $facility_cd;
             $pre_screened_donor->created_by = $created_by;
             $pre_screened_donor->created_dt = $created_dt;
 
