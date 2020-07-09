@@ -36,7 +36,21 @@ Vue.mixin({
             let w = window.open(url,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=375,height=270');
             w.onload = () => {
                 w.print();
-                w.close();
+
+                var mediaQueryList = w.matchMedia('print');
+                mediaQueryList.addListener(function(mql) {
+
+                    console.log(mql)
+
+                    if (mql.matches) {
+                        console.log('before print dialog open');
+                    } else {
+                        console.log('after print dialog closed');
+                    }
+                });
+
+                // setTimeout(function(){w.close();}, 10000);
+                // w.close();
             };
         },
     }

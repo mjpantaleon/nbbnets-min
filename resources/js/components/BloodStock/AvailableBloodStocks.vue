@@ -18,41 +18,24 @@
         <hr>
 
         <b-row>
-            <!-- <b-col cols="5">
+            <b-col cols="12">
                 <b-form-group
-                    id="donation-id"           
-                    label-cols-sm="2"
-                    label-cols-lg="2"
-                    description="Date From"
-                    label="Date From"
+                    id="fieldset-horizontal"           
+                    label-cols-sm="4"
+                    label-cols-lg="4"
+                    description="Enter Donation ID"
+                    label="Donation ID"
                     label-for="donation-id">
-                        <b-form-datepicker 
-                            v-model="date_from"
-                            class="mb-2">
-                        </b-form-datepicker>
+                    <b-form-input v-model="donationId" id="donation-id"></b-form-input>
                 </b-form-group>
             </b-col>
-            <b-col cols="5">
-                <b-form-group
-                    id="donation-id"           
-                    label-cols-sm="1"
-                    label-cols-lg="1"
-                    description="Search Date To"
-                    label="To"
-                    label-for="donation-id">
-                        <b-form-datepicker
-                            v-model="date_to"
-                            class="mb-2">
-                        </b-form-datepicker>
-                </b-form-group>
-            </b-col> -->
-            <b-col cols="2" class="ml-auto">
+            <!-- <b-col cols="2" class="ml-auto">
                 <b-button type="submit"
                     variant="warning"
                     @click.prevent="getDonationId()">
                     <b-icon icon="search"></b-icon>&nbsp;SEARCH
                 </b-button>
-            </b-col>
+            </b-col> -->
         </b-row>
 
         <b-alert show variant="danger" v-if="errMessage">{{ errMessage }}</b-alert>
@@ -112,22 +95,28 @@
                                 </template>
 
                                  <template v-slot:cell(action)="data">
-                                    {{ data.item.expiration_dt }}
+                                    <!-- {{ data.item.expiration_dt }} -->
+                                    <!-- <b-button variant="success" @click="proceed()" size="sm">
+                                        <b-icon icon="search"></b-icon>
+                                    </b-button> -->
+                                    <router-link :to="'/unit/'+data.item.donation_id+'/'+data.item.component_cd" title="View Blood Unit Details">
+                                        <b-icon icon="search" class="border border-success p-1" variant="success" font-scale="2.1"></b-icon>
+                                    </router-link>
                                 </template>
                             </b-table>
 
-                            <b-row>
+                            <!-- <b-row>
                                 <b-col class="text-right">
                                     <b-button variant="success" @click="proceed()" :disabled="proceed_disabled">Proceed</b-button>
                                 </b-col>
-                            </b-row>
+                            </b-row> -->
 
                         </template>
 
                         <template v-else>
                             <div class="alert alert-info">
                                 <span class="text-center text-danger">
-                                    <h5><b-icon icon="info-square"></b-icon>&nbsp;&nbsp;No selected donation ID</h5>
+                                    <h5><b-icon icon="info-square"></b-icon>&nbsp;&nbsp;Please wait...</h5>
                                 </span>
                             </div>
                         </template>
@@ -193,17 +182,9 @@ export default {
             data: [],
             isLoading: false,
 
-            final_data:[],
-
-            date_from: '',
-            date_to: '',
-
-            donation_ids: null,
+            donationId: '',
             select_id_notice: "No Items to display",
             displayStatus: 0,
-
-            checked: [],
-            checkAll: 1,
 
             perPage: 10,
             currentPage: 1,
@@ -212,9 +193,6 @@ export default {
             key: '',
             lastChecked: '',
             previewData: '',
-            prev_checked: [],
-            proceed_disabled: true,
-            
 
         }
     }, /* data */
@@ -326,7 +304,26 @@ export default {
 
             console.log(cid + ' ' + ret)
 
-        }
+        },
+
+        updateTable(id){
+
+            axios
+                .post('/update-available-list', {
+                    donation_id: id
+                })
+                .then(response => {
+
+                    if(response.data){
+                        this.data = response.data
+                    } else{
+                        this.data = null
+                    }
+                    
+                })
+        
+        },
+
 
     }, /* methods */
 
@@ -336,43 +333,9 @@ export default {
 
     watch:{
 
-        checked: function(val){
+        donationId: function(val){
 
-            if(val.length > this.prev_checked.length){  // Added check
-
-                for (let i = 0; i < val.length; i++) {
-                    if(this.prev_checked.includes(val[i])){
-                        continue;
-                    } else{
-                        this.lastChecked = val[i]
-                        this.prev_checked = val
-                        // this.last
-                        break;
-                    }
-                }
-
-                this.$bvModal.show('verifier-id')
-
-
-            } else{ // Removed check
-
-                 for (let i = 0; i < this.prev_checked.length; i++) {
-                    if(val.includes(this.prev_checked[i])){
-                        continue;
-                    } else{
-                        this.deleteChecked(this.prev_checked[i])
-                        break;
-                    }
-                }               
-
-
-            }
-
-            if(val.length){
-                this.proceed_disabled = false
-            } else{
-                this.proceed_disabled = true
-            }
+            this.updateTable(val)
 
         },
         
