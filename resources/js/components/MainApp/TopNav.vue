@@ -36,7 +36,8 @@
                     BLOOD STOCKS
                 </template>
                 <b-dropdown-item :to="{ path: '/release-to-inventory' }">Release to Inventory</b-dropdown-item>
-                <b-dropdown-item :to="{ path: '/aliquote' }">Aliquote</b-dropdown-item>
+                <b-dropdown-item :to="{ path: '/available-stocks' }">Available Blood Stocks</b-dropdown-item>
+                <!-- <b-dropdown-item :to="{ path: '/aliquote' }">Aliquote</b-dropdown-item> -->
                 
             </b-nav-item-dropdown>
 

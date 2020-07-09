@@ -80,6 +80,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/preview', 'PreviewController@showPreview');
     Route::get('/barcode/{donation_id}','PreviewController@barcode');
 
+    //RELEASE TO INVENTORY
+    Route::post('/get-donation-id-release', 'ReleaseInventoryController@getDonationId');
+    Route::post('/update-blood-inventory', 'ReleaseInventoryController@update');
+
+    //AVAILABLE BLOOD STOCKS
+    Route::get('/get-available-blood-stocks', 'AvailableBloodStocksController@getList');
+
     Route::get('/logout', 'LoginController@logout');
 
 });
