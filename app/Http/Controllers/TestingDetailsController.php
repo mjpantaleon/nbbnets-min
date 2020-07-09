@@ -92,7 +92,7 @@ class TestingDetailsController extends Controller
         $bloodtest_no = Testing::generateNo($facility_cd);
         \Log::info($bloodtest_no);
 
-        // check first if donationID already exists
+        // check first if donationID already exists in bloodtest_dtls table and donation table
         $check_donation_id = TestingDetails::where('donation_id', '=', $donation_id)->first();
         
         if($check_donation_id === null){

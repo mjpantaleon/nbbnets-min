@@ -4,8 +4,9 @@
 }
 
 #app{
-    background-color: #50c5d6;
-    background-image: linear-gradient( #50c5d6, #ececec);
+    background-color: #f8feff;
+    /* background-color: #50c5d6; */
+    background-image: linear-gradient( #f8feff, #e2e2e2);
     height: 100%;
 
     /* background: url(../img/bg-blue.jpg) no-repeat center center fixed; 
@@ -18,7 +19,19 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+
 /* COLORS */
+
+.cp_dark{
+    color: #ff9000;
+}
+.cp_light_dark{
+    color: #f8af00;
+}
+.cp_light{
+    color: #ffc600;
+}
+
 .gray {
     color: #ececec;
 }
@@ -39,4 +52,12 @@
     position: sticky;
     top: 52px;
     z-index: 50;
+}
+
+/* CUSTOM */
+.nav-link {
+    color: #FFF !important;
+}
+.nav-link:hover{
+    color: #fffae9 !important;
 }

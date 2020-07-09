@@ -1,8 +1,8 @@
 <template>
-    <b-navbar toggleable="lg" type="dark" variant="dark" sticky>
-        <b-navbar-brand class="lead">
+    <b-navbar toggleable="lg" sticky style="background-color: #ff9000; color: #eafffe; !important ">
+        <b-navbar-brand class="lead text-light">
             <img src="img/favicon.ico" alt="">
-            NBBNetS - Convalescent Plasma
+            <b>NBBNetS - Convalescent Plasma</b>
         </b-navbar-brand>
 
         <b-navbar-toggle target="nav-collapse" v-if="showMenu"></b-navbar-toggle>

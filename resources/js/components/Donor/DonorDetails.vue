@@ -103,15 +103,36 @@
                     
             </b-col>
 
-            <!-- <b-col md="6" class="mt-3">
-                <b-card no-body bg-variant="success" text-variant="white" header="DONATION HISTORY">
+            <b-col md="6" class="mt-3">
+
+                <template v-if="data.length == 0">
+                    <table class="table table-bordered table-striped">
+                        <th class="text-center">
+                            <h6 class="text-danger">No Donation History to display</h6>
+                        </th>
+                    </table>
+                </template>
+
+                <b-card v-else no-body bg-variant="success" text-variant="white" header="DONATION HISTORY">
                     <b-table
-                    :items="history"
+                    :fields="fields"
+                    :items="data"
                     striped
                     head-variant="info"
-                    table-variant="light"></b-table>
+                    table-variant="light">
+                        <template v-slot:cell(facility_name)="data">
+                            {{ data.item.facility_name }}
+                        </template>
+
+                        <template v-slot:cell(created_dt)="data">
+                            <!-- {{ data.item.created_dt | moment("dddd, MMMM Do YYYY, h:mm:ss a") }} -->
+                            {{ data.item.created_dt | moment("MMMM DD, YYYY - h:mm:ss a") }}
+                        </template>
+                    </b-table>
                 </b-card>
-            </b-col> -->
+
+                
+            </b-col>
         </b-row>
   </div>
 </template>
@@ -120,25 +141,33 @@
 export default {
     data() {
       return {
-          donor_id: '',
-          donation_stat: '',
-          fname: '',
-          mname: '',
-          lname: '',
-          name_suffix: '',
-          gender: '',
-          bdate: '',
-          civil_stat: '',
-          occupation: '',
-          nationality: '',
-          tel_no: '',
-          mobile_no: '',
-          email: '',
+        donor_id: '',
+        donation_stat: '',
+        fname: '',
+        mname: '',
+        lname: '',
+        name_suffix: '',
+        gender: '',
+        bdate: '',
+        civil_stat: '',
+        occupation: '',
+        nationality: '',
+        tel_no: '',
+        mobile_no: '',
+        email: '',
+
+        //   donor history
+        data: '',
+        fields: [
+            { key: 'facility_name', label: 'Facility' },
+            { key: 'created_dt', label: 'Donation Date' }
+        ]
       }
     }, /*data */
 
     mounted(){
         this.getDonorDetails();
+        this.getDonorHistory();
     }, /* mounted */
 
     methods:{
@@ -160,6 +189,15 @@ export default {
                 this.tel_no = response.data.tel_no,
                 this.mobile_no = response.data.mobile_no,
                 this.email = response.data.email
+            ))
+            .catch(error => console.log(error))
+        },
+
+        getDonorHistory(){
+            axios
+            .get('/donor-history/' + this.$route.params.id)
+            .then(response => (
+                this.data = response.data
             ))
             .catch(error => console.log(error))
         }

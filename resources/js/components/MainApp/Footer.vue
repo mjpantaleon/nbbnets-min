@@ -53,17 +53,17 @@
             <b-row>
                 <b-col>
                     <b-row>
-                        <b-col class="mt-3 text-center">
-                            <img src="img/doh-logo.png" width="50px" alt="" srcset="">
-                            <img src="img/nvbsp-logo.png" width="50px" alt="" srcset="">
-                            <img src="img/imu-logo.png" width="60px" alt="" srcset="">
+                        <b-col class="mt-3 text-center mb-5">
+                            <img src="img/footer-icon.png" alt="" srcset="">
+                            <!-- <img src="img/nvbsp-logo.png" width="50px" alt="" srcset="">
+                            <img src="img/imu-logo.png" width="60px" alt="" srcset=""> -->
                         </b-col>
                     </b-row> 
                 </b-col>
             </b-row>
         </b-container>
 
-        <b-container>
+        <!-- <b-container>
             <b-row>
                 <b-col>
                     <p class="text-center mt-3 mb-5">
@@ -72,7 +72,7 @@
                     </p>
                 </b-col>
             </b-row>
-        </b-container>
+        </b-container> -->
     </footer>
   </div>
 </template>
@@ -85,7 +85,8 @@ export default {
 
 <style scoped>
 .footer {
-    background: #231816;
+    /* background: #231816; */ /* old */
+    background: #ff9000;
     color: #eafffe;
 }
 .line {

@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth']], function () {
     // DONOR
     Route::get('/donor-list-data', 'DonorController@index');
     Route::get('/donor-profile/{id}', 'DonorController@donorDetails');
+    Route::get('/donor-history/{id}', 'DonorController@donorHistory');
     Route::post('/get-searched-donor', 'DonorController@search');
     Route::post('/create-new-donor', 'DonorController@create');
     Route::post('/calculated-age', 'DonorController@getAge');

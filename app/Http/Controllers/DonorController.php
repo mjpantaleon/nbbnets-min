@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Donor;
 use Session;
+use App\Donation;
 
 use DB;
 
@@ -18,6 +19,19 @@ class DonorController extends Controller
     public function donorDetails($id){
         $donor = Donor::where('seqno', $id)->first();
         return $donor;
+    }
+
+    public function donorHistory($id){
+        // SELECT * FROM `donation` WHERE `donor_sn` = '$id'
+        $sql = "    SELECT rf.`facility_name`, d.`created_dt`  
+                    FROM `donation` d 
+                    LEFT JOIN `r_facility` rf ON d.facility_cd = rf.facility_cd
+                    WHERE `donor_sn` = $id ";
+        $donor_history = DB::select($sql);
+        $donor_history = json_decode(json_encode($donor_history), true);
+
+        return $donor_history;
+        \Log::info($donor_history);
     }
 
     public function search(Request $request){
