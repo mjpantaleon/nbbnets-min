@@ -106,7 +106,7 @@
                                             <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
                                         </div>
                                         <b-form-checkbox
-                                            v-else-if="data.item.units.has81"
+                                            v-else-if="data.item.units.has80"
                                             v-model="checked"
                                             :value="'80-' + data.item.donation_id"
                                             unchecked-value="0"
