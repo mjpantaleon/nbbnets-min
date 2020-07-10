@@ -157,7 +157,7 @@ export default {
         email: '',
 
         //   donor history
-        data: '',
+        data: [],
         fields: [
             { key: 'facility_name', label: 'Facility' },
             { key: 'created_dt', label: 'Donation Date' }
