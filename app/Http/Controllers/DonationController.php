@@ -94,35 +94,38 @@ class DonationController extends Controller
 
         // CHECK IF DONATION ID ALREADY EXIST
         // check first if donationID already exists
-        $check_donation_id = Donation::where('donation_id', '=', $donation_id)->first();
+        $check_donation_details = Donation::where('donation_id', '=', $donation_id)
+                                ->where('donor_sn', '=', $donor_sn)
+                                ->first();
+        \Log::info($check_donation_details);
 
         // SAVE RECORD
-        if($check_donation_id === null){
-            $donation = new Donation;
-            $donation->seqno = $seqno;
-            $donation->donation_id = $donation_id;
-            $donation->donor_sn = $donor_sn;
-            $donation->sched_id = $sched_id;
-            $donation->pre_registered = $pre_registered;
-            $donation->donation_type = $donation_type;
-            $donation->collection_method = $collection_method;
-            $donation->facility_cd = $facility_cd;
+        if($check_donation_details){
+            // $donation = new Donation;
+            // $donation->seqno = $seqno;
+            // $donation->donation_id = $donation_id;
+            // $donation->donor_sn = $donor_sn;
+            // $donation->sched_id = $sched_id;
+            // $donation->pre_registered = $pre_registered;
+            $check_donation_details->donation_type = $donation_type;
+            $check_donation_details->collection_method = $collection_method;
+            // $donation->facility_cd = $facility_cd;
             
-            $donation->mh_pe_deferral = $mh_pe_deferral;
-            $donation->mh_pe_question = $mh_pe_question;
-            $donation->mh_pe_remark = $mh_pe_remark;
-            $donation->mh_pe_stat = $mh_pe_stat;            
+            $check_donation_details->mh_pe_deferral = $mh_pe_deferral;
+            $check_donation_details->mh_pe_question = $mh_pe_question;
+            $check_donation_details->mh_pe_remark = $mh_pe_remark;
+            $check_donation_details->mh_pe_stat = $mh_pe_stat;            
             
-            $donation->collection_stat = $collection_stat;
-            $donation->coluns_res = $coluns_res;
+            $check_donation_details->collection_stat = $collection_stat;
+            $check_donation_details->coluns_res = $coluns_res;
     
-            $donation->created_by = $created_by;
-            $donation->created_dt = $created_dt;
-            $donation->approved_by = $approved_by;
-            $donation->save();
+            $check_donation_details->created_by = $created_by;
+            $check_donation_details->created_dt = $created_dt;
+            $check_donation_details->approved_by = $approved_by;
+            $check_donation_details->save();
     
             return response()->json([
-                'message' => 'New Donation has been added successfully.',
+                'message' => 'Donation has been successfully updated.',
                 'status' => 1
             ], 200);
             \Log::info($id);
@@ -130,7 +133,7 @@ class DonationController extends Controller
         else{
             // return response('This donation ID already exists!', 200);
             return response()->json([
-                'message' => 'This donation ID already exists!',
+                'message' => 'Donation id and donor do not match',
                 'status' => 0
             ], 200);
         } 

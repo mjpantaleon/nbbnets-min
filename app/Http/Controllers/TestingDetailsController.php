@@ -7,7 +7,7 @@ use Session;
 use DB;
 use App\Testing;
 use App\TestingDetails;
-// use App\Donation;
+use App\Donation;
 use App\PreScreenedDonor;
 use App\Exam;
 
@@ -76,6 +76,7 @@ class TestingDetailsController extends Controller
 
         $donor_sn       = $request->get('donor_sn');
         $verifier       = $request->get('verifier');
+        $sched_id       = 'Walk-in';
         
         $exams = Exam::whereDisableFlg('N')->pluck('exam_name','exam_cd');
         // \Log::info($exams);
@@ -134,6 +135,19 @@ class TestingDetailsController extends Controller
             // UPDATE `pre_screened_donors` table
             PreScreenedDonor::where('donor_sn', $donor_sn)
                             ->update(['status' => '2']);
+
+            // INSERT record at `donation` table
+            $seqno = Donation::generateSeqno($facility_cd);
+            $d = new Donation;
+            $d->seqno = $seqno;
+            $d->donation_id = $donation_id;
+            $d->donor_sn = $donor_sn;
+            $d->pre_registered = 'Y';
+            $d->sched_id = $sched_id;
+            $d->donation_stat = $fail ? 'REA' : 'Y';
+            $d->facility_cd = $facility_cd;
+            $d->save();
+
     
             return response()->json([
                 'message' => 'Testing Details has been saved.',

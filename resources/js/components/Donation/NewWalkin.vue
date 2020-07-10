@@ -251,7 +251,8 @@
             
             <h4 class="alert-heading text-center">
                 <b-icon variant="danger" icon="exclamation-octagon-fill"></b-icon>&nbsp;
-                This Donation ID already exist! You cannot proceed the New Walk-in Donation registry.
+                <!-- This Donation ID already exist! You cannot proceed the New Walk-in Donation registry. -->
+                {{ mismatch_msg }}
             </h4>
             
             <template v-slot:modal-footer="{ ok }">
@@ -277,6 +278,7 @@ export default {
         showSuccessMsg: false,
         showErrorMsg: false,
         errMessage: '',
+        mismatch_msg: '',
 
         fname: '',
         mname: '',
@@ -449,6 +451,7 @@ export default {
                         this.showSuccessMsg = true
                     } else {
                         this.showErrorMsg = true
+                        this.mismatch_msg = response.data.message
                     }
                 })
                 .catch(error => console.log(error))
