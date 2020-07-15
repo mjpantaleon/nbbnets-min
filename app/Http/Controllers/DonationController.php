@@ -60,7 +60,7 @@ class DonationController extends Controller
         $sched_id = 'Walk-in';
         $pre_registered = 'N';
         $donation_type = $data['donation_type'];            // Autologous, Voluntary, Fam/Replacement or Paid
-        $collection_method = $data['collection_method'];    // WB = Whole Blood, AP = Apheresis
+        $collection_method = $data['collection_method'];    // WB = Whole Blood, P = Pheresis
 
         // \Log::info($mh_pe_deferral);
         // this section updates when donor is temporary, permanently or indefinitely deferred
