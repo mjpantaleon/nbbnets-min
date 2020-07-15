@@ -104,6 +104,20 @@
                             </td>
                         </tr>
 
+                        <tr v-if="collection_method == 'WB'">
+                            <td>
+                                <b-form-group
+                                    id="fieldset-horizontal"
+                                    label-cols-sm="4"
+                                    label-cols-lg="3"
+                                    description="blood bag"
+                                    label="Blood Bag"
+                                    label-for="blood_bag">
+                                <b-form-select v-model="blood_bag" :options="blood_bag_list" id="blood_bag"></b-form-select>
+                                </b-form-group>
+                            </td>
+                        </tr>
+
                         <tr>
                             <td>
                                 <b-form-group
@@ -314,6 +328,8 @@ export default {
         approved_by: '',
         password: '',
 
+        blood_bag:'Q',
+
         // SELECTION LISTS
         donation_type_list: [
           { value: 'AU', text: 'Autologous' },
@@ -331,7 +347,7 @@ export default {
 
         collection_method_list: [
           { value: 'WB', text: 'Whole Blood' },
-          { value: 'AP', text: 'Apheresis' },
+          { value: 'P', text: 'Pheresis' },
         ],
 
         collection_stat_list: [
@@ -343,6 +359,13 @@ export default {
             { value: 'BULGE', text: 'Bulge' },
             { value: 'FAINT', text: 'Faint' },
             { value: 'CLOT', text: 'Clot' }
+        ],
+
+        blood_bag_list: [
+            { value: 'Q', text: 'Quadruple' },
+            { value: 'T', text: 'Triple' },
+            { value: 'D', text: 'Double' },
+            { value: 'S', text: 'Single' }
         ]
         
       }
@@ -416,7 +439,6 @@ export default {
 
         },
 
-
         // LAST METHOD
         setUname(e){
             axios
@@ -439,6 +461,7 @@ export default {
 
                     collection_method: this.collection_method,
                     collection_stat: this.collection_stat,
+                    blood_bag: this.blood_bag,
                     coluns_res: this.coluns_res,
                     donation_id: this.donation_id,
                     approved_by: this.approved_by,

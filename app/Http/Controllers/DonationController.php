@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Donation;
+use App\Component;
+use App\RCpComponentCode;
+use App\Helpers\ComputeExpiry;
 use Session;
 use DB;
 
@@ -25,8 +28,9 @@ class DonationController extends Controller
                     dd.fname, dd.mname, dd.lname
                     FROM donation d
                     LEFT JOIN donor dd ON d.donor_sn = dd.seqno 
-                    WHERE d.created_dt = '$donation_dt' AND d.sched_id = 'Walk-in'
+                    WHERE d.created_dt like '%$donation_dt%' AND d.sched_id = 'Walk-in' AND d.donation_stat = 'Y'
                     ORDER by d.created_dt DESC ";
+
         $donations = DB::select($query);
         
         \Log::info($donations);
@@ -51,7 +55,7 @@ class DonationController extends Controller
         // $donation_count = Donation::count();
         // $donation_count = $donation_count + 1;
         // $seqno = $facility_cd.$year_now. sprintf("%06d", $donation_count); //130012020000001
-        $seqno = Donation::generateSeqno($facility_cd);
+        // $seqno = Donation::generateSeqno($facility_cd);
 
         // initialize data
         $donation_id = $data['donation_id'];
@@ -59,7 +63,7 @@ class DonationController extends Controller
         $sched_id = 'Walk-in';
         $pre_registered = 'N';
         $donation_type = $data['donation_type'];            // Autologous, Voluntary, Fam/Replacement or Paid
-        $collection_method = $data['collection_method'];    // WB = Whole Blood, AP = Apheresis
+        $collection_method = $data['collection_method'];    // WB = Whole Blood, P = Pheresis
 
         // \Log::info($mh_pe_deferral);
         // this section updates when donor is temporary, permanently or indefinitely deferred
@@ -88,7 +92,7 @@ class DonationController extends Controller
         $coluns_res = $data['coluns_res'];          // BULGE, FAINT, CLOT
 
         $created_by = $facility_user;
-        $created_dt = $data['created_dt'];
+        $created_dt = date('Y-m-d H:i:s');
         $approved_by = $verifier;
         $updated_dt = date('Y-m-d H:i:s');
 
@@ -111,6 +115,12 @@ class DonationController extends Controller
             $check_donation_details->collection_method = $collection_method;
             // $donation->facility_cd = $facility_cd;
             
+
+            if($collection_method == 'WB'){
+                $check_donation_details->blood_bag = $request->get('blood_bag');
+                $check_donation_details->collection_type = "CPC19";
+            }
+
             $check_donation_details->mh_pe_deferral = $mh_pe_deferral;
             $check_donation_details->mh_pe_question = $mh_pe_question;
             $check_donation_details->mh_pe_remark = $mh_pe_remark;
@@ -123,7 +133,52 @@ class DonationController extends Controller
             $check_donation_details->created_dt = $created_dt;
             $check_donation_details->approved_by = $approved_by;
             $check_donation_details->save();
-    
+
+
+            //If collection method is Pheresis, aliquote the donation ID into two
+
+            if($collection_method == 'P'){
+
+                for($i = 0; $i <= 2; $i++){
+
+                    if($i){
+
+                        $comp = new Component;
+                        $comp->donation_id          = $donation_id . '-0' . $i;
+                        $comp->source_donation_id   = $donation_id;
+                        $comp->aliqoute_by          = $facility_user;
+                        $comp->aliqoute_dt          = date('Y-m-d');
+                        $comp->component_cd         = 100;
+                        $comp->location             = $facility_cd;
+                        $comp->collection_dt        = date('Y-m-d');
+                        $comp->expiration_dt        = ComputeExpiry::getExpiration(100, date('Y-m-d H:i:s'));
+                        $comp->comp_stat            = 'FBT';
+                        $comp->created_by           = $facility_user;
+                        $comp->created_dt           = date('Y-m-d H:i:s');
+                        $comp->save();
+
+                    } else{
+
+                        $comp = new Component;
+                        $comp->donation_id          = $donation_id;
+                        // $comp->source_donation_id   = null;
+                        // $comp->aliqoute_by          = $facility_user;
+                        // $comp->aliqoute_dt          = date('Y-m-d');
+                        $comp->component_cd         = 100;
+                        $comp->location             = $facility_cd;
+                        $comp->collection_dt        = date('Y-m-d');
+                        $comp->expiration_dt        = ComputeExpiry::getExpiration(100, date('Y-m-d H:i:s'));
+                        $comp->comp_stat            = 'FBT';
+                        $comp->created_by           = $facility_user;
+                        $comp->created_dt           = date('Y-m-d H:i:s');
+                        $comp->save();  
+
+                    }
+
+                }
+
+            }
+
             return response()->json([
                 'message' => 'Donation has been successfully updated.',
                 'status' => 1

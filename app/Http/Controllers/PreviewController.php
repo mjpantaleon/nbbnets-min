@@ -78,22 +78,27 @@ class PreviewController extends Controller
         $template = str_replace('{{EXPIRATION_DATE}}',date('M d, Y',strtotime($unit->expiration_dt)).' 23:59:00',$template);
         $template = str_replace('{{STORE}}','Store at '.$unit->component_code->min_storage.' to '.$unit->component_code->max_storage.' &deg;C',$template);
 
-        if($unit->donation){
-            if($unit->additionaltest){
-                $template = str_replace('{{ANTIBODY}}','ANTIBODY SCREENING : NEGATIVE',$template);
-                $template = str_replace('{{NAT}}','NUCLIEC ACID TESTING : NEGATIVE',$template);
-                $template = str_replace('{{ZIKA}}','ZIKA : NEGATIVE',$template);
-            }else{
-                $template = str_replace('{{ANTIBODY}}','',$template);
-                $template = str_replace('{{NAT}}','',$template);
-                $template = str_replace('{{ZIKA}}','',$template);
-            }
-        }else{
-            $template = str_replace('{{ANTIBODY}}','',$template);
-            $template = str_replace('{{NAT}}','',$template);
-            $template = str_replace('{{ZIKA}}','',$template);
+        
+        $template = str_replace('{{NAT}}','ID NAT',$template);
+        $template = str_replace('{{ZIKA}}','(HBV, HCV, HIV and ZIKA)',$template);
+        $template = str_replace('{{ANTIBODY}}','ANTIBODY SCREENING : NEGATIVE',$template);
 
-        }
+        // if($unit->donation){
+        //     if($unit->additionaltest){
+        //         $template = str_replace('{{ANTIBODY}}','ANTIBODY SCREENING : NEGATIVE',$template);
+        //         $template = str_replace('{{NAT}}','NUCLIEC ACID TESTING : NEGATIVE',$template);
+        //         $template = str_replace('{{ZIKA}}','ZIKA : NEGATIVE',$template);
+        //     }else{
+        //         $template = str_replace('{{ANTIBODY}}','',$template);
+        //         $template = str_replace('{{NAT}}','',$template);
+        //         $template = str_replace('{{ZIKA}}','',$template);
+        //     }
+        // }else{
+        //     $template = str_replace('{{ANTIBODY}}','',$template);
+        //     $template = str_replace('{{NAT}}','',$template);
+        //     $template = str_replace('{{ZIKA}}','',$template);
+
+        // }
 
          return $template;
     }

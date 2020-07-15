@@ -10,6 +10,7 @@ use App\TestingDetails;
 use App\Donation;
 use App\PreScreenedDonor;
 use App\Exam;
+use App\Donor;
 
 class TestingDetailsController extends Controller
 {
@@ -146,9 +147,19 @@ class TestingDetailsController extends Controller
             $d->sched_id = $sched_id;
             $d->donation_stat = $fail ? 'REA' : 'Y';
             $d->facility_cd = $facility_cd;
+            // $d->created_dt = date('Y-m-d H:i:s');
             $d->save();
 
-    
+            //Update 'Donor' table
+
+            $donor_update_arr = array(
+                'donation_stat' => $fail ? 'N' : 'Y',
+                'donor_stat' => $fail ? 'PD' : 'A'                
+            );
+
+            $stat = Donor::where('seqno', $donor_sn)
+                            ->update($donor_update_arr);
+
             return response()->json([
                 'message' => 'Testing Details has been saved.',
                 'status' => 1
