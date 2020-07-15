@@ -28,6 +28,14 @@ class BloodLabellingController extends Controller
                             ->whereBetween('created_dt', [$from, $to])
                             ->where('collection_stat', $col_stat)
                             ->get();
+
+        // $sql = "    SELECT * FROM 
+        //             donation d 
+        //             LEFT JOIN donor dd ON d.donor_sn = dd.seqno
+        //             LEFT JOIN 
+        //             WHERE d.donation_id = 'NVBSP20209900011' ";
+        // $donor_details = \DB::select($sql);
+        // \Log::info($donor_details);
         
         if($donation){
 

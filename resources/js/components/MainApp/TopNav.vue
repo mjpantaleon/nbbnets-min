@@ -11,11 +11,16 @@
         <b-navbar-nav v-if="showMenu">
             <b-nav-item-dropdown right>
                 <template v-slot:button-content>
-                    DONOR & DONATION
+                    PRE-SCREENING
                 </template>
                 <b-dropdown-item :to="{ path: '/pre-screened-list' }">Pre-Screened List</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/pre-screening' }">Pre-Screening</b-dropdown-item>
-                <b-dropdown-divider></b-dropdown-divider>
+            </b-nav-item-dropdown>
+
+            <b-nav-item-dropdown right>
+                <template v-slot:button-content>
+                    DONOR & DONATION
+                </template>
                 <b-dropdown-item :to="{ path: '/donation' }">New Walk-in</b-dropdown-item>
             </b-nav-item-dropdown>
 
