@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Donation;
+use App\Component;
+use App\RCpComponentCode;
+use App\Helpers\ComputeExpiry;
 use Session;
 use DB;
 
@@ -130,7 +133,52 @@ class DonationController extends Controller
             $check_donation_details->created_dt = $created_dt;
             $check_donation_details->approved_by = $approved_by;
             $check_donation_details->save();
-    
+
+
+            //If collection method is Pheresis, aliquote the donation ID into two
+
+            if($collection_method == 'P'){
+
+                for($i = 0; $i <= 2; $i++){
+
+                    if($i){
+
+                        $comp = new Component;
+                        $comp->donation_id          = $donation_id . '-0' . $i;
+                        $comp->source_donation_id   = $donation_id;
+                        $comp->aliqoute_by          = $facility_user;
+                        $comp->aliqoute_dt          = date('Y-m-d');
+                        $comp->component_cd         = 100;
+                        $comp->location             = $facility_cd;
+                        $comp->collection_dt        = date('Y-m-d');
+                        $comp->expiration_dt        = ComputeExpiry::getExpiration(100, date('Y-m-d H:i:s'));
+                        $comp->comp_stat            = 'FBT';
+                        $comp->created_by           = $facility_user;
+                        $comp->created_dt           = date('Y-m-d H:i:s');
+                        $comp->save();
+
+                    } else{
+
+                        $comp = new Component;
+                        $comp->donation_id          = $donation_id;
+                        // $comp->source_donation_id   = null;
+                        // $comp->aliqoute_by          = $facility_user;
+                        // $comp->aliqoute_dt          = date('Y-m-d');
+                        $comp->component_cd         = 100;
+                        $comp->location             = $facility_cd;
+                        $comp->collection_dt        = date('Y-m-d');
+                        $comp->expiration_dt        = ComputeExpiry::getExpiration(100, date('Y-m-d H:i:s'));
+                        $comp->comp_stat            = 'FBT';
+                        $comp->created_by           = $facility_user;
+                        $comp->created_dt           = date('Y-m-d H:i:s');
+                        $comp->save();  
+
+                    }
+
+                }
+
+            }
+
             return response()->json([
                 'message' => 'Donation has been successfully updated.',
                 'status' => 1

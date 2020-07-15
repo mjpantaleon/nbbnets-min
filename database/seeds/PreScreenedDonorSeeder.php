@@ -21,7 +21,7 @@ class PreScreenedDonorSeeder extends Seeder
         foreach (range(1,10) as $index) {
 
             $donors_count = Donor::count(); 
-            $donors_count = $donors_count + 1;
+            $donors_count = $donors_count + $index;
     
             $seqno = $facility_cd . $year_now . sprintf("%07d", $donors_count);
 

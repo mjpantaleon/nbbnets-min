@@ -147,7 +147,7 @@ class TestingDetailsController extends Controller
             $d->sched_id = $sched_id;
             $d->donation_stat = $fail ? 'REA' : 'Y';
             $d->facility_cd = $facility_cd;
-            $d->created_dt = date('Y-m-d H:i:s');
+            // $d->created_dt = date('Y-m-d H:i:s');
             $d->save();
 
             //Update 'Donor' table
