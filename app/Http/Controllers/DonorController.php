@@ -17,6 +17,8 @@ class DonorController extends Controller
     }
 
     public function donorDetails($id){
+        // $donor = Donor::with('')
+                    // ->where('seqno', $id)->first();
         $donor = Donor::where('seqno', $id)->first();
         return $donor;
     }
@@ -26,7 +28,7 @@ class DonorController extends Controller
         $sql = "    SELECT rf.`facility_name`, d.`created_dt`  
                     FROM `donation` d 
                     LEFT JOIN `r_facility` rf ON d.facility_cd = rf.facility_cd
-                    WHERE `donor_sn` = $id AND `created_dt` IS NOT NULL ";
+                    WHERE d.`donor_sn` = $id AND d.`created_dt` IS NOT NULL ";
         $donor_history = DB::select($sql);
         $donor_history = json_decode(json_encode($donor_history), true);
 

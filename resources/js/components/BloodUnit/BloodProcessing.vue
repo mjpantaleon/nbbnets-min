@@ -19,7 +19,7 @@
         <hr>
 
         <b-row>
-            <b-col cols="5">
+            <b-col cols="4">
                 <b-form-group
                     id="donation-id"           
                     label-cols-sm="2"
@@ -33,7 +33,7 @@
                         </b-form-datepicker>
                 </b-form-group>
             </b-col>
-            <b-col cols="5">
+            <b-col cols="4">
                 <b-form-group
                     id="donation-id"           
                     label-cols-sm="1"
@@ -46,6 +46,14 @@
                             class="mb-2">
                         </b-form-datepicker>
                 </b-form-group>
+            </b-col>
+            <b-col cols="2">
+                <!-- <b-form-group
+                    id="fieldset-horizontal"
+                    label-cols-sm="4"
+                    label-cols-lg="3"> -->
+                <b-form-select v-model="col_method" :options="col_method_list" id="col_method"></b-form-select>
+                <!-- </b-form-group> -->
             </b-col>
             <b-col cols="2" class="ml-auto">
                 <b-button type="submit"
@@ -242,6 +250,12 @@ export default {
             currentPage: 1,
 
             errMessage: '',
+            col_method:'WB',
+
+            col_method_list: [
+                { value: 'WB', text: 'Whole Blood' },
+                { value: 'AP', text: 'Pheresis' },
+            ],
             
 
         }

@@ -203,7 +203,8 @@
             body-bg-variant="light" 
             footer-bg-variant="success"
             header-text-variant="light"
-            hide-header-close>
+            hide-header-close
+            no-close-on-backdrop>
             
             <h5 class="alert-heading text-center">
                 <b-icon icon="person-check"></b-icon>&nbsp;This person has been approved as Donor
@@ -324,6 +325,8 @@ export default {
             })
             .catch(error => console.log(error))
         }
+
+        
     }
 }
 </script>

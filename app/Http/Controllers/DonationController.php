@@ -25,8 +25,9 @@ class DonationController extends Controller
                     dd.fname, dd.mname, dd.lname
                     FROM donation d
                     LEFT JOIN donor dd ON d.donor_sn = dd.seqno 
-                    WHERE d.created_dt = '$donation_dt' AND d.sched_id = 'Walk-in'
+                    WHERE d.created_dt like '%$donation_dt%' AND d.sched_id = 'Walk-in' AND d.donation_stat = 'Y'
                     ORDER by d.created_dt DESC ";
+
         $donations = DB::select($query);
         
         \Log::info($donations);
@@ -51,7 +52,7 @@ class DonationController extends Controller
         // $donation_count = Donation::count();
         // $donation_count = $donation_count + 1;
         // $seqno = $facility_cd.$year_now. sprintf("%06d", $donation_count); //130012020000001
-        $seqno = Donation::generateSeqno($facility_cd);
+        // $seqno = Donation::generateSeqno($facility_cd);
 
         // initialize data
         $donation_id = $data['donation_id'];
@@ -88,7 +89,7 @@ class DonationController extends Controller
         $coluns_res = $data['coluns_res'];          // BULGE, FAINT, CLOT
 
         $created_by = $facility_user;
-        $created_dt = $data['created_dt'];
+        $created_dt = date('Y-m-d H:i:s');
         $approved_by = $verifier;
         $updated_dt = date('Y-m-d H:i:s');
 
@@ -111,6 +112,12 @@ class DonationController extends Controller
             $check_donation_details->collection_method = $collection_method;
             // $donation->facility_cd = $facility_cd;
             
+
+            if($collection_method == 'WB'){
+                $check_donation_details->blood_bag = $request->get('blood_bag');
+                $check_donation_details->collection_type = "CPC19";
+            }
+
             $check_donation_details->mh_pe_deferral = $mh_pe_deferral;
             $check_donation_details->mh_pe_question = $mh_pe_question;
             $check_donation_details->mh_pe_remark = $mh_pe_remark;
