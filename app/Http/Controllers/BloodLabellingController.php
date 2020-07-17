@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Donation;
-use App\ComponentCode;
+// use App\ComponentCode;
+use App\RCpComponentCode;
 use App\Label;
 use Session;
 
@@ -47,11 +48,13 @@ class BloodLabellingController extends Controller
 
                     foreach($val['units'] as $k => $v){
 
-                        $code = self::setComponentCode($v['component_cd']);
+                        $code = self::setComponentCode($v['component_code']);
+                        // $code = self::setComponentCode($v['component_cd']);
 
                         if($code){
                             $donation[$key]['units'][$code] = $code;
-                            $checked_status = self::labelChecked($val['labels'], $v['component_cd']);
+                            $checked_status = self::labelChecked($val['labels'], $v['component_code']);
+                            // $checked_status = self::labelChecked($val['labels'], $v['component_cd']);
                             if($checked_status){
                                 $donation[$key]['units'][$checked_status] = true;
                             }
@@ -78,7 +81,8 @@ class BloodLabellingController extends Controller
     private function setComponentCode($componentCode){
 
         if($componentCode >= 80){
-            $code = ComponentCode::select('comp_name')
+            // $code = ComponentCode::select('comp_name')
+            $code = RCpComponentCode::select('comp_name')
                                 ->whereComponentCd($componentCode)
                                 ->first();
 

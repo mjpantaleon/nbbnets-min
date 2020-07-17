@@ -15,7 +15,7 @@ class PreScreenedDonorSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        $facility_cd = '11001';
+        $facility_cd = '13109';
         $year_now = date('Y');
 
         foreach (range(1,10) as $index) {
