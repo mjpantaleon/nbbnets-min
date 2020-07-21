@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Component;
 use App\ComponentCode;
+use App\Helpers\ComputeExpiry;
+use App\BloodTyping;
 use Session;
 use DB;
 
@@ -20,48 +22,74 @@ class BloodProcessingController extends Controller
         $sched_id       = 'Walk-in';
         $col_stat       = 'COL';
 
-        // $donation = Donation::with('bloodtyping')
-        //                     ->select('donation_id')
-        //                     ->whereNotNull('donation_id')
-        //                     ->whereFacilityCd($facility_cd)
-        //                     ->whereSchedId($sched_id)
-        //                     ->whereBetween('created_dt', [$from, $to])
-        //                     ->where('collection_stat', 'COL')
-        //                     ->get();
-       
-        $sql = "SELECT t1.donation_id
-                FROM donation t1
-            LEFT JOIN component t2 ON t1.donation_id = t2.donation_id
-        WHERE t2.donation_id IS NULL
-        AND t1.donation_id IS NOT NULL
-        AND t1.facility_cd = '$facility_cd'
-        AND t1.sched_id = '$sched_id'
-        AND t1.created_dt BETWEEN '$from' AND '$to'
-        AND t1.collection_stat = '$col_stat'        
-        AND (t1.collection_method = 'AP'
-        OR t1.collection_type = 'CPC19')";
+        if($request['col_method'] == 'P'){      // PHERESIS PROCESS
 
-        $donation = DB::select($sql);
+            $sql = "SELECT *
+                    -- SELECT t1.donation_id
+                    FROM donation t1
+                    LEFT JOIN component t2 ON t1.donation_id = t2.donation_id
+                    -- WHERE t2.donation_id IS NULL
+                    WHERE t1.donation_id IS NOT NULL
+                    AND t1.facility_cd = '$facility_cd'
+                    AND t1.sched_id = '$sched_id'
+                    AND t1.created_dt BETWEEN '$from' AND '$to'
+                    AND t1.collection_stat = '$col_stat'        
+                    AND t1.collection_method = 'P'
+                    AND t2.component_vol IS NULL
+                    ORDER BY t1.created_dt";
 
-        $donation = json_decode(json_encode($donation), true);
-        
-        if($donation){
+            $donation = DB::select($sql);
 
-            foreach($donation as $key => $val){
-                // $donation[$key]['count_key'] = $key;
-                $ids[$val['donation_id']]['donation_id'] = $val['donation_id'];
-                $ids[$val['donation_id']]['plasma'] = "";
-                $ids[$val['donation_id']]['platelets'] = "";
-                $ids[$val['donation_id']]['redcell'] = "";
-                $ids[$val['donation_id']]['whiteblood'] = "";
-                $ids[$val['donation_id']]['stemcell'] = "";
+            $donation = json_decode(json_encode($donation), true);
+            
+            if($donation){
+
+                foreach($donation as $key => $val){
+                    // $donation[$key]['count_key'] = $key;
+                    $ids[$val['donation_id']]['donation_id'] = $val['donation_id'];
+                    $ids[$val['donation_id']]['P01'] = "";
+                    $ids[$val['donation_id']]['P02'] = "";
+                }
+
+                return $ids;
+                
+            } else{
+                return false;
             }
 
-            return $ids;
-            
-        } else{
+        } else{                                   // WHOLE BLOOD PROCESS
 
-            return false;
+            $sql = "SELECT t1.donation_id, t1.blood_bag
+            FROM donation t1
+            LEFT JOIN component t2 ON t1.donation_id = t2.donation_id
+            WHERE t2.donation_id IS NULL
+            AND t1.donation_id IS NOT NULL
+            AND t1.facility_cd = '$facility_cd'
+            AND t1.sched_id = '$sched_id'
+            AND t1.created_dt BETWEEN '$from' AND '$to'
+            AND t1.collection_stat = '$col_stat'        
+            AND t1.collection_type = 'CPC19'";
+
+            $donation = DB::select($sql);
+
+            $donation = json_decode(json_encode($donation), true);
+            
+            if($donation){
+
+                foreach($donation as $key => $val){
+                    // $donation[$key]['count_key'] = $key;
+                    $ids[$val['donation_id']]['donation_id'] = $val['donation_id'];
+                    $ids[$val['donation_id']]['blood_bag'] = self::wbDisplayBag($val['blood_bag']);
+                    $ids[$val['donation_id']]['plasma'] = "";
+                    $ids[$val['donation_id']]['redbloodcell'] = "";
+                    $ids[$val['donation_id']]['platelets'] = "";
+                }
+
+                return $ids;
+                
+            } else{
+                return false;
+            }
 
         }
 
@@ -70,35 +98,116 @@ class BloodProcessingController extends Controller
     public function save(Request $request){
 
         $blood_processing   = $request->get('blood_processing');
+        $collection_method  = $request->get('col_method');
         $verifier           = $request->get('verifier');
+        $status             = ""; 
 
-        //get all donation_ids, put into array
-        $donation_ids_arr  = self::donationIdsToArray($blood_processing);
+        if($collection_method == 'P'){  // PHERESIS PROCESS
 
-        // relation tables: bloodtest, typing
-        $result = DB::table('donation')
-                    ->select('donation.donation_id', 'donation.created_dt', 'blood_typing.blood_type', 'bloodtest.result')
-                    ->leftJoin('bloodtest', 'donation.donation_id', '=', 'bloodtest.donation_id')
-                    ->leftJoin('blood_typing', 'donation.donation_id', '=', 'blood_typing.donation_id')
-                    ->whereIn('donation.donation_id', $donation_ids_arr)
-                    ->get();
+            $status = self::pheresisSave($blood_processing, $verifier);
 
-        $result = json_decode(json_encode($result), true);
+        } else{                         // WHOLE BLOOD PROCESS
 
-        $save_array = self::processSaveArray($result, $blood_processing, $verifier);
+            $status = self::wbSave($blood_processing, $verifier);
+        }
 
+        
+        if($status){
 
-        $status = Component::create($save_array);
+            return response()->json([
+                'message' => 'Blood Typing has been successfully added.',
+                'status' => 1
+            ], 200);
 
-        return $status;
+        } else{
 
+            return response()->json([
+                'message' => 'Error.',
+                'status' => 0
+            ], 200);   
 
-        // return response()->json([
-        //     'message' => 'Blood Typing has been successfully added.',
-        //     'status' => 1
-        // ], 200);
+        }
 
     }
+
+    private function pheresisSave($data, $verifier){
+
+        // Get all ids and search for entries in component table
+
+        $ids = self::donationIdsToArrayPheresis($data);
+
+        $result = Component::whereIn('component.donation_id', $ids)
+                    ->get()->toArray();
+
+        $formatted = self::formatDonationIds($result);
+
+        // Get parent ids and search for blood type in blood_typing table
+
+        $parent = self::parentIdsToArrayPheresis($data);
+
+        $bloodtype = BloodTyping::whereIn('donation_id', $parent)
+                    ->get()->toArray();
+        
+        if($bloodtype){
+            $bloodtype = self::formatDonationIds($bloodtype);
+        }
+
+        // Format data from request
+        $from_request = self::formatDonationIds($data);
+
+        // Format array to be used in saving in create eloquent
+        $save_array = self::formatPheresisSaveArray($parent, $formatted, $bloodtype, $from_request);
+
+
+        // Delete records with ids and then save newly created arrays
+
+        Component::whereIn('donation_id', $ids)->delete();
+        $status = Component::create($save_array);
+        
+        if($status){
+            return response()->json([
+                'message' => 'Blood Typing has been successfully added.',
+                'status' => 1
+            ], 200);
+        } else{
+            return response()->json([
+                'message' => 'Error.',
+                'status' => 0
+            ], 200);
+        }
+
+    }
+
+    private function wbSave($data, $verifier){
+
+            //get all donation_ids, put into array
+            $donation_ids_arr  = self::donationIdsToArrayWb($data);
+
+            // relation tables: bloodtest, typing
+            $result = DB::table('donation')
+                        ->select('donation.donation_id', 'donation.created_dt', 'blood_typing.blood_type', 'bloodtest.result')
+                        ->leftJoin('bloodtest', 'donation.donation_id', '=', 'bloodtest.donation_id')
+                        ->leftJoin('blood_typing', 'donation.donation_id', '=', 'blood_typing.donation_id')
+                        ->whereIn('donation.donation_id', $donation_ids_arr)
+                        ->get();
+
+
+            $result = json_decode(json_encode($result), true);
+
+            $save_array = self::processSaveArray($result, $data, $verifier);
+
+            $status = Component::create($save_array);
+
+            return $status;
+
+
+            // return response()->json([
+            //     'message' => 'Blood Typing has been successfully added.',
+            //     'status' => 1
+            // ], 200);
+    }
+
+    // General Functions
 
     private function formatDonationIds($data){
 
@@ -111,7 +220,99 @@ class BloodProcessingController extends Controller
         return $arr;
     }
 
-    private function donationIdsToArray($data){
+    // Pheresis Functions
+
+    private function donationIdsToArrayPheresis($data){
+
+        $arr = [];
+
+        foreach($data as $key => $val){
+            $arr[] = $val['donation_id'];
+            $arr[] = $val['donation_id'] . "-01";
+            $arr[] = $val['donation_id'] . "-02";
+        }
+
+        return $arr;
+
+    }
+
+    private function parentIdsToArrayPheresis($data){
+
+        $arr = [];
+
+        foreach($data as $key => $val){
+            $arr[] = $val['donation_id'];
+        }
+
+        return $arr;
+
+    }
+
+    private function formatPheresisSaveArray($parent, $data, $blood_type, $from_request){
+
+        $arr = [];
+
+        foreach($parent as $val){
+
+            $type = "";
+
+            if(isset($blood_type[$val])){
+                $type = $blood_type[$val]['blood_type'];
+            }
+
+            $total = $from_request[$val]['P01'] + $from_request[$val]['P02'];
+
+            // Add blood type in parent and aliquote if blood type exists
+
+            if($type){
+                $data[$val]['blood_type'] =  $type;
+                $data[$val . "-01"]['blood_type'] =  $type;
+                $data[$val . "-02"]['blood_type'] =  $type;
+            }
+
+            // Update component_vol of parent
+            $data[$val]['component_vol'] = $total;  // Add total volume from 2 aliquote
+
+            // Update component_vol of 2 aliquotes
+            $data[$val . "-01"]['component_vol'] = $from_request[$val]['P01'];
+            $data[$val . "-02"]['component_vol'] = $from_request[$val]['P02'];
+
+            // Add to $arr variable
+            $arr[] = $data[$val];
+            $arr[] = $data[$val . "-01"];
+            $arr[] = $data[$val . "-02"];
+        
+        }
+
+        return $arr;
+
+    }
+
+    // Whole Blood Functions
+
+    private function wbDisplayBag($bag){
+
+        switch($bag){
+            case "Q":
+                return "Quadruple Bag (Leukocyte Reduced)";
+            break;
+            case "T":
+                return "Triple Bag";
+            break;
+            case "D":
+                return "Double Bag";
+            break;
+            case "S":
+                return "Single Bag";
+            break;
+            default:
+                return 0;
+        }
+
+
+    }
+
+    private function donationIdsToArrayWb($data){
 
         $arr = [];
 
@@ -135,31 +336,41 @@ class BloodProcessingController extends Controller
 
             $getProcessingData = $donation_ids_data[$donation_id];
 
-            if($getProcessingData['plasma']){
-                $exp = self::getExpiration("80", $val['created_dt']);
-                $save_array[] = self::formatSaveArray($val, "80", $exp, $getProcessingData['plasma']);
-            }
+            if($getProcessingData['blood_bag'] == "Quadruple Bag (Leukocyte Reduced)"){
 
-            if($getProcessingData['platelets']){
-                $exp = self::getExpiration("81", $val['created_dt']);
-                $save_array[] = self::formatSaveArray($val, "81", $exp, $getProcessingData['platelets']);
-            }
-            
-            if($getProcessingData['redcell']){
-                $exp = self::getExpiration("82", $val['created_dt']);
-                $save_array[] = self::formatSaveArray($val, "82", $exp, $getProcessingData['redcell']);
-            }
+                if($getProcessingData['plasma']){
+                    $exp = ComputeExpiry::getExpiration("100", $val['created_dt']);
+                    $save_array[] = self::formatSaveArray($val, "100", $exp, $getProcessingData['plasma']);
+                }
 
-            if($getProcessingData['whiteblood']){
-                $exp = self::getExpiration("83", $val['created_dt']);
-                $save_array[] = self::formatSaveArray($val, "83", $exp, $getProcessingData['whiteblood']);
-            }
+                if($getProcessingData['redbloodcell']){
+                    $exp = ComputeExpiry::getExpiration("103", $val['created_dt']);
+                    $save_array[] = self::formatSaveArray($val, "103", $exp, $getProcessingData['redbloodcell']);
+                }
+                
+                if($getProcessingData['platelets']){
+                    $exp = ComputeExpiry::getExpiration("104", $val['created_dt']);
+                    $save_array[] = self::formatSaveArray($val, "104", $exp, $getProcessingData['platelets']);
+                }
 
-            if($getProcessingData['stemcell']){
-                $exp = self::getExpiration("84", $val['created_dt']);
-                $save_array[] = self::formatSaveArray($val, "84", $exp, $getProcessingData['stemcell']);
-            }
+            } else{
 
+                if($getProcessingData['plasma']){
+                    $exp = ComputeExpiry::getExpiration("100", $val['created_dt']);
+                    $save_array[] = self::formatSaveArray($val, "100", $exp, $getProcessingData['plasma']);
+                }
+
+                if($getProcessingData['redbloodcell']){
+                    $exp = ComputeExpiry::getExpiration("101", $val['created_dt']);
+                    $save_array[] = self::formatSaveArray($val, "101", $exp, $getProcessingData['redbloodcell']);
+                }
+                
+                if($getProcessingData['platelets']){
+                    $exp = ComputeExpiry::getExpiration("102", $val['created_dt']);
+                    $save_array[] = self::formatSaveArray($val, "102", $exp, $getProcessingData['platelets']);
+                }
+
+            }
 
         }
 

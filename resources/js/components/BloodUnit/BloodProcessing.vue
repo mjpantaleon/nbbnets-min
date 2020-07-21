@@ -114,13 +114,15 @@
                         </template>
                         
                         <template v-if="data.length != 0">
+
                             <b-table
+                                v-if="col_method == 'P'"
                                 id="main-table"
                                 responsive="sm"
                                 striped hover
                                 head-variant="light"
                                 table-variant="light"
-                                :fields="fields"
+                                :fields="pheresis_fields"
                                 :items="data"
                                 :per-page="perPage"
                                 :current-page="currentPage">
@@ -129,25 +131,48 @@
                                     {{ data.item.donation_id }}
                                 </template>
 
+                                <template v-slot:cell(p-01)="data">
+                                    <b-form-input v-model="final_data[data.index]['P01']" :name="data.item.donation_id + '-01'" size="sm"></b-form-input>
+                                </template>
+
+                                <template v-slot:cell(p-02)="data">
+                                    <b-form-input v-model="final_data[data.index]['P02']" :name="data.item.donation_id + '-02'" size="sm"></b-form-input>
+                                </template>
+ 
+                            </b-table>
+
+                            <b-table
+                                v-else
+                                id="main-table"
+                                responsive="sm"
+                                striped hover
+                                head-variant="light"
+                                table-variant="light"
+                                :fields="wb_fields"
+                                :items="data"
+                                :per-page="perPage"
+                                :current-page="currentPage">
+
+                                <template v-slot:cell(donationId)="data">
+                                    {{ data.item.donation_id }}
+                                </template>
+
+                                <template v-slot:cell(bag)="data">
+                                    {{ data.item.blood_bag }}
+                                </template>
+
                                 <template v-slot:cell(plasma)="data">
-                                    <b-form-input v-model="final_data[data.index]['plasma']" :name="'plasma-' + data.item.donation_id" size="sm"></b-form-input>
+                                    <b-form-input v-model="final_data[data.index]['plasma']" :name="'platelets-' + data.item.donation_id" size="sm"></b-form-input>
+                                </template>
+
+                                <template v-slot:cell(redbloodcell)="data">
+                                    <b-form-input v-model="final_data[data.index]['redbloodcell']" :name="'redbloodcell-' + data.item.donation_id" size="sm"></b-form-input>
                                 </template>
 
                                 <template v-slot:cell(platelets)="data">
                                     <b-form-input v-model="final_data[data.index]['platelets']" :name="'platelets-' + data.item.donation_id" size="sm"></b-form-input>
                                 </template>
 
-                                <template v-slot:cell(redcell)="data">
-                                    <b-form-input v-model="final_data[data.index]['redcell']" :name="'redcell-' + data.item.donation_id" size="sm"></b-form-input>
-                                </template>
-
-                                <template v-slot:cell(whiteblood)="data">
-                                    <b-form-input v-model="final_data[data.index]['whiteblood']" :name="'whiteblood-' + data.item.donation_id" size="sm"></b-form-input>
-                                </template>
-
-                                <template v-slot:cell(stemcell)="data">
-                                    <b-form-input v-model="final_data[data.index]['stemcell']" :name="'stemcell-' + data.item.donation_id" size="sm"></b-form-input>
-                                </template>
  
                             </b-table>
 
@@ -222,14 +247,28 @@ export default {
         return{
             showSuccessMsg: false,
 
-            fields: [
+            pheresis_fields: [
                 { key: 'donationId', label: 'Donation ID'},
-                { key: 'plasma', label: 'Plasma', thClass: 'text-center', tdClass: 'text-center' },
-                { key: 'platelets', label: 'Platelets', thClass: 'text-center', tdClass: 'text-center' },
-                { key: 'redcell', label: 'Red Cell', thClass: 'text-center', tdClass: 'text-center' },
-                { key: 'whiteblood', label: 'White Blood Cell', thClass: 'text-center', tdClass: 'text-center' },
-                { key: 'stemcell', label: 'Stem Cell', thClass: 'text-center', tdClass: 'text-center' },
+                { key: 'p-01', label: 'Aliquote -01', thClass: 'text-center aliquote-column-width', tdClass: 'text-center' },
+                { key: 'p-02', label: 'Aliquote -02', thClass: 'text-center aliquote-column-width', tdClass: 'text-center' },
             ],
+
+            wb_fields: [
+                { key: 'donationId', label: 'Donation ID'},
+                { key: 'bag', label: 'Blood Bag', thClass: 'text-center', tdClass: 'text-center' },
+                { key: 'plasma', label: 'Plasma', thClass: 'text-center wb-column-width', tdClass: 'text-center' },
+                { key: 'redbloodcell', label: 'Packed Red Blood Cell', thClass: 'text-center wb-column-width', tdClass: 'text-center' },
+                { key: 'platelets', label: 'Platelet Concentrate', thClass: 'text-center wb-column-width', tdClass: 'text-center' },
+            ],
+
+            // fields: [
+            //     { key: 'donationId', label: 'Donation ID'},
+            //     { key: 'plasma', label: 'Plasma', thClass: 'text-center', tdClass: 'text-center' },
+            //     { key: 'platelets', label: 'Platelets', thClass: 'text-center', tdClass: 'text-center' },
+            //     { key: 'redcell', label: 'Red Cell', thClass: 'text-center', tdClass: 'text-center' },
+            //     { key: 'whiteblood', label: 'White Blood Cell', thClass: 'text-center', tdClass: 'text-center' },
+            //     { key: 'stemcell', label: 'Stem Cell', thClass: 'text-center', tdClass: 'text-center' },
+            // ],
 
             data: [],
             isLoading: false,
@@ -254,7 +293,7 @@ export default {
 
             col_method_list: [
                 { value: 'WB', text: 'Whole Blood' },
-                { value: 'AP', text: 'Pheresis' },
+                { value: 'P', text: 'Pheresis' },
             ],
             
 
@@ -272,6 +311,7 @@ export default {
                 .post('/get-donation-id-processing', {
                     date_from: this.date_from,
                     date_to: this.date_to,
+                    col_method: this.col_method,
                 })
                 .then(response => {
 
@@ -327,6 +367,7 @@ export default {
             axios
                 .post('/save-blood-processing', {
                     blood_processing: this.final_data,
+                    col_method: this.col_method,
                     verifier: e,
                 })
                 .then(response => {

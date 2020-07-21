@@ -100,8 +100,9 @@ class BloodTypingController extends Controller
 
             // \Log::info($res);
             
-            $res2 = Component::whereDonationId($d['donation_id'])
+            $res2 = Component::where('donation_id', 'LIKE', $d['donation_id'] . '%')
                 ->update(['blood_type' => $d['abo'].' '.$d['rh']]);
+                // ->get();
 
             // \Log::info($res2);
 

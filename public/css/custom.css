@@ -61,3 +61,11 @@
 .nav-link:hover{
     color: #fffae9 !important;
 }
+
+.aliquote-column-width{
+    width: 20%;
+}
+
+.wb-column-width{
+    width: 12%;
+}

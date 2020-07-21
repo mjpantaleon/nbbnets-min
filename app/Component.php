@@ -7,14 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class Component extends Model
 {
     protected $table = 'component';
-    protected $primaryKey = 'component_cd';
-    protected $keyType = 'string';
+    protected $primaryKey = 'donation_id';
+    // protected $keyType = 'string';
 
     public $incrementing = false;
     public $timestamps = false;
 
     protected $guarded = [];
-
 
     function test(){
         return $this->belongsTo('App\Testing','donation_id','donation_id');
