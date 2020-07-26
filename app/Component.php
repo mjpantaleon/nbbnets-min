@@ -32,11 +32,15 @@ class Component extends Model
     }
     
     function donation_min(){
-        return $this->belongsTo('App\Donation','donation_id','donation_id')->select('donation_id','sched_id','created_dt');
+        return $this->belongsTo('App\Donation','donation_id','donation_id')->select('donation_id','sched_id','blood_bag','created_dt');
     }
 
     function component_code(){
         return $this->belongsTo('App\ComponentCode','component_cd','component_cd');
+    }
+
+    function cp_component_code(){
+        return $this->belongsTo('App\RCpComponentCode','component_cd','component_code');
     }
 
     function component_code_min(){

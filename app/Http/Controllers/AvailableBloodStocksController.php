@@ -17,7 +17,7 @@ class AvailableBloodStocksController extends Controller
                 ->with('donation_min','component_code_min')
                 ->whereLocation($facility_cd)
                 ->whereCompStat('AVA')
-                ->where('component_cd', '>=', 80)
+                ->where('component_cd', '>=', 100)
                 ->where('expiration_dt','>=',date('Y-m-d'))
                 ->orderBy('expiration_dt','asc')
                 ->get();

@@ -36,7 +36,7 @@ Vue.mixin({
             let w = window.open(url,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=375,height=270');
             w.onload = () => {
                 w.print();
-                setTimeout(function(){w.close();}, 5000);
+                setTimeout(function(){w.close();}, 3000);
                 // w.close();
             };
         },

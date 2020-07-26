@@ -7,6 +7,7 @@ use App\Donation;
 // use App\ComponentCode;
 use App\RCpComponentCode;
 use App\Label;
+use App\PheresisBloodLabel;
 use Session;
 
 class BloodLabellingController extends Controller
@@ -21,14 +22,98 @@ class BloodLabellingController extends Controller
         $sched_id       = 'Walk-in';
         $col_stat       = 'COL';
 
-        $donation = Donation::with('type','labels','test','additionaltest','units','donor_min')
-                            ->whereNotNull('donation_id')
-                            ->whereNotNull('donor_sn')
-                            ->whereFacilityCd($facility_cd)
-                            ->whereSchedId($sched_id)
-                            ->whereBetween('created_dt', [$from, $to])
-                            ->where('collection_stat', $col_stat)
-                            ->get();
+        $donation       = ""; 
+
+        if($request['col_method'] == 'P'){      // PHERESIS PROCESS
+
+            $donation = Donation::with('type','labels','test','additionaltest','units','donor_min', 'pheresis_label')
+                                ->whereNotNull('donation_id')
+                                ->whereNotNull('donor_sn')
+                                ->whereFacilityCd($facility_cd)
+                                ->whereSchedId($sched_id)
+                                ->whereBetween('created_dt', [$from, $to])
+                                ->where('collection_stat', $col_stat)
+                                ->where('collection_method', "P")
+                                ->get();
+
+            if($donation){
+
+                $checked = [];
+    
+                foreach($donation as $key => $val){
+    
+                    if($val['pheresis_label']){
+    
+                        foreach($val['pheresis_label'] as $k => $v){
+
+                            if( strpos($v->donation_id, "-01") !== false ){
+                                $donation[$key]['units']["hasp01"] = true;
+                            } elseif( strpos($v->donation_id, "-02") !== false ){
+                                $donation[$key]['units']["hasp02"] = true;
+                            }              
+    
+                        }
+    
+                    }
+    
+                }
+                
+                return array('data' => $donation, 'checked' => $checked);
+                
+            } else{
+                return false;
+            }
+
+
+        } else{                                 // WHOLE BLOOD PROCESS
+
+            $donation = Donation::with('type','labels','test','additionaltest','units','donor_min')
+                                ->whereNotNull('donation_id')
+                                ->whereNotNull('donor_sn')
+                                ->whereFacilityCd($facility_cd)
+                                ->whereSchedId($sched_id)
+                                ->whereBetween('created_dt', [$from, $to])
+                                ->where('collection_stat', $col_stat)
+                                ->where('collection_type', "CPC19")
+                                ->get();
+
+            if($donation){
+
+                $checked = [];
+    
+                foreach($donation as $key => $val){
+    
+                    if($val['units']){
+    
+                        foreach($val['units'] as $k => $v){
+    
+                            $code = self::setComponentCode($v['component_cd']);
+    
+                            if($code){
+                                $donation[$key]['units'][$code] = $code;
+                                $checked_status = self::labelChecked($val['labels'], $v['component_cd']);
+                                // $checked_status = self::labelChecked($val['labels'], $v['component_cd']);
+                                if($checked_status){
+                                    $donation[$key]['units'][$checked_status] = true;
+                                }
+                                // $checked[$val['donation_id']][$code] = array('checked' => 0);
+                                // $donation[$key]['units'][$code]['hasChecked'] = '$code';
+                                // \Log::info($val['labels']);
+                            }
+                            
+                        }
+    
+                    }
+    
+                }
+                
+                return array('data' => $donation, 'checked' => $checked);
+                
+            } else{
+                return false;
+            }
+
+        }
 
         // $sql = "    SELECT * FROM 
         //             donation d 
@@ -38,55 +123,20 @@ class BloodLabellingController extends Controller
         // $donor_details = \DB::select($sql);
         // \Log::info($donor_details);
         
-        if($donation){
 
-            $checked = [];
-
-            foreach($donation as $key => $val){
-
-                if($val['units']){
-
-                    foreach($val['units'] as $k => $v){
-
-                        $code = self::setComponentCode($v['component_code']);
-                        // $code = self::setComponentCode($v['component_cd']);
-
-                        if($code){
-                            $donation[$key]['units'][$code] = $code;
-                            $checked_status = self::labelChecked($val['labels'], $v['component_code']);
-                            // $checked_status = self::labelChecked($val['labels'], $v['component_cd']);
-                            if($checked_status){
-                                $donation[$key]['units'][$checked_status] = true;
-                            }
-                            // $checked[$val['donation_id']][$code] = array('checked' => 0);
-                            // $donation[$key]['units'][$code]['hasChecked'] = '$code';
-                            // \Log::info($val['labels']);
-                        }
-                        
-                    }
-
-                }
-
-            }
-            
-            return array('data' => $donation, 'checked' => $checked);
-            
-        } else{
-            return false;
-        }
 
     }
 
 
-    private function setComponentCode($componentCode){
+    private function setComponentCode($componentCode){  // Used only if collection method is 'WB'
 
-        if($componentCode >= 80){
+        if((int)$componentCode >= 100){
             // $code = ComponentCode::select('comp_name')
-            $code = RCpComponentCode::select('comp_name')
-                                ->whereComponentCd($componentCode)
+            $code = RCpComponentCode::select('component_abbr')
+                                ->whereComponentCode($componentCode)
                                 ->first();
 
-            return str_replace(' ', '_', strtolower($code['comp_name']));
+            return $code['component_abbr'];
         }
 
         return null;
@@ -96,30 +146,60 @@ class BloodLabellingController extends Controller
 
         $label_data     = $request->get('label_data');
         $verifier       = $request->get('verifier');
+        $method         = $request->get('method');
         $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
         $user_id        = Session::get('userInfo')['user_id'];
 
-        foreach($label_data as $key => $val){
+        if($method == 'P'){
 
-            $split = explode("-", $val);
+            foreach($label_data as $key => $val){
 
-            $label = new Label;
-            $label->label_no = Label::generateNo($facility_cd);
-            $label->facility_cd = $facility_cd;
-            $label->label_dt = date('Y-m-d H:i:s');
-            $label->label_by = $user_id;
-            $label->donation_id = $split[1];
-            $label->component_cd = $split[0];
-            $label->reprint_count = 0;
-            $label->reason = null;
-            $label->save();
+                $split = explode("-", $val);
+    
+                $label = new PheresisBloodLabel;
+                $label->label_no = PheresisBloodLabel::generateNo($facility_cd);
+                $label->facility_cd = $facility_cd;
+                $label->label_dt = date('Y-m-d H:i:s');
+                $label->label_by = $user_id;
+                $label->donation_id = $val;
+                $label->source_donation_id = $split[0];
+                $label->component_cd = 100;
+                $label->reprint_count = 0;
+                $label->reason = null;
+                $label->save();
+    
+            }
+    
+            return response()->json([
+                'message' => 'Blood Label has been saved.',
+                'status' => 1
+            ], 200);
+
+        } else{
+
+            foreach($label_data as $key => $val){
+
+                $split = explode("-", $val);
+    
+                $label = new Label;
+                $label->label_no = Label::generateNo($facility_cd);
+                $label->facility_cd = $facility_cd;
+                $label->label_dt = date('Y-m-d H:i:s');
+                $label->label_by = $user_id;
+                $label->donation_id = $split[1];
+                $label->component_cd = $split[0];
+                $label->reprint_count = 0;
+                $label->reason = null;
+                $label->save();
+    
+            }
+    
+            return response()->json([
+                'message' => 'Blood Label has been saved.',
+                'status' => 1
+            ], 200);
 
         }
-
-        return response()->json([
-            'message' => 'Blood Label has been saved.',
-            'status' => 1
-        ], 200);
 
     }
 

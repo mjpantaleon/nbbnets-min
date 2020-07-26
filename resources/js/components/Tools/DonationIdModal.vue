@@ -79,20 +79,48 @@
 
                 this.errCredentials = ''
 
-                var id = this.item.split("-")
+                var method = this.item.split(",")
 
-                if(this.donationId && this.modalHide == false){
-                    if(this.donationId == id[1]){
-                        this.$emit('fromModalId', [this.item, true])
-                        this.modalHide = true
-                        this.$bvModal.hide('verifier-id')
+                if(method[1] == 'P'){
+
+                    var id = method[0].split("-")   // split mother donation id to its aliquote number (=01, -02)
+
+                    if(this.donationId && this.modalHide == false){
+                        if(this.donationId == id[0]){
+                            this.$emit('fromModalId', [this.item, true])
+                            this.modalHide = true
+                            this.$bvModal.hide('verifier-id')
+                        } else{
+                            this.errCredentials = 'Donation ID did not match'
+                        }
                     } else{
-                        this.errCredentials = 'Donation ID did not match'
+                        this.donationId = ''
+                        this.errCredentials = ''
                     }
+
                 } else{
-                    this.donationId = ''
-                    this.errCredentials = ''
+
+                    var id = method[0].split("-") // split component code and donation id
+
+                    if(this.donationId && this.modalHide == false){
+                        if(this.donationId == id[1]){
+                            this.$emit('fromModalId', [this.item, true])
+                            this.modalHide = true
+                            this.$bvModal.hide('verifier-id')
+                        } else{
+                            this.errCredentials = 'Donation ID did not match'
+                        }
+                    } else{
+                        this.donationId = ''
+                        this.errCredentials = ''
+                    }
+
                 }
+
+
+                
+
+
 
             }
         }

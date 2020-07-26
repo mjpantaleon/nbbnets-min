@@ -16,17 +16,29 @@ class PreviewController extends Controller
 {
     public function showPreview(Request $data){
 
-        $split = explode("-", $data->get('data'));
+        $method = explode(",", $data->get('data'));
 
-        $facility_cd = Session::get('userInfo')['facility']['facility_cd'];
+        if($method[1] == 'P'){
 
+            $facility_cd = Session::get('userInfo')['facility']['facility_cd'];
+    
+            $label = $this->prepareTemplate($facility_cd,$method[0],100,$method[1]);
+            return view('layouts.label')->withContent($label);
 
-        $label = $this->prepareTemplate($facility_cd,$split[1],$split[0]);
-        return view('layouts.label')->withContent($label);
+        } else{
+
+            $split = explode("-", $method[0]);
+
+            $facility_cd = Session::get('userInfo')['facility']['facility_cd'];
+    
+            $label = $this->prepareTemplate($facility_cd,$split[1],$split[0],$method[1]);
+            return view('layouts.label')->withContent($label);
+
+        }
 
     }
 
-    private function prepareTemplate($facility_cd,$donation_id,$component_cd){
+    private function prepareTemplate($facility_cd, $donation_id, $component_cd, $method){
         
         $facility = Facility::whereFacilityCd($facility_cd)->firstOrFail();
 
@@ -36,11 +48,13 @@ class PreviewController extends Controller
         //             ->whereNotIn('comp_stat',['EXP','DIS','ISS'])
         //             ->get()->first();
 
-        $unit = Component::with('component_code','donation_min','additionaltest','aliqoute_donation')
+        $unit = Component::with('cp_component_code','donation_min','additionaltest','aliqoute_donation')
             ->whereDonationId($donation_id)
             ->whereComponentCd($component_cd)
             ->whereNotIn('comp_stat',['EXP','DIS','ISS'])
             ->get()->first();
+
+        \Log::info($unit);
 
         if(!$unit){
             return '<div style="text-align:center;font-family:calibri;">Opps! Sorry, Blood Unit no longer available!</div>';
@@ -69,14 +83,44 @@ class PreviewController extends Controller
         $template = $this->getTemplate($facility_cd);
         
         $template = str_replace('{{FACILITY_NAME}}',$facility->facility_name,$template);
-        $template = str_replace('{{BARCODE}}','<div style="font-size:14px;font-family:arial;background:#fff;width:98%;height:50px;text-align:center;vertical-align:middle;padding:2px;"><img src="barcode/'.$donation_id.'" width="95%" height="30" /><center><b>'.$donation_id.'</b></center></div>',$template);
+        $template = str_replace('{{BARCODE}}','<div style="font-size:14px;font-family:arial;background:#fff;width:98%;height:47.5px;text-align:center;vertical-align:middle;padding:2px;"><img src="barcode/'.$donation_id.'" width="95%" height="30" /><center><b>'.$donation_id.'</b></center></div>',$template);
         $template = str_replace('{{ABO}}',$bt[0],$template);
         $template = str_replace('{{RH}}',$rh,$template);
-        $template = str_replace('{{COMPONENT}}',$unit->component_code->comp_name,$template);
+        $template = str_replace('{{COMPONENT}}',$unit->cp_component_code->comp_name,$template);
         $template = str_replace('{{VOLUME}}',$unit->component_vol,$template);
+
+        // Add Riboflavin
+        if($component_cd == 100){
+            $template = str_replace('{{ADDRB}}', "+ 35 ml Riboflavin", $template);
+        } else{
+            $template = str_replace('{{ADDRB}}', "", $template);
+        }
+
+        // Anticoagulant
+
+        $anticoagulant = "";
+
+        if($method == 'P'){
+            $anticoagulant = "ACD Anticoagulant";
+        } else{
+
+            if($unit->donation_min->blood_bag == 'Q'){
+                $anticoagulant = "CPD Anticoagulant";
+            } else{
+                $anticoagulant = "CPDA-1 Anticoagulant";
+            }
+
+            if($component_cd == 101 || $component_cd == 103){
+                $anticoagulant = $anticoagulant . " w/ SAG-M";
+            }
+
+        }
+
+        $template = str_replace('{{ANTICOAGULANT}}', $anticoagulant, $template);
+        
         $template = str_replace('{{COLLECTION_DATE}}',$collection_dt,$template);
         $template = str_replace('{{EXPIRATION_DATE}}',date('M d, Y',strtotime($unit->expiration_dt)).' 23:59:00',$template);
-        $template = str_replace('{{STORE}}','Store at '.$unit->component_code->min_storage.' to '.$unit->component_code->max_storage.' &deg;C',$template);
+        $template = str_replace('{{STORE}}','Store at '.$unit->cp_component_code->min_storage.' to '.$unit->cp_component_code->max_storage.' &deg;C',$template);
 
         
         $template = str_replace('{{NAT}}','ID NAT',$template);
