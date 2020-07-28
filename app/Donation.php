@@ -64,6 +64,10 @@ class Donation extends Model
         return $this->hasMany('App\PheresisBloodLabel','source_donation_id','donation_id');
     }
 
+    function aliquote_component(){
+        return $this->hasMany('App\Component','source_donation_id','donation_id');
+    }
+
     // function discards(){
     //     return $this->hasMany('App\Discard','donation_id','donation_id');
     // }

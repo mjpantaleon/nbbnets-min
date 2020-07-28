@@ -132,7 +132,14 @@ export default {
     }, /* data */
 
     mounted(){
-        this.uri = '/preview?data='+this.$route.params.comp+"-"+this.$route.params.id
+
+        if(this.$route.params.mtd == 'P'){
+            this.uri = '/preview?data='+this.$route.params.id+","+this.$route.params.mtd
+        } else{
+            this.uri = '/preview?data='+this.$route.params.comp+"-"+this.$route.params.id+","+this.$route.params.mtd
+        }
+
+        
     }, /* mounted */
 
     methods: {

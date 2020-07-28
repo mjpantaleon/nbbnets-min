@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Donation;
 use App\ComponentCode;
+use App\RCpComponentCode;
 use App\Component;
 use Session;
 
@@ -20,57 +21,109 @@ class ReleaseInventoryController extends Controller
         $sched_id       = 'Walk-in';
         $col_stat       = 'COL';
 
-        $donation = Donation::with('type','labels','test','additionaltest','units','donor_min')
-                            ->whereNotNull('donation_id')
-                            ->whereNotNull('donor_sn')
-                            ->whereFacilityCd($facility_cd)
-                            ->whereSchedId($sched_id)
-                            ->whereBetween('created_dt', [$from, $to])
-                            ->where('collection_stat', $col_stat)
-                            ->get();
-        
-        if($donation){
+        if($request['col_method'] == 'P'){      // PHERESIS PROCESS
 
-            $checked = [];
+            $donation = Donation::with('type','pheresis_label','test','additionaltest','units','donor_min','aliquote_component')
+                                ->whereNotNull('donation_id')
+                                ->whereNotNull('donor_sn')
+                                ->whereFacilityCd($facility_cd)
+                                ->whereSchedId($sched_id)
+                                ->whereBetween('created_dt', [$from, $to])
+                                ->where('collection_stat', $col_stat)
+                                ->whereCollectionMethod('P')
+                                ->get();
 
-            foreach($donation as $key => $val){
+            if($donation){
 
-                if($val['units']){
+                $checked = [];
+    
+                foreach($donation as $key => $val){
 
-                    foreach($val['units'] as $k => $v){
+                    $aliquote_arr = self::getCompStat($val['aliquote_component']);
 
-                        $code = self::setComponentCode($v['component_cd']);
+                    if($val['pheresis_label']){
+    
+                        foreach($val['pheresis_label'] as $k => $v){
 
-                        if($code){
-                            $donation[$key]['units'][$code] = $v['comp_stat'];
-                            $checked_status = self::labelChecked($val['labels'], $v['component_cd']);
-                            if($checked_status){
-                                $donation[$key]['units'][$checked_status] = true;
+                            if( strpos($v->donation_id, "-01") !== false ){
+                                $donation[$key]['units']["p01"] = $aliquote_arr[$v->donation_id];
+                            } elseif( strpos($v->donation_id, "-02") !== false ){
+                                $donation[$key]['units']["p02"] = $aliquote_arr[$v->donation_id];
                             }
+    
                         }
-                        
+    
+                    }
+    
+                }
+
+                // \Log::info($donation);
+                
+                return array('data' => $donation, 'checked' => $checked);
+                
+            } else{
+                return false;
+            }
+
+        } else{                                 // WHOLE BLOOD PROCESS
+
+            $donation = Donation::with('type','labels','test','additionaltest','units','donor_min')
+                                ->whereNotNull('donation_id')
+                                ->whereNotNull('donor_sn')
+                                ->whereFacilityCd($facility_cd)
+                                ->whereSchedId($sched_id)
+                                ->whereBetween('created_dt', [$from, $to])
+                                ->where('collection_stat', $col_stat)
+                                ->whereCollectionType('CPC19')
+                                ->get();
+
+            if($donation){
+
+                $checked = [];
+
+                foreach($donation as $key => $val){
+
+                    if($val['units']){
+
+                        foreach($val['units'] as $k => $v){
+
+                            $code = self::setComponentCode($v['component_cd']);
+
+                            if($code){
+
+                                $donation[$key]['units'][$code] = $v['comp_stat'];
+
+                                $checked_status = self::labelChecked($val['labels'], $v['component_cd']);
+
+                                if($checked_status){
+                                    $donation[$key]['units'][$checked_status] = true;
+                                }
+                            }
+                            
+                        }
+
                     }
 
                 }
 
+                return array('data' => $donation, 'checked' => $checked);
+
+            } else{
+                return false;
             }
-            
-            return array('data' => $donation, 'checked' => $checked);
-            
-        } else{
-            return false;
+
         }
 
     }
 
     private function setComponentCode($componentCode){
 
-        if($componentCode >= 80){
-            $code = ComponentCode::select('comp_name')
-                                ->whereComponentCd($componentCode)
+        if($componentCode >= 100){
+            $code = RCpComponentCode::select('component_abbr')
+                                ->whereComponentCode($componentCode)
                                 ->first();
 
-            return str_replace(' ', '_', strtolower($code['comp_name']));
+            return $code['component_abbr'];
         }
 
         return null;
@@ -82,22 +135,39 @@ class ReleaseInventoryController extends Controller
         $verifier       = $request->get('verifier');
         $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
         $user_id        = Session::get('userInfo')['user_id'];
+        $method         = $request->get('method');
 
-        foreach($comp_data as $key => $val){
+        if($method == 'P'){
 
-            $split = explode("-", $val);
+            $all_id = self::mergeMotherDonationId($comp_data);
 
-            $comp = Component::whereDonationId($split[1])
-                            ->whereComponentCd($split[0])
-                            ->first();
-            $comp->comp_stat = 'AVA';
-            $comp->save();
+            $comp = Component::whereIn('donation_id', $all_id)
+                        ->update(['comp_stat' => 'AVA']);
+
+            return response()->json([
+                'message' => 'Blood Label has been saved.',
+                'status' => 1
+            ], 200);
+
+        } else{
+
+            foreach($comp_data as $key => $val){
+
+                $split = explode("-", $val);
+    
+                $comp = Component::whereDonationId($split[1])
+                                ->whereComponentCd($split[0])
+                                ->first();
+                $comp->comp_stat = 'AVA';
+                $comp->save();
+            }
+    
+            return response()->json([
+                'message' => 'Blood Label has been saved.',
+                'status' => 1
+            ], 200);
+
         }
-
-        return response()->json([
-            'message' => 'Blood Label has been saved.',
-            'status' => 1
-        ], 200);
 
     }
 
@@ -109,6 +179,35 @@ class ReleaseInventoryController extends Controller
         }
 
         return null;
+
+    }
+
+    private function getCompStat($data){
+
+        $arr = [];
+
+        foreach($data as $val){
+            $arr[$val['donation_id']] = $val['comp_stat'];
+        }
+
+        return $arr;
+    }
+
+    private function mergeMotherDonationId($ids){
+
+        $arr = [];
+
+        foreach($ids as $val){
+
+            $split_id = explode('-', $val);
+
+            if(!in_array($split_id[0], $arr)){
+                $arr[] = $split_id[0];
+            }
+
+        }
+
+        return array_merge($arr, $ids);
 
     }
 

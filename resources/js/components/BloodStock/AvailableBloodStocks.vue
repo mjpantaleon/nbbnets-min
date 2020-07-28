@@ -79,11 +79,7 @@
                                 </template>
 
                                 <template v-slot:cell(dateCollected)="data">
-                                    {{ data.item.doantion_min.created_dt }}
-                                </template>
-
-                                <template v-slot:cell(dateCollected)="data">
-                                    {{ data.item.donation_min.created_dt }}
+                                    {{ data.item.created_date }}
                                 </template>
 
                                 <template v-slot:cell(expDate)="data">
@@ -99,9 +95,10 @@
                                     <!-- <b-button variant="success" @click="proceed()" size="sm">
                                         <b-icon icon="search"></b-icon>
                                     </b-button> -->
-                                    <router-link :to="'/unit/'+data.item.donation_id+'/'+data.item.component_cd" title="View Blood Unit Details">
+                                    <router-link :to="'/unit/'+data.item.donation_id+'/'+data.item.component_cd+'/'+data.item.method" title="View Blood Unit Details">
                                         <b-icon icon="search" class="border border-success p-1" variant="success" font-scale="2.1"></b-icon>
                                     </router-link>
+
                                 </template>
                             </b-table>
 

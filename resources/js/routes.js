@@ -54,7 +54,7 @@ export const routes = [
     { name: 'inventory-release', path: '/release-to-inventory', component: InventoryRelease },
     { name: 'available-stocks', path: '/available-stocks', component: AvailableBloodStocks },
 
-    { name: 'units', path: '/unit/:id/:comp', component: Units },
+    { name: 'units', path: '/unit/:id/:comp/:mtd', component: Units },
 
     // { name: 'register-blood', path: '/register-blood', component: RegisterUnit },
 

@@ -32,7 +32,7 @@ class Component extends Model
     }
     
     function donation_min(){
-        return $this->belongsTo('App\Donation','donation_id','donation_id')->select('donation_id','sched_id','blood_bag','created_dt');
+        return $this->belongsTo('App\Donation','donation_id','donation_id')->select('donation_id','sched_id','blood_bag','created_dt', 'collection_method', 'collection_type');
     }
 
     function component_code(){
@@ -45,6 +45,10 @@ class Component extends Model
 
     function component_code_min(){
         return $this->belongsTo('App\ComponentCode','component_cd','component_cd')->select('component_cd','comp_name');
+    }
+
+    function cp_component_code_min(){
+        return $this->belongsTo('App\RCpComponentCode','component_code','component_cd')->select('component_code','comp_name');
     }
     
     function additionaltest(){
