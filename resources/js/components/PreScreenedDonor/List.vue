@@ -62,12 +62,6 @@
                             v-b-tooltip.hover title="View details">
                             <b-icon icon="search"></b-icon>
                         </b-link>
-
-                        <b-link v-if="data.item.status != '2' && data.item.status != '0'" class="btn btn-danger btn-sm" :to="{ path: '/blood-testing/' + data.item.donor_sn }"
-                            v-b-tooltip.hover title="Proceed to Testing">
-                            <b-icon icon="droplet-half"></b-icon>
-                        </b-link>
-
                     </template>  
 
                 </b-table>

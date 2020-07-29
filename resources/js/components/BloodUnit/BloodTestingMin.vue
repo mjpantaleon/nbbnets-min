@@ -96,7 +96,7 @@
             </h5>
             
             <template v-slot:modal-footer="{ ok }">
-                <b-link class="btn btn-success" :to="{ path: '/pre-screened-list' }"
+                <b-link class="btn btn-success" :to="{ path: '/blood-testing' }"
                     size="sm" variant="success" @click="ok()">
                     OK
                 </b-link>

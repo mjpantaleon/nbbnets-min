@@ -84,9 +84,15 @@
                     :per-page="perPage"
                     :current-page="currentPage">
 
-                    <template v-slot:cell(donationStat)="data">
-                        <b v-if="data.item.donation_stat == 'REA' || data.item.donation_stat == 'N'" class="text-danger">CANNOT DONATE</b>
+                    <template v-slot:cell(donation_stat)="data">
+                        <b v-if="data.item.donation_stat == 'N'" 
+                            class="text-danger">CANNOT DONATE</b>
+                        <!-- NOT SURE IF THE PARAMETER IS ONLY Y OR N  -->
+                        <!-- <b v-if="data.item.donation_stat == 'REA' || data.item.donation_stat == 'N'
+                            || data.item.donation_stat == 'TP' || data.item.donation_stat == 'PD' " 
+                            class="text-danger">CANNOT DONATE</b> -->
                         <b v-else class="text-success">MAY DONATE</b>
+                        
                     </template>
 
                     <template v-slot:cell(name)="data">
@@ -148,7 +154,7 @@ export default {
 
             fields: [
                 { key: 'seqno', label: 'Seqno' },
-                { key: 'donationStat', label: 'Status' },
+                { key: 'donation_stat', label: 'Status' },
                 { key: 'name', label: 'Fullname' },
                 { key: 'gender', label: 'Gender' },
                 { key: 'bdate', label: 'Birthday' },
