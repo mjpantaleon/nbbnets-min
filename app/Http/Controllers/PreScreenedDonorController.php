@@ -14,7 +14,7 @@ use Carbon;
 class PreScreenedDonorController extends Controller
 {
     public function index(){
-         // GET THE USER INFO
+        // GET THE USER INFO
         $session = Session::get('userInfo');
         $facility_cd = Session::get('userInfo')['facility_cd'];
 
@@ -40,6 +40,25 @@ class PreScreenedDonorController extends Controller
         $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
         // \Log::info($pre_screened_donor);
         return $pre_screened_donor;
+    }
+
+    // FOR TESTING ENTRIES
+    public function getList(){
+        // GET THE USER INFO
+        $session = Session::get('userInfo');
+        $facility_cd = Session::get('userInfo')['facility_cd'];
+
+        // $for_testing_list = PreScreenedDonor::where('status', '!=', '0')
+        //                             ->where('facility_cd', 'LIKE', $facility_cd)->get();
+        $query = "  SELECT id, donor_sn, first_name, middle_name, last_name, name_suffix, gender, 
+                    bdate, address, created_dt, status
+                    FROM `pre_screened_donors`
+                    WHERE `facility_cd` LIKE $facility_cd AND `status` != '0' 
+                    ORDER BY `created_dt` DESC ";
+        $for_testing_list = DB::select($query);
+
+        \Log::info($for_testing_list);
+        return $for_testing_list;
     }
     
     public function update(Request $request, $id){

@@ -47,6 +47,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/pre-screened-donor/{id}', 'PreScreenedDonorController@getDetails');
     Route::post('/pre-screened-update/{id}', 'PreScreenedDonorController@update');
     Route::post('/submit-entry', 'PreScreenedDonorController@create');
+    // FOR TESTING ENTRIES
+    Route::get('/for-testing-list', 'PreScreenedDonorController@getList');
+
 
     // VERIFIER
 
