@@ -15,8 +15,8 @@ class PreScreenedDonorController extends Controller
 {
     public function index(){
         // GET THE USER INFO
-        $session = Session::get('userInfo');
-        $facility_cd = Session::get('userInfo')['facility_cd'];
+        // $session = Session::get('userInfo');
+        // $facility_cd = Session::get('userInfo')['facility_cd'];
 
         /*  SELECT id, donor_sn, first_name, middle_name, last_name, name_suffix, gender, 
             bdate, address, created_dt, status
@@ -27,7 +27,6 @@ class PreScreenedDonorController extends Controller
         $query = "  SELECT id, donor_sn, first_name, middle_name, last_name, name_suffix, gender, 
                     bdate, address, created_dt, status
                     FROM `pre_screened_donors`
-                    WHERE `facility_cd` LIKE '$facility_cd' 
                     ORDER BY `created_dt` DESC ";
         $pre_screened_donors = DB::select($query);
 
@@ -35,6 +34,41 @@ class PreScreenedDonorController extends Controller
         // $candidates = Candidate::orderBy('screen_dt', 'desc')->get();
         return $pre_screened_donors;
     }
+
+    public function search(Request $request){
+        $data = $request->except('_token');
+        
+        $fname = $data['first_name'];
+        $mname = $data['middle_name'];
+        $lname = $data['last_name'];
+
+        // If firstname is not empty OR middlename is nor empty OR lastname then
+        if( ($fname != '') || ($mname != '') || ($lname != '') ){
+            // check database where firstname is equals to data['fname]
+            $query = PreScreenedDonor::query();
+            if(!empty($fname)){
+                $query = $query->where('first_name', 'LIKE', '%'.$fname.'%');
+            }
+
+            if(!empty($mname)){
+                $query = $query->where('middle_name', 'LIKE', '%'.$mname.'%');
+            }
+
+            // check database where lname is equals to data['lname]
+            if(!empty($lname)){
+                $query = $query->where('last_name', 'LIKE', '%'.$lname.'%');
+            }
+            // order by created_dt in descending order
+            $query = $query->orderBY('created_dt', 'desc');
+            // get the first record found
+            $keyword = $query->get();
+            // return a response
+            return response()->json($keyword);
+            // return response()->json(["keyword" => $keyword]);
+            \Log::info($keyword);
+        }
+    } /* search */
+
 
     public function getDetails($id){
         $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
@@ -135,6 +169,7 @@ class PreScreenedDonorController extends Controller
             // UPDATE PRE-SCREENED DONOR TABLE
             $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
             $pre_screened_donor->donor_sn = $seqno;
+            $pre_screened_donor->facility_cd = $facility_cd;
             $pre_screened_donor->status = 1;
             $pre_screened_donor->approved_by = $created_by;
             $pre_screened_donor->approval_dt = $created_dt;
@@ -162,13 +197,14 @@ class PreScreenedDonorController extends Controller
                     ->first();
             // \Log::info($seqno);
 
-             // UPDATE PRE-SCREENED DONOR TABLE
-             $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
-             $pre_screened_donor->donor_sn = $seqno->seqno;
-             $pre_screened_donor->status = 1;
-             $pre_screened_donor->approved_by = $created_by;
-             $pre_screened_donor->approval_dt = $created_dt;
-             $pre_screened_donor->save();
+            // UPDATE PRE-SCREENED DONOR TABLE
+            $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
+            $pre_screened_donor->donor_sn = $seqno->seqno;
+            $pre_screened_donor->facility_cd = $facility_cd;
+            $pre_screened_donor->status = 1;
+            $pre_screened_donor->approved_by = $created_by;
+            $pre_screened_donor->approval_dt = $created_dt;
+            $pre_screened_donor->save();
             //  \Log::info($pre_screened_donor);s
  
 

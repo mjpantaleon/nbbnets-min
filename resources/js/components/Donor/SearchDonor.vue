@@ -60,9 +60,9 @@
         </b-row>
 
         <!-- {{ data }} -->
-        <b-link class="btn btn-success" :to="{ path: 'register-new-donor' }">
+        <!-- <b-link class="btn btn-success" :to="{ path: 'register-new-donor' }">
             <b-icon icon="person-plus"></b-icon> Register New Donor
-        </b-link>
+        </b-link> -->
 
         <!-- TABLE -->
         <b-row>
@@ -110,10 +110,10 @@
                             <b-icon icon="search"></b-icon>
                         </b-link>
 
-                        <b-link class="btn btn-success btn-sm" :to="{ path: '/update-donor-details/' + data.item.seqno  }"
+                        <!-- <b-link class="btn btn-success btn-sm" :to="{ path: '/update-donor-details/' + data.item.seqno  }"
                             v-b-tooltip.hover title="Update donor details">
                             <b-icon icon="pencil"></b-icon>
-                        </b-link>
+                        </b-link> -->
                     </template>   
                 </b-table>
 

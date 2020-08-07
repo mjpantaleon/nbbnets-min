@@ -48,7 +48,7 @@ export const routes = [
     { name: 'blood-processing', path: '/blood-processing', component: BloodProcessing },
     // { name: 'aliquote', path: '/aliquote', component: Aliquote },
     { name: 'blood-testing', path: '/blood-testing', component: BloodTesting },
-    { name: 'blood-testing', path: '/blood-testing/:id', component: BloodTestMin },
+    { name: 'blood-testing-min', path: '/blood-testing/:id', component: BloodTestMin },
     { name: 'labelling', path: '/labelling', component: Labelling },
 
     { name: 'inventory-release', path: '/release-to-inventory', component: InventoryRelease },
