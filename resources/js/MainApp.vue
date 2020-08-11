@@ -18,7 +18,7 @@ import Footer from './components/MainApp/Footer';
     export default {
         components: {TopNav, Footer},
         mounted(){
-            console.log('Main App mounted');
+            // console.log('Main App mounted');
         }
     }
 </script>

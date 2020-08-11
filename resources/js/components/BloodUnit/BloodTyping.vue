@@ -335,7 +335,7 @@ export default {
     watch:{
         checked: function(val){
             this.isLoading = true;
-            console.log(this.isLoading)
+            // console.log(this.isLoading)
 
             this.data = []  
             this.final_data = []

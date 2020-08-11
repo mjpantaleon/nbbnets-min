@@ -19,7 +19,7 @@ class AvailableBloodStocksController extends Controller
                                 ->whereCompStat('AVA')
                                 ->where('component_cd', '>=', 100)
                                 ->where('expiration_dt','>=', date('Y-m-d') )
-                                ->orderBy('expiration_dt','asc')
+                                ->orderBy('created_dt','desc')
                                 ->orderBy('donation_id','asc')
                                 ->get()
                                 ->toArray();

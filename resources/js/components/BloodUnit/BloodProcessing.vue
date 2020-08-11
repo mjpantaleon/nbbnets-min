@@ -333,7 +333,7 @@ export default {
 
             // err = this.checkError()
 
-            console.log(this.final_data)
+            // console.log(this.final_data)
 
             // if(err){
             //     this.errMessage = 'Please fill up all fields'

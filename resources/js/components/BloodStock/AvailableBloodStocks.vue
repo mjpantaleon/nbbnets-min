@@ -299,7 +299,7 @@ export default {
                 return ret
             }
 
-            console.log(cid + ' ' + ret)
+            // console.log(cid + ' ' + ret)
 
         },
 

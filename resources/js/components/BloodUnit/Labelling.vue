@@ -416,7 +416,7 @@ export default {
                     if(response.data){
                         this.data = response.data.data
                         // this.checked = response.data.checked
-                        console.log(response.data.data)
+                        // console.log(response.data.data)
 
 
                     } else{
@@ -515,7 +515,7 @@ export default {
                 return ret
             }
 
-            console.log(cid + ' ' + ret)
+            // console.log(cid + ' ' + ret)
 
         }
 
@@ -529,7 +529,7 @@ export default {
 
         checked: function(val){
 
-            console.log(val)
+            // console.log(val)
 
             if(val.length > this.prev_checked.length){  // Added check
 
