@@ -273,7 +273,7 @@ class PreScreenedDonorController extends Controller
             $pre_screened_donor->first_name = $fname;
             $pre_screened_donor->middle_name = $mname;
             $pre_screened_donor->last_name = $lname;
-            $pre_screened_donor->name_suffix = $name_suffix;
+            $pre_screened_donor->name_suffix = $name_suffix ? $name_suffix : "";
             
             $pre_screened_donor->nationality = $nationality;
             $pre_screened_donor->gender = $gender;

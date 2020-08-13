@@ -56,12 +56,13 @@ class ApiController extends Controller
 				            'name_suffix' => $request->name_suffix,
 				            'nationality' => $request->nationality,
 				            'gender' => $request->gender,
+				            'bdate' => $request->bdate,
 				            'age' => $request->age,
 				            'weight' => $request->weight,
 				            'address' => $request->address,
 				            'email' => $request->email,
 				            'fb' => $request->fb,
-				            'mobile_no' => $request->contact,
+				            'contact' => $request->contact,
 				            'time_availability' => $request->time_availability,
 				            'first_answer' => $request->first_answer,
 				            'second_answer' => $request->second_answer,
@@ -170,6 +171,7 @@ class ApiController extends Controller
             $pre_screened_donor->nationality = $request->nationality;
             $pre_screened_donor->gender = $gender;
             
+            $pre_screened_donor->bdate = $request->bdate;
             $pre_screened_donor->age = $request->age;
             
             $pre_screened_donor->weight = $request->weight;
