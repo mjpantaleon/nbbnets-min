@@ -316,7 +316,5 @@ class PreScreenedDonorController extends Controller
             ], 200);
         }
 
-
-
     }
 }
