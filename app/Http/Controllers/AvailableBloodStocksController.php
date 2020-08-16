@@ -24,6 +24,8 @@ class AvailableBloodStocksController extends Controller
                                 ->get()
                                 ->toArray();
 
+        \Log::info(count($available));
+
         return self::formatData($available);
 
     }
@@ -76,13 +78,48 @@ class AvailableBloodStocksController extends Controller
         $arr = [];
         $ret = [];
 
+        // foreach($data as $key => $val){
+        //     $arr[$val['donation_id']] = $val;
+        // }
+
+        // foreach($arr as $key => $val){
+
+        //     if($val['source_donation_id']){
+        //         $created_date = date('F j, Y', strtotime($arr[$val['source_donation_id']]['donation_min']['created_dt']));
+        //         $method       = "P";
+        //     } else{
+        //         $created_date = date('F j, Y', strtotime($val['donation_min']['created_dt']));
+
+        //         if($val['donation_min']['collection_method'] == 'P'){
+        //             $method = "P";
+        //         } elseif($val['donation_min']['collection_type'] == 'CPC19'){
+        //             $method = "WB";
+        //         }
+        //     }
+
+        //     $diff = strtotime(date('Y-m-d H:i:s')) - strtotime($created_date);
+
+        //     $ret[] = array(
+
+        //         'blood_type'        => $val['blood_type'],
+        //         'component_cd'      => $val['component_cd'],
+        //         'component_abbr'    => $abbr[$val['component_cd']],
+        //         'donation_id'       => $val['donation_id'],
+        //         'component_vol'     => $val['component_vol'],
+        //         'created_date'      => $created_date,
+        //         'expiration_dt'     => date('F j, Y', strtotime($val['expiration_dt'])),
+        //         'days_old'          => abs(round($diff / 86400)),
+        //         'method'            => $method,
+
+        //     );
+
+        // }
+
         foreach($data as $key => $val){
             $arr[$val['donation_id']] = $val;
         }
 
-        foreach($arr as $key => $val){
-
-            \Log::info($val['donation_min']);
+        foreach($data as $key => $val){
 
             if($val['source_donation_id']){
                 $created_date = date('F j, Y', strtotime($arr[$val['source_donation_id']]['donation_min']['created_dt']));

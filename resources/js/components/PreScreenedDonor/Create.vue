@@ -174,10 +174,6 @@
                     </b-col>
                 </b-row>
 
-                <b class="lead">
-                    <b-icon icon="chat"></b-icon>&nbsp;How would you like us to reach you?</b>
-                <hr>
-
                 <!-- email -->
                 <b-row>
                     <b-col>
@@ -188,10 +184,15 @@
                                 description="Type-in Email"
                                 label="Email"
                                 label-for="email">
-                                <b-form-input  type="email" v-model="email" id="email"></b-form-input>
+                                <b-form-input :state="checkEmail" type="email" v-model="email" id="email"></b-form-input>
                             </b-form-group>
                     </b-col>
                 </b-row>
+
+                <b class="lead">
+                    <b-icon icon="chat"></b-icon>&nbsp;How would you like us to reach you?</b>
+                <hr>
+
 
                 <!-- fb -->
                 <b-row>
@@ -446,6 +447,9 @@ export default {
         checkAddess(){
             return this.address.length > 8 ? true : false
         },
+        checkEmail(){
+            return this.email.length > 8 ? true : false
+        },
         
         calculateAge: function() {
             var now = new Date();
@@ -475,7 +479,7 @@ export default {
     methods: {
         submitEntry(){
             // check if has answered the personnal info/questionaire
-            if(this.first_answer == '' || this.fname == '' || this.mname == '' || this.lname == '' || this.bdate == ''){
+            if(this.first_answer == '' || this.fname == '' || this.mname == '' || this.lname == '' || this.bdate == '' || this.email == ''){
                 this.showNoAnswer = true
             } else{
                 axios

@@ -108,6 +108,13 @@
                                 </b-col>
                             </b-row> -->
 
+                        <b-pagination
+                            v-model="currentPage"
+                            :total-rows="rows"
+                            :per-page="perPage"
+                            aria-controls="main-table">
+                        </b-pagination>
+
                         </template>
 
                         <template v-else>
@@ -325,15 +332,15 @@ export default {
     }, /* methods */
 
     computed:{
-
+        // pagination
+        rows() {
+            return this.data.length
+        },
     }, /* computed */
 
     watch:{
-
         donationId: function(val){
-
             this.updateTable(val)
-
         },
         
     }
