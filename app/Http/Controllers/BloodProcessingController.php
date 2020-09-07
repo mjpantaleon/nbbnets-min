@@ -57,7 +57,11 @@ class BloodProcessingController extends Controller
                 return false;
             }
 
-        } else{                                   // WHOLE BLOOD PROCESS
+        }
+
+        // ADDED: Modified query to cater whole blood pheresis
+        
+        elseif($request['col_method'] == 'WB'){                                   // WHOLE BLOOD PHERESIS PROCESS
 
             $sql = "SELECT t1.donation_id, t1.blood_bag
             FROM donation t1
@@ -69,6 +73,42 @@ class BloodProcessingController extends Controller
             AND t1.created_dt BETWEEN '$from' AND '$to'
             AND t1.collection_stat = '$col_stat'        
             AND t1.collection_type = 'CPC19'";
+
+            $donation = DB::select($sql);
+
+            $donation = json_decode(json_encode($donation), true);
+            
+            if($donation){
+
+                foreach($donation as $key => $val){
+                    // $donation[$key]['count_key'] = $key;
+                    $ids[$val['donation_id']]['donation_id'] = $val['donation_id'];
+                    $ids[$val['donation_id']]['blood_bag'] = self::wbDisplayBag($val['blood_bag']);
+                    $ids[$val['donation_id']]['plasma'] = "";
+                    $ids[$val['donation_id']]['redbloodcell'] = "";
+                    $ids[$val['donation_id']]['platelets'] = "";
+                }
+
+                return $ids;
+                
+            } else{
+                return false;
+            }
+
+        }
+
+        else{                                   // WHOLE BLOOD PROCESS
+
+            $sql = "SELECT t1.donation_id, t1.blood_bag
+            FROM donation t1
+            LEFT JOIN component t2 ON t1.donation_id = t2.donation_id
+            WHERE t2.donation_id IS NULL
+            AND t1.donation_id IS NOT NULL
+            AND t1.facility_cd = '$facility_cd'
+            AND t1.sched_id = '$sched_id'
+            AND t1.created_dt BETWEEN '$from' AND '$to'
+            AND t1.collection_stat = '$col_stat'
+            AND t1.collection_type = 'PHE'";
 
             $donation = DB::select($sql);
 

@@ -294,6 +294,7 @@ export default {
             col_method_list: [
                 { value: 'WB', text: 'Whole Blood' },
                 { value: 'P', text: 'Pheresis' },
+                { value: 'WBP', text: 'Whole Blood Pheresis' },
             ],
             
 

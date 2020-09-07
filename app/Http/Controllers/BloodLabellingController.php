@@ -65,7 +65,11 @@ class BloodLabellingController extends Controller
             }
 
 
-        } else{                                 // WHOLE BLOOD PROCESS
+        } 
+        
+        // ADDED: Modified query to cater whole blood pheresis
+
+        elseif($request['col_method'] == 'WB'){                                 // WHOLE BLOOD PROCESS
 
             $donation = Donation::with('type','labels','test','additionaltest','units','donor_min')
                                 ->whereNotNull('donation_id')
@@ -75,6 +79,56 @@ class BloodLabellingController extends Controller
                                 ->whereBetween('created_dt', [$from, $to])
                                 ->where('collection_stat', $col_stat)
                                 ->where('collection_type', "CPC19")
+                                ->get();
+
+            if($donation){
+
+                $checked = [];
+    
+                foreach($donation as $key => $val){
+    
+                    if($val['units']){
+    
+                        foreach($val['units'] as $k => $v){
+    
+                            $code = self::setComponentCode($v['component_cd']);
+    
+                            if($code){
+                                $donation[$key]['units'][$code] = $code;
+                                $checked_status = self::labelChecked($val['labels'], $v['component_cd']);
+                                // $checked_status = self::labelChecked($val['labels'], $v['component_cd']);
+                                if($checked_status){
+                                    $donation[$key]['units'][$checked_status] = true;
+                                }
+                                // $checked[$val['donation_id']][$code] = array('checked' => 0);
+                                // $donation[$key]['units'][$code]['hasChecked'] = '$code';
+                                // \Log::info($val['labels']);
+                            }
+                            
+                        }
+    
+                    }
+    
+                }
+                
+                return array('data' => $donation, 'checked' => $checked);
+                
+            } else{
+                return false;
+            }
+
+        }
+
+        else{                                 // WHOLE BLOOD PHERESIS PROCESS
+
+            $donation = Donation::with('type','labels','test','additionaltest','units','donor_min')
+                                ->whereNotNull('donation_id')
+                                ->whereNotNull('donor_sn')
+                                ->whereFacilityCd($facility_cd)
+                                ->whereSchedId($sched_id)
+                                ->whereBetween('created_dt', [$from, $to])
+                                ->where('collection_stat', $col_stat)
+                                ->where('collection_type', "PHE")
                                 ->get();
 
             if($donation){
