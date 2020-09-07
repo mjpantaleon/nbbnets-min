@@ -104,7 +104,7 @@
                             </td>
                         </tr>
 
-                        <tr v-if="collection_method == 'WB'">
+                        <tr v-if="collection_method == 'WB' || collection_method == 'WBP'">
                             <td>
                                 <b-form-group
                                     id="fieldset-horizontal"
@@ -348,6 +348,7 @@ export default {
         collection_method_list: [
           { value: 'WB', text: 'Whole Blood' },
           { value: 'P', text: 'Pheresis' },
+          { value: 'WBP', text: 'Whole Blood Pheresis' },
         ],
 
         collection_stat_list: [

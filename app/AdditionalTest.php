@@ -7,4 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class AdditionalTest extends Model
 {
     protected $table = 'additionaltest';
+
+    protected $guarded = [];
 }

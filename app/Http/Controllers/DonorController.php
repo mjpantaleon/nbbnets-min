@@ -118,7 +118,6 @@ class DonorController extends Controller
                         ->where('name_suffix', '=', $name_suffix)
                         ->where('bdate', '=', $bdate)
                         ->first();
-        \Log::info($check_donor);
         
         if($check_donor === null){       
             $donor = new Donor;
@@ -139,7 +138,6 @@ class DonorController extends Controller
             $donor->created_dt = $created_dt;
             $donor->created_by = $created_by;
             $donor->save();
-            \Log::info($donor);
 
             return response()->json([
                 'message' => 'New Donor has been added successfully.',

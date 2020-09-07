@@ -130,6 +130,11 @@
                                     <b-form-select :name="'rh-' + data.item.donation_id" v-model="final_data[data.index]['rh']" 
                                         :options="rhType" size="sm"></b-form-select>
                                 </template>
+
+                                <template v-slot:cell(abScreening)="data">
+                                    <b-form-select :name="'abs-' + data.item.donation_id" v-model="final_data[data.index]['abs']" 
+                                        :options="rhType" size="sm"></b-form-select>
+                                </template>
  
                             </b-table>
 
@@ -208,6 +213,7 @@ export default {
                 { key: 'donationId', label: 'Donation ID' },
                 { key: 'abo', label: 'ABO' },
                 { key: 'rhType', label: 'RH Type' },
+                { key: 'abScreening', label: 'Anti-body Screening' },
             ],
 
             abo: [

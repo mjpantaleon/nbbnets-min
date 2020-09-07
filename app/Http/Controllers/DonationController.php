@@ -108,7 +108,6 @@ class DonationController extends Controller
         $check_donation_details = Donation::where('donation_id', '=', $donation_id)
                                 ->where('donor_sn', '=', $donor_sn)
                                 ->first();
-        \Log::info($check_donation_details);
 
         // SAVE RECORD
         if($check_donation_details){
@@ -126,6 +125,13 @@ class DonationController extends Controller
             if($collection_method == 'WB'){
                 $check_donation_details->blood_bag = $request->get('blood_bag');
                 $check_donation_details->collection_type = "CPC19";
+            }
+
+            // CONFIRM: CONFIRM IF WHOLE BLOOD PHERESIS IS SAME AS WHOLE BLOOD
+
+            elseif ($collection_method == 'WBP') {
+                $check_donation_details->blood_bag = $request->get('blood_bag');
+                $check_donation_details->collection_type = "PHE";
             }
 
             $check_donation_details->mh_pe_deferral = $mh_pe_deferral;
