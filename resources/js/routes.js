@@ -22,6 +22,11 @@ import BloodTesting from './components/BloodUnit/BloodTestingList.vue';
 import BloodTestMin from './components/BloodUnit/BloodTestingMin.vue';
 import Labelling from './components/BloodUnit/Labelling.vue';
 
+// BLOOD TEST FOLDER
+import TTI from './components/BloodTest/TTI.vue';
+import AdditionalTest1 from './components/BloodTest/AdditionalTest1.vue';
+import AdditionalTest2 from './components/BloodTest/AdditionalTest2.vue';
+
 import InventoryRelease from './components/BloodStock/InventoryRelease.vue';
 import AvailableBloodStocks from './components/BloodStock/AvailableBloodStocks.vue';
 import Units from './components/BloodStock/Aliquote.vue';
@@ -55,6 +60,12 @@ export const routes = [
     { name: 'available-stocks', path: '/available-stocks', component: AvailableBloodStocks },
 
     { name: 'units', path: '/unit/:id/:comp/:mtd', component: Units },
+
+
+    // BLOOD TEST
+    { name: 'tti', path: '/tti', component: TTI },
+    { name: 'additional-test-1', path: '/additional-test-1', component: AdditionalTest1 },
+    { name: 'additional-test-2', path: '/additional-test-2', component: AdditionalTest2 },
 
     // { name: 'register-blood', path: '/register-blood', component: RegisterUnit },
 
