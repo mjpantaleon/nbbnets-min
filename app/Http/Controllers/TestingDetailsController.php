@@ -176,5 +176,81 @@ class TestingDetailsController extends Controller
             ], 200);
         }
     }
+
+
+    public function save(Request $request){
+        $facility_user  = Session::get('userInfo')['user_id'];
+        $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
+
+        $verifier       = $request->get('verifier');
+        $sched_id       = 'Walk-in';
+
+        $inputs     = $request['blood_testing'];
+        \Log::info($inputs);
+        // return $inputs;
+
+        $exams = Exam::whereDisableFlg('N')->pluck('exam_name','exam_cd');
+        
+        // GENERATE 
+        $bloodtest_no = Testing::generateNo($facility_cd);
+        \Log::info($bloodtest_no);
+
+
+
+        // !!!!! HOW TO CHECK DONATION_ID PER RECORD ON $INPUTS ARRAY???
+
+        //  !!!! 
+        
+
+        // check first if donationID already exists in bloodtest_dtls table and donation table
+        $check_donation_id = TestingDetails::where('donation_id', '=', $inputs)->first();
+        
+        if($check_donation_id === null){
+            // loop
+            foreach($inputs as $key => $value){
+                // INSERT RECORD AT `bloodtest_dtls` table
+                $t2 = new TestingDetails;
+                $t2->bloodtest_no = $bloodtest_no;
+                $t2->donation_id = $donation_id;
+                $t2->exam_cd = $key;
+                $t2->result_int = $value == 'n' ? 'n' : 'r';
+                $t2->created_by = $facility_user;
+                $t2->created_dt = date('Y-m-d H:i:s');
+                $t2->save();
+            }
+
+            return response()->json([
+                'message' => 'Testing Details has been saved.',
+                'status' => 1
+            ], 200); 
+        }
+
+        else{
+            // return response('This donation ID already exists!', 200);
+            return response()->json([
+                'message' => 'This donation ID already exists!',
+                'status' => 0
+            ], 200);
+        }
+
+
+        // LOOP EACH INPUT
+        // foreach($inputs as $key => $val){
+        //     // $donation_id[$val['donation_id'] = $val['donation_id']];
+        //     $ids[$val['donation_id']]['donation_id'] = $val['donation_id'];
+        //     $ids[$val['donation_id']]['hbsag'] = $val['hbsag'];
+        //     $ids[$val['donation_id']]['hcv'] = $val['hcv'];
+        //     $ids[$val['donation_id']]['hiv'] = $val['hiv'];
+        //     $ids[$val['donation_id']]['malaria'] = $val['malaria'];
+        //     $ids[$val['donation_id']]['syphilis'] = $val['syphilis'];
+
+        //     // CHECK FIRST IF DONATION ALREADY EXIST IN THE BLOODTEST TABLE
+            
+        //     // $check_donation_id = TestingDetails::where('donation_id', '=', $donation_id)->first();
+            
+        //     return $ids;
+        // }
+
+    }
     
 }

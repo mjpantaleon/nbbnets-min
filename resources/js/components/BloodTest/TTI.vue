@@ -13,10 +13,11 @@
                     </b-breadcrumb-item>
                 </b-breadcrumb>
 
-                <h4><b-icon icon="droplet-half"></b-icon> TTI</h4>
-                <hr>
           </b-col>
         </b-row>
+
+        <h4><b-icon icon="droplet-half"></b-icon> TTI</h4>
+        <hr>
 
         <b-alert show variant="danger" v-if="errMessage"><h3>{{ errMessage }}</h3></b-alert>
 
@@ -30,37 +31,63 @@
                         <th>HIV</th>
                         <th>Malaria</th>
                         <th>Syphilis</th>
+                        <th>&nbsp;</th>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr v-for="(input,i) in inputs" :key="i">
                             <td>
-                                <b-form-input v-model="donationID" placeholder="Scan Donation ID"></b-form-input>
+                                <b-form-input v-model="input.donation_id" placeholder="Scan Donation ID"></b-form-input>
                             </td>
 
                             <td>
-                                <b-form-select v-model="hbsag" :options="HBSAG"></b-form-select>
+                                <b-form-select v-model="input.hbsag" :options="HBSAG"></b-form-select>
                             </td>
 
                             <td>
-                                <b-form-select v-model="hcv" :options="HCV"></b-form-select>
+                                <b-form-select v-model="input.hcv" :options="HCV"></b-form-select>
                             </td>  
 
                             <td>
-                                <b-form-select v-model="hiv" :options="HIV"></b-form-select>
+                                <b-form-select v-model="input.hiv" :options="HIV"></b-form-select>
                             </td> 
 
                             <td>
-                                <b-form-select v-model="malaria" :options="MALA"></b-form-select>
+                                <b-form-select v-model="input.malaria" :options="MALA"></b-form-select>
                             </td>  
 
                             <td>
-                                <b-form-select v-model="syphilis" :options="RPR"></b-form-select>
+                                <b-form-select v-model="input.syphilis" :options="RPR"></b-form-select>
                             </td> 
-                        </tr>
 
-                        
+                            <td>
+                                <b-avatar variant="danger"
+                                    icon="trash-fill"
+                                    button
+                                    @click="remove(i)" v-show="i || ( !i && inputs.length > 1)">
+                                    </b-avatar>
+
+                                <template v-if="i || ( !i && inputs.length > 1)">&nbsp;|&nbsp;</template>
+
+                                <b-avatar variant="primary"
+                                    button
+                                    icon="plus-circle-fill"
+                                    @click="add(i)" v-show="i == inputs.length-1">
+                                    </b-avatar>
+                            </td>
+                        </tr>                       
                     </tbody>
                 </table>
+            </b-col>
+        </b-row>
+
+        <b-row>
+            <b-col md="3">
+                <b-button variant="success"
+                    block
+                    :disabled="disableBtn"
+                    @click.prevent="showModal">
+                    <b-icon icon="check-circle-fill"></b-icon>&nbsp;SUBMIT TEST RESULT
+                </b-button>
             </b-col>
         </b-row>
 
@@ -102,13 +129,18 @@ export default {
     data(){
         return{
             showSuccessMsg: false,
+            showErrorMsg: false,
+            disableBtn: false,
 
-            donationID: null,
-            hbsag: null,
-            hcv: null,
-            hiv: null,
-            malaria: null,
-            syphilis: null,
+            inputs: [
+                { 
+                    donation_id: '',
+                    hbsag: '',
+                    hcv: '',
+                    malaria: '',
+                    syphilis: '',
+                }
+            ],
 
             HBSAG: [
                 { text: 'N', value: 'n' },
@@ -131,24 +163,7 @@ export default {
                 { text: 'R', value: 'r' }
             ],
 
-            data: [],
             isLoading: false,
-
-            final_data:[],
-
-            date_from: '',
-            date_to: '',
-
-            donation_ids: null,
-            select_id_notice: "No Items to display",
-            displayStatus: 0,
-
-            checked: [],
-            checkAll: 1,
-
-            perPage: 10,
-            currentPage: 1,
-
             errMessage: '',
         }
     }, /* data */
@@ -158,27 +173,20 @@ export default {
     }, /* mounted */
 
     methods: {
-        getDonationId (){
-                       
-            axios
-                .post('/get-donation-id-testing-details', {
-                    date_from: this.date_from,
-                    date_to: this.date_to,
-                })
-                .then(response => {
-
-                    if(response.data){
-                        this.donation_ids = response.data
-                        this.isLoading = false
-                    } else{
-                        this.donation_ids = null
-                        this.select_id_notice = "No Data Found"
-                    }
-                    
-                })
-
+        add () {
+        this.inputs.push({
+            donation_id: '',
+            hbsag: '',
+            hcv: '',
+            malaria: '',
+            syphilis: '',
+        })
+        console.log(this.inputs)
         },
 
+        remove (index) {
+        this.inputs.splice(index, 1)
+        },
 
         // MODAL
         showModal(){
@@ -201,8 +209,8 @@ export default {
 
             var err = false;
 
-            this.final_data.forEach((v) => {
-                if(v.HBSAG == "" || v.HCV == "" || v.HIV == "" || v.MALA == "" || v.RPR == ""){
+            this.inputs.forEach((v) => {
+                if(v.donation_id == "" || v.hbsag == "" || v.hcv == "" || v.hiv == "" || v.malaria == "" || v.syphilis == ""){
                     return err = true
                 }
             })
@@ -220,71 +228,66 @@ export default {
 
             axios
                 .post('/save-blood-testing', {
-                    blood_testing: this.final_data,
+                    blood_testing: this.inputs,
                     verifier: e,
                 })
                 .then(response => {
 
                     if(response.data){
-                        // this.donation_ids = response.data
-                        this.showSuccessMsg = true
-                        this.checked = []
-                        
+                        // this.showSuccessMsg = true
+                        // this.disableBtn = true
+                    } else{
+                        this.showErrorMsg = true
                     }
-                    
                 })
 
-            this.getDonationId()
-
+            // this.getDonationId()
         }
 
         
     }, /* methods */
 
     computed: {
-        // pagination
-        rows() {
-
-        },
+        
     }, /* computed */
 
     watch: {
-        checked: function(val){
-            // this.isLoading = true;
-            // console.log(this.isLoading)
+        // checked: function(val){
+        //     // this.isLoading = true;
+        //     // console.log(this.isLoading)
 
-            this.data = []
-            this.final_data = []
+        //     this.data = []
+        //     this.final_data = []
 
-            val.forEach((v) => {
-                this.data.splice(v,0,this.donation_ids[v])
-                this.final_data.splice(v,0,this.donation_ids[v])
-            })
+        //     val.forEach((v) => {
+        //         this.data.splice(v,0,this.donation_ids[v])
+        //         this.final_data.splice(v,0,this.donation_ids[v])
+        //     })
 
-            // this.isLoading = false
+        //     // this.isLoading = false
 
-        },
+        // },
 
-        checkAll: function(val){
+        // checkAll: function(val){
 
-            if(val){
-                this.data = []
-                this.final_data = []
+        //     if(val){
+        //         this.data = []
+        //         this.final_data = []
 
-                var checked_list = []
+        //         var checked_list = []
 
-                Object.keys(this.donation_ids).forEach(function (key){
-                    checked_list.splice(key,0,key)
-                })
+        //         Object.keys(this.donation_ids).forEach(function (key){
+        //             checked_list.splice(key,0,key)
+        //         })
 
-                this.checked = checked_list
+        //         this.checked = checked_list
 
-            } else{
+        //     } else{
 
-                this.checked = []
+        //         this.checked = []
 
-            }
-        },
+        //     }
+        // },
     }, /* watch */
 }
 </script>
