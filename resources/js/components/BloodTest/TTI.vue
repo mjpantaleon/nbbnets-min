@@ -40,23 +40,23 @@
                             </td>
 
                             <td>
-                                <b-form-select v-model="input.hbsag" :options="HBSAG"></b-form-select>
+                                <b-form-select v-model="input.HBSAG" :options="hbsag_option"></b-form-select>
                             </td>
 
                             <td>
-                                <b-form-select v-model="input.hcv" :options="HCV"></b-form-select>
+                                <b-form-select v-model="input.HCV" :options="hcv_option"></b-form-select>
                             </td>  
 
                             <td>
-                                <b-form-select v-model="input.hiv" :options="HIV"></b-form-select>
+                                <b-form-select v-model="input.HIV" :options="hiv_option"></b-form-select>
                             </td> 
 
                             <td>
-                                <b-form-select v-model="input.malaria" :options="MALA"></b-form-select>
+                                <b-form-select v-model="input.MALA" :options="mala_option"></b-form-select>
                             </td>  
 
                             <td>
-                                <b-form-select v-model="input.syphilis" :options="RPR"></b-form-select>
+                                <b-form-select v-model="input.RPR" :options="rpr_option"></b-form-select>
                             </td> 
 
                             <td>
@@ -135,30 +135,31 @@ export default {
             inputs: [
                 { 
                     donation_id: '',
-                    hbsag: '',
-                    hcv: '',
-                    malaria: '',
-                    syphilis: '',
+                    HBSAG: '',
+                    HCV: '',
+                    HIV: '',
+                    MALA: '',
+                    RPR: '',
                 }
             ],
 
-            HBSAG: [
+            hbsag_option: [
                 { text: 'N', value: 'n' },
                 { text: 'R', value: 'r' }
             ],
-            HCV: [
+            hcv_option: [
                 { text: 'N', value: 'n' },
                 { text: 'R', value: 'r' }
             ],
-            HIV: [
+            hiv_option: [
                 { text: 'N', value: 'n' },
                 { text: 'R', value: 'r' }
             ],
-            MALA: [
+            mala_option: [
                 { text: 'Negative', value: 'n' },
                 { text: 'Positive', value: 'r' }
             ],
-            RPR: [
+            rpr_option: [
                 { text: 'N', value: 'n' },
                 { text: 'R', value: 'r' }
             ],
@@ -176,10 +177,11 @@ export default {
         add () {
         this.inputs.push({
             donation_id: '',
-            hbsag: '',
-            hcv: '',
-            malaria: '',
-            syphilis: '',
+            HBSAG: '',
+            HCV: '',
+            HIV: '',
+            MALA: '',
+            RPR: '',
         })
         console.log(this.inputs)
         },
@@ -210,7 +212,7 @@ export default {
             var err = false;
 
             this.inputs.forEach((v) => {
-                if(v.donation_id == "" || v.hbsag == "" || v.hcv == "" || v.hiv == "" || v.malaria == "" || v.syphilis == ""){
+                if(v.donation_id == "" || v.HBSAG == "" || v.HCV == "" || v.HIV == "" || v.MALA == "" || v.RPR == ""){
                     return err = true
                 }
             })

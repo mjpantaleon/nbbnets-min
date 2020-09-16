@@ -18,7 +18,7 @@
         <h4><b-icon icon="file-text"></b-icon> Blood Testing</h4>
         <hr>
 
-         <b-row>
+        <b-row>
             <b-col cols="5">
                 <b-form-group
                     id="donation-id"           

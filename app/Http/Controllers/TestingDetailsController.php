@@ -185,72 +185,124 @@ class TestingDetailsController extends Controller
         $verifier       = $request->get('verifier');
         $sched_id       = 'Walk-in';
 
-        $inputs     = $request['blood_testing'];
-        \Log::info($inputs);
-        // return $inputs;
-
-        $exams = Exam::whereDisableFlg('N')->pluck('exam_name','exam_cd');
+        $blood_testing  = $request->get('blood_testing');
+        // \Log::info($blood_testing);
+        // return $blood_testing;
         
-        // GENERATE 
-        $bloodtest_no = Testing::generateNo($facility_cd);
-        \Log::info($bloodtest_no);
+        foreach($blood_testing as $bt){
+            \Log::info($bt);
+            return $bt;
+
+            $donation_id = $bt['donation_id'];
+            
+            $TTI = [
+                'HBSAG'          => $bt['HBSAG'],
+                'HCV'            => $bt['HCV'],
+                'HIV'            => $bt['HIV'],
+                'MALA'           => $bt['MALA'],
+                'RPR'            => $bt['RPR']
+            ];
+            
+            // check first if donationID already exists in bloodtest_dtls table and donation table
+            $check_donation_id = TestingDetails::where('donation_id', '=', $donation_id)->first();
+            
+            if($check_donation_id === null){
+                
+                foreach($TTI as $key => $value){
+                    // return $key;
+                    \Log::info($key);
+
+                    // GENERATE 
+                    $bloodtest_no = Testing::generateNo($facility_cd);
+                    \Log::info($bloodtest_no);
+
+                    // INSERT RECORD AT `bloodtest_dtls` table
+                    $t2 = new TestingDetails;
+                    $t2->bloodtest_no = $bloodtest_no;
+                    $t2->donation_id = $donation_id;
+                    $t2->exam_cd = $key;
+                    $t2->result_int = $value == 'n' ? 'n' : 'r';
+                    $t2->created_by = $facility_user;
+                    $t2->created_dt = date('Y-m-d H:i:s');
+                    $t2->save();  
+                }
+
+                // INSET RECORD AT `bloodtest` table
+                $t = new Testing;
+                $t->facility_cd = $facility_cd;
+                $t->bloodtest_no = $bloodtest_no;
+                $t->bloodtest_dt = date('Y-m-d H:i:s');
+                $t->donation_id = $donation_id;
+
+                // checking for 'R' values
+                $fail = 0;
+                foreach($TTI as $key => $value){
+                    if(strtoupper($value) == 'R'){
+                        \Log::info($key);
+                        $fail++;
+                    }
+                }
+
+                $t->result = $fail ? 'R' : 'N';
+                $t->created_by = $facility_user;
+                $t->created_dt = date('Y-m-d H:i:s');
+                $t->updated_by = $verifier;
+                $t->updated_dt = date('Y-m-d H:i:s');
+                // $t->save();
+
+                // UPDATE `pre_screened_donors` table
+                // PreScreenedDonor::where('donor_sn', $donor_sn)
+                //                 ->update(['status' => '2']);
+
+                // // INSERT record at `donation` table
+                // $seqno = Donation::generateSeqno($facility_cd);
+                // $d = new Donation;
+                // $d->seqno = $seqno;
+                // $d->donation_id = $donation_id;
+                // $d->donor_sn = $donor_sn;
+                // $d->pre_registered = 'Y';
+                // $d->sched_id = $sched_id;
+                // $d->donation_stat = $fail ? 'REA' : 'Y';
+                // $d->facility_cd = $facility_cd;
+                // // $d->created_dt = date('Y-m-d H:i:s');
+                // $d->save();
+
+                // //Update 'Donor' table
+                // $donor_update_arr = array(
+                //     'donation_stat' => $fail ? 'N' : 'Y',
+                //     'donor_stat' => $fail ? 'PD' : 'A'                
+                // );
+
+                // $stat = Donor::where('seqno', $donor_sn)
+                //                 ->update($donor_update_arr);
+
+                return response()->json([
+                    'message' => 'Testing Details has been saved.',
+                    'status' => 1
+                ], 200);
+            
+            }
+
+            else{
+                return response()->json([
+                    'message' => 'This donation id already exist!',
+                    'status' => 0
+                ], 200);
+            }
+
+            
 
 
-
+        }
+    
+        
+    
         // !!!!! HOW TO CHECK DONATION_ID PER RECORD ON $INPUTS ARRAY???
 
         //  !!!! 
         
 
-        // check first if donationID already exists in bloodtest_dtls table and donation table
-        $check_donation_id = TestingDetails::where('donation_id', '=', $inputs)->first();
         
-        if($check_donation_id === null){
-            // loop
-            foreach($inputs as $key => $value){
-                // INSERT RECORD AT `bloodtest_dtls` table
-                $t2 = new TestingDetails;
-                $t2->bloodtest_no = $bloodtest_no;
-                $t2->donation_id = $donation_id;
-                $t2->exam_cd = $key;
-                $t2->result_int = $value == 'n' ? 'n' : 'r';
-                $t2->created_by = $facility_user;
-                $t2->created_dt = date('Y-m-d H:i:s');
-                $t2->save();
-            }
-
-            return response()->json([
-                'message' => 'Testing Details has been saved.',
-                'status' => 1
-            ], 200); 
-        }
-
-        else{
-            // return response('This donation ID already exists!', 200);
-            return response()->json([
-                'message' => 'This donation ID already exists!',
-                'status' => 0
-            ], 200);
-        }
-
-
-        // LOOP EACH INPUT
-        // foreach($inputs as $key => $val){
-        //     // $donation_id[$val['donation_id'] = $val['donation_id']];
-        //     $ids[$val['donation_id']]['donation_id'] = $val['donation_id'];
-        //     $ids[$val['donation_id']]['hbsag'] = $val['hbsag'];
-        //     $ids[$val['donation_id']]['hcv'] = $val['hcv'];
-        //     $ids[$val['donation_id']]['hiv'] = $val['hiv'];
-        //     $ids[$val['donation_id']]['malaria'] = $val['malaria'];
-        //     $ids[$val['donation_id']]['syphilis'] = $val['syphilis'];
-
-        //     // CHECK FIRST IF DONATION ALREADY EXIST IN THE BLOODTEST TABLE
-            
-        //     // $check_donation_id = TestingDetails::where('donation_id', '=', $donation_id)->first();
-            
-        //     return $ids;
-        // }
-
     }
     
 }
