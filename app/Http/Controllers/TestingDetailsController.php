@@ -151,7 +151,6 @@ class TestingDetailsController extends Controller
             $d->save();
 
             //Update 'Donor' table
-
             $donor_update_arr = array(
                 'donation_stat' => $fail ? 'N' : 'Y',
                 'donor_stat' => $fail ? 'PD' : 'A'                
@@ -165,8 +164,6 @@ class TestingDetailsController extends Controller
                 'status' => 1
             ], 200);
         }
-
-
         else{
             
             // return response('This donation ID already exists!', 200);
@@ -188,10 +185,14 @@ class TestingDetailsController extends Controller
         $blood_testing  = $request->get('blood_testing');
         // \Log::info($blood_testing);
         // return $blood_testing;
+
+        \Log::info(count($blood_testing));
         
-        foreach($blood_testing as $bt){
-            \Log::info($bt);
-            return $bt;
+        foreach($blood_testing as $k => $bt){
+
+            // GENERATE 
+            $bloodtest_no = Testing::generateNo($facility_cd);
+            \Log::info($bloodtest_no);
 
             $donation_id = $bt['donation_id'];
             
@@ -209,12 +210,6 @@ class TestingDetailsController extends Controller
             if($check_donation_id === null){
                 
                 foreach($TTI as $key => $value){
-                    // return $key;
-                    \Log::info($key);
-
-                    // GENERATE 
-                    $bloodtest_no = Testing::generateNo($facility_cd);
-                    \Log::info($bloodtest_no);
 
                     // INSERT RECORD AT `bloodtest_dtls` table
                     $t2 = new TestingDetails;
@@ -248,13 +243,13 @@ class TestingDetailsController extends Controller
                 $t->created_dt = date('Y-m-d H:i:s');
                 $t->updated_by = $verifier;
                 $t->updated_dt = date('Y-m-d H:i:s');
-                // $t->save();
+                $t->save();
 
                 // UPDATE `pre_screened_donors` table
                 // PreScreenedDonor::where('donor_sn', $donor_sn)
                 //                 ->update(['status' => '2']);
 
-                // // INSERT record at `donation` table
+                // // // INSERT record at `donation` table
                 // $seqno = Donation::generateSeqno($facility_cd);
                 // $d = new Donation;
                 // $d->seqno = $seqno;
@@ -267,7 +262,7 @@ class TestingDetailsController extends Controller
                 // // $d->created_dt = date('Y-m-d H:i:s');
                 // $d->save();
 
-                // //Update 'Donor' table
+                // // //Update 'Donor' table
                 // $donor_update_arr = array(
                 //     'donation_stat' => $fail ? 'N' : 'Y',
                 //     'donor_stat' => $fail ? 'PD' : 'A'                
@@ -275,12 +270,6 @@ class TestingDetailsController extends Controller
 
                 // $stat = Donor::where('seqno', $donor_sn)
                 //                 ->update($donor_update_arr);
-
-                return response()->json([
-                    'message' => 'Testing Details has been saved.',
-                    'status' => 1
-                ], 200);
-            
             }
 
             else{
@@ -291,11 +280,12 @@ class TestingDetailsController extends Controller
             }
 
             
-
-
         }
     
-        
+        return response()->json([
+            'message' => 'Testing Details has been saved.',
+            'status' => 1
+        ], 200);
     
         // !!!!! HOW TO CHECK DONATION_ID PER RECORD ON $INPUTS ARRAY???
 
