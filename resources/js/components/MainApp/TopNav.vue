@@ -29,6 +29,7 @@
                     BLOOD TESTING
                 </template>
                 <!-- <b-dropdown-item :to="{ path: '/blood-testing' }">TTI</b-dropdown-item> -->
+                <b-dropdown-item :to="{ path: '/list-for-testing' }">List for Testing</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/tti' }">TTI</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/additional-test-1' }">Additional Test 1</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/additional-test-2' }">Additional Test 2</b-dropdown-item>

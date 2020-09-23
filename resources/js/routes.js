@@ -26,6 +26,7 @@ import Labelling from './components/BloodUnit/Labelling.vue';
 import TTI from './components/BloodTest/TTI.vue';
 import AdditionalTest1 from './components/BloodTest/AdditionalTest1.vue';
 import AdditionalTest2 from './components/BloodTest/AdditionalTest2.vue';
+import ForTestList from './components/BloodTest/List.vue';
 
 import InventoryRelease from './components/BloodStock/InventoryRelease.vue';
 import AvailableBloodStocks from './components/BloodStock/AvailableBloodStocks.vue';
@@ -63,6 +64,7 @@ export const routes = [
 
 
     // BLOOD TEST
+    { name: 'list-for-testing', path: '/list-for-testing', component: ForTestList },
     { name: 'tti', path: '/tti', component: TTI },
     { name: 'additional-test-1', path: '/additional-test-1', component: AdditionalTest1 },
     { name: 'additional-test-2', path: '/additional-test-2', component: AdditionalTest2 },
