@@ -50,6 +50,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/submit-entry', 'PreScreenedDonorController@create');
     // FOR TESTING ENTRIES
     Route::get('/for-testing-list', 'PreScreenedDonorController@getList');
+    Route::post('/get-approved-donor-list', 'PreScreenedDonorController@getApprovedDonorList');
 
 
     // VERIFIER

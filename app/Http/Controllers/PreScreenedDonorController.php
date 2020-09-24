@@ -94,6 +94,29 @@ class PreScreenedDonorController extends Controller
         \Log::info($for_testing_list);
         return $for_testing_list;
     }
+
+    public function getApprovedDonorList(Request $request){
+        // GET THE USER INFO
+        $session = Session::get('userInfo');
+        $facility_cd = Session::get('userInfo')['facility_cd'];
+
+        $from = date($request['date_from']);
+        $to = date($request['date_to']);
+
+        // SELECT donor_sn, last_name, first_name, middle_name, name_suffix FROM pre_screened_donors WHERE facility_cd LIKE $facility_cd AND status = 1 AND approval_dt BETWEEN $from and $to
+        $query = "  SELECT donor_sn, last_name, first_name, middle_name, name_suffix
+                    FROM `pre_screened_donors`
+                    WHERE `facility_cd` LIKE $facility_cd 
+                    AND `status` = '1' 
+                    AND `approval_dt` BETWEEN '$from' AND '$to'
+                    ORDER BY `approval_dt` ASC "; 
+        $approved_donor_list = DB::select($query);
+        $approved_donor_list = json_decode(json_encode($approved_donor_list), true);
+
+        \Log::info($approved_donor_list);
+        return $approved_donor_list
+        ;
+    }
     
     public function update(Request $request, $id){
         $data = $request->except('_token');

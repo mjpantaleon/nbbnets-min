@@ -51,48 +51,57 @@
             <b-col cols="2" class="ml-auto">
                 <b-button type="submit"
                     variant="warning"
-                    @click.prevent="getDonationId()">
+                    @click.prevent="getApprovedDonorList()">
                     <b-icon icon="search"></b-icon>&nbsp;SEARCH
                 </b-button>
             </b-col>
         </b-row>
 
         <!-- DONT FORGET TO PLACE LOOP HERE -->
+        <template v-if="data.length != 0">
         <b-row>
-            <b-col cols="2">
-                Juan Manual Marquez
-            </b-col>
+            <b-col v-for="(input, k) in inputs" :key="k">
+                <b-table striped hover
+                    responsive="sm"
+                    :fields="tti_fields"
+                    :items="data">
+                    <template v-slot:cell(donor)="data">
+                        {{ data.item.first_name }}, {{ data.item.middle_name ? data.item.middle_name : null }}, {{ data.item.last_name }}, {{ data.item.name_suffix ? data.item.name_suffix : null }}
+                    </template>
 
-            <b-col cols="4">
-                <b-form-group
-                    id="donation-id"
-                    label-for="donation-id">
+                    <template v-slot:cell(donation_id)>
                         <b-form-input placeholder="Scan Donation ID" v-model="input.donation_id"></b-form-input>
-                </b-form-group>
-            </b-col>
+                    </template>
 
-            <b-col>
-                <b-form-select v-model="input.HBSAG" :options="hbsag_option"></b-form-select>
-            </b-col>
+                    <template v-slot:cell(HBSAG)>
+                         <b-form-select v-model="input.HBSAG" :options="hbsag_option"></b-form-select>
+                    </template>
 
-             <b-col>
-                <b-form-select v-model="input.HCV" :options="hcv_option"></b-form-select>
-            </b-col>
+                    <template v-slot:cell(HCV)>
+                        <b-form-select v-model="input.HCV" :options="hcv_option"></b-form-select>
+                    </template>
 
-             <b-col>
-                <b-form-select v-model="input.HIV" :options="hiv_option"></b-form-select>
-            </b-col>
+                    <template v-slot:cell(HIV)>
+                        <b-form-select v-model="input.HIV" :options="hiv_option"></b-form-select>
+                    </template>
 
-             <b-col>
-                <b-form-select v-model="input.MALA" :options="mala_option"></b-form-select>
-            </b-col>
+                    <template v-slot:cell(MALA)>
+                        <b-form-select v-model="input.MALA" :options="mala_option"></b-form-select>
+                    </template>
 
-             <b-col>
-                <b-form-select v-model="input.RPR" :options="rpr_option"></b-form-select>
-            </b-col>
-        </b-row>
+                    <template v-slot:cell(RPR)>
+                        <b-form-select v-model="input.RPR" :options="rpr_option"></b-form-select>
+                    </template>
 
-        
+                </b-table>
+            </b-col>
+        </b-row> 
+        </template>
+
+        <template v-else>
+            No records found
+        </template>
+
   </div>
 </template>
 
@@ -103,8 +112,11 @@ export default {
             date_from: '',
             date_to: '',
 
-            input: [
-                { 
+            data: [],
+            final_data: [],
+            
+            inputs: [
+                {
                     donation_id: '',
                     HBSAG: '',
                     HCV: '',
@@ -134,6 +146,33 @@ export default {
                 { text: 'N', value: 'n' },
                 { text: 'R', value: 'r' }
             ],
+
+            tti_fields: [
+                { key: 'donor', label: 'Donor' },
+                { key: 'donation_id', label: 'Donation ID' },
+                { key: 'HBSAG', label: 'Hbsag' },
+                { key: 'HCV', label: 'Hcv' },
+                { key: 'HIV', label: 'Hiv' },
+                { key: 'MALA', label: 'Malaria' },
+                { key: 'RPR', label: 'Syphilis' }
+            ]
+        }
+    }, /* data */
+
+    methods: {
+        getApprovedDonorList(){
+            axios
+            .post('/get-approved-donor-list',{
+                date_from: this.date_from,
+                date_to: this.date_to,
+            })
+            .then(response => {
+                if(response.data){
+                    this.data = response.data
+                } else {
+                    this.data = null
+                }
+            })
         }
     }
 }
