@@ -84,6 +84,7 @@ class PreScreenedDonorController extends Controller
 
         // $for_testing_list = PreScreenedDonor::where('status', '!=', '0')
         //                             ->where('facility_cd', 'LIKE', $facility_cd)->get();
+
         $query = "  SELECT id, donor_sn, first_name, middle_name, last_name, name_suffix, gender, 
                     bdate, address, created_dt, status
                     FROM `pre_screened_donors`
@@ -111,11 +112,29 @@ class PreScreenedDonorController extends Controller
                     AND `approval_dt` BETWEEN '$from' AND '$to'
                     ORDER BY `approval_dt` ASC "; 
         $approved_donor_list = DB::select($query);
+        
         $approved_donor_list = json_decode(json_encode($approved_donor_list), true);
 
-        \Log::info($approved_donor_list);
-        return $approved_donor_list
-        ;
+        if($approved_donor_list){
+
+            foreach($approved_donor_list as $key => $val){
+                $ids[$val['donor_sn']]['donor_sn'] = $val['donor_sn'];
+                $ids[$val['donor_sn']]['HBSAG'] = "";
+                $ids[$val['donor_sn']]['HCV'] = "";
+                $ids[$val['donor_sn']]['HIV'] = "";
+                $ids[$val['donor_sn']]['MALA'] = "";
+                $ids[$val['donor_sn']]['RPR'] = "";
+            }
+            return $ids;
+            // \Log::info($approved_donor_list);
+            // return $approved_donor_list;
+            
+        } else{
+            return false;
+        }
+        
+        // \Log::info($approved_donor_list);
+        // return $approved_donor_list;
     }
     
     public function update(Request $request, $id){
