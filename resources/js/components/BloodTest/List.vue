@@ -187,15 +187,14 @@ export default {
     }, /* data */
 
     methods: {
-        getApprovedDonorList(){
-            axios
+        async getApprovedDonorList(){
+            await axios
             .post('/get-approved-donor-list',{
                 date_from: this.date_from,
                 date_to: this.date_to,
             })
             .then(response => {
                 if(response.data){
-                    // console.log()    
                     this.data = response.data
                 } else {
                     this.data = []
