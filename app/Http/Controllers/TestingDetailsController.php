@@ -195,6 +195,7 @@ class TestingDetailsController extends Controller
             \Log::info($bloodtest_no);
 
             $donation_id = $bt['donation_id'];
+            $donor_sn = $bt['donor_sn'];
             
             $TTI = [
                 'HBSAG'          => $bt['HBSAG'],
@@ -274,7 +275,7 @@ class TestingDetailsController extends Controller
 
             else{
                 return response()->json([
-                    'message' => 'This donation id already exist!',
+                    'message' => 'This donation  id ('.$check_donation_id->donation_id.') already exist!',
                     'status' => 0
                 ], 200);
             }
