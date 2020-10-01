@@ -78,21 +78,25 @@
             </b-col>
         </b-row> -->
 
-        <template v-if="data">    
+        <template v-if="data">
+
         <b-row>
-            <b-col v-for="(value, key) in data" v-bind:key="key">
+            <!-- <b-col v-for="(value, key) in data" v-bind:key="key"> -->
+            <b-col>
                 <b-table striped hover
                     responsive="sm"
                     :fields="tti_fields"
-                    :items="value">
+                    :items="data">
 
-                    <template v-slot:cell(donor)="value">
-                        <!-- {{ value.item.first_name }}, {{ value.item.middle_name ? value.item.middle_name : null }}, {{ value.item.last_name }}, {{ value.item.name_suffix ? value.item.name_suffix : null }} -->
-                        {{ value.item.first_name }}
+                    <template v-slot:cell(donor)="data">
+                        <!-- {{ value.data.fname }}, {{ value.item.data.mname ? value.item.data.mname : null }}, {{ value.item.data.lname }}, {{ value.item.data.name_suffix ? value.item.data.name_suffix : null }} -->
+                        {{ data.item.first_name }}
+                        
                     </template>
 
-                    <!-- <template v-slot:cell(donation_id)>
+                    <template v-slot:cell(donation_id)>
                         <b-form-input placeholder="Scan Donation ID" v-model="donation_id"></b-form-input>
+                        
                     </template>
 
                     <template v-slot:cell(HBSAG)>
@@ -113,7 +117,7 @@
 
                     <template v-slot:cell(RPR)>
                         <b-form-select v-model="RPR" :options="rpr_option"></b-form-select>
-                    </template> -->
+                    </template>
 
                 </b-table>
             </b-col>
@@ -134,7 +138,7 @@ export default {
             date_from: '',
             date_to: '',
 
-            data: null,
+            data: [],
             final_data: [],
             records: null,
             
@@ -191,9 +195,10 @@ export default {
             })
             .then(response => {
                 if(response.data){
+                    // console.log()    
                     this.data = response.data
                 } else {
-                    this.data = null
+                    this.data = []
                 }
             })
         }

@@ -118,13 +118,22 @@ class PreScreenedDonorController extends Controller
         if($approved_donor_list){
 
             foreach($approved_donor_list as $key => $val){
+                // $ids[$val['donor_sn']]['data'] = array('fname' => $val['first_name'], 'mname' => $val['middle_name'], 'lname' => $val['last_name'], 'name_suffix' => $val['name_suffix']);
+                $ids[$val['donor_sn']]['first_name'] = $val['first_name'];
+                $ids[$val['donor_sn']]['middle_name'] = $val['middle_name'];
+                $ids[$val['donor_sn']]['last_name'] = $val['last_name'];
+                $ids[$val['donor_sn']]['name_suffix'] = $val['donor_sn'];
                 $ids[$val['donor_sn']]['donor_sn'] = $val['donor_sn'];
+                $ids[$val['donor_sn']]['donation_id'] = "";
                 $ids[$val['donor_sn']]['HBSAG'] = "";
                 $ids[$val['donor_sn']]['HCV'] = "";
                 $ids[$val['donor_sn']]['HIV'] = "";
                 $ids[$val['donor_sn']]['MALA'] = "";
                 $ids[$val['donor_sn']]['RPR'] = "";
             }
+
+            \Log::info(gettype($ids));
+
             return $ids;
             // \Log::info($approved_donor_list);
             // return $approved_donor_list;
