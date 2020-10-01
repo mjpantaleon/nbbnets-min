@@ -317,6 +317,7 @@ export default {
                 .then(response => {
 
                     if(response.data){
+                        console.log(response.data)
                         this.donation_ids = response.data
                     } else{
                         this.donation_ids = null
