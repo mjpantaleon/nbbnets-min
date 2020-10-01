@@ -58,30 +58,10 @@
         </b-row>
         
         <!-- DONT FORGET TO PLACE LOOP HERE -->
-        <!-- <b-row>
-            <b-col>
-
-                <b-list-group>
-                    <b-list-group-item  
-                        v-for="(value, key) in data" 
-                        v-bind:key="key">
-
-                        <b-form-checkbox
-                            :value="key"
-                            unchecked-value="0"
-                            >
-                            {{ key }}
-                        </b-form-checkbox>
-                        
-                    </b-list-group-item>
-                </b-list-group>
-            </b-col>
-        </b-row> -->
 
         <template v-if="data">
 
         <b-row>
-            <!-- <b-col v-for="(value, key) in data" v-bind:key="key"> -->
             <b-col>
                 <b-table striped hover
                     responsive="sm"
@@ -90,33 +70,33 @@
 
                     <template v-slot:cell(donor)="data">
                         <!-- {{ value.data.fname }}, {{ value.item.data.mname ? value.item.data.mname : null }}, {{ value.item.data.lname }}, {{ value.item.data.name_suffix ? value.item.data.name_suffix : null }} -->
-                        {{ data.item.first_name }}
+                        {{ data.item.first_name }} {{ data.item.middle_name ? data.item.middle_name : null }} {{ data.item.last_name }} {{ data.item.name_suffix ? data.item.name_suffix : null }}
                         
                     </template>
 
                     <template v-slot:cell(donation_id)>
-                        <b-form-input placeholder="Scan Donation ID" v-model="donation_id"></b-form-input>
+                        <b-form-input placeholder="Scan Donation ID" v-model="final_data[data.index]['donation_id']"></b-form-input>
                         
                     </template>
 
                     <template v-slot:cell(HBSAG)>
-                         <b-form-select v-model="HBSAG" :options="hbsag_option"></b-form-select>
+                         <b-form-select v-model="final_data[data.index]['HBSAG']" :options="hbsag_option"></b-form-select>
                     </template>
 
                     <template v-slot:cell(HCV)>
-                        <b-form-select v-model="HCV" :options="hcv_option"></b-form-select>
+                        <b-form-select v-model="final_data[data.index]['HBSAG']" :options="hcv_option"></b-form-select>
                     </template>
 
                     <template v-slot:cell(HIV)>
-                        <b-form-select v-model="HIV" :options="hiv_option"></b-form-select>
+                        <b-form-select v-model="final_data[data.index]['HCV']" :options="hiv_option"></b-form-select>
                     </template>
 
                     <template v-slot:cell(MALA)>
-                        <b-form-select v-model="MALA" :options="mala_option"></b-form-select>
+                        <b-form-select v-model="final_data[data.index]['MALA']" :options="mala_option"></b-form-select>
                     </template>
 
                     <template v-slot:cell(RPR)>
-                        <b-form-select v-model="RPR" :options="rpr_option"></b-form-select>
+                        <b-form-select v-model="final_data[data.index]['RPR']" :options="rpr_option"></b-form-select>
                     </template>
 
                 </b-table>
@@ -142,16 +122,13 @@ export default {
             final_data: [],
             records: null,
             
-            inputs: [
-                {
-                    donation_id: '',
-                    HBSAG: '',
-                    HCV: '',
-                    HIV: '',
-                    MALA: '',
-                    RPR: '',
-                }
-            ],
+            donation_id: '',
+            HBSAG: '',
+            HCV: '',
+            HIV: '',
+            MALA: '',
+            RPR: '',
+            
 
             hbsag_option: [
                 { text: 'N', value: 'n' },

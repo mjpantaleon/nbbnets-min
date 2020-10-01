@@ -121,7 +121,7 @@ class PreScreenedDonorController extends Controller
                 $ids[$i]['first_name'] = $approved_donor_list[$i]['first_name'];
                 $ids[$i]['middle_name'] = $approved_donor_list[$i]['middle_name'];
                 $ids[$i]['last_name'] = $approved_donor_list[$i]['last_name'];
-                $ids[$i]['name_suffix'] = $approved_donor_list[$i]['donor_sn'];
+                $ids[$i]['name_suffix'] = $approved_donor_list[$i]['name_suffix'];
                 $ids[$i]['donor_sn'] = $approved_donor_list[$i]['donor_sn'];
                 $ids[$i]['donation_id'] = "";
                 $ids[$i]['HBSAG'] = "";
