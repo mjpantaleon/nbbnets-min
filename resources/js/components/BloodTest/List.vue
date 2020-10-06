@@ -124,20 +124,21 @@
         <!-- =============== MODALS ================ -->
         <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
         <b-modal v-model="showSuccessMsg" centered
-            title="SUCCESS"
-            header-bg-variant="success"
+            title="INFO"
+            header-bg-variant="info"
             body-bg-variant="light" 
-            footer-bg-variant="success"
+            footer-bg-variant="info"
             header-text-variant="light"
             hide-header-close>
             
             <h5 class="alert-heading text-center">
-                <b-icon icon="droplet-half"></b-icon>&nbsp;Blood Test/s has been submitted!
+                <b-icon variant="danger" icon="droplet-half"></b-icon>&nbsp;{{message}}
             </h5>
             
             <template v-slot:modal-footer="{ ok }">
-                <b-link class="btn btn-success"
-                    size="sm" variant="success" @click="ok()">
+            <!-- <template v-slot:modal-footer="{ ok }"> -->
+                <b-link class="btn btn-info"
+                    size="sm" variant="info" @click="ok()">
                     OK
                 </b-link>
             </template>
@@ -161,6 +162,8 @@ export default {
             date_to: '',
 
             data: [],
+
+            message: '',
             
             // donation_id: '',
             // HBSAG: '',
@@ -236,12 +239,14 @@ export default {
                 .then(response => {
 
                     if(response.data){
+                        this.message = response.data.message
                         this.showSuccessMsg = true
+                        this.getApprovedDonorList()
                     }
                     
                 })
 
-            this.getDonationId()
+            // this.getDonationId()
 
         }
 
