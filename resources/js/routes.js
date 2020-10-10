@@ -11,6 +11,7 @@ import UpdateDonorInfo from './components/Donor/UpdateDetails.vue';
 import PreScreenedList from './components/PreScreenedDonor/List.vue';
 import PreScreenedInfo from './components/PreScreenedDonor/Info.vue';
 import PreScreening from './components/PreScreenedDonor/Create.vue';
+import IgG from './components/PreScreenedDonor/IgG.vue';
 // import RegisterUnit from './components/RegisterBloodUnit.vue';
 
 //BLOOD UNIT
@@ -24,9 +25,9 @@ import Labelling from './components/BloodUnit/Labelling.vue';
 
 // BLOOD TEST FOLDER
 import TTI from './components/BloodTest/TTI.vue';
-import AdditionalTest1 from './components/BloodTest/AdditionalTest1.vue';
-import AdditionalTest2 from './components/BloodTest/AdditionalTest2.vue';
-import ForTestList from './components/BloodTest/List.vue';
+import NAT from './components/BloodTest/NAT.vue';
+import ZIKA from './components/BloodTest/ZIKA.vue';
+// import ForTestList from './components/BloodTest/List.vue';
 
 import InventoryRelease from './components/BloodStock/InventoryRelease.vue';
 import AvailableBloodStocks from './components/BloodStock/AvailableBloodStocks.vue';
@@ -43,6 +44,7 @@ export const routes = [
     { name: 'pre-screened-list', path: '/pre-screened-list', component: PreScreenedList },
     { name: 'pre-screened-info', path: '/pre-screened-info/:id', component: PreScreenedInfo },
     { name: 'pre-screening', path: '/pre-screening', component: PreScreening },
+    { name: 'pre-screening-igg', path: '/pre-screening-igg', component: IgG },
 
     { name: 'donation', path: '/donation', component: Donation },
     { name: 'new-walk-in', path: '/new-walk-in/:id', component: NewWalkin },
@@ -64,11 +66,11 @@ export const routes = [
 
 
     // BLOOD TEST
-    { name: 'list-for-testing', path: '/list-for-testing', component: ForTestList },
-    { name: 'tti', path: '/tti', component: TTI },
-    { name: 'additional-test-1', path: '/additional-test-1', component: AdditionalTest1 },
-    { name: 'additional-test-2', path: '/additional-test-2', component: AdditionalTest2 },
-
+    { name: 'blood-test-tti', path: '/blood-test-tti', component: TTI },
+    { name: 'blood-test-nat', path: '/blood-test-nat', component: NAT },
+    { name: 'blood-test-zika', path: '/blood-test-zika', component: ZIKA },
+  
+  
     // { name: 'register-blood', path: '/register-blood', component: RegisterUnit },
 
 

@@ -3,18 +3,14 @@
         <b-row id="bb-crumb-sticky">
           <b-col>
                 <b-breadcrumb>
-                    <!-- <b-breadcrumb-item :to="{ path: '/pre-screened-list' }">
-                        <b-icon icon="person-lines-fill" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
-                        Pre-Screened Donors
-                    </b-breadcrumb-item> -->
+                   <b-breadcrumb-item active>
+                        <b-icon icon="droplet-half" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
+                        Pre-screening
+                    </b-breadcrumb-item>
                     <b-breadcrumb-item active>
                         <b-icon icon="file-earmark-ruled" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
                         Pre-Screening
                     </b-breadcrumb-item>
-                    <!-- <b-breadcrumb-item href="#home" active>
-                        <b-icon icon="person-plus" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
-                        Register New Donor
-                    </b-breadcrumb-item> -->
                 </b-breadcrumb>
           </b-col>
         </b-row>

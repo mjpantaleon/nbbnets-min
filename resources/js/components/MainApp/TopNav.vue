@@ -15,6 +15,21 @@
                 </template>
                 <b-dropdown-item :to="{ path: '/pre-screened-list' }">Pre-Screened List</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/pre-screening' }">Pre-Screening</b-dropdown-item>
+                <b-dropdown-divider></b-dropdown-divider>
+
+                <b-dropdown-item :to="{ path: '/pre-screening-igg' }">IGG</b-dropdown-item>
+            </b-nav-item-dropdown>
+
+            <b-nav-item-dropdown right>
+                <template v-slot:button-content>
+                    BLOOD TESTING
+                </template>
+
+                <b-dropdown-item :to="{ path: '/blood-test-tti' }">TTI</b-dropdown-item>
+                <b-dropdown-divider></b-dropdown-divider>
+
+                <b-dropdown-item :to="{ path: '/blood-test-nat' }">NAT</b-dropdown-item>
+                <b-dropdown-item :to="{ path: '/blood-test-zika' }">ZIKA</b-dropdown-item>
             </b-nav-item-dropdown>
 
             <b-nav-item-dropdown right>
@@ -24,16 +39,6 @@
                 <b-dropdown-item :to="{ path: '/donation' }">New Walk-in</b-dropdown-item>
             </b-nav-item-dropdown>
 
-            <b-nav-item-dropdown right>
-                <template v-slot:button-content>
-                    BLOOD TESTING
-                </template>
-                <!-- <b-dropdown-item :to="{ path: '/blood-testing' }">TTI</b-dropdown-item> -->
-                <b-dropdown-item :to="{ path: '/list-for-testing' }">List for Testing</b-dropdown-item>
-                <b-dropdown-item :to="{ path: '/tti' }">TTI</b-dropdown-item>
-                <b-dropdown-item :to="{ path: '/additional-test-1' }">Additional Test 1</b-dropdown-item>
-                <b-dropdown-item :to="{ path: '/additional-test-2' }">Additional Test 2</b-dropdown-item>
-            </b-nav-item-dropdown>
 
             <b-nav-item-dropdown right>
                 <template v-slot:button-content>

@@ -190,13 +190,7 @@ class TestingDetailsController extends Controller
 
         $duplicated_id = '';
 
-<<<<<<< HEAD
         // LOOP EACH RECORD SENT FROM TTI RESULT VUE
-=======
-        
-
-        
->>>>>>> 8f0c935f7b492f399a9dd6081016df5da1766730
         foreach($blood_testing as $k => $bt){
 
             // CHECK IF THERE'S DONATION ID
@@ -220,15 +214,10 @@ class TestingDetailsController extends Controller
                 // check first if donationID already exists in bloodtest_dtls table and donation table
                 $check_donation_id = TestingDetails::where('donation_id', '=', $donation_id)->first();
                 
-<<<<<<< HEAD
                 // if donation id has no duplicate then
                 if($check_donation_id === null){
                     
                     // loop each record
-=======
-                if($check_donation_id === null){
-                    
->>>>>>> 8f0c935f7b492f399a9dd6081016df5da1766730
                     foreach($TTI as $key => $value){
     
                         // INSERT RECORD AT `bloodtest_dtls` table
@@ -257,11 +246,7 @@ class TestingDetailsController extends Controller
                             $fail++;
                         }
                     }
-<<<<<<< HEAD
                     
-=======
-    
->>>>>>> 8f0c935f7b492f399a9dd6081016df5da1766730
                     $t->result = $fail ? 'R' : 'N';
                     $t->created_by = $facility_user;
                     $t->created_dt = date('Y-m-d H:i:s');
@@ -299,17 +284,12 @@ class TestingDetailsController extends Controller
                 // if donation id already exist then
                 else{
 
-<<<<<<< HEAD
                     // concut/ list down donation ids
-=======
-                else{
->>>>>>> 8f0c935f7b492f399a9dd6081016df5da1766730
                     $duplicated_id = $duplicated_id.' '.$bt['donation_id'];
 
                 }
             }
             // CHECK IF THERE'S DONATION ID
-<<<<<<< HEAD
             
         }
         \Log::info($duplicated_id);
@@ -317,8 +297,6 @@ class TestingDetailsController extends Controller
 
         // if donation id already exist then 
         if($duplicated_id){
-=======
->>>>>>> 8f0c935f7b492f399a9dd6081016df5da1766730
             
             // send this response
             return response()->json([
@@ -326,26 +304,11 @@ class TestingDetailsController extends Controller
                 'status' => 1
             ], 200);
         }
-<<<<<<< HEAD
 
         // else proceed to save record
         else{
             return response()->json([
                 'message' => 'Testing result/s has been saved.',
-=======
-        \Log::info($duplicated_id);
-        if($duplicated_id){
-            
-            return response()->json([
-                'message' => "This donation IDs have duplicate values: \n $duplicated_id",
-                'status' => 1
-            ], 200);
-        }
-
-        else{
-            return response()->json([
-                'message' => 'Testing Details has been saved.',
->>>>>>> 8f0c935f7b492f399a9dd6081016df5da1766730
                 'status' => 1
             ], 200);
         }

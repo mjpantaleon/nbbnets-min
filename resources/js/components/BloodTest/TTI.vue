@@ -1,6 +1,6 @@
 <template>
   <div class="main-div">
-        <b-row id="bb-crumb-sticky">
+      <b-row id="bb-crumb-sticky">
           <b-col>
                 <b-breadcrumb>
                     <b-breadcrumb-item active>
@@ -9,113 +9,142 @@
                     </b-breadcrumb-item>
                     <b-breadcrumb-item active>
                         <b-icon icon="droplet-half" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
-                        TTI
+                        TTI Blood Test
                     </b-breadcrumb-item>
                 </b-breadcrumb>
 
           </b-col>
         </b-row>
 
-        <h4><b-icon icon="droplet-half"></b-icon> TTI</h4>
+        <h4><b-icon icon="droplet-half"></b-icon> TTI Blood Test</h4>
         <hr>
 
-        <b-alert show variant="danger" v-if="errMessage"><h3>{{ errMessage }}</h3></b-alert>
-
         <b-row>
-            <b-col>
-                <table class="table table-striped table-bordered">
-                    <thead>
-                        <th>Donation ID</th>
-                        <th>HBSAG</th>
-                        <th>HCV</th>
-                        <th>HIV</th>
-                        <th>Malaria</th>
-                        <th>Syphilis</th>
-                        <th>&nbsp;</th>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(input,i) in inputs" :key="i">
-                            <td>
-                                <b-form-input v-model="input.donation_id" placeholder="Scan Donation ID"></b-form-input>
-                            </td>
-
-                            <td>
-                                <b-form-select v-model="input.HBSAG" :options="hbsag_option"></b-form-select>
-                            </td>
-
-                            <td>
-                                <b-form-select v-model="input.HCV" :options="hcv_option"></b-form-select>
-                            </td>  
-
-                            <td>
-                                <b-form-select v-model="input.HIV" :options="hiv_option"></b-form-select>
-                            </td> 
-
-                            <td>
-                                <b-form-select v-model="input.MALA" :options="mala_option"></b-form-select>
-                            </td>  
-
-                            <td>
-                                <b-form-select v-model="input.RPR" :options="rpr_option"></b-form-select>
-                            </td> 
-
-                            <td>
-                                <b-avatar variant="danger"
-                                    icon="trash-fill"
-                                    button
-                                    @click="remove(i)" v-show="i || ( !i && inputs.length > 1)">
-                                    </b-avatar>
-
-                                <template v-if="i || ( !i && inputs.length > 1)">&nbsp;|&nbsp;</template>
-
-                                <b-avatar variant="primary"
-                                    button
-                                    icon="plus-circle-fill"
-                                    @click="add(i)" v-show="i == inputs.length-1">
-                                    </b-avatar>
-                            </td>
-                        </tr>                       
-                    </tbody>
-                </table>
+            <b-col cols="5">
+                <b-form-group
+                    id="donation-id"           
+                    label-cols-sm="2"
+                    label-cols-lg="2"
+                    description="Date From"
+                    label="Date From"
+                    label-for="donation-id">
+                        <b-form-datepicker 
+                            v-model="date_from"
+                            class="mb-2">
+                        </b-form-datepicker>
+                </b-form-group>
             </b-col>
-        </b-row>
-
-        <b-row>
-            <b-col md="3">
-                <b-button variant="success"
-                    block
-                    :disabled="disableBtn"
-                    @click.prevent="showModal">
-                    <b-icon icon="check-circle-fill"></b-icon>&nbsp;SUBMIT TEST RESULT
+            <b-col cols="5">
+                <b-form-group
+                    id="donation-id"           
+                    label-cols-sm="1"
+                    label-cols-lg="1"
+                    description="Search Date To"
+                    label="To"
+                    label-for="donation-id">
+                        <b-form-datepicker
+                            v-model="date_to"
+                            class="mb-2">
+                        </b-form-datepicker>
+                </b-form-group>
+            </b-col>
+            <b-col cols="2" class="ml-auto">
+                <b-button type="submit"
+                    variant="warning"
+                    @click.prevent="getApprovedDonorList()">
+                    <b-icon icon="search"></b-icon>&nbsp;SEARCH
                 </b-button>
             </b-col>
         </b-row>
+        
+        <!-- DONT FORGET TO PLACE LOOP HERE -->
 
-        <!-- VERFIER MODAL POP-UP -->
+        <template v-if="data.length != 0">
+        <b-row>
+            <b-col>
+                <b-table striped hover
+                    responsive="sm"
+                    :fields="tti_fields"
+                    :items="data">
+
+                    <template v-slot:cell(donor)="data">
+                        {{ data.item.first_name }} {{ data.item.middle_name ? data.item.middle_name : null }} {{ data.item.last_name }} {{ data.item.name_suffix ? data.item.name_suffix : null }}    
+                    </template>
+
+                    <template v-slot:cell(donation_id)="data">
+                        <b-form-input placeholder="Scan Donation ID" v-model="data.item.donation_id"></b-form-input>
+                        
+                    </template>
+
+                    <template v-slot:cell(HBSAG)="data">
+                         <b-form-select v-model="data.item.HBSAG" :options="hbsag_option"></b-form-select>
+                    </template>
+
+                    <template v-slot:cell(HCV)="data">
+                        <b-form-select v-model="data.item.HCV" :options="hcv_option"></b-form-select>
+                    </template>
+
+                    <template v-slot:cell(HIV)="data">
+                        <b-form-select v-model="data.item.HIV" :options="hiv_option"></b-form-select>
+                    </template>
+
+                    <template v-slot:cell(MALA)="data">
+                        <b-form-select v-model="data.item.MALA" :options="mala_option"></b-form-select>
+                    </template>
+
+                    <template v-slot:cell(RPR)="data">
+                        <b-form-select v-model="data.item.RPR" :options="rpr_option"></b-form-select>
+                    </template>
+
+                </b-table>
+            </b-col>
+        </b-row> 
+
+        <b-row>
+            <b-col md="4">
+                <b-button block
+                    variant="success"
+                    @click.prevent="showModal">
+                    <b-icon icon="check-circle"></b-icon>&nbsp;SUBMIT TEST RESULTS
+                </b-button>
+            </b-col>
+        </b-row>
+        </template>
+
+        <template v-else>
+            <b-row>
+                <b-col class="text-center">
+                    No record/s to display
+                </b-col>    
+            </b-row>   
+        </template>
+
         <verifier-modal @setUname="setUname"></verifier-modal>
 
         <!-- =============== MODALS ================ -->
         <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
         <b-modal v-model="showSuccessMsg" centered
-            title="SUCCESS"
-            header-bg-variant="success"
+            title="INFO"
+            header-bg-variant="info"
             body-bg-variant="light" 
-            footer-bg-variant="success"
+            footer-bg-variant="info"
             header-text-variant="light"
             hide-header-close>
             
             <h5 class="alert-heading text-center">
-                <b-icon icon="person-check"></b-icon>&nbsp;Blood Testing result/s has been successfully saved!
+                <b-icon variant="danger" icon="droplet-half"></b-icon>&nbsp;{{message}}
             </h5>
             
             <template v-slot:modal-footer="{ ok }">
-                <b-link class="btn btn-success"
-                    size="sm" variant="success" @click="ok()">
+            <!-- <template v-slot:modal-footer="{ ok }"> -->
+                <b-link class="btn btn-info"
+                    size="sm" variant="info" @click="ok()">
                     OK
                 </b-link>
             </template>
         </b-modal>
         <!-- =============== MODALS ================ -->
+
   </div>
 </template>
 
@@ -129,20 +158,20 @@ export default {
     data(){
         return{
             showSuccessMsg: false,
-            showErrorMsg: false,
-            disableBtn: false,
+            date_from: '',
+            date_to: '',
 
-            inputs: [
-                { 
-                    donation_id: '',
-                    HBSAG: '',
-                    HCV: '',
-                    HIV: '',
-                    MALA: '',
-                    RPR: '',
-                }
-            ],
+            data: [],
 
+            message: '',
+            
+            // donation_id: '',
+            // HBSAG: '',
+            // HCV: '',
+            // HIV: '',
+            // MALA: '',
+            // RPR: '',
+            
             hbsag_option: [
                 { text: 'N', value: 'n' },
                 { text: 'R', value: 'r' }
@@ -164,133 +193,66 @@ export default {
                 { text: 'R', value: 'r' }
             ],
 
-            isLoading: false,
-            errMessage: '',
+            tti_fields: [
+                { key: 'donor', label: 'Donor' },
+                { key: 'donation_id', label: 'Donation ID' },
+                { key: 'HBSAG', label: 'Hbsag' },
+                { key: 'HCV', label: 'Hcv' },
+                { key: 'HIV', label: 'Hiv' },
+                { key: 'MALA', label: 'Malaria' },
+                { key: 'RPR', label: 'Syphilis' }
+            ]
         }
     }, /* data */
 
-    mounted(){
-
-    }, /* mounted */
-
     methods: {
-        add () {
-        this.inputs.push({
-            donation_id: '',
-            HBSAG: '',
-            HCV: '',
-            HIV: '',
-            MALA: '',
-            RPR: '',
-        })
-        console.log(this.inputs)
-        },
-
-        remove (index) {
-        this.inputs.splice(index, 1)
-        },
-
-        // MODAL
-        showModal(){
-
-            var err
-            this.errMessage = ''
-
-            err = this.checkError()
-
-            if(err){
-                this.errMessage = 'Please do not leave any blank inputs...'
-            } else{
-                this.$bvModal.show('verifier-login')
-                // this.modalOpen = !this.modalOpen;
-            }
-
-        },
-
-        checkError(){
-
-            var err = false;
-
-            this.inputs.forEach((v) => {
-                if(v.donation_id == "" || v.HBSAG == "" || v.HCV == "" || v.HIV == "" || v.MALA == "" || v.RPR == ""){
-                    return err = true
+        async getApprovedDonorList(){
+            await axios
+            .post('/get-approved-donor-list',{
+                date_from: this.date_from,
+                date_to: this.date_to,
+            })
+            .then(response => {
+                if(response.data){
+                    this.data = response.data
+                } else {
+                    this.data = []
                 }
             })
-
-            return err
-
+        },
+        showModal(){
+            this.$bvModal.show('verifier-login')
+            // this.modalOpen = !this.modalOpen;
         },
 
         openModal() {
             this.modalOpen = !this.modalOpen;
         },
 
-        // LAST METHOD
         setUname(e){
 
             axios
-                .post('/save-blood-testing', {
-                    blood_testing: this.inputs,
+                .post('/save-tti-blood-test', {
+                    blood_testing: this.data,
                     verifier: e,
                 })
                 .then(response => {
 
                     if(response.data){
-                        // this.showSuccessMsg = true
-                        // this.disableBtn = true
-                    } else{
-                        this.showErrorMsg = true
+                        this.message = response.data.message
+                        this.showSuccessMsg = true
+                        this.getApprovedDonorList()
                     }
+                    
                 })
 
             // this.getDonationId()
+
         }
 
-        
     }, /* methods */
 
-    computed: {
-        
-    }, /* computed */
-
-    watch: {
-        // checked: function(val){
-        //     // this.isLoading = true;
-        //     // console.log(this.isLoading)
-
-        //     this.data = []
-        //     this.final_data = []
-
-        //     val.forEach((v) => {
-        //         this.data.splice(v,0,this.donation_ids[v])
-        //         this.final_data.splice(v,0,this.donation_ids[v])
-        //     })
-
-        //     // this.isLoading = false
-
-        // },
-
-        // checkAll: function(val){
-
-        //     if(val){
-        //         this.data = []
-        //         this.final_data = []
-
-        //         var checked_list = []
-
-        //         Object.keys(this.donation_ids).forEach(function (key){
-        //             checked_list.splice(key,0,key)
-        //         })
-
-        //         this.checked = checked_list
-
-        //     } else{
-
-        //         this.checked = []
-
-        //     }
-        // },
-    }, /* watch */
+    
 }
 </script>
 

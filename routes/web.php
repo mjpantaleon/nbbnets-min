@@ -60,7 +60,7 @@ Route::group(['middleware' => ['auth']], function () {
     // ---------------- BLOOD UNIT ------------------------ //
     // BLOOD TESTING
     Route::post('/get-donation-id-testing-details', 'TestingDetailsController@getDonationId');
-    Route::post('/save-blood-testing', 'TestingDetailsController@save');
+    Route::post('/save-tti-blood-test', 'TestingDetailsController@save');
     // MIN
     Route::post('/save-blood-test-result/{id}', 'TestingDetailsController@addResult');
 
