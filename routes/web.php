@@ -80,6 +80,10 @@ Route::group(['middleware' => ['auth']], function () {
     //     return \Session::get('userInfo');
     // });
 
+    // ADDITIONAL BLOOD TEST
+    // NAT
+    Route::post('/components-for-nat-test', 'AdditionalTestController@getComponentsForNatTest');
+
 
     //SHOW PREVIEW
     Route::get('/preview', 'PreviewController@showPreview');

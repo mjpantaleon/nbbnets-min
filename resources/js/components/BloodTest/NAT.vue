@@ -19,7 +19,7 @@
         <h4><b-icon icon="droplet-half"></b-icon> NAT</h4>
         <hr>
 
-         <b-row>
+        <b-row>
             <b-col cols="5">
                 <b-form-group
                     id="donation-id"           
@@ -51,18 +51,45 @@
             <b-col cols="2" class="ml-auto">
                 <b-button type="submit"
                     variant="warning"
-                    @click.prevent="getComponentsForBloodTest()">
+                    @click.prevent="getComponentsForTest()">
                     <b-icon icon="search"></b-icon>&nbsp;SEARCH
                 </b-button>
             </b-col>
         </b-row>
+
+        {{data}}
         
   </div>
 </template>
 
 <script>
 export default {
+    data(){
+        return{
+            date_from: '',
+            date_to: '',
 
+            data: [],
+        }
+    }, /* data */
+
+    methods: {
+        async getComponentsForTest(){
+            await axios
+            .post('/components-for-nat-test', {
+                date_from: this.date_from,
+                date_to: this.date_to
+            })
+            .then(response =>{
+                if(response.data){
+                    this.data = response.data
+                } else{
+                    this.data = []
+                }
+            })
+        }
+
+    }, /* methods */
 }
 </script>
 
