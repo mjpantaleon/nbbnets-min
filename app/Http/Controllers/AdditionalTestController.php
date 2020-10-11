@@ -88,6 +88,7 @@ class AdditionalTestController extends Controller
                     $n->donation_id = $donation_id;
                     $n->nat = $nat_result;
                     $n->nat_by = $facility_user;
+                    $n->nat_verifier = $verifier;
                     $n->save();
 
                     // UPDATE `component.comp_stat` FROM `FBT` TO `FBL`, 
@@ -101,7 +102,10 @@ class AdditionalTestController extends Controller
                 else{
                     // THEN UPDATE RECORD IN THE `additionaltest` TABLE
                     AdditionalTest::where('donation_id', $donation_id)
-                            ->update(['nat' => $nat_result, 'nat_by' => $facility_user, 'updated_at' => date('Y-m-d H:i:s')]);
+                            ->update(['nat' => $nat_result, 
+                            'nat_by' => $facility_user, 
+                            'nat_verifier' => $verifier,
+                            'updated_at' => date('Y-m-d H:i:s')]);
                 }
                 
                 // RETURN RESPONSE
@@ -195,6 +199,7 @@ class AdditionalTestController extends Controller
                     $z->donation_id = $donation_id;
                     $z->zika = $zika_result;
                     $z->zika_by = $facility_user;
+                    $z->zika_verifier = $verifier;
                     $z->save();
 
                     // UPDATE `component.comp_stat` FROM `FBT` TO `FBL`, 
@@ -208,7 +213,10 @@ class AdditionalTestController extends Controller
                 else{
                     // THEN UPDATE RECORD IN THE `additionaltest` TABLE
                     AdditionalTest::where('donation_id', $donation_id)
-                            ->update(['zika' => $nat_result, 'zika_by' => $facility_user, 'updated_at' => date('Y-m-d H:i:s')]);
+                            ->update(['zika' => $zika_result, 
+                                'zika_by' => $facility_user, 
+                                'zika_verifier' => $verifier,
+                                'updated_at' => date('Y-m-d H:i:s')]);
                 }
                 
                 // RETURN RESPONSE
