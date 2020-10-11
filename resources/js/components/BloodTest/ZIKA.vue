@@ -74,7 +74,7 @@
                     </template>
 
                     <template v-slot:cell(zika_result)="data">
-                         <b-form-select v-model="data.item.zika_result" :options="zika_optionZIKA"></b-form-select>
+                         <b-form-select v-model="data.item.zika_result" :options="zika_option"></b-form-select>
                     </template>
 
                 </b-table>
@@ -148,7 +148,7 @@ export default {
 
             message: '',
             
-            zika_optionZIKA: [
+            zika_option: [
                 { text: 'Positive', value: 'P' },
                 { text: 'Negative', value: 'N' }
             ],

@@ -20,7 +20,7 @@ class CreateIggResultsTable extends Migration
             $table->string('donor_sn', 16)->nullable();
 
             $table->char('igg', 1)->nullable();                 /* N = NEGATIVE, P = POSITIVE */
-            $table->integer('cut_off_val', 5)->nullable();      /* PASSING VALUE 2+ */
+            $table->string('cut_off_val')->nullable();          /* PASSING VALUE 2+ */
 
             $table->string('result_by', 50)->nullable();
             $table->dateTime('result_dt')->nullable(); 

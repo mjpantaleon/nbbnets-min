@@ -97,6 +97,11 @@
                         {{ data.item.created_dt | moment("MMMM DD, YYYY - h:mm:ss a") }}
                     </template>
 
+                    <template v-slot:cell(approval_dt)="data">
+                        <!-- {{ data.item.created_dt | moment("dddd, MMMM Do YYYY, h:mm:ss a") }} -->
+                        {{ data.item.approval_dt ? data.item.approval_dt : '---' }}
+                    </template>
+
                     <template v-slot:cell(status)="data">
                         <b-badge variant="danger" v-if="data.item.status == '0'">FOR REVIEW</b-badge>
                         <b-badge variant="success" v-else>APPROVED</b-badge>
@@ -142,6 +147,7 @@ export default {
                 // { key: 'bdate', label: 'Birthday' },
                 { key: 'address', label: 'Address' },
                 { key: 'created_dt', label: 'Date Screened' },
+                { key: 'approval_dt', label: 'Date Approved' },
                 { key: 'status', label: 'Status' },
                 { key: 'action', label: 'Action' },
             ],

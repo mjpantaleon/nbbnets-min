@@ -42,12 +42,15 @@ Route::group(['middleware' => ['auth']], function () {
     // Route::get('/mh-question-list', 'QuestionsController@getMH');
     // Route::get('/pe-question-list', 'QuestionsController@getPE');
     
-    // CANDIDATE DONORS
+    // PRE-SCREENING
     Route::get('/pre-screened-donors', 'PreScreenedDonorController@index');
     Route::get('/pre-screened-donor/{id}', 'PreScreenedDonorController@getDetails');
     Route::post('/get-prescreened-donor', 'PreScreenedDonorController@search');
     Route::post('/pre-screened-update/{id}', 'PreScreenedDonorController@update');
     Route::post('/submit-entry', 'PreScreenedDonorController@create');
+    // IGG TEST
+    Route::post('/donor-list-for-igg', 'PreScreenedDonorController@getDonorsForIgg');
+    Route::post('/save-igg-result', 'PreScreenedDonorController@saveIggResult');
 
     // FOR TESTING ENTRIES
     Route::get('/for-testing-list', 'PreScreenedDonorController@getList');
