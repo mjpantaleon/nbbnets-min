@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/get-prescreened-donor', 'PreScreenedDonorController@search');
     Route::post('/pre-screened-update/{id}', 'PreScreenedDonorController@update');
     Route::post('/submit-entry', 'PreScreenedDonorController@create');
+
     // FOR TESTING ENTRIES
     Route::get('/for-testing-list', 'PreScreenedDonorController@getList');
     Route::post('/get-approved-donor-list', 'PreScreenedDonorController@getApprovedDonorList');
@@ -83,6 +84,11 @@ Route::group(['middleware' => ['auth']], function () {
     // ADDITIONAL BLOOD TEST
     // NAT
     Route::post('/components-for-nat-test', 'AdditionalTestController@getComponentsForNatTest');
+    Route::post('/save-nat-result', 'AdditionalTestController@saveNatResult');
+    // ZIKA
+    Route::post('/components-for-zika-test', 'AdditionalTestController@getComponentsForZikaTest');
+    Route::post('/save-zika-result', 'AdditionalTestController@saveZikaResult');
+
 
 
     //SHOW PREVIEW

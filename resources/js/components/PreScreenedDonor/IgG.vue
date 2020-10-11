@@ -15,7 +15,7 @@
           </b-col>
         </b-row>
 
-        <h4><b-icon icon="droplet-half"></b-icon> IgG</h4>
+        <h4><b-icon icon="droplet-half" variant="primary"></b-icon> IgG</h4>
         <hr>
   </div>
 </template>

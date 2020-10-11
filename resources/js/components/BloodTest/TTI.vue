@@ -16,7 +16,7 @@
           </b-col>
         </b-row>
 
-        <h4><b-icon icon="droplet-half"></b-icon> TTI Blood Test</h4>
+        <h4><b-icon icon="droplet-half" variant="danger"></b-icon> TTI Blood Test</h4>
         <hr>
 
         <b-row>
