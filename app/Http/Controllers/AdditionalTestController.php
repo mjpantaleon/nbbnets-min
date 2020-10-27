@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\AdditionalTest;
+use App\AdditionalHnaTest;
 use App\Component;
 use Session;
 use DB;
@@ -230,4 +231,20 @@ class AdditionalTestController extends Controller
         ], 200);
     } /* saveZikaResult() */
     // ///////////////////////////////////////////////// ZIKA ///////////////////////////////////
+
+
+
+    // ///////////////////////////////////////////////// HNA & HNL ///////////////////////////////////
+    /*
+    SELECT c.donation_id, c.component_cd, rc.component_abbr
+    FROM component c
+    LEFT JOIN r_cp_component_codes rc ON c.component_cd = rc.component_code
+    LEFT JOIN additional_hna_tests ad ON c.donation_id = ad.donation_id
+    WHERE c.created_dt BETWEEN '2020-07-01' AND '2020-10-17'
+    AND c.location = '13109'
+    AND c.comp_stat = 'FBT' 
+    AND ad.hna_hnl_result IS NULL AND ad.result_by IS NULL
+    */
+
+    // ///////////////////////////////////////////////// HNA & HNL ///////////////////////////////////
 }

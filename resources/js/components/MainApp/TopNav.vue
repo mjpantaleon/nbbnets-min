@@ -30,6 +30,7 @@
 
                 <b-dropdown-item :to="{ path: '/blood-test-nat' }">NAT</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/blood-test-zika' }">ZIKA</b-dropdown-item>
+                <b-dropdown-item :to="{ path: '/blood-test-hna' }">HNA & HNL</b-dropdown-item>
             </b-nav-item-dropdown>
 
             <b-nav-item-dropdown right>

@@ -27,6 +27,7 @@ import Labelling from './components/BloodUnit/Labelling.vue';
 import TTI from './components/BloodTest/TTI.vue';
 import NAT from './components/BloodTest/NAT.vue';
 import ZIKA from './components/BloodTest/ZIKA.vue';
+import HNA from './components/BloodTest/HNA.vue';
 // import ForTestList from './components/BloodTest/List.vue';
 
 import InventoryRelease from './components/BloodStock/InventoryRelease.vue';
@@ -69,6 +70,7 @@ export const routes = [
     { name: 'blood-test-tti', path: '/blood-test-tti', component: TTI },
     { name: 'blood-test-nat', path: '/blood-test-nat', component: NAT },
     { name: 'blood-test-zika', path: '/blood-test-zika', component: ZIKA },
+    { name: 'blood-test-hna', path: '/blood-test-hna', component: HNA },
   
   
     // { name: 'register-blood', path: '/register-blood', component: RegisterUnit },
