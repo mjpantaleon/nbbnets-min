@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Donation;
+use App\Component;
 // use App\ComponentCode;
 use App\RCpComponentCode;
 use App\Label;
@@ -41,6 +42,18 @@ class BloodLabellingController extends Controller
                 $checked = [];
     
                 foreach($donation as $key => $val){
+
+                    $donation[$key]['units']["showP01"] = false;
+                    $donation[$key]['units']["showP02"] = false;
+                    $donation[$key]['units']["showP03"] = false;
+
+                    $aliqoutes = Component::select('donation_id')->where('source_donation_id', $val['donation_id'])->get();
+
+                    foreach ($aliqoutes as $k => $v) {
+                        $aliquote_number = explode("-", $v['donation_id']);
+                        $donation[$key]['units']["showP" . $aliquote_number[1]] = true;
+
+                    }
     
                     if($val['pheresis_label']){
     
@@ -50,12 +63,14 @@ class BloodLabellingController extends Controller
                                 $donation[$key]['units']["hasp01"] = true;
                             } elseif( strpos($v->donation_id, "-02") !== false ){
                                 $donation[$key]['units']["hasp02"] = true;
-                            }              
-    
+                            }  elseif( strpos($v->donation_id, "-03") !== false ){
+                                $donation[$key]['units']["hasp03"] = true;
+                            } 
+
                         }
     
                     }
-    
+                    
                 }
                 
                 return array('data' => $donation, 'checked' => $checked);
