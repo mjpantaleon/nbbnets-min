@@ -99,6 +99,11 @@
                                         <b-icon icon="search" class="border border-success p-1" variant="success" font-scale="2.1"></b-icon>
                                     </router-link>
 
+
+                                    <router-link :to="'/issue/'+data.item.donation_id" title="Issue Blood unit">
+                                        <b-icon icon="reply-fill" class="border border-danger p-1" variant="danger" font-scale="2.1"></b-icon>
+                                    </router-link>
+
                                 </template>
                             </b-table>
 

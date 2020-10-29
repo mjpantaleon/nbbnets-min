@@ -91,6 +91,10 @@ Route::group(['middleware' => ['auth']], function () {
     // ZIKA
     Route::post('/components-for-zika-test', 'AdditionalTestController@getComponentsForZikaTest');
     Route::post('/save-zika-result', 'AdditionalTestController@saveZikaResult');
+    // HNA & HNL
+    Route::post('/components-for-hna-test', 'AdditionalTestController@getComponentsForHnaTest');
+    Route::post('/save-hna-result', 'AdditionalTestController@saveHnaResult');
+
 
 
 

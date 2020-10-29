@@ -91,8 +91,8 @@ class BloodLabellingController extends Controller
                                 ->whereNotNull('donor_sn')
                                 ->whereFacilityCd($facility_cd)
                                 ->whereSchedId($sched_id)
-                                ->whereBetween('created_dt', [$from, $to])
-                                ->where('collection_stat', $col_stat)
+                                // ->whereBetween('created_dt', [$from, $to])
+                                // ->where('collection_stat', $col_stat)
                                 ->where('collection_type', "CPC19")
                                 ->get();
 
