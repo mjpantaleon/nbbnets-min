@@ -30,9 +30,15 @@ import ZIKA from './components/BloodTest/ZIKA.vue';
 import HNA from './components/BloodTest/HNA.vue';
 // import ForTestList from './components/BloodTest/List.vue';
 
+// BLOOD STOCKS
 import InventoryRelease from './components/BloodStock/InventoryRelease.vue';
 import AvailableBloodStocks from './components/BloodStock/AvailableBloodStocks.vue';
 import Units from './components/BloodStock/Aliquote.vue';
+
+// BLOOD REQUEST
+import BloodRequestList from './components/BloodRequest/List.vue';
+import CreateBloodRequest from './components/BloodRequest/Create.vue';
+import BloodRequestInfo from './components/BloodRequest/View.vue';
 
 export const routes = [
     { name: 'login', path: '/', component: Login },
@@ -60,10 +66,16 @@ export const routes = [
     { name: 'blood-testing-min', path: '/blood-testing/:id', component: BloodTestMin },
     { name: 'labelling', path: '/labelling', component: Labelling },
 
+    // BLOOD STOCKS
     { name: 'inventory-release', path: '/release-to-inventory', component: InventoryRelease },
     { name: 'available-stocks', path: '/available-stocks', component: AvailableBloodStocks },
-
+    
     { name: 'units', path: '/unit/:id/:comp/:mtd', component: Units },
+
+    // BLOOD REQUEST
+    { name: 'blood-request/list', path: '/blood-request/list', component: BloodRequestList },
+    { name: 'blood-request/create', path: '/blood-request/create', component: CreateBloodRequest },
+    { name: 'blood-request/view', path: '/blood-request/view/:id', component: BloodRequestInfo },
 
 
     // BLOOD TEST

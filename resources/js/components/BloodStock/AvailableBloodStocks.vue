@@ -100,9 +100,9 @@
                                     </router-link>
 
 
-                                    <router-link :to="'/issue/'+data.item.donation_id" title="Issue Blood unit">
+                                    <!-- <router-link :to="'/issue/'+data.item.donation_id" title="Issue Blood unit">
                                         <b-icon icon="reply-fill" class="border border-danger p-1" variant="danger" font-scale="2.1"></b-icon>
-                                    </router-link>
+                                    </router-link> -->
 
                                 </template>
                             </b-table>

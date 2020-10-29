@@ -175,10 +175,10 @@ export default {
     }, /* mounted */
 
     methods: {
-        getCandidates(){
+        async getCandidates(){
             this.isLoading = true
 
-            axios
+            await axios
             .get('/pre-screened-donors')
             .then(response => (
                 this.data = response.data,
@@ -187,10 +187,10 @@ export default {
             .catch(error => console.log(error))
         },
 
-        searchPreScreendDonor(){
+        async searchPreScreendDonor(){
             this.isLoading = true
 
-            axios
+            await axios
             .post('/get-prescreened-donor',{
                 first_name: this.first_name,
                 middle_name: this.middle_name,

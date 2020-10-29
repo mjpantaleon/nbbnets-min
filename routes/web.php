@@ -109,6 +109,12 @@ Route::group(['middleware' => ['auth']], function () {
     //AVAILABLE BLOOD STOCKS
     Route::get('/get-available-blood-stocks', 'AvailableBloodStocksController@getList');
     Route::post('/update-available-list', 'AvailableBloodStocksController@updateList');
+    
+    // BLOOD REQUEST
+    Route::post('/blood-request-list', 'BloodRequestController@bloodRequestList');
+    Route::get('/cp-components', 'BloodRequestController@getCpComponents');
+    Route::post('/blood-request/view/{id}', 'BloodRequestController@view');
+
 
     Route::get('/logout', 'LoginController@logout');
 
