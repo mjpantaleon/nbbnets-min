@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Component;
 use App\ComponentCode;
+use App\RCpComponentCode;
 use App\Helpers\ComputeExpiry;
 use App\BloodTyping;
+use App\Donation;
 use Session;
 use DB;
 
@@ -24,23 +26,24 @@ class BloodProcessingController extends Controller
 
         if($request['col_method'] == 'P'){      // PHERESIS PROCESS
 
-            $sql = "SELECT *
-                    -- SELECT t1.donation_id
+            $sql = "SELECT t1.donation_id
                     FROM donation t1
                     LEFT JOIN component t2 ON t1.donation_id = t2.donation_id
-                    -- WHERE t2.donation_id IS NULL
-                    WHERE t1.donation_id IS NOT NULL
+                    WHERE t2.donation_id IS NULL
                     AND t1.facility_cd = '$facility_cd'
                     AND t1.sched_id = '$sched_id'
                     AND t1.created_dt BETWEEN '$from' AND '$to'
-                    AND t1.collection_stat = '$col_stat'        
+                    AND t1.collection_stat = '$col_stat'
                     AND t1.collection_method = 'P'
-                    AND t2.component_vol IS NULL
                     ORDER BY t1.created_dt";
 
             $donation = DB::select($sql);
 
+            \Log::info($donation);
+
             $donation = json_decode(json_encode($donation), true);
+
+            
             
             if($donation){
 
@@ -49,7 +52,14 @@ class BloodProcessingController extends Controller
                     $ids[$val['donation_id']]['donation_id'] = $val['donation_id'];
                     $ids[$val['donation_id']]['P01'] = "";
                     $ids[$val['donation_id']]['P02'] = "";
+                    $ids[$val['donation_id']]['P03'] = "";
                 }
+
+                // foreach($donation as $key => $val){
+                //     // $donation[$key]['count_key'] = $key;
+                //     $ids[$val['donation_id']]['donation_id'] = $val['donation_id'];
+                //     $ids[$val['donation_id']]['aliquote'] = 1;
+                // }
 
                 return $ids;
                 
@@ -97,41 +107,41 @@ class BloodProcessingController extends Controller
 
         }
 
-        else{                                   // WHOLE BLOOD PROCESS
+        // else{                                   // WHOLE BLOOD PROCESS
 
-            $sql = "SELECT t1.donation_id, t1.blood_bag
-            FROM donation t1
-            LEFT JOIN component t2 ON t1.donation_id = t2.donation_id
-            WHERE t2.donation_id IS NULL
-            AND t1.donation_id IS NOT NULL
-            AND t1.facility_cd = '$facility_cd'
-            AND t1.sched_id = '$sched_id'
-            AND t1.created_dt BETWEEN '$from' AND '$to'
-            AND t1.collection_stat = '$col_stat'
-            AND t1.collection_type = 'PHE'";
+        //     $sql = "SELECT t1.donation_id, t1.blood_bag
+        //     FROM donation t1
+        //     LEFT JOIN component t2 ON t1.donation_id = t2.donation_id
+        //     WHERE t2.donation_id IS NULL
+        //     AND t1.donation_id IS NOT NULL
+        //     AND t1.facility_cd = '$facility_cd'
+        //     AND t1.sched_id = '$sched_id'
+        //     AND t1.created_dt BETWEEN '$from' AND '$to'
+        //     AND t1.collection_stat = '$col_stat'
+        //     AND t1.collection_type = 'PHE'";
 
-            $donation = DB::select($sql);
+        //     $donation = DB::select($sql);
 
-            $donation = json_decode(json_encode($donation), true);
+        //     $donation = json_decode(json_encode($donation), true);
             
-            if($donation){
+        //     if($donation){
 
-                foreach($donation as $key => $val){
-                    // $donation[$key]['count_key'] = $key;
-                    $ids[$val['donation_id']]['donation_id'] = $val['donation_id'];
-                    $ids[$val['donation_id']]['blood_bag'] = self::wbDisplayBag($val['blood_bag']);
-                    $ids[$val['donation_id']]['plasma'] = "";
-                    $ids[$val['donation_id']]['redbloodcell'] = "";
-                    $ids[$val['donation_id']]['platelets'] = "";
-                }
+        //         foreach($donation as $key => $val){
+        //             // $donation[$key]['count_key'] = $key;
+        //             $ids[$val['donation_id']]['donation_id'] = $val['donation_id'];
+        //             $ids[$val['donation_id']]['blood_bag'] = self::wbDisplayBag($val['blood_bag']);
+        //             $ids[$val['donation_id']]['plasma'] = "";
+        //             $ids[$val['donation_id']]['redbloodcell'] = "";
+        //             $ids[$val['donation_id']]['platelets'] = "";
+        //         }
 
-                return $ids;
+        //         return $ids;
                 
-            } else{
-                return false;
-            }
+        //     } else{
+        //         return false;
+        //     }
 
-        }
+        // }
 
     }
 
@@ -140,7 +150,7 @@ class BloodProcessingController extends Controller
         $blood_processing   = $request->get('blood_processing');
         $collection_method  = $request->get('col_method');
         $verifier           = $request->get('verifier');
-        $status             = ""; 
+        $status             = "";
 
         if($collection_method == 'P'){  // PHERESIS PROCESS
 
@@ -174,12 +184,9 @@ class BloodProcessingController extends Controller
 
         // Get all ids and search for entries in component table
 
-        $ids = self::donationIdsToArrayPheresis($data);
+        // $ids = self::donationIdsToArrayPheresis($data);
 
-        $result = Component::whereIn('component.donation_id', $ids)
-                    ->get()->toArray();
-
-        $formatted = self::formatDonationIds($result);
+        $formatted = self::formatDonationIds($data);
 
         // Get parent ids and search for blood type in blood_typing table
 
@@ -195,13 +202,18 @@ class BloodProcessingController extends Controller
         // Format data from request
         $from_request = self::formatDonationIds($data);
 
+        // \Log::info($from_request);
+
         // Format array to be used in saving in create eloquent
         $save_array = self::formatPheresisSaveArray($parent, $formatted, $bloodtype, $from_request);
+
+        // \Log::info($save_array);
+        // return($save_array);
 
 
         // Delete records with ids and then save newly created arrays
 
-        Component::whereIn('donation_id', $ids)->delete();
+        // Component::whereIn('donation_id', $ids)->delete();
         $status = Component::create($save_array);
         
         if($status){
@@ -270,6 +282,7 @@ class BloodProcessingController extends Controller
             $arr[] = $val['donation_id'];
             $arr[] = $val['donation_id'] . "-01";
             $arr[] = $val['donation_id'] . "-02";
+            $arr[] = $val['donation_id'] . "-03";
         }
 
         return $arr;
@@ -300,27 +313,83 @@ class BloodProcessingController extends Controller
                 $type = $blood_type[$val]['blood_type'];
             }
 
-            $total = $from_request[$val]['P01'] + $from_request[$val]['P02'];
+            $total = $from_request[$val]['P01'] + $from_request[$val]['P02'] + $from_request[$val]['P03'];
+            $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
 
-            // Add blood type in parent and aliquote if blood type exists
+            $col_date = Donation::select('created_dt')->where('donation_id', $val)->first();
+            $exp_date = self::getExpiration(100, $col_date['created_dt']);
 
-            if($type){
-                $data[$val]['blood_type'] =  $type;
-                $data[$val . "-01"]['blood_type'] =  $type;
-                $data[$val . "-02"]['blood_type'] =  $type;
+            // create mother donation
+
+            $arr[$val] = array(
+                'donation_id'           => $val,
+                'source_donation_id'    => null,    
+                'aliqoute_by'           => $facility_cd,
+                'aliqoute_dt'           => date('Y-m-d'),
+                'component_cd'          => 100,
+                'blood_type'            => $type,
+                'location'              => $facility_cd,
+                'collection_dt'         => $col_date['created_dt'],
+                'expiration_dt'         => $exp_date,
+                'component_vol'         => $total,
+                'comp_stat'             => "FBT",
+                'created_by'            => $facility_cd,
+                'created_dt'            => date('Y-m-d'),
+            );
+
+            if($from_request[$val]['P01']){
+                $arr[$val . "-01"] = array(
+                    'donation_id'           => $val . "-01",
+                    'source_donation_id'    => $val,    
+                    'aliqoute_by'           => $facility_cd,
+                    'aliqoute_dt'           => date('Y-m-d'),
+                    'component_cd'          => 100,
+                    'blood_type'            => $type,
+                    'location'              => $facility_cd,
+                    'collection_dt'         => $col_date['created_dt'],
+                    'expiration_dt'         => $exp_date,
+                    'component_vol'         => $from_request[$val]['P01'],
+                    'comp_stat'             => "FBT",
+                    'created_by'            => $facility_cd,
+                    'created_dt'            => date('Y-m-d'),
+                );                
             }
 
-            // Update component_vol of parent
-            $data[$val]['component_vol'] = $total;  // Add total volume from 2 aliquote
+            if($from_request[$val]['P02']){
+                $arr[$val . "-02"] = array(
+                    'donation_id'           => $val . "-02",
+                    'source_donation_id'    => $val,    
+                    'aliqoute_by'           => $facility_cd,
+                    'aliqoute_dt'           => date('Y-m-d'),
+                    'component_cd'          => 100,
+                    'blood_type'            => $type,
+                    'location'              => $facility_cd,
+                    'collection_dt'         => $col_date['created_dt'],
+                    'expiration_dt'         => $exp_date,
+                    'component_vol'         => $from_request[$val]['P02'],
+                    'comp_stat'             => "FBT",
+                    'created_by'            => $facility_cd,
+                    'created_dt'            => date('Y-m-d'),
+                );                
+            }
 
-            // Update component_vol of 2 aliquotes
-            $data[$val . "-01"]['component_vol'] = $from_request[$val]['P01'];
-            $data[$val . "-02"]['component_vol'] = $from_request[$val]['P02'];
-
-            // Add to $arr variable
-            $arr[] = $data[$val];
-            $arr[] = $data[$val . "-01"];
-            $arr[] = $data[$val . "-02"];
+            if($from_request[$val]['P03']){
+                $arr[$val . "-03"] = array(
+                    'donation_id'           => $val . "-03",
+                    'source_donation_id'    => $val,    
+                    'aliqoute_by'           => $facility_cd,
+                    'aliqoute_dt'           => date('Y-m-d'),
+                    'component_cd'          => 100,
+                    'blood_type'            => $type,
+                    'location'              => $facility_cd,
+                    'collection_dt'         => $col_date['created_dt'],
+                    'expiration_dt'         => $exp_date,
+                    'component_vol'         => $from_request[$val]['P03'],
+                    'comp_stat'             => "FBT",
+                    'created_by'            => $facility_cd,
+                    'created_dt'            => date('Y-m-d'),
+                );                
+            }
         
         }
 
@@ -420,8 +489,8 @@ class BloodProcessingController extends Controller
 
     private function getExpiration($id, $date){
 
-        $components = ComponentCode::select('component_cd','comp_name','exp_interval','exp_interval_type')
-                        ->where('component_cd', $id)
+        $components = RCpComponentCode::select('component_code','comp_name','exp_interval','exp_interval_type')
+                        ->where('component_code', $id)
                         ->whereDisableFlg('N')
                         ->first();
 

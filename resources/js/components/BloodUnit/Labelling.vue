@@ -111,7 +111,7 @@
                                 </template>
 
                                 <template v-slot:cell(aliquote-01)="data">
-                                    <div v-if="data.item.units"> 
+                                    <div v-if="data.item.units.showP01">
                                         <div v-if="data.item.units.hasp01">
                                             <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
                                         </div>
@@ -128,7 +128,7 @@
                                 </template>
 
                                 <template v-slot:cell(aliquote-02)="data">
-                                    <div v-if="data.item.units"> 
+                                    <div v-if="data.item.units.showP02"> 
                                         <div v-if="data.item.units.hasp02">
                                             <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
                                         </div>
@@ -136,6 +136,22 @@
                                             v-else
                                             v-model="checked"
                                             :value="data.item.donation_id + '-02'"
+                                            unchecked-value="0"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            >
+                                        </b-form-checkbox>
+                                    </div>
+                                </template>
+
+                                <template v-slot:cell(aliquote-03)="data">
+                                    <div v-if="data.item.units.showP03"> 
+                                        <div v-if="data.item.units.hasp03">
+                                            <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
+                                        </div>
+                                        <b-form-checkbox
+                                            v-else
+                                            v-model="checked"
+                                            :value="data.item.donation_id + '-03'"
                                             unchecked-value="0"
                                             :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
                                             >
@@ -337,6 +353,7 @@ export default {
                 { key: 'bloodtest', label: 'BLOOD TEST', thClass: 'text-center', tdClass: 'text-center'},
                 { key: 'aliquote-01', label: 'Aliquote - 01', thClass: 'text-center', tdClass: 'text-center' },
                 { key: 'aliquote-02', label: 'Aliquote - 02', thClass: 'text-center', tdClass: 'text-center' },
+                { key: 'aliquote-03', label: 'Aliquote - 03', thClass: 'text-center', tdClass: 'text-center' },
             ],
 
             wb_fields: [
@@ -392,7 +409,7 @@ export default {
             col_method_list: [
                 { value: 'WB', text: 'Whole Blood' },
                 { value: 'P', text: 'Pheresis' },
-                { value: 'WBP', text: 'Whole Blood Pheresis' },
+                // { value: 'WBP', text: 'Whole Blood Pheresis' },
             ],
             
 
