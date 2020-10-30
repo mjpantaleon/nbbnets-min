@@ -147,7 +147,7 @@
                         description="Type-in address"
                         label="Address"
                         label-for="address">
-                        <b-form-input v-model="address" id="address"></b-form-input>
+                        <b-form-input v-model="address" id="address" placeholder="Blk/ Lot/ St/ Subd/ Brgy/ City/Mun/ Prov"></b-form-input>
                     </b-form-group>
             </b-col>
         </b-row>
@@ -220,7 +220,7 @@
                         description="Type-in Mobile #"
                         label="Mobile #"
                         label-for="mobile_no">
-                        <b-form-input v-model="mobile_no" id="mobile_no"></b-form-input>
+                        <b-form-input v-model="mobile_no" id="mobile_no" placeholder="09XX - XXX - XXXX"></b-form-input>
                     </b-form-group>
             </b-col>
         </b-row>
@@ -235,30 +235,139 @@
                         description="Type-in Email address"
                         label="Email Address"
                         label-for="email">
-                        <b-form-input type="email" v-model="email" id="email"></b-form-input>
+                        <b-form-input type="email" v-model="email" id="email" placeholder="sample_email@yahoo.com"></b-form-input>
                     </b-form-group>
             </b-col>
         </b-row>
 
+        <!-- <h4 class="text-secondary mt-3"> <b-icon icon="exclamation"></b-icon> Additional Information</h4> -->
+        <!-- Additional Information -->
+        <!-- <b-row>
+            <b-col cols="4">
+                <b-form-group
+                    id="fieldset-horizontal"
+                    label-cols-sm="4"
+                    label-cols-lg="4"
+                    description="select request type"
+                    label="Request type"
+                    label-for="request_type">
+                    <b-form-select v-model="request_type" 
+                        :options="request_type_options" id="request_type"></b-form-select>
+                </b-form-group>
+            </b-col>
+        </b-row> -->
+
+        <!-- get agencies from db -->
+        <!-- <b-row>
+            <b-col cols="4">
+                <b-form-group
+                    id="fieldset-horizontal"
+                    label-cols-sm="4"
+                    label-cols-lg="4"
+                    description="select agency"
+                    label="Agency"
+                    label-for="agency">
+                    <b-form-select v-for="(agency, j) in agencies" :key="j" :options="agency.agency_name" id="agency">
+                        </b-form-select>
+                </b-form-group>
+            </b-col>
+        </b-row> -->
+
 
         <h4 class="text-secondary mt-3"> <b-icon icon="droplet-half"></b-icon> Blood Unit</h4>
         <!-- Blood Unit details -->
-        <b-row>
-            <b-col cols="4">
-                {{cp_components}}
+        <b-row v-for="(cp_component, i) in cp_components" :key="i">
+            <b-col md="8">
+                <b-form-group
+                        id="fieldset-horizontal"
+                        label-cols-sm="6"
+                        label-cols-lg="6"
+                        description="# of units"
+                        :label="cp_component.comp_name"
+                        label-for="requested_units">
+                        <b-form-input type="number" v-model="cp_component.requested_units" :name="cp_component.comp_name" id="requested_units"></b-form-input>
+                    </b-form-group>
             </b-col>
         </b-row>
+
+        <b-row>
+            <b-col md="4">
+                <b-button block
+                    variant="success"
+                    @click.prevent="showModal">
+                    <b-icon icon="check-circle"></b-icon>&nbsp;CREATE BLOOD REQUEST
+                </b-button>
+            </b-col>
+        </b-row>
+
+        <verifier-modal @setUname="setUname"></verifier-modal>
+
+        <!-- =============== MODALS ================ -->
+        <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
+        <b-modal v-model="showSuccessMsg" centered
+            title="INFO"
+            header-bg-variant="info"
+            body-bg-variant="light" 
+            footer-bg-variant="info"
+            header-text-variant="light"
+            hide-header-close>
+            
+            <h5 class="alert-heading text-center">
+                <b-icon variant="danger" icon="droplet-half"></b-icon>&nbsp;{{message}}
+            </h5>
+            
+            <template v-slot:modal-footer="{ ok }">
+            <!-- <template v-slot:modal-footer="{ ok }"> -->
+                <b-link class="btn btn-info" :to="{ path: '/blood-request/list' }"
+                    size="sm" variant="info" @click="ok()">
+                    OK
+                </b-link>
+            </template>
+        </b-modal>
+        <!-- =============== MODALS ================ -->
+
+
+        <!-- SHOW THIS MODAL FOR EMPTY FIELDS -->
+        <b-modal v-model="showErrorMsg" centered
+            title="WARNING"
+            header-bg-variant="danger"
+            body-bg-variant="light" 
+            footer-bg-variant="danger"
+            header-text-variant="light"
+            hide-header-close>
+            
+            <h4 class="alert-heading text-center">
+                <b-icon variant="danger" icon="exclamation-octagon-fill"></b-icon>&nbsp;
+                {{ error_msg }}
+            </h4>
+            
+            <template v-slot:modal-footer="{ ok }">
+                <b-link class="btn btn-danger"
+                    size="sm" variant="danger" @click="ok()">
+                    OK
+                </b-link>
+            </template>
+        </b-modal>
   </div>
 </template>
 
 <script>
+import VerifierModal from "../Tools/VerifierModal.vue";
 export default {
+    components: {
+        VerifierModal
+    },
      data(){
         return{
             enableBtn: false,
             showSuccessMsg: false,
 
+            showErrorMsg: false,
+            error_msg: 'Please do not leave any blank inputs!',
+
             cp_components: '',
+            final_data: [],
+            message: '',
 
             // patient details
             fname: '',
@@ -274,6 +383,19 @@ export default {
 
             address: '',
             diagnosis: '',
+
+            // additional info
+            // request_type: '',
+            // agencies: '',
+
+            request_type_options: [
+                { value: 'Indigent', text: 'Indigent' },
+                { value: 'Kabalikat', text: 'Kabalikat' },
+                { value: 'MOA-Sharing', text: 'MOA-Sharing' },
+                { value: 'MOA-To Pay', text: 'MOA-To Pay' },
+                { value: 'Processing Fee', text: 'Processing Fee' },
+                { value: 'Sharing', text: 'Sharing' }
+            ],
 
             // physician
             dr_fname: '',
@@ -314,15 +436,6 @@ export default {
     }, /* data */
 
     computed: {
-        checkFirstName(){
-             return this.fname.length > 2 ? true : false
-        },
-        checkMiddleName(){
-            return this.mname.length > 1 ? true : false
-        },
-        checkLastName(){
-             return this.lname.length > 2 ? true : false
-        },
         checkBday(){
             return this.bdate.length > 4 ? true : false
         },
@@ -361,11 +474,106 @@ export default {
                 this.cp_components = response.data
             ))
             .catch(error => console.log(error))
+        },
+
+        // async getAgencyList(){
+        //     await axios
+        //     .get('/agency-list')
+        //     .then(response => (
+        //         this.agencies = response.data
+        //     ))
+        //     .catch(error => console.log(error))
+        // },
+
+        showModal(){
+            // alert('button has been clicked');
+            var err
+            this.errMessage = ''
+
+            // check first for errors
+            // err = this.checkError()
+
+            // if there were errors found
+            // if(err){
+            //     // return this error message
+            //     this.showErrorMsg = true
+            // } else{
+                // show verifier form
+                this.$bvModal.show('verifier-login');
+                // this.modalOpen = !this.modalOpen;
+            // }
+
+        },
+
+        checkError(){
+
+            var err = false;
+
+            // how to add number of blood units request? to avoid sending of empty request
+            
+            if(this.fname == "" || this.lname == "" || this.blood_type == "" || this.bdate == '' || this.diagnosis == ''
+                || this.dr_fname == '' || this.dr_lname == '' || this.mobile_no == '' || this.email == ''){
+                return err = true
+            }
+            
+            return err
+
+        },
+
+        openModal() {
+      this.modalOpen = !this.modalOpen;
+    },
+
+    setUname(e){
+
+        console.log(this.cp_components)
+
+      axios
+        .post('/blood-request', {
+            // patient details
+            fname: this.fname,
+            mname: this.mname,
+            lname: this.lname,
+            name_suffix: this.name_suffix,
+
+            blood_type: this.blood_type,
+            gender: this.gender,
+            civil_stat: this.civil_stat,
+            bdate: this.bdate,
+            age: this.age,
+
+            address: this.address,
+            diagnosis: this.diagnosis,
+
+            // physician
+            dr_fname: this.dr_fname,
+            dr_mname: this.dr_mname,
+            dr_lname: this.dr_lname,
+            dr_name_suffix:this.dr_name_suffix,
+
+            mobile_no: this.mobile_no,
+            email: this.email,
+            requested_units: this.cp_components,
+
+            verifier: e,
+      })
+      .then(response => {
+
+        if(response.data){
+            this.message = response.data.message
+            this.showSuccessMsg = true
+            this.getCpComponents()
         }
+          
+      })
+
+    }
+
     },
 
     mounted(){
         this.getCpComponents()
+        // this.getAgencyList()
     },
 }
 </script>

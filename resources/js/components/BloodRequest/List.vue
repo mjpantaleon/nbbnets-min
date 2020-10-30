@@ -36,44 +36,6 @@
             </b-col>
         </b-row>
 
-        <!-- <b-row>
-            <b-col cols="5">
-                <b-form-group
-                    id="donation-id"           
-                    label-cols-sm="2"
-                    label-cols-lg="2"
-                    description="Date From"
-                    label="Date From"
-                    label-for="donation-id">
-                        <b-form-datepicker 
-                            v-model="date_from"
-                            class="mb-2">
-                        </b-form-datepicker>
-                </b-form-group>
-            </b-col>
-            <b-col cols="5">
-                <b-form-group
-                    id="donation-id"           
-                    label-cols-sm="1"
-                    label-cols-lg="1"
-                    description="Search Date To"
-                    label="To"
-                    label-for="donation-id">
-                        <b-form-datepicker
-                            v-model="date_to"
-                            class="mb-2">
-                        </b-form-datepicker>
-                </b-form-group>
-            </b-col>
-            <b-col cols="2" class="ml-auto">
-                <b-button type="submit"
-                    variant="warning"
-                    @click.prevent="getBloodRequests()">
-                    <b-icon icon="search"></b-icon>&nbsp;SEARCH
-                </b-button>
-            </b-col>
-        </b-row> -->
-
         <template v-if="data.length != 0">
         <b-row>
             <b-col>
@@ -86,17 +48,30 @@
                         {{ data.item.reference }}
                     </template>
 
+                    <template v-slot:cell(patient_name)="data">
+                        {{ data.item.lastname }}
+                    </template>
+
+                    <template v-slot:cell(blood_type)="data">
+                        <span class="text-danger"><b>{{data.item.blood_type}}</b></span>
+                    </template>
+
                     <template v-slot:cell(request_type)="data">
                         {{ data.item.request_type }}
                     </template>
 
                     <template v-slot:cell(status)="data">
-                        {{ data.item.status }}
+                        <span class="text-danger" v-if="data.item.status == 'FLU'"><b>FOR LOOK UP</b></span>
+                        <span class="text-danger" v-if="data.item.status == 'FR'"><b>FOR RESERVATION</b></span>
                     </template>
 
                     <template v-slot:cell(action)="data">
-                        <router-link :to="'/blood-request/view/'+data.item.request_id" title="View Blood Request Details">
-                            <b-icon icon="reply-fill" class="border border-danger p-1" variant="danger" font-scale="2.1"></b-icon>
+                        <router-link :to="{ path: '/blood-request/view/' + data.item.request_id }" title="For Look up">
+                            <b-icon icon="search" class="border border-primary p-1" variant="primary" font-scale="2.1"></b-icon>
+                        </router-link>
+
+                        <router-link :to="{ path: '/blood-request/cancel/' + data.item.request_id }" title="Cancel Blood request">
+                            <b-icon icon="trash" class="border border-danger p-1" variant="danger" font-scale="2.1"></b-icon>
                         </router-link>
                     </template>
                 </b-table>
@@ -131,6 +106,8 @@ export default {
 
             request_fields: [
                 { key: 'reference_num', label: 'Reference #' },
+                { key: 'patient_name', label: 'Patient Last Name' },
+                { key: 'blood_type', label: 'Blood Type' },
                 { key: 'request_type', label: 'Request Type' },
                 { key: 'status', label: 'Status' },
                 { key: 'action', label: 'Action' },

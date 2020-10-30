@@ -113,7 +113,9 @@ Route::group(['middleware' => ['auth']], function () {
     // BLOOD REQUEST
     Route::post('/blood-request-list', 'BloodRequestController@bloodRequestList');
     Route::get('/cp-components', 'BloodRequestController@getCpComponents');
-    Route::post('/blood-request/view/{id}', 'BloodRequestController@view');
+    Route::get('/for-look-up/{id}', 'BloodRequestController@forLookUp');
+    // Route::get('/agency-list', 'BloodRequestController@getAgencies');
+    Route::post('/blood-request', 'BloodRequestController@create');
 
 
     Route::get('/logout', 'LoginController@logout');
