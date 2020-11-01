@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\BloodRequest;
+use App\Component;
 use Session;
 use DB;
 
@@ -60,7 +61,8 @@ class BloodRequestController extends Controller
         AND br.status = 'FLU'
         */
 
-        $blood_request_detail = BauBloodRequest::select('request_id','reference','request_type','status')
+        // ELOQUENT ! DO NOT FORGET TO SELECT 'patient_id' 
+        $blood_request_detail = BauBloodRequest::select('request_id','patient_id','reference','request_type','status')
                                             ->with('patient_min')
                                             ->whereRequestId($id)
                                             ->whereFacilityCd($facility_cd)
@@ -108,24 +110,51 @@ class BloodRequestController extends Controller
             return $ids;
         }
     }
+    
+    public function getAvailableCpUnits(Request $request){
+        $ids = [];
+        $blood_type = $request->get('selected_blood_type');
+        $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
 
-    // public function getAgencies(Request $request){
-    //     $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
-
-    //     $sql = "    SELECT agency_cd, agency_name
-    //                 FROM `r_donor_agency` 
-    //                 WHERE facility_cd = '$facility_cd'
-    //                 AND agency_cd LIKE '%$facility_cd%' ";
-
-    //     $agencies = DB::select($sql);
-    //     \Log::info($agencies);
+        \Log::info($blood_type);
         
-    //     $agencies = json_decode(json_encode($agencies), true);
-    //     \Log::info($agencies);
+        // $available_cp_units = Component::whereCompStat('AVA')
+        //                             ->where('blood_type', '=', $blood_type)
+        //                             ->get();
 
-    //     // return $agencies;
-    // }
+        $sql = "    SELECT donation_id, component_cd, blood_type, comp_stat 
+                    FROM `component`
+                    WHERE `blood_type` = '$blood_type'
+                    AND `comp_stat` = 'AVA'  
+                    AND `location` = '$facility_cd' ";
+        
+        $available_cp_units = DB::select($sql);
+        // \Log::info($available_cp_units);
 
+        $available_cp_units = json_decode(json_encode($available_cp_units), true);
+        // \Log::info($available_cp_units);  
+
+
+        // return $available_cp_units;
+
+        if($available_cp_units){
+            // for($i = 0; $i < count($available_cp_units); $i++){
+            foreach($available_cp_units as $key => $val){
+                $ids[$key]['donation_id'] = $val['donation_id'];
+                $ids[$key]['component_cd'] = $val['component_cd'];
+                $ids[$key]['blood_type'] = $val['blood_type'];
+                $ids[$key]['comp_stat'] = $val['comp_stat'];
+                $ids[$key]['selected_item'] = false;
+            }
+
+            \Log::info($ids);
+            return $ids;
+
+        } else {
+            return false;
+        }
+        // return $available_cp_units;
+    }
 
     public function create(Request $request){
         $facility_user  = Session::get('userInfo')['user_id'];

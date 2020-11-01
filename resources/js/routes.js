@@ -75,7 +75,7 @@ export const routes = [
     // BLOOD REQUEST
     { name: 'blood-request/list', path: '/blood-request/list', component: BloodRequestList },
     { name: 'blood-request/create', path: '/blood-request/create', component: CreateBloodRequest },
-    { name: 'blood-request/view', path: '/blood-request/view/:id', component: BloodRequestInfo },
+    { name: 'blood-request/view/:id', path: '/blood-request/view/:id', component: BloodRequestInfo },
 
 
     // BLOOD TEST
