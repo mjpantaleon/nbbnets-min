@@ -28,6 +28,9 @@
                 <b-table-simple stacked>
                     <b-tbody>
                         <b-tr>
+                            <b-td stacked-heading="Blood Type: ">
+                                <h1 class="text-success">{{ blood_type }}</h1>
+                            </b-td>
                             <b-td stacked-heading="Request ID: ">
                                 {{ request_id }}
                             </b-td>
@@ -43,12 +46,17 @@
                             <b-td stacked-heading="Patient Name: ">
                                 {{ firstname }} {{ middlename ? middlename : '' }} {{ lastname }} {{ name_suffix ? name_suffix : '' }}
                             </b-td>
-                            <b-td stacked-heading="Blood Type: ">
-                                <h1 class="text-success">{{ blood_type }}</h1>
+                        </b-tr>
+
+                        <b-tr v-for="(detail, j) in details" :key="j">
+                            <b-td stacked-heading="For look Up - " variant="danger">
+                                {{ detail.component_name.comp_name }}
                             </b-td>
                         </b-tr>
                     </b-tbody>
                 </b-table-simple>
+
+                
             </b-col>
             <!-- {{selected_blood_type}} -->
             <!-- AVAILABLE BLOOD UNITS BASED ON -->
@@ -77,17 +85,19 @@
                     </b-col>
                 </b-row>
 
-                <b-row>
-                    
+               
+                <b-row>      
                     <b-table striped bordered
-                        :items="components"
-                        :fields="table_fields"
-                        :per-page="perPage">
+                        :fields="fields"
+                        :items="data"
+                        :per-page="perPage"
+                        :current-page="currentPage"
+                        id="main-table">
                             <template v-slot:cell(selection)="data">
                                 <b-form-checkbox
-                                id="checkbox"
                                 v-model="data.item.selected_item"
-                                name="checkbox"></b-form-checkbox>
+                                value=true
+                                unchecked-value=false></b-form-checkbox>
                             </template>
 
                             <template v-slot:cell(donation_id)="data">
@@ -98,11 +108,57 @@
                                 {{ data.item.blood_type }}
                             </template>
 
+                            <template v-slot:cell(cp_component)="data">
+                                {{ data.item.comp_name }}
+                            </template>
+
                             <template v-slot:cell(status)="data">
                                 <span class="text-success" v-if="data.item.comp_stat == 'AVA'">Available</span>
                             </template>
                     </b-table>
+
+                    <!-- pagination -->
+                    <template v-if="data.length != 0">
+                    <b-pagination
+                        v-model="currentPage"
+                        :total-rows="rows"
+                        :per-page="perPage"
+                        aria-controls="main-table">
+                    </b-pagination>
+                    </template>
                 </b-row>
+
+                <b-row class="mt-3" v-if="data.length != 0">
+                    <b-col md="4">
+                        <template>
+                        <b-button block type="submit" variant="success"
+                            @click.prevent="reserveBloodUnits()">
+                            <b-icon icon="check-circle"></b-icon>&nbsp;RESERVE BLOOD UNITS 
+                        </b-button>
+                        </template>
+                    </b-col>
+                </b-row>
+
+                <template v-if="isLoading">
+                <b-row>
+                    <b-col class="text-center">
+                        
+                        <b-spinner variant="danger" label="Please wait..."></b-spinner>
+                    </b-col>
+                </b-row>
+                </template>
+
+                <template v-if="data.length == 0">
+                <b-row>
+                    <b-col>
+                        <div class="alert alert-info mt-3">
+                            <span class="text-center text-danger">
+                                <h5><b-icon icon="info-square"></b-icon> No record/s to display</h5>
+                            </span>
+                        </div>
+                    </b-col>
+                </b-row>
+                </template>
 
             </b-col>
         </b-row>
@@ -113,7 +169,8 @@
 export default {
     data(){
         return{
-            data: '',
+            isLoading: false,
+            data: [],
 
             request_id: '',
             reference: '',
@@ -127,6 +184,9 @@ export default {
             name_suffix: '',
 
             blood_type: '',
+
+            // details
+            details: '',
 
             selected_blood_type: '',
             blood_types: [
@@ -142,12 +202,11 @@ export default {
 
             selected: '',
 
-            components: [],
-
-            table_fields: [
+            fields: [
                 { key: 'selection', label: 'Selection' },
                 { key: 'donation_id', label: 'Donation ID' },
                 { key: 'blood_type', label: 'Blood Type' },
+                { key: 'cp_component', label: 'Component' },
                 { key: 'status', label: 'Status' },
             ],
 
@@ -181,28 +240,81 @@ export default {
                 this.lastname = response.data.patient_min.lastname,
                 this.name_suffix = response.data.patient_min.name_suffix,
 
-                this.blood_type = response.data.patient_min.blood_type
+                this.blood_type = response.data.patient_min.blood_type,
+
+                this.details = response.data.details
             ))
         },
 
         async getAvailableCpUnits(){
+            this.isLoading = true
+
             await axios
             .post('/available-cp-components', {
                 selected_blood_type: this.selected_blood_type
             })
-            .then(response => (
-                this.components = response.data
-            ))
+            .then(response => {
+                
+                if(response.data){
+                    this.data = response.data
+                    this.isLoading = false
+                } else{
+                    this.data = []
+                    this.isLoading = false
+                }
+            })
+        },
+
+        async reserveBloodUnits(){
+
+            var post_data = this.getChecked()
+            // this.details
+
+            await axios
+            .post('/reserve-blood-units',  {
+                post_data,
+                component_details : this.details,
+
+                // request_id : this.details[0].request_id,
+                // request_component_id : this.details[0].request_component_id,
+            })
+            .then(response => {
+
+                // this.data = response.data
+                if(response.data){
+                    
+                    console.log(response.data)
+                }
+            })
+        },
+
+        getChecked(){
+
+            var ret = []
+
+            this.data.forEach((v) => {
+                if(v.selected_item == "true"){
+                    ret.push(v)
+                }
+            })
+
+            return ret
+
         }
     }, /* methods */
 
     computed: {
         // pagination
         rows() {
-            return this.components.length
+            return this.data.length
         },
-    }
+    },
 
+    watch:{
+        data: function(val){
+            console.log(val)
+        }
+    }
     
 }
 </script>

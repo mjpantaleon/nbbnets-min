@@ -14,11 +14,13 @@ class BauBloodRequest extends Model
     public $timestamps = false;
 
     function patient_min(){
-        return $this->belongsTo('App\BauPatient','patient_id','patient_id')->select('patient_id', 'firstname', 'middlename', 'lastname', 'name_suffix', 'blood_type');
+        return $this->belongsTo('App\BauPatient','patient_id','patient_id')
+                    ->select('patient_id', 'firstname', 'middlename', 'lastname', 'name_suffix', 'blood_type');
     }
 
     function details(){
-        return $this->hasMany('App\BauBloodRequestDetail','request_id', 'request_id');
+        return $this->hasMany('App\BauBloodRequestDetail','request_id', 'request_id')->with('component_name')
+                    ->select('request_component_id', 'request_id', 'blood_type', 'donation_id','component_cd');
     }
 
     

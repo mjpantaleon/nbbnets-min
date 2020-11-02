@@ -491,17 +491,17 @@ export default {
             this.errMessage = ''
 
             // check first for errors
-            // err = this.checkError()
+            err = this.checkError()
 
             // if there were errors found
-            // if(err){
-            //     // return this error message
-            //     this.showErrorMsg = true
-            // } else{
+            if(err){
+                // return this error message
+                this.showErrorMsg = true
+            } else{
                 // show verifier form
                 this.$bvModal.show('verifier-login');
-                // this.modalOpen = !this.modalOpen;
-            // }
+                this.modalOpen = !this.modalOpen;
+            }
 
         },
 
@@ -524,11 +524,11 @@ export default {
       this.modalOpen = !this.modalOpen;
     },
 
-    setUname(e){
+    async setUname(e){
 
         console.log(this.cp_components)
 
-      axios
+        await axios
         .post('/blood-request', {
             // patient details
             fname: this.fname,

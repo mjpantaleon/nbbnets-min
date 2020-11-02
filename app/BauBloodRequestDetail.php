@@ -11,4 +11,8 @@ class BauBloodRequestDetail extends Model
 
     protected $guarded = [];
     public $timestamps = false;
+
+    function component_name(){
+        return $this->belongsTo('App\RCpComponentCode','component_cd', 'component_code')->select('component_code','comp_name');
+    }
 }

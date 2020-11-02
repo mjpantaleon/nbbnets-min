@@ -115,6 +115,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/cp-components', 'BloodRequestController@getCpComponents');
     Route::get('/for-look-up/{id}', 'BloodRequestController@forLookUp');
     Route::post('/available-cp-components', 'BloodRequestController@getAvailableCpUnits');
+    Route::post('/reserve-blood-units', 'BloodRequestController@reserveBloodUnits');
     // Route::get('/agency-list', 'BloodRequestController@getAgencies');
     Route::post('/blood-request', 'BloodRequestController@create');
 
