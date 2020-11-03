@@ -277,7 +277,7 @@ export default {
             pheresis_fields: [
                 { key: 'donationId', label: 'Donation ID'},
                 // { key: 'aliquote', label: 'Aliquotes', thClass: 'text-center aliquote-column-width', tdClass: 'text-center' },
-                { key: 'p-01', label: 'Aliquote-01', thClass: 'text-center aliquote-column-width', tdClass: 'text-center' },
+                { key: 'p-01', label: 'Aliquote-01 / WB', thClass: 'text-center aliquote-column-width', tdClass: 'text-center' },
                 { key: 'p-02', label: 'Aliquote-02', thClass: 'text-center aliquote-column-width', tdClass: 'text-center' },
                 { key: 'p-03', label: 'Aliquote-03', thClass: 'text-center aliquote-column-width', tdClass: 'text-center' },
             ],

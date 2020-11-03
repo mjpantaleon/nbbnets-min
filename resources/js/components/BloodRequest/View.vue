@@ -39,6 +39,7 @@
                             </b-td>
                             <b-th stacked-heading="Status: ">
                                 <span class="text-danger" v-if="status == 'FLU'">FOR LOOK UP</span>
+                                <span class="text-success" v-if="status == 'RES'">RESERVED</span>
                             </b-th>
                             <b-td stacked-heading="Patient ID: ">
                                 {{ patient_id }}
@@ -49,9 +50,17 @@
                         </b-tr>
 
                         <b-tr v-for="(detail, j) in details" :key="j">
-                            <b-td stacked-heading="For look Up - " variant="danger">
+                            <template v-if="detail.donation_id == null">
+                            <b-td  stacked-heading="For look Up - " variant="danger">
                                 {{ detail.component_name.comp_name }}
                             </b-td>
+                            </template>
+
+                            <template v-if="detail.donation_id != null">
+                            <b-td  stacked-heading="Reserved - " variant="success">
+                                {{ detail.component_name.comp_name }}
+                            </b-td>
+                            </template>
                         </b-tr>
                     </b-tbody>
                 </b-table-simple>
@@ -132,7 +141,7 @@
                     <b-col md="4">
                         <template>
                         <b-button block type="submit" variant="success"
-                            @click.prevent="reserveBloodUnits()">
+                            @click.prevent="showModal()">
                             <b-icon icon="check-circle"></b-icon>&nbsp;RESERVE BLOOD UNITS 
                         </b-button>
                         </template>
@@ -159,17 +168,49 @@
                     </b-col>
                 </b-row>
                 </template>
-
             </b-col>
         </b-row>
+
+        <verifier-modal @setUname="setUname"></verifier-modal>
+
+        <!-- =============== MODALS ================ -->
+        <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
+        <b-modal v-model="showSuccessMsg" centered
+            title="INFO"
+            header-bg-variant="info"
+            body-bg-variant="light" 
+            footer-bg-variant="info"
+            header-text-variant="light"
+            hide-header-close>
+            
+            <h5 class="alert-heading text-center">
+                <b-icon variant="danger" icon="droplet-half"></b-icon>&nbsp;{{message}}
+            </h5>
+            
+            <template v-slot:modal-footer="{ ok }">
+            <!-- <template v-slot:modal-footer="{ ok }"> -->
+                <b-link class="btn btn-info"
+                    size="sm" variant="info" @click="ok()">
+                    OK
+                </b-link>
+            </template>
+        </b-modal>
+        <!-- =============== MODALS ================ -->
   </div>
 </template>
 
 <script>
+import VerifierModal from "../Tools/VerifierModal.vue";
 export default {
+    components: {
+        VerifierModal
+    },
     data(){
         return{
+            showSuccessMsg: false,
             isLoading: false,
+            message: '',
+
             data: [],
 
             request_id: '',
@@ -265,7 +306,17 @@ export default {
             })
         },
 
-        async reserveBloodUnits(){
+        showModal(){   
+            this.$bvModal.show('verifier-login');
+            // this.modalOpen = !this.modalOpen;
+        },
+
+
+        openModal() {
+            this.modalOpen = !this.modalOpen;
+        },
+
+        async setUname(e){
 
             var post_data = this.getChecked()
             // this.details
@@ -282,11 +333,39 @@ export default {
 
                 // this.data = response.data
                 if(response.data){
+                    this.message = response.data.message
+                    this.showSuccessMsg = true
+                    this.getForLookUp()
+                    this.getAvailableCpUnits()
                     
                     console.log(response.data)
                 }
             })
+
         },
+
+        // async reserveBloodUnits(){
+
+        //     var post_data = this.getChecked()
+        //     // this.details
+
+        //     await axios
+        //     .post('/reserve-blood-units',  {
+        //         post_data,
+        //         component_details : this.details,
+
+        //         // request_id : this.details[0].request_id,
+        //         // request_component_id : this.details[0].request_component_id,
+        //     })
+        //     .then(response => {
+
+        //         // this.data = response.data
+        //         if(response.data){
+                    
+        //             console.log(response.data)
+        //         }
+        //     })
+        // },
 
         getChecked(){
 

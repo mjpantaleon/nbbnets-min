@@ -62,7 +62,7 @@
 
                     <template v-slot:cell(status)="data">
                         <span class="text-danger" v-if="data.item.status == 'FLU'"><b>FOR LOOK UP</b></span>
-                        <span class="text-danger" v-if="data.item.status == 'FR'"><b>FOR RESERVATION</b></span>
+                        <span class="text-success" v-if="data.item.status == 'RES'"><b>RESERVED</b></span>
                     </template>
 
                     <template v-slot:cell(action)="data">

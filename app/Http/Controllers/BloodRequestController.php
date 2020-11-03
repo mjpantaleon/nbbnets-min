@@ -41,16 +41,14 @@ class BloodRequestController extends Controller
                 FROM `bau_blood_request` br
                 LEFT JOIN `bau_patient` bp ON bp.patient_id = br.patient_id
                 LEFT JOIN `bau_blood_request_dtls` brd ON br.request_id = brd.request_id
-                WHERE br.created_dt LIKE '%2020-11-02%'
-                AND facility_cd = '13109'
-                AND br.status = 'FLU'
-                AND brd.donation_id IS NULL ";
+                WHERE br.created_dt LIKE '%$selected_dt%'
+                AND facility_cd = '$facility_cd' ";
 
         $result = DB::select($sql);
-        \Log::info($result);
+        // \Log::info($result);
         
         $result = json_decode(json_encode($result), true);
-        \Log::info($result);
+        // \Log::info($result);
         return $result;
     }
 
@@ -71,11 +69,20 @@ class BloodRequestController extends Controller
                                             ->with('details')
                                             ->whereRequestId($id)
                                             ->whereFacilityCd($facility_cd)
-                                            ->where('status', '=', 'FLU')
                                             ->first()
-                                            ->toArray();
-        \Log::info($blood_request_detail);
+                                            ->toArray();    
         return $blood_request_detail;
+        
+        // if($blood_request_detail){
+        //     return $blood_request_detail->toArray();
+        // } else{
+        //     return [];
+        // }
+        
+        // \Log::info($blood_request_detail);
+        
+
+        
                                                 
         // $sql =" SELECT br.request_id, br.reference, br.request_type, br.status, bp.patient_id, bp.firstname, bp.middlename, bp.lastname, bp.name_suffix, bp.blood_type 
         //         FROM `bau_blood_request` br
@@ -98,7 +105,7 @@ class BloodRequestController extends Controller
                     FROM `r_cp_component_codes`
                     WHERE disable_flg = 'N' ";
         $cp_comp = DB::select($sql);
-        \Log::info($cp_comp);
+        // \Log::info($cp_comp);
         
         $cp_comp = json_decode(json_encode($cp_comp), true);
         \Log::info($cp_comp);
@@ -111,7 +118,7 @@ class BloodRequestController extends Controller
                 $ids[$i]['comp_name'] = $cp_comp[$i]['comp_name'];
                 $ids[$i]['requested_units'] = "";
             }
-            \Log::info($ids);
+            // \Log::info($ids);
             return $ids;
         }
     }
@@ -122,7 +129,7 @@ class BloodRequestController extends Controller
         $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
         $date = date('Y-m-d');
 
-        \Log::info($blood_type);
+        // \Log::info($blood_type);
         
         // $available_cp_units = Component::whereCompStat('AVA')
         //                             ->where('blood_type', '=', $blood_type)
@@ -169,7 +176,7 @@ class BloodRequestController extends Controller
                 $ids[$key]['selected_item'] = false;
             }
 
-            \Log::info($ids);
+            // \Log::info($ids);
             return $ids;
 
         } else {
@@ -184,7 +191,7 @@ class BloodRequestController extends Controller
 
         $verifier       = $request->get('verifier');
 
-        \Log::info($facility_user);
+        // \Log::info($facility_user);
         
         // bau_patient
 
@@ -248,11 +255,11 @@ class BloodRequestController extends Controller
                     }
                 }
 
-                \Log::info($save_array);
+                // \Log::info($save_array);
                 
                 $status = BauBloodRequestDetail::insert($save_array);
                 
-                \Log::info($status);
+                // \Log::info($status);
                 
                 if($status){
                     // return goodshit
@@ -291,61 +298,87 @@ class BloodRequestController extends Controller
         $post_data              = $request->get('post_data');
         $component_details      = $request->get('component_details');
         
-        
         // loop component_details
         foreach($component_details as $cd => $cdv){
-            $request_id = $cdv['request_id'];
-            
-            // CHECK IF REQUEST ID EXISTS ATbau_ blood_request_details TABLE
-            $check_request_id = BauBloodRequestDetail::where('request_id', '=', $request_id)
-                                                    ->first();
 
-            if($check_request_id){
+            if(!$cdv['donation_id']){
                 
-                foreach($post_data as $key => $value){
-                    $donation_id = $value['donation_id'];    
-
-                    // UPDATE THIS FUCKING SHIT
-                    BauBloodRequestDetail::where('request_id', $request_id)
-                                ->update(['donation_id' => $donation_id]);
-
-                    // $blood_details_array = array(
-                    //     'donation_id' => $donation_id
-                    // );
+                $request_id = $cdv['request_id'];
+                $request_component_id = $cdv['request_component_id'];
+                
+                // CHECK IF REQUEST ID EXISTS ATbau_ blood_request_details TABLE
+                $check_request_id = BauBloodRequestDetail::where('request_id', '=', $request_id)
+                                                        ->first();
+    
+                if($check_request_id){
                     
-                    // $stat = BauBloodRequestDetail::where('request_id', $request_id)
-                    // ->update($blood_details_array);
-
-
-                    // MUST CHECK IF 
-                }   
-
-            } else {
-                //
-                return response()->json([
-                    'message' => "Error saving component details",
-                    'status' => 0
-                ], 200);   
-                
+                    foreach($post_data as $key => $value){
+                        $donation_id = $value['donation_id'];
+                        
+                        // UPDATE THIS FUCKING SHIT
+    
+                        // match component_cd
+                        if($cdv['component_cd'] == $value['component_cd']){
+                            // BLOOD REQUEST DETAILS
+                            BauBloodRequestDetail::where('request_component_id', $request_component_id)
+                                                ->where('request_id', $request_id)
+                                                ->update(['donation_id' => $donation_id]);
+                            
+                             // UPDATE COMPONENT
+                             $update_component = Component::where('donation_id', $donation_id)
+                             ->where('component_cd', $value['component_cd'])
+                             ->update(['comp_stat' => 'RES']);
+                             
+                            // \Log::info($update_component);
+                            
+                            // remove value
+                            unset($post_data[$key]);
+                            
+                            // exit from loop
+                            break;
+    
+                           
+                        } 
+                    }   
+                } else{
+                    return response()->json([
+                        'message' => "Donation ID not found!",
+                        'status' => 1
+                    ], 200);
+                }
             }
-            
+
         }
-        \Log::info($donation_id);
-        
+
+        $dtls_stat = self::getDetailsStatus($component_details[0]['request_id']);
+        \Log::info($dtls_stat);
+
+
         return response()->json([
             'message' => "Component Details has been added successfully",
             'status' => 1
         ], 200);
-        
-        
-        // $request_id     = $request->get('request_id');
-        // $request_component_id     = $request->get('request_component_id');
-        
-        /* TARGET QUERY
-        UPDATE `bau_blood_request_details`
-        SET `donation_id` = $post_data->donation_id
-        WHERE request_id = $request_id
-        */
+
+
+    }
+
+    private function getDetailsStatus($data){
+
+        $details = BauBloodRequestDetail::where('request_id', '=', $data)
+                            ->get();
+
+        foreach($details as $key => $val){
+            \Log::info($val['donation_id']);
+            if($val['donation_id'] == null){
+                return "false";
+            }
+        }
+
+        // UPDATE status at bau_blood_request
+        BauBloodRequest::where('request_id', $data)
+                        ->update(['status' => 'RES']);
+        //
+        return "true";
 
     }
 

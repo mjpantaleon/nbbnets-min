@@ -466,24 +466,16 @@ export default {
     }, /* computed */
 
     methods: {
+
         async getCpComponents(){
 
-           await axios
-           .get('/cp-components')
+            await axios
+            .get('/cp-components')
             .then(response => (
                 this.cp_components = response.data
             ))
             .catch(error => console.log(error))
         },
-
-        // async getAgencyList(){
-        //     await axios
-        //     .get('/agency-list')
-        //     .then(response => (
-        //         this.agencies = response.data
-        //     ))
-        //     .catch(error => console.log(error))
-        // },
 
         showModal(){
             // alert('button has been clicked');
@@ -521,55 +513,55 @@ export default {
         },
 
         openModal() {
-      this.modalOpen = !this.modalOpen;
-    },
+            this.modalOpen = !this.modalOpen;
+        },
 
-    async setUname(e){
+        async setUname(e){
 
-        console.log(this.cp_components)
+            console.log(this.cp_components)
 
-        await axios
-        .post('/blood-request', {
-            // patient details
-            fname: this.fname,
-            mname: this.mname,
-            lname: this.lname,
-            name_suffix: this.name_suffix,
+            await axios
+            .post('/blood-request', {
+                // patient details
+                fname: this.fname,
+                mname: this.mname,
+                lname: this.lname,
+                name_suffix: this.name_suffix,
 
-            blood_type: this.blood_type,
-            gender: this.gender,
-            civil_stat: this.civil_stat,
-            bdate: this.bdate,
-            age: this.age,
+                blood_type: this.blood_type,
+                gender: this.gender,
+                civil_stat: this.civil_stat,
+                bdate: this.bdate,
+                age: this.age,
 
-            address: this.address,
-            diagnosis: this.diagnosis,
+                address: this.address,
+                diagnosis: this.diagnosis,
 
-            // physician
-            dr_fname: this.dr_fname,
-            dr_mname: this.dr_mname,
-            dr_lname: this.dr_lname,
-            dr_name_suffix:this.dr_name_suffix,
+                // physician
+                dr_fname: this.dr_fname,
+                dr_mname: this.dr_mname,
+                dr_lname: this.dr_lname,
+                dr_name_suffix:this.dr_name_suffix,
 
-            mobile_no: this.mobile_no,
-            email: this.email,
-            requested_units: this.cp_components,
+                mobile_no: this.mobile_no,
+                email: this.email,
+                requested_units: this.cp_components,
 
-            verifier: e,
-      })
-      .then(response => {
+                verifier: e,
+            })
+            .then(response => {
 
-        if(response.data){
-            this.message = response.data.message
-            this.showSuccessMsg = true
-            this.getCpComponents()
+                if(response.data){
+                    this.message = response.data.message
+                    this.showSuccessMsg = true
+                    this.getCpComponents()
+                }
+                
+            })
+
         }
-          
-      })
 
-    }
-
-    },
+    }, /* methods */
 
     mounted(){
         this.getCpComponents()
