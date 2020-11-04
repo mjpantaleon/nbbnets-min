@@ -43,10 +43,6 @@ class BloodLabellingController extends Controller
     
                 foreach($donation as $key => $val){
 
-                    $donation[$key]['units']["showP01"] = false;
-                    $donation[$key]['units']["showP02"] = false;
-                    $donation[$key]['units']["showP03"] = false;
-
                     $aliqoutes = Component::select('donation_id')->where('source_donation_id', $val['donation_id'])->get();
 
                     foreach ($aliqoutes as $k => $v) {

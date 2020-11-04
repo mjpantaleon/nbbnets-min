@@ -56,6 +56,7 @@
             <b-col col xl="6" lg="6" md="12" sm="12" xs="12">
 
                 <b-card 
+                    v-if="show_aliquote == true"
                     body-class="sticker-preview"
                     header-bg-variant="success"
                     header-text-variant="white">
@@ -128,6 +129,8 @@ export default {
             // pagination
             perPage: 10,
             currentPage: 1,
+            
+            show_aliquote: false
         }
     }, /* data */
 
@@ -137,6 +140,7 @@ export default {
             this.uri = '/preview?data='+this.$route.params.id+","+this.$route.params.mtd
         } else{
             this.uri = '/preview?data='+this.$route.params.comp+"-"+this.$route.params.id+","+this.$route.params.mtd
+            this.show_aliquote = true
         }
 
         

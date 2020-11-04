@@ -24,9 +24,11 @@ class AvailableBloodStocksController extends Controller
                                 ->get()
                                 ->toArray();
 
-        \Log::info(count($available));
+        
 
-        return self::formatData($available);
+        $available = self::formatData($available);
+        // return $available;
+        return self::removeParent($available);
 
     }
 
@@ -153,6 +155,21 @@ class AvailableBloodStocksController extends Controller
         }
 
         return $ret;
+
+    }
+
+    private function removeParent($data){
+
+        foreach($data as $key => $value){
+
+            if(!strpos($value['donation_id'], "-")){
+                if($value['method'] == 'P')
+                    unset($data[$key]);
+            }
+            
+        }
+
+        return array_values($data);
 
     }
 
