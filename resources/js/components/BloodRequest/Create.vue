@@ -5,11 +5,11 @@
                 <b-breadcrumb>
                     <b-breadcrumb-item active>
                         <b-icon icon="file-text" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
-                        Blood Stocks
+                        Blood Request & Issuance
                     </b-breadcrumb-item>
                     <b-breadcrumb-item :to="{ path: '/blood-request/list' }">
                         <b-icon icon="file-text" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
-                        Blood Request
+                        Blood Request List
                     </b-breadcrumb-item>
                     <b-breadcrumb-item active>
                         Create Blood Request

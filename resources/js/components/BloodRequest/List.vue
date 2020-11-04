@@ -5,16 +5,16 @@
                 <b-breadcrumb>
                     <b-breadcrumb-item active>
                         <b-icon icon="file-text" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
-                        Blood Stocks
+                        Blood Request & Issuance
                     </b-breadcrumb-item>
                     <b-breadcrumb-item active>
-                        Blood Request
+                        Blood Request List
                     </b-breadcrumb-item>
                 </b-breadcrumb>
           </b-col>
         </b-row>
 
-        <h4><b-icon icon="file-text"></b-icon> Blood Request</h4>
+        <h4><b-icon icon="file-text"></b-icon> Blood Request List</h4>
         <hr>
 
         <b-row>

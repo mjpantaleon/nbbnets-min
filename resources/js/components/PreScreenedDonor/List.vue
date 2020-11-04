@@ -99,7 +99,9 @@
 
                     <template v-slot:cell(approval_dt)="data">
                         <!-- {{ data.item.created_dt | moment("dddd, MMMM Do YYYY, h:mm:ss a") }} -->
-                        {{ data.item.approval_dt ? data.item.approval_dt : '---' }}
+                        <!-- {{ data.item.approval_dt ? data.item.approval_dt :  }} -->
+                        <span v-if="data.item.approval_dt != null">{{data.item.approval_dt | moment("MMMM DD, YYYY - h:mm:ss a") }}</span>
+                        <span v-else>---</span>
                     </template>
 
                     <template v-slot:cell(status)="data">

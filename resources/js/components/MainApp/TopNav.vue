@@ -65,7 +65,7 @@
 
             <b-nav-item-dropdown right>
                 <template v-slot:button-content>
-                    BLOOD REQUEST
+                    BLOOD REQUEST & ISSUANCE
                 </template>
                 <b-dropdown-item :to="{ path: '/blood-request/list' }">Blood Request List</b-dropdown-item>
                 <!-- <b-dropdown-item :to="{ path: '/aliquote' }">Aliquote</b-dropdown-item> -->
