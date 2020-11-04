@@ -63,16 +63,19 @@
                     <template v-slot:cell(status)="data">
                         <span class="text-danger" v-if="data.item.status == 'FLU'"><b>FOR LOOK UP</b></span>
                         <span class="text-success" v-if="data.item.status == 'RES'"><b>RESERVED</b></span>
+                        <span class="text-primary" v-if="data.item.status == 'Released'"><b>ISSUED</b></span>
                     </template>
 
                     <template v-slot:cell(action)="data">
                         <router-link :to="{ path: '/blood-request/view/' + data.item.request_id }" title="View Blood Request Details">
                             <b-icon icon="search" class="border border-primary p-1" variant="primary" font-scale="2.1"></b-icon>
                         </router-link>
-
-                        <router-link :to="{ path: '/blood-request/cancel/' + data.item.request_id }" title="Cancel Blood request">
-                            <b-icon icon="trash" class="border border-danger p-1" variant="danger" font-scale="2.1"></b-icon>
+                        
+                        <template v-if="data.item.status == 'RES' && data.item.status != 'Released'">
+                        <router-link :to="{ path: '/blood-request/issue/' + data.item.request_id }" title="Issue Blood request">
+                            <b-icon icon="check-circle" class="border border-success p-1" variant="success" font-scale="2.1"></b-icon>
                         </router-link>
+                        </template>
                     </template>
                 </b-table>
             </b-col>

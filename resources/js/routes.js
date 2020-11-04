@@ -39,6 +39,7 @@ import Units from './components/BloodStock/Aliquote.vue';
 import BloodRequestList from './components/BloodRequest/List.vue';
 import CreateBloodRequest from './components/BloodRequest/Create.vue';
 import BloodRequestInfo from './components/BloodRequest/View.vue';
+import IssueBloodRequest from './components/BloodRequest/Issue.vue';
 
 export const routes = [
     { name: 'login', path: '/', component: Login },
@@ -76,6 +77,7 @@ export const routes = [
     { name: 'blood-request/list', path: '/blood-request/list', component: BloodRequestList },
     { name: 'blood-request/create', path: '/blood-request/create', component: CreateBloodRequest },
     { name: 'blood-request/view/:id', path: '/blood-request/view/:id', component: BloodRequestInfo },
+    { name: 'blood-request/issue/:id', path: '/blood-request/issue/:id', component: IssueBloodRequest },
 
 
     // BLOOD TEST

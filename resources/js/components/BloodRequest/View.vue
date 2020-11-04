@@ -22,7 +22,7 @@
         <hr>
         
         <b-row>
-            <b-col cols="4">
+            <b-col>
                 <!-- <h4 class="text-secondary"><b-icon icon="clipboard"></b-icon> Blood Request Details</h4> -->
                 
                 <b-table-simple stacked>
@@ -40,6 +40,7 @@
                             <b-th stacked-heading="Status: ">
                                 <span class="text-danger" v-if="status == 'FLU'">FOR LOOK UP</span>
                                 <span class="text-success" v-if="status == 'RES'">RESERVED</span>
+                                <span class="text-primary" v-if="status == 'Released'">ISSUED</span>
                             </b-th>
                             <b-td stacked-heading="Patient ID: ">
                                 {{ patient_id }}
@@ -58,7 +59,8 @@
 
                             <template v-if="detail.donation_id != null">
                             <b-td  stacked-heading="Reserved - " variant="success">
-                                {{ detail.component_name.comp_name }}
+                                <ul class="text-primary">{{ detail.donation_id ? detail.donation_id : 'null' }}</ul>
+                                <ul>{{ detail.component_name.comp_name }}</ul>
                             </b-td>
                             </template>
                         </b-tr>
@@ -69,7 +71,7 @@
             </b-col>
             <!-- {{selected_blood_type}} -->
             <!-- AVAILABLE BLOOD UNITS BASED ON -->
-            <b-col cols="8">
+            <b-col cols="8" v-if="status == 'RES' || status == 'FLU'">
                 <!-- BLOOD TYPE SELECTION -->
                 <b-row>
                     <b-col cols="6">

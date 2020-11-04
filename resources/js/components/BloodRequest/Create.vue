@@ -541,7 +541,7 @@ export default {
                 dr_fname: this.dr_fname,
                 dr_mname: this.dr_mname,
                 dr_lname: this.dr_lname,
-                dr_name_suffix:this.dr_name_suffix,
+                dr_name_suffix: this.dr_name_suffix,
 
                 mobile_no: this.mobile_no,
                 email: this.email,

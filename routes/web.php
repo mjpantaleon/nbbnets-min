@@ -118,6 +118,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/reserve-blood-units', 'BloodRequestController@reserveBloodUnits');
     // Route::get('/agency-list', 'BloodRequestController@getAgencies');
     Route::post('/blood-request', 'BloodRequestController@create');
+    Route::get('/blood-request-details/{id}', 'BloodRequestController@getBloodRequestDetails');
+    Route::post('/issue-blood-request/{id}', 'BloodRequestController@issueBloodRequest');
 
 
     Route::get('/logout', 'LoginController@logout');

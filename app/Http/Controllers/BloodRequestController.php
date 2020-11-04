@@ -11,6 +11,7 @@ use DB;
 use App\BauPatient;
 use App\BauBloodRequest;
 use App\BauBloodRequestDetail;
+use App\BauPhysician;
 
 // use App\RCpComponentCode;
 
@@ -236,7 +237,23 @@ class BloodRequestController extends Controller
                 )
             );
 
+
+            
             if($bau_request_status->request_id){
+                
+                // INSERT PHYSICIAN RECORD
+                $physician_record = BauPhysician::create(
+                    array(
+                        'request_id' => $bau_request_status->request_id,
+                        'fname'         => $request['dr_fname'],
+                        'mname'         => $request['dr_mname'],
+                        'lname'         => $request['dr_lname'],
+                        'name_suffix'   => $request['dr_name_suffix'],
+    
+                        'mobile_num'    => $request['mobile_no'],
+                        'email'         => $request['email'],
+                    )
+                );
 
                 $save_array = [];
 
@@ -381,6 +398,46 @@ class BloodRequestController extends Controller
         return "true";
 
     }
+
+
+    // ISSUE BLOOD UNIT MODULE ////////////////////////////////////////////////////////////////
+    public function getBloodRequestDetails($id){
+        $request_details = BauBloodRequest::where('request_id', $id)
+                        ->with('patient_details')
+                        ->with('physician_details')
+                        ->with('details')
+                        ->first()
+                        ->toArray();
+
+        // $sql = "    SELECT * 
+        //             FROM `bau_blood_request`
+        //             WHERE `request_id` = '$id' ";
+        // $request_details = DB::select($sql);
+
+        \Log::info($request_details);       
+        return $request_details;
+    }
+
+    public function issueBloodRequest($id){
+        $year_now = date('Y');              // 2020
+        $request_count = BauBloodRequest::count(); 
+        $request_count = $request_count + 1;
+        $reference = 'CP-'.$year_now . sprintf("%07d", $request_count); // CP-20200000004
+
+        $issue_blood_request = BauBloodRequest::where('request_id', $id)
+                    ->update(['status' => 'Released', 'reference' => $reference]);
+        \Log::info($issue_blood_request);
+
+        return response()->json([
+            'message' => "Blood request has been issued successfully",
+            'status' => 1
+        ], 200);
+
+    }
+    
+    // ISSUE BLOOD UNIT MODULE ////////////////////////////////////////////////////////////////
+    
+
 
 
 }
