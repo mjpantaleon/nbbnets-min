@@ -18,7 +18,7 @@ import RegisterBloodUnit from './components/BloodUnit/RegisterBloodUnit.vue';
 import BloodTyping from './components/BloodUnit/BloodTyping.vue';
 import BloodProcessing from './components/BloodUnit/BloodProcessing.vue';
 // import Aliquote from './components/BloodUnit/Aliquote.vue';
-// import BloodTesting from './components/BloodUnit/BloodTesting.vue';
+import BloodTesting from './components/BloodUnit/BloodTestingList.vue';
 import BloodTestMin from './components/BloodUnit/BloodTestingMin.vue';
 import Labelling from './components/BloodUnit/Labelling.vue';
 
@@ -47,8 +47,8 @@ export const routes = [
     { name: 'blood-typing', path: '/blood-typing', component: BloodTyping },
     { name: 'blood-processing', path: '/blood-processing', component: BloodProcessing },
     // { name: 'aliquote', path: '/aliquote', component: Aliquote },
-    // { name: 'blood-testing', path: '/blood-testing', component: BloodTesting },
-    { name: 'blood-testing', path: '/blood-testing/:id', component: BloodTestMin },
+    { name: 'blood-testing', path: '/blood-testing', component: BloodTesting },
+    { name: 'blood-testing-min', path: '/blood-testing/:id', component: BloodTestMin },
     { name: 'labelling', path: '/labelling', component: Labelling },
 
     { name: 'inventory-release', path: '/release-to-inventory', component: InventoryRelease },

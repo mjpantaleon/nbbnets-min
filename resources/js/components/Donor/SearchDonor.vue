@@ -60,9 +60,9 @@
         </b-row>
 
         <!-- {{ data }} -->
-        <b-link class="btn btn-success" :to="{ path: 'register-new-donor' }">
+        <!-- <b-link class="btn btn-success" :to="{ path: 'register-new-donor' }">
             <b-icon icon="person-plus"></b-icon> Register New Donor
-        </b-link>
+        </b-link> -->
 
         <!-- TABLE -->
         <b-row>
@@ -84,9 +84,15 @@
                     :per-page="perPage"
                     :current-page="currentPage">
 
-                    <template v-slot:cell(donationStat)="data">
-                        <b v-if="data.item.donation_stat == 'REA' || data.item.donation_stat == 'N'" class="text-danger">CANNOT DONATE</b>
+                    <template v-slot:cell(donation_stat)="data">
+                        <b v-if="data.item.donation_stat == 'N'" 
+                            class="text-danger">CANNOT DONATE</b>
+                        <!-- NOT SURE IF THE PARAMETER IS ONLY Y OR N  -->
+                        <!-- <b v-if="data.item.donation_stat == 'REA' || data.item.donation_stat == 'N'
+                            || data.item.donation_stat == 'TP' || data.item.donation_stat == 'PD' " 
+                            class="text-danger">CANNOT DONATE</b> -->
                         <b v-else class="text-success">MAY DONATE</b>
+                        
                     </template>
 
                     <template v-slot:cell(name)="data">
@@ -104,10 +110,10 @@
                             <b-icon icon="search"></b-icon>
                         </b-link>
 
-                        <b-link class="btn btn-success btn-sm" :to="{ path: '/update-donor-details/' + data.item.seqno  }"
+                        <!-- <b-link class="btn btn-success btn-sm" :to="{ path: '/update-donor-details/' + data.item.seqno  }"
                             v-b-tooltip.hover title="Update donor details">
                             <b-icon icon="pencil"></b-icon>
-                        </b-link>
+                        </b-link> -->
                     </template>   
                 </b-table>
 
@@ -148,7 +154,7 @@ export default {
 
             fields: [
                 { key: 'seqno', label: 'Seqno' },
-                { key: 'donationStat', label: 'Status' },
+                { key: 'donation_stat', label: 'Status' },
                 { key: 'name', label: 'Fullname' },
                 { key: 'gender', label: 'Gender' },
                 { key: 'bdate', label: 'Birthday' },

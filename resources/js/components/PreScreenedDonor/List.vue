@@ -18,6 +18,47 @@
         <h4><b-icon icon="file-text"></b-icon> Pre-Screened List</h4>
         <hr>
 
+        <!-- SEARCH MODULE -->
+        <b-row>
+            <b-col cols="4">
+                <b-form-group
+                    id="fieldset-horizontal"           
+                    label-cols-sm="4"
+                    label-cols-lg="4"
+                    description="First name"
+                    label="Search   "
+                    label-for="first-name">
+                    <b-form-input v-model="first_name" :state="checkFname" id="first-name"></b-form-input>
+                </b-form-group>
+            </b-col>
+
+            <b-col cols="3">
+                <b-form-group
+                    id="fieldset-horizontal"
+                    description="Middle name"
+                    label-for="middle-name">
+                <b-form-input v-model="middle_name" id="middle-name"></b-form-input>
+                </b-form-group>
+            </b-col>
+
+            <b-col cols="3">
+                <b-form-group
+                    id="fieldset-horizontal"
+                    description="Last name"
+                    label-for="last-name">
+                <b-form-input v-model="last_name" :state="checkLname" id="last-name"></b-form-input>
+                </b-form-group>
+            </b-col>
+
+            <b-col cols="2" class="ml-auto">
+                <b-button type="submit"
+                    variant="warning"
+                    @click.prevent="searchPreScreendDonor()">
+                    <b-icon icon="search"></b-icon>&nbsp;SEARCH
+                </b-button>
+            </b-col>
+        </b-row>
+
         <b-row>
             <b-col>
                 <template v-if="isLoading">
@@ -62,12 +103,6 @@
                             v-b-tooltip.hover title="View details">
                             <b-icon icon="search"></b-icon>
                         </b-link>
-
-                        <b-link v-if="data.item.status != '2' && data.item.status != '0'" class="btn btn-danger btn-sm" :to="{ path: '/blood-testing/' + data.item.donor_sn }"
-                            v-b-tooltip.hover title="Proceed to Testing">
-                            <b-icon icon="droplet-half"></b-icon>
-                        </b-link>
-
                     </template>  
 
                 </b-table>
@@ -142,6 +177,22 @@ export default {
             .catch(error => console.log(error))
         },
 
+        searchPreScreendDonor(){
+            this.isLoading = true
+
+            axios
+            .post('/get-prescreened-donor',{
+                first_name: this.first_name,
+                middle_name: this.middle_name,
+                last_name: this.last_name,
+            })
+            .then(response => {
+                this.data = response.data;
+                this.isLoading = false
+                this.showAddBtn = false
+            })
+        }
+
     }, /* methods */
 
     computed: {
@@ -149,6 +200,12 @@ export default {
         rows() {
             return this.data.length
         },
+        checkFname(){
+            return this.first_name.length > 1 ? true : false;
+        },
+        checkLname(){
+            return this.last_name.length > 1 ? true : false;
+        }
     }, /* computed */
 }
 </script>

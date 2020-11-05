@@ -32,7 +32,7 @@ export default {
         if(modalId == 'preview-label'){
             let w = window.open('https://www.google.com/','winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=375,height=270');
             w.onload = () => {
-                console.log(w)
+                // console.log(w)
                     // w.print();
                 w.close();
             };

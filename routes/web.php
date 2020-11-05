@@ -34,19 +34,23 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/get-searched-donor', 'DonorController@search');
     Route::post('/create-new-donor', 'DonorController@create');
     Route::post('/calculated-age', 'DonorController@getAge');
-
+    
     // DONATION
     Route::post('/donation-list-data','DonationController@index');
     Route::post('/create-new-walkin','DonationController@create');
-
+    
     // Route::get('/mh-question-list', 'QuestionsController@getMH');
     // Route::get('/pe-question-list', 'QuestionsController@getPE');
-
+    
     // CANDIDATE DONORS
     Route::get('/pre-screened-donors', 'PreScreenedDonorController@index');
     Route::get('/pre-screened-donor/{id}', 'PreScreenedDonorController@getDetails');
+    Route::post('/get-prescreened-donor', 'PreScreenedDonorController@search');
     Route::post('/pre-screened-update/{id}', 'PreScreenedDonorController@update');
     Route::post('/submit-entry', 'PreScreenedDonorController@create');
+    // FOR TESTING ENTRIES
+    Route::get('/for-testing-list', 'PreScreenedDonorController@getList');
+
 
     // VERIFIER
 

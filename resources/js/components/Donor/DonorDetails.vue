@@ -25,8 +25,8 @@
         <b-row>
             <b-col md="6">
                 <b-button-group>
-                    <b-link class="btn btn-primary" :to="{ path: '/update-donor-details/' + this.$route.params.id }">
-                        <b-icon icon="pencil"></b-icon> UPDATE INFO</b-link>
+                    <!-- <b-link class="btn btn-primary" :to="{ path: '/update-donor-details/' + this.$route.params.id }">
+                        <b-icon icon="pencil"></b-icon> UPDATE INFO</b-link> -->
 
                     <b-link v-if="donation_stat != '' && donation_stat != 'N'" class="btn btn-success" 
                         :to="{ path: '/new-walk-in/' + this.$route.params.id }">

@@ -14,9 +14,9 @@ use Carbon;
 class PreScreenedDonorController extends Controller
 {
     public function index(){
-         // GET THE USER INFO
-        $session = Session::get('userInfo');
-        $facility_cd = Session::get('userInfo')['facility_cd'];
+        // GET THE USER INFO
+        // $session = Session::get('userInfo');
+        // $facility_cd = Session::get('userInfo')['facility_cd'];
 
         /*  SELECT id, donor_sn, first_name, middle_name, last_name, name_suffix, gender, 
             bdate, address, created_dt, status
@@ -27,7 +27,6 @@ class PreScreenedDonorController extends Controller
         $query = "  SELECT id, donor_sn, first_name, middle_name, last_name, name_suffix, gender, 
                     bdate, address, created_dt, status
                     FROM `pre_screened_donors`
-                    WHERE `facility_cd` LIKE '$facility_cd' 
                     ORDER BY `created_dt` DESC ";
         $pre_screened_donors = DB::select($query);
 
@@ -36,10 +35,64 @@ class PreScreenedDonorController extends Controller
         return $pre_screened_donors;
     }
 
+    public function search(Request $request){
+        $data = $request->except('_token');
+        
+        $fname = $data['first_name'];
+        $mname = $data['middle_name'];
+        $lname = $data['last_name'];
+
+        // If firstname is not empty OR middlename is nor empty OR lastname then
+        if( ($fname != '') || ($mname != '') || ($lname != '') ){
+            // check database where firstname is equals to data['fname]
+            $query = PreScreenedDonor::query();
+            if(!empty($fname)){
+                $query = $query->where('first_name', 'LIKE', '%'.$fname.'%');
+            }
+
+            if(!empty($mname)){
+                $query = $query->where('middle_name', 'LIKE', '%'.$mname.'%');
+            }
+
+            // check database where lname is equals to data['lname]
+            if(!empty($lname)){
+                $query = $query->where('last_name', 'LIKE', '%'.$lname.'%');
+            }
+            // order by created_dt in descending order
+            $query = $query->orderBY('created_dt', 'desc');
+            // get the first record found
+            $keyword = $query->get();
+            // return a response
+            return response()->json($keyword);
+            // return response()->json(["keyword" => $keyword]);
+            \Log::info($keyword);
+        }
+    } /* search */
+
+
     public function getDetails($id){
         $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
         // \Log::info($pre_screened_donor);
         return $pre_screened_donor;
+    }
+
+    // FOR TESTING ENTRIES
+    public function getList(){
+        // GET THE USER INFO
+        $session = Session::get('userInfo');
+        $facility_cd = Session::get('userInfo')['facility_cd'];
+
+        // $for_testing_list = PreScreenedDonor::where('status', '!=', '0')
+        //                             ->where('facility_cd', 'LIKE', $facility_cd)->get();
+        $query = "  SELECT id, donor_sn, first_name, middle_name, last_name, name_suffix, gender, 
+                    bdate, address, created_dt, status
+                    FROM `pre_screened_donors`
+                    WHERE `facility_cd` LIKE $facility_cd AND `status` != '0' 
+                    ORDER BY `created_dt` DESC ";
+        $for_testing_list = DB::select($query);
+
+        \Log::info($for_testing_list);
+        return $for_testing_list;
     }
     
     public function update(Request $request, $id){
@@ -116,6 +169,7 @@ class PreScreenedDonorController extends Controller
             // UPDATE PRE-SCREENED DONOR TABLE
             $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
             $pre_screened_donor->donor_sn = $seqno;
+            $pre_screened_donor->facility_cd = $facility_cd;
             $pre_screened_donor->status = 1;
             $pre_screened_donor->approved_by = $created_by;
             $pre_screened_donor->approval_dt = $created_dt;
@@ -143,13 +197,14 @@ class PreScreenedDonorController extends Controller
                     ->first();
             // \Log::info($seqno);
 
-             // UPDATE PRE-SCREENED DONOR TABLE
-             $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
-             $pre_screened_donor->donor_sn = $seqno->seqno;
-             $pre_screened_donor->status = 1;
-             $pre_screened_donor->approved_by = $created_by;
-             $pre_screened_donor->approval_dt = $created_dt;
-             $pre_screened_donor->save();
+            // UPDATE PRE-SCREENED DONOR TABLE
+            $pre_screened_donor = PreScreenedDonor::where('id', $id)->first();
+            $pre_screened_donor->donor_sn = $seqno->seqno;
+            $pre_screened_donor->facility_cd = $facility_cd;
+            $pre_screened_donor->status = 1;
+            $pre_screened_donor->approved_by = $created_by;
+            $pre_screened_donor->approval_dt = $created_dt;
+            $pre_screened_donor->save();
             //  \Log::info($pre_screened_donor);s
  
 
@@ -218,7 +273,7 @@ class PreScreenedDonorController extends Controller
             $pre_screened_donor->first_name = $fname;
             $pre_screened_donor->middle_name = $mname;
             $pre_screened_donor->last_name = $lname;
-            $pre_screened_donor->name_suffix = $name_suffix;
+            $pre_screened_donor->name_suffix = $name_suffix ? $name_suffix : "";
             
             $pre_screened_donor->nationality = $nationality;
             $pre_screened_donor->gender = $gender;
@@ -261,93 +316,5 @@ class PreScreenedDonorController extends Controller
             ], 200);
         }
 
-
-
-    }
-
-    public function androidCreate(Request $request){
-        $data = $request->except('_token');
-
-
-        // initialize values
-        // $fname = $data['first_name'];
-        // $mname = $data['middle_name'];
-        // $lname = $data['last_name'];
-        // $name_suffix = $data['name_suffix'];
-
-        // $nationality = $data['nationality'];
-        $gender = $request->gender == "Male" ? "M" : "F";
-
-        // // $bdate = $data['bdate'];
-        // $age = $data['age'];
-
-        // $weight = $data['weight'];
-        // $address = $data['address'];
-
-        // $email = $data['email'];
-        // $fb = $data['fb'];
-        // $mobile_no = $data['contact'];
-        
-        // $time_availability = $data['time_availability'];
-
-        // $first_answer = $data['first_answer'];
-        // $test_results = $data['second_answer'];
-        // $symptoms = $data['not_sure_answer'];
-
-        $created_by = "android";
-        $created_dt = date('Y-m-d H:i:s');
-
-        // check if record exists before inserting new record
-        $check_existing_record = PreScreenedDonor::where('first_name', '=', $request->first_name)
-                                ->where('middle_name', '=', $request->middle_name)
-                                ->where('last_name', '=', $request->last_name)
-                                ->where('name_suffix', '=', $request->name_suffix)
-                                // ->where('bdate', '=', $bdate)
-                                ->first();
-        \Log::info($check_existing_record);
-
-        // if not exist then
-        if($check_existing_record === null){
-            $pre_screened_donor = new PreScreenedDonor;
-            $pre_screened_donor->first_name = $request->first_name;
-            $pre_screened_donor->middle_name = $request->middle_name;
-            $pre_screened_donor->last_name = $request->last_name;
-            $pre_screened_donor->name_suffix = $request->name_suffix ? $request->name_suffix : "";
-            
-            $pre_screened_donor->nationality = $request->nationality;
-            $pre_screened_donor->gender = $gender;
-            
-            $pre_screened_donor->age = $request->age;
-            
-            $pre_screened_donor->weight = $request->weight;
-            $pre_screened_donor->address = $request->address;
-            
-            $pre_screened_donor->email = $request->email ? $request->email : "";
-            $pre_screened_donor->fb = $request->fb ? $request->fb : '';
-            $pre_screened_donor->mobile_no = $request->contact ? $request->contact : '';
-            
-            $pre_screened_donor->time_availability = $request->time_availability;
-            
-            $pre_screened_donor->first_answer = $request->first_answer;
-            $pre_screened_donor->second_answer = $request->second_answer != null ? json_encode($request->second_answer) : "";
-            $pre_screened_donor->not_sure_answer = $request->not_sure_answer != null ? json_encode($request->not_sure_answer) : "";
-
-            $pre_screened_donor->created_by = $created_by;
-            $pre_screened_donor->created_dt = $created_dt;
-
-            $pre_screened_donor->save();
-            \Log::info($pre_screened_donor);
-
-
-            return response()->json([
-                'status' => "ok"
-            ]);
-
-        } else{
-            return response()->json([
-                'message' => 'This Pre-screened Donor already exists.',
-                'status' => 0
-            ], 200);
-        }
     }
 }

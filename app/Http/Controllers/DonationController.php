@@ -14,6 +14,10 @@ use DB;
 class DonationController extends Controller
 {
     public function index(Request $request){
+        // GET THE USER INFO
+        $session = Session::get('userInfo');
+        $facility_cd = Session::get('userInfo')['facility_cd'];
+
         $data = $request->except('_token');
 
         \Log::info($data);
@@ -25,10 +29,13 @@ class DonationController extends Controller
         // WHERE created_dt = '$donation_dt'
         // ORDER by created_dt DESC
         $query = "  SELECT d.donation_type, d.mh_pe_stat, d.collection_method, d.collection_stat,  d.donation_id,  
-                    dd.fname, dd.mname, dd.lname
+                    dd.fname, dd.mname, dd.lname, d.facility_cd
                     FROM donation d
                     LEFT JOIN donor dd ON d.donor_sn = dd.seqno 
-                    WHERE d.created_dt like '%$donation_dt%' AND d.sched_id = 'Walk-in' AND d.donation_stat = 'Y'
+                    WHERE d.created_dt like '%$donation_dt%' 
+                    AND d.sched_id = 'Walk-in' 
+                    AND d.donation_stat = 'Y'
+                    AND d.facility_cd LIKE '%$facility_cd%'
                     ORDER by d.created_dt DESC ";
 
         $donations = DB::select($query);
