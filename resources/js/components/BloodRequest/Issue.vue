@@ -29,6 +29,9 @@
                     <span v-if="status == 'Released'" class="text-primary">RELEASED</span>
                 </b>
             </b-col>
+            <b-col class="lead">
+                <b>Reference ID: {{reference}}</b>
+            </b-col>
         </b-row>
 
         <h4 class="text-secondary mt-3"> <b-icon icon="person-bounding-box"></b-icon> Patient Details</h4>
@@ -110,13 +113,16 @@
         </b-row>
         
         <b-row>
-            <b-col md="4" v-if="status != 'Released' && details.donation_id != ''">
+            <b-col md="4" v-if="status != 'FLU' && status != 'Released'">
                 <b-button block
                     variant="success"
                     @click.prevent="showModal">
                     <b-icon icon="check-circle"></b-icon>&nbsp;ISSUE BLOOD REQUEST
                 </b-button>
             </b-col>
+            <!-- <b-col v-if="status != 'FLU' && status != 'Released'" class="lead text-center text-danger">
+                <b>No reserved blood units yet</b>
+            </b-col> -->
         </b-row>
 
         <verifier-modal @setUname="setUname"></verifier-modal>
@@ -188,7 +194,9 @@ export default {
 
             // blood unit
             details: '',
+            
             status: '',
+            reference: '',
         }
     }, /* data */
 
@@ -230,7 +238,8 @@ export default {
 
                 this.details = response.data.details,
 
-                this.status = response.data.status
+                this.status = response.data.status,
+                this.reference = response.data.reference
                 // this.data = response.data
                 // console.log(response.data)
             ));

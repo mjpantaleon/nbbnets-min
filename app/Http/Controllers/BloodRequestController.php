@@ -147,9 +147,11 @@ class BloodRequestController extends Controller
                     ORDER BY c.created_dt ASC
         */
 
-        $sql = "    SELECT c.donation_id, c.component_cd, c.blood_type, c.comp_stat , cp.comp_name
+        $sql = "    SELECT c.donation_id, c.component_cd, c.blood_type, c.comp_stat , cp.comp_name, d.gender
                     FROM `component` c
                     LEFT JOIN `r_cp_component_codes` cp ON c.component_cd = cp.component_code
+                    LEFT JOIN `donation` dd ON dd.donation_id = c.donation_id
+                    LEFT JOIN `donor` d ON d.seqno = dd.donor_sn
                     WHERE `blood_type` = '$blood_type'
                     AND `comp_stat` = 'AVA'  
                     AND `location` = '$facility_cd'
@@ -158,7 +160,13 @@ class BloodRequestController extends Controller
                     ORDER BY c.created_dt ASC ";
         
         $available_cp_units = DB::select($sql);
-        // \Log::info($available_cp_units);
+        \Log::info($available_cp_units);
+
+        // $available_cp_units = Component::where('blood_type', $blood_type)
+        //                 ->select('donation_id', 'component_cd', 'blood_type', 'comp_stat')
+        //                 ->with('donation')
+        //                 ->get();
+
 
         $available_cp_units = json_decode(json_encode($available_cp_units), true);
         // \Log::info($available_cp_units);  
@@ -174,6 +182,7 @@ class BloodRequestController extends Controller
                 $ids[$key]['blood_type'] = $val['blood_type'];
                 $ids[$key]['comp_name'] = $val['comp_name'];
                 $ids[$key]['comp_stat'] = $val['comp_stat'];
+                $ids[$key]['gender'] = $val['gender'];
                 $ids[$key]['selected_item'] = false;
             }
 

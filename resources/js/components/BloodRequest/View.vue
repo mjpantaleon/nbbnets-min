@@ -123,6 +123,11 @@
                                 {{ data.item.comp_name }}
                             </template>
 
+                            <template v-slot:cell(donor_gender)="data">
+                                <span class="text-primary" v-if="data.item.gender == 'F'">Female</span>
+                                <span class="text-primary" v-if="data.item.gender == 'M'">Male</span>
+                            </template>
+
                             <template v-slot:cell(status)="data">
                                 <span class="text-success" v-if="data.item.comp_stat == 'AVA'">Available</span>
                             </template>
@@ -250,6 +255,7 @@ export default {
                 { key: 'donation_id', label: 'Donation ID' },
                 { key: 'blood_type', label: 'Blood Type' },
                 { key: 'cp_component', label: 'Component' },
+                { key: 'donor_gender', label: 'Donor Gender' },
                 { key: 'status', label: 'Status' },
             ],
 
@@ -395,6 +401,7 @@ export default {
         data: function(val){
             console.log(val)
         }
+
     }
     
 }
