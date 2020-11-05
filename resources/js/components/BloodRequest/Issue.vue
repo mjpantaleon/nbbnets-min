@@ -21,6 +21,16 @@
         <h4><b-icon icon="file-text"></b-icon> Issue Blood Request</h4>
         <hr>
 
+        <b-row>
+            <b-col class="lead">
+                <b>Request Status : 
+                    <span v-if="status == 'FLU'" class="text-danger">FOR LOOK UP</span>
+                    <span v-if="status == 'RES'" class="text-success">RESERVED</span>
+                    <span v-if="status == 'Released'" class="text-primary">RELEASED</span>
+                </b>
+            </b-col>
+        </b-row>
+
         <h4 class="text-secondary mt-3"> <b-icon icon="person-bounding-box"></b-icon> Patient Details</h4>
         <b-row>
             <b-col>
@@ -88,19 +98,19 @@
         <b-row>
             <b-col>
                 <table class="table">
-                    <tbody>
-                        <tr v-for="(detail, i) in details" :key="i">
+                    <tbody v-for="(detail, i) in details" :key="i">
+                        <tr v-if="detail.donation_id != null">
                             <td class="lead">{{detail.donation_id}}</td>
                             <td class="lead">{{detail.component_name.comp_name}}</td>
                         </tr>
                     </tbody>
                 </table>
             </b-col>
+            <!-- <b-col v-if="details.donation == null" class="lead text-center text-danger"><b>No reserved blood units yet</b></b-col> -->
         </b-row>
-
-
+        
         <b-row>
-            <b-col md="4">
+            <b-col md="4" v-if="status != 'Released' && details.donation_id != ''">
                 <b-button block
                     variant="success"
                     @click.prevent="showModal">
@@ -178,6 +188,7 @@ export default {
 
             // blood unit
             details: '',
+            status: '',
         }
     }, /* data */
 
@@ -217,8 +228,9 @@ export default {
                 this.mobile_no = response.data.physician_details.mobile_num,
                 this.email = response.data.physician_details.email,
 
-                this.details = response.data.details
+                this.details = response.data.details,
 
+                this.status = response.data.status
                 // this.data = response.data
                 // console.log(response.data)
             ));
