@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Donation;
+use App\Component;
 // use App\ComponentCode;
 use App\RCpComponentCode;
 use App\Label;
@@ -41,6 +42,14 @@ class BloodLabellingController extends Controller
                 $checked = [];
     
                 foreach($donation as $key => $val){
+
+                    $aliqoutes = Component::select('donation_id')->where('source_donation_id', $val['donation_id'])->get();
+
+                    foreach ($aliqoutes as $k => $v) {
+                        $aliquote_number = explode("-", $v['donation_id']);
+                        $donation[$key]['units']["showP" . $aliquote_number[1]] = true;
+
+                    }
     
                     if($val['pheresis_label']){
     
@@ -50,8 +59,63 @@ class BloodLabellingController extends Controller
                                 $donation[$key]['units']["hasp01"] = true;
                             } elseif( strpos($v->donation_id, "-02") !== false ){
                                 $donation[$key]['units']["hasp02"] = true;
-                            }              
+                            }  elseif( strpos($v->donation_id, "-03") !== false ){
+                                $donation[$key]['units']["hasp03"] = true;
+                            } 
+
+                        }
     
+                    }
+                    
+                }
+                
+                return array('data' => $donation, 'checked' => $checked);
+                
+            } else{
+                return false;
+            }
+
+
+        } 
+        
+        // ADDED: Modified query to cater whole blood pheresis
+
+        elseif($request['col_method'] == 'WB'){                                 // WHOLE BLOOD PROCESS
+
+            $donation = Donation::with('type','labels','test','additionaltest','units','donor_min')
+                                ->whereNotNull('donation_id')
+                                ->whereNotNull('donor_sn')
+                                ->whereFacilityCd($facility_cd)
+                                ->whereSchedId($sched_id)
+                                // ->whereBetween('created_dt', [$from, $to])
+                                // ->where('collection_stat', $col_stat)
+                                ->where('collection_type', "CPC19")
+                                ->get();
+
+            if($donation){
+
+                $checked = [];
+    
+                foreach($donation as $key => $val){
+    
+                    if($val['units']){
+    
+                        foreach($val['units'] as $k => $v){
+    
+                            $code = self::setComponentCode($v['component_cd']);
+    
+                            if($code){
+                                $donation[$key]['units'][$code] = $code;
+                                $checked_status = self::labelChecked($val['labels'], $v['component_cd']);
+                                // $checked_status = self::labelChecked($val['labels'], $v['component_cd']);
+                                if($checked_status){
+                                    $donation[$key]['units'][$checked_status] = true;
+                                }
+                                // $checked[$val['donation_id']][$code] = array('checked' => 0);
+                                // $donation[$key]['units'][$code]['hasChecked'] = '$code';
+                                // \Log::info($val['labels']);
+                            }
+                            
                         }
     
                     }
@@ -64,8 +128,9 @@ class BloodLabellingController extends Controller
                 return false;
             }
 
+        }
 
-        } else{                                 // WHOLE BLOOD PROCESS
+        else{                                 // WHOLE BLOOD PHERESIS PROCESS
 
             $donation = Donation::with('type','labels','test','additionaltest','units','donor_min')
                                 ->whereNotNull('donation_id')
@@ -74,7 +139,7 @@ class BloodLabellingController extends Controller
                                 ->whereSchedId($sched_id)
                                 ->whereBetween('created_dt', [$from, $to])
                                 ->where('collection_stat', $col_stat)
-                                ->where('collection_type', "CPC19")
+                                ->where('collection_type', "PHE")
                                 ->get();
 
             if($donation){

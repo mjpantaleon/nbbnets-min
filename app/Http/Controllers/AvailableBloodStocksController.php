@@ -16,7 +16,7 @@ class AvailableBloodStocksController extends Controller
         $available = Component::select('blood_type','donation_id','component_vol','expiration_dt','component_cd', 'source_donation_id')
                                 ->with('donation_min')
                                 ->whereLocation($facility_cd)
-                                ->whereCompStat('AVA')
+                                ->whereIn('comp_stat', array('AVA', 'FLU', 'RES', 'Released')) // Add status after comp_stat = AVA
                                 ->where('component_cd', '>=', 100)
                                 ->where('expiration_dt','>=', date('Y-m-d') )
                                 ->orderBy('created_dt','desc')
@@ -24,9 +24,13 @@ class AvailableBloodStocksController extends Controller
                                 ->get()
                                 ->toArray();
 
-        \Log::info(count($available));
+        // \Log::info($available);
 
-        return self::formatData($available);
+        
+
+        $available = self::formatData($available);
+        // return $available;
+        return self::removeParent($available);
 
     }
 
@@ -153,6 +157,21 @@ class AvailableBloodStocksController extends Controller
         }
 
         return $ret;
+
+    }
+
+    private function removeParent($data){
+
+        foreach($data as $key => $value){
+
+            if(!strpos($value['donation_id'], "-")){
+                if($value['method'] == 'P')
+                    unset($data[$key]);
+            }
+            
+        }
+
+        return array_values($data);
 
     }
 

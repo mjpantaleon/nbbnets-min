@@ -54,7 +54,18 @@ class PreviewController extends Controller
             ->whereNotIn('comp_stat',['EXP','DIS','ISS'])
             ->get()->first();
 
-        \Log::info($unit);
+        if(strpos($donation_id, '-01')){
+            $tmp = str_replace("-01", "", $donation_id);
+
+            $count = Component::select('donation_id')
+                    ->where('source_donation_id', $tmp)
+                    ->count();
+
+            if($count == 1){
+                $donation_id = $tmp;
+            }
+
+        }
 
         if(!$unit){
             return '<div style="text-align:center;font-family:calibri;">Opps! Sorry, Blood Unit no longer available!</div>';

@@ -4,6 +4,10 @@
           <b-col>
                 <b-breadcrumb>
                     <b-breadcrumb-item active>
+                        <b-icon icon="droplet-half" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
+                        Pre-screening
+                    </b-breadcrumb-item>
+                    <b-breadcrumb-item active>
                         <b-icon icon="file-text" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
                         Pre-Screened List
                     </b-breadcrumb-item>
@@ -93,6 +97,13 @@
                         {{ data.item.created_dt | moment("MMMM DD, YYYY - h:mm:ss a") }}
                     </template>
 
+                    <template v-slot:cell(approval_dt)="data">
+                        <!-- {{ data.item.created_dt | moment("dddd, MMMM Do YYYY, h:mm:ss a") }} -->
+                        <!-- {{ data.item.approval_dt ? data.item.approval_dt :  }} -->
+                        <span v-if="data.item.approval_dt != null">{{data.item.approval_dt | moment("MMMM DD, YYYY - h:mm:ss a") }}</span>
+                        <span v-else>---</span>
+                    </template>
+
                     <template v-slot:cell(status)="data">
                         <b-badge variant="danger" v-if="data.item.status == '0'">FOR REVIEW</b-badge>
                         <b-badge variant="success" v-else>APPROVED</b-badge>
@@ -138,6 +149,7 @@ export default {
                 // { key: 'bdate', label: 'Birthday' },
                 { key: 'address', label: 'Address' },
                 { key: 'created_dt', label: 'Date Screened' },
+                { key: 'approval_dt', label: 'Date Approved' },
                 { key: 'status', label: 'Status' },
                 { key: 'action', label: 'Action' },
             ],
@@ -165,10 +177,10 @@ export default {
     }, /* mounted */
 
     methods: {
-        getCandidates(){
+        async getCandidates(){
             this.isLoading = true
 
-            axios
+            await axios
             .get('/pre-screened-donors')
             .then(response => (
                 this.data = response.data,
@@ -177,10 +189,10 @@ export default {
             .catch(error => console.log(error))
         },
 
-        searchPreScreendDonor(){
+        async searchPreScreendDonor(){
             this.isLoading = true
 
-            axios
+            await axios
             .post('/get-prescreened-donor',{
                 first_name: this.first_name,
                 middle_name: this.middle_name,

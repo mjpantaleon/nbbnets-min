@@ -3,6 +3,10 @@
         <b-row id="bb-crumb-sticky">
           <b-col>
                 <b-breadcrumb>
+                    <b-breadcrumb-item active>
+                        <b-icon icon="droplet-half" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
+                        Pre-screening
+                    </b-breadcrumb-item>
                     <b-breadcrumb-item :to="{ path: '/pre-screened-list' }">
                         <b-icon icon="file-text" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
                         Pre-Screened List

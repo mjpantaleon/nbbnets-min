@@ -67,7 +67,7 @@
         <b-alert show variant="danger" v-if="errMessage">{{ errMessage }}</b-alert>
 
         <b-row>
-            <b-col cols="4">
+            <b-col cols="5">
                 <b-card-group deck v-if="donation_ids">
                     <b-card header="CLICK TO SELECT ID">
 
@@ -78,7 +78,23 @@
                             Check All
                         </b-form-checkbox>
 
-                        <b-list-group>
+                        <b-list-group v-if="col_method == 'P'">
+                            <b-list-group-item  
+                                v-for="(val, key) in donation_ids" 
+                                v-bind:key="key">
+
+                                <b-form-checkbox
+                                    v-model="checked"
+                                    :value="key"
+                                    unchecked-value="0"
+                                    >
+                                    {{ key }}
+                                </b-form-checkbox>
+
+                            </b-list-group-item>
+                        </b-list-group>
+
+                        <b-list-group v-else>
                             <b-list-group-item  
                                 v-for="(value, key) in donation_ids" 
                                 v-bind:key="key">
@@ -93,6 +109,7 @@
                                 
                             </b-list-group-item>
                         </b-list-group>
+
                     </b-card>
                 </b-card-group>
                  <b-card-group deck v-else>
@@ -104,7 +121,7 @@
                 </b-card-group>               
             </b-col>
             
-            <b-col cols="8">
+            <b-col cols="7">
                 <b-row>
                     <b-col>
                         <template v-if="isLoading">
@@ -131,12 +148,22 @@
                                     {{ data.item.donation_id }}
                                 </template>
 
+                                <!-- <template v-slot:cell(aliquote)="data">
+                                    <div v-for="index in parseInt(data.item.aliquote)" :key="index">
+                                        <b-form-input size="sm" v-model="aliquotes[index + '_' + data.item.donation_id]"></b-form-input>
+                                    </div>
+                                </template> -->
+
                                 <template v-slot:cell(p-01)="data">
                                     <b-form-input v-model="final_data[data.index]['P01']" :name="data.item.donation_id + '-01'" size="sm"></b-form-input>
                                 </template>
 
                                 <template v-slot:cell(p-02)="data">
                                     <b-form-input v-model="final_data[data.index]['P02']" :name="data.item.donation_id + '-02'" size="sm"></b-form-input>
+                                </template>
+
+                                <template v-slot:cell(p-03)="data">
+                                    <b-form-input v-model="final_data[data.index]['P03']" :name="data.item.donation_id + '-03'" size="sm"></b-form-input>
                                 </template>
  
                             </b-table>
@@ -249,8 +276,10 @@ export default {
 
             pheresis_fields: [
                 { key: 'donationId', label: 'Donation ID'},
-                { key: 'p-01', label: 'Aliquote -01', thClass: 'text-center aliquote-column-width', tdClass: 'text-center' },
-                { key: 'p-02', label: 'Aliquote -02', thClass: 'text-center aliquote-column-width', tdClass: 'text-center' },
+                // { key: 'aliquote', label: 'Aliquotes', thClass: 'text-center aliquote-column-width', tdClass: 'text-center' },
+                { key: 'p-01', label: 'Aliquote-01 / WB', thClass: 'text-center aliquote-column-width', tdClass: 'text-center' },
+                { key: 'p-02', label: 'Aliquote-02', thClass: 'text-center aliquote-column-width', tdClass: 'text-center' },
+                { key: 'p-03', label: 'Aliquote-03', thClass: 'text-center aliquote-column-width', tdClass: 'text-center' },
             ],
 
             wb_fields: [
@@ -288,12 +317,16 @@ export default {
             perPage: 10,
             currentPage: 1,
 
+            aliquote_number: 1,
+            aliquotes: [],
+
             errMessage: '',
             col_method:'WB',
 
             col_method_list: [
                 { value: 'WB', text: 'Whole Blood' },
                 { value: 'P', text: 'Pheresis' },
+                // { value: 'WBP', text: 'Whole Blood Pheresis' },
             ],
             
 
@@ -316,6 +349,7 @@ export default {
                 .then(response => {
 
                     if(response.data){
+                        console.log(response.data)
                         this.donation_ids = response.data
                     } else{
                         this.donation_ids = null
@@ -362,9 +396,9 @@ export default {
             this.modalOpen = !this.modalOpen;
         },
 
-        setUname(e){
+        async setUname(e){
 
-            axios
+            await axios
                 .post('/save-blood-processing', {
                     blood_processing: this.final_data,
                     col_method: this.col_method,
@@ -427,6 +461,10 @@ export default {
 
             }
         },
+
+        aliquotes: function(val){
+            console.log(val)
+        }
         
     }
 }

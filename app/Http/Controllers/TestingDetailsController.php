@@ -151,7 +151,6 @@ class TestingDetailsController extends Controller
             $d->save();
 
             //Update 'Donor' table
-
             $donor_update_arr = array(
                 'donation_stat' => $fail ? 'N' : 'Y',
                 'donor_stat' => $fail ? 'PD' : 'A'                
@@ -165,8 +164,6 @@ class TestingDetailsController extends Controller
                 'status' => 1
             ], 200);
         }
-
-
         else{
             
             // return response('This donation ID already exists!', 200);
@@ -176,5 +173,149 @@ class TestingDetailsController extends Controller
             ], 200);
         }
     }
+
+
+    public function save(Request $request){
+        $facility_user  = Session::get('userInfo')['user_id'];
+        $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
+
+        $verifier       = $request->get('verifier');
+        $sched_id       = 'Walk-in';
+
+        $blood_testing  = $request->get('blood_testing');
+        \Log::info($blood_testing);
+        // return $blood_testing;
+
+        \Log::info(count($blood_testing));
+
+        $duplicated_id = '';
+
+        // LOOP EACH RECORD SENT FROM TTI RESULT VUE
+        foreach($blood_testing as $k => $bt){
+
+            // CHECK IF THERE'S DONATION ID
+            if($bt['donation_id']){
+
+                // GENERATE 
+                $bloodtest_no = Testing::generateNo($facility_cd);
+                \Log::info($bloodtest_no);
+    
+                $donation_id = $bt['donation_id'];
+                $donor_sn = $bt['donor_sn'];
+                
+                $TTI = [
+                    'HBSAG'          => $bt['HBSAG'],
+                    'HCV'            => $bt['HCV'],
+                    'HIV'            => $bt['HIV'],
+                    'MALA'           => $bt['MALA'],
+                    'RPR'            => $bt['RPR']
+                ];
+                
+                // check first if donationID already exists in bloodtest_dtls table and donation table
+                $check_donation_id = TestingDetails::where('donation_id', '=', $donation_id)->first();
+                
+                // if donation id has no duplicate then
+                if($check_donation_id === null){
+                    
+                    // loop each record
+                    foreach($TTI as $key => $value){
+    
+                        // INSERT RECORD AT `bloodtest_dtls` table
+                        $t2 = new TestingDetails;
+                        $t2->bloodtest_no = $bloodtest_no;
+                        $t2->donation_id = $donation_id;
+                        $t2->exam_cd = $key;
+                        $t2->result_int = $value == 'n' ? 'n' : 'r';
+                        $t2->created_by = $facility_user;
+                        $t2->created_dt = date('Y-m-d H:i:s');
+                        $t2->save();  
+                    }
+    
+                    // INSET RECORD AT `bloodtest` table
+                    $t = new Testing;
+                    $t->facility_cd = $facility_cd;
+                    $t->bloodtest_no = $bloodtest_no;
+                    $t->bloodtest_dt = date('Y-m-d H:i:s');
+                    $t->donation_id = $donation_id;
+    
+                    // checking for 'R' values
+                    $fail = 0;
+                    foreach($TTI as $key => $value){
+                        if(strtoupper($value) == 'R'){
+                            \Log::info($key);
+                            $fail++;
+                        }
+                    }
+                    
+                    $t->result = $fail ? 'R' : 'N';
+                    $t->created_by = $facility_user;
+                    $t->created_dt = date('Y-m-d H:i:s');
+                    $t->updated_by = $verifier;
+                    $t->updated_dt = date('Y-m-d H:i:s');
+                    $t->save();
+    
+                    // UPDATE `pre_screened_donors` table
+                    PreScreenedDonor::where('donor_sn', $donor_sn)
+                                    ->update(['status' => '2']);
+    
+                    // INSERT record at `donation` table
+                    $seqno = Donation::generateSeqno($facility_cd);
+                    $d = new Donation;
+                    $d->seqno = $seqno;
+                    $d->donation_id = $donation_id;
+                    $d->donor_sn = $donor_sn;
+                    $d->pre_registered = 'Y';
+                    $d->sched_id = $sched_id;
+                    $d->donation_stat = $fail ? 'REA' : 'Y';
+                    $d->facility_cd = $facility_cd;
+                    // $d->created_dt = date('Y-m-d H:i:s');
+                    $d->save();
+    
+                    //Update 'Donor' table
+                    $donor_update_arr = array(
+                        'donation_stat' => $fail ? 'N' : 'Y',
+                        'donor_stat' => $fail ? 'PD' : 'A'                
+                    );
+    
+                    $stat = Donor::where('seqno', $donor_sn)
+                                    ->update($donor_update_arr);
+                }
+                
+                // if donation id already exist then
+                else{
+
+                    // concut/ list down donation ids
+                    $duplicated_id = $duplicated_id.' '.$bt['donation_id'];
+
+                }
+            }
+            // CHECK IF THERE'S DONATION ID
+            
+        }
+        \Log::info($duplicated_id);
+        // LOOP EACH RECORD SENT FROM TTI RESULT VUE
+
+        // if donation id already exist then 
+        if($duplicated_id){
+            
+            // send this response
+            return response()->json([
+                'message' => "This donation IDs already exist: \n $duplicated_id",
+                'status' => 1
+            ], 200);
+        }
+
+        // else proceed to save record
+        else{
+            return response()->json([
+                'message' => 'Testing result/s has been saved.',
+                'status' => 1
+            ], 200);
+        }
+
+        
+    }
+
+
     
 }

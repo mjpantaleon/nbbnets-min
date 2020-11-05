@@ -108,7 +108,6 @@ class DonationController extends Controller
         $check_donation_details = Donation::where('donation_id', '=', $donation_id)
                                 ->where('donor_sn', '=', $donor_sn)
                                 ->first();
-        \Log::info($check_donation_details);
 
         // SAVE RECORD
         if($check_donation_details){
@@ -128,6 +127,13 @@ class DonationController extends Controller
                 $check_donation_details->collection_type = "CPC19";
             }
 
+            // CONFIRM: CONFIRM IF WHOLE BLOOD PHERESIS IS SAME AS WHOLE BLOOD
+
+            // elseif ($collection_method == 'WBP') {
+            //     $check_donation_details->blood_bag = $request->get('blood_bag');
+            //     $check_donation_details->collection_type = "PHE";
+            // }
+
             $check_donation_details->mh_pe_deferral = $mh_pe_deferral;
             $check_donation_details->mh_pe_question = $mh_pe_question;
             $check_donation_details->mh_pe_remark = $mh_pe_remark;
@@ -144,47 +150,47 @@ class DonationController extends Controller
 
             //If collection method is Pheresis, aliquote the donation ID into two
 
-            if($collection_method == 'P'){
+            // if($collection_method == 'P'){
 
-                for($i = 0; $i <= 2; $i++){
+            //     for($i = 0; $i <= 2; $i++){
 
-                    if($i){
+            //         if($i){
 
-                        $comp = new Component;
-                        $comp->donation_id          = $donation_id . '-0' . $i;
-                        $comp->source_donation_id   = $donation_id;
-                        $comp->aliqoute_by          = $facility_user;
-                        $comp->aliqoute_dt          = date('Y-m-d');
-                        $comp->component_cd         = 100;
-                        $comp->location             = $facility_cd;
-                        $comp->collection_dt        = date('Y-m-d');
-                        $comp->expiration_dt        = ComputeExpiry::getExpiration(100, date('Y-m-d H:i:s'));
-                        $comp->comp_stat            = 'FBT';
-                        $comp->created_by           = $facility_user;
-                        $comp->created_dt           = date('Y-m-d H:i:s');
-                        $comp->save();
+            //             $comp = new Component;
+            //             $comp->donation_id          = $donation_id . '-0' . $i;
+            //             $comp->source_donation_id   = $donation_id;
+            //             $comp->aliqoute_by          = $facility_user;
+            //             $comp->aliqoute_dt          = date('Y-m-d');
+            //             $comp->component_cd         = 100;
+            //             $comp->location             = $facility_cd;
+            //             $comp->collection_dt        = date('Y-m-d');
+            //             $comp->expiration_dt        = ComputeExpiry::getExpiration(100, date('Y-m-d H:i:s'));
+            //             $comp->comp_stat            = 'FBT';
+            //             $comp->created_by           = $facility_user;
+            //             $comp->created_dt           = date('Y-m-d H:i:s');
+            //             $comp->save();
 
-                    } else{
+            //         } else{
 
-                        $comp = new Component;
-                        $comp->donation_id          = $donation_id;
-                        // $comp->source_donation_id   = null;
-                        // $comp->aliqoute_by          = $facility_user;
-                        // $comp->aliqoute_dt          = date('Y-m-d');
-                        $comp->component_cd         = 100;
-                        $comp->location             = $facility_cd;
-                        $comp->collection_dt        = date('Y-m-d');
-                        $comp->expiration_dt        = ComputeExpiry::getExpiration(100, date('Y-m-d H:i:s'));
-                        $comp->comp_stat            = 'FBT';
-                        $comp->created_by           = $facility_user;
-                        $comp->created_dt           = date('Y-m-d H:i:s');
-                        $comp->save();  
+            //             $comp = new Component;
+            //             $comp->donation_id          = $donation_id;
+            //             // $comp->source_donation_id   = null;
+            //             // $comp->aliqoute_by          = $facility_user;
+            //             // $comp->aliqoute_dt          = date('Y-m-d');
+            //             $comp->component_cd         = 100;
+            //             $comp->location             = $facility_cd;
+            //             $comp->collection_dt        = date('Y-m-d');
+            //             $comp->expiration_dt        = ComputeExpiry::getExpiration(100, date('Y-m-d H:i:s'));
+            //             $comp->comp_stat            = 'FBT';
+            //             $comp->created_by           = $facility_user;
+            //             $comp->created_dt           = date('Y-m-d H:i:s');
+            //             $comp->save();  
 
-                    }
+            //         }
 
-                }
+            //     }
 
-            }
+            // }
 
             return response()->json([
                 'message' => 'Donation has been successfully updated.',

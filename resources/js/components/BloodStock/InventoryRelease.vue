@@ -106,7 +106,7 @@
                                 </template>
 
                                 <template v-slot:cell(aliquote-01)="data">
-                                    <div v-if="data.item.units">
+                                    <div v-if="data.item.units.p01">
                                         <div v-if="data.item.units.p01 == 'AVA'">
                                             <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
                                         </div>
@@ -126,7 +126,7 @@
                                 </template>
 
                                 <template v-slot:cell(aliquote-02)="data">
-                                    <div v-if="data.item.units">
+                                    <div v-if="data.item.units.p02">
                                         <div v-if="data.item.units.p02 == 'AVA'">
                                             <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
                                         </div>
@@ -134,6 +134,26 @@
                                             v-else-if="data.item.units.p02 == 'FBT'"
                                             v-model="checked"
                                             :value="data.item.donation_id + '-02'"
+                                            unchecked-value="0"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            class="text-center"
+                                            >
+                                        </b-form-checkbox>
+                                        <div v-else>
+                                            <b-icon :icon="bvicon" class="h5 rounded"></b-icon>
+                                        </div>
+                                    </div>
+                                </template>
+
+                                <template v-slot:cell(aliquote-03)="data">
+                                    <div v-if="data.item.units.p03">
+                                        <div v-if="data.item.units.p03 == 'AVA'">
+                                            <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
+                                        </div>
+                                        <b-form-checkbox
+                                            v-else-if="data.item.units.p03 == 'FBT'"
+                                            v-model="checked"
+                                            :value="data.item.donation_id + '-03'"
                                             unchecked-value="0"
                                             :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
                                             class="text-center"
@@ -353,8 +373,9 @@ export default {
                 { key: 'donor', label: 'DONOR', thClass: 'text-center', tdClass: 'text-center'},
                 { key: 'bloodtype', label: 'BLOOD TYPE', thClass: 'text-center', tdClass: 'text-center'},
                 { key: 'bloodtest', label: 'BLOOD TEST', thClass: 'text-center', tdClass: 'text-center'},
-                { key: 'aliquote-01', label: 'Aliquote - 01', thClass: 'text-center', tdClass: 'text-center' },
+                { key: 'aliquote-01', label: 'Aliquote - 01  / WB', thClass: 'text-center', tdClass: 'text-center' },
                 { key: 'aliquote-02', label: 'Aliquote - 02', thClass: 'text-center', tdClass: 'text-center' },
+                { key: 'aliquote-03', label: 'Aliquote - 02', thClass: 'text-center', tdClass: 'text-center' },
             ],
 
             wb_fields: [

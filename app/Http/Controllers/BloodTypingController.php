@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Donation;
 use App\BloodTyping;
 use App\Component;
+use App\AdditionalTest;
 use Session;
 use DB;
 use PDO;
@@ -42,7 +43,8 @@ class BloodTypingController extends Controller
         AND t1.created_dt BETWEEN '$from' AND '$to'
         AND t1.collection_stat = '$col_stat'
         AND (t1.collection_method = 'P'
-        OR t1.collection_type = 'CPC19')";
+        OR t1.collection_type = 'CPC19'
+        OR t1.collection_type = 'PHE')";
 
         $donation = DB::select($sql);
         // \Log::info($donation);
@@ -56,6 +58,7 @@ class BloodTypingController extends Controller
                 $ids[$val['donation_id']]['donation_id'] = $val['donation_id'];
                 $ids[$val['donation_id']]['abo'] = "";
                 $ids[$val['donation_id']]['rh'] = "";
+                $ids[$val['donation_id']]['abs'] = "";
             }
 
             return $ids;
@@ -97,6 +100,26 @@ class BloodTypingController extends Controller
             $bloodtype->created_by = $user_id;
             $bloodtype->created_dt = date('Y-m-d H:i:s');
             $res = $bloodtype->save();
+
+
+            // ADDED: Save in Antibody Screening Table
+            $antibody = AdditionalTest::where('donation_id', $d['donation_id'])->first();
+
+            if($antibody){
+                AdditionalTest::where('donation_id', 'LIKE', $d['donation_id'] . '%')
+                            ->update([
+                                'antibody' => $d['abs'] == 'Positive' ? 'P' : 'N',
+                                'antibody_by' => $user_id,
+                                'antibody_verifier' => $verifier,
+                            ]);
+            } else{
+                $antibody_data = new AdditionalTest;
+                $antibody_data->donation_id         = $d['donation_id'];
+                $antibody_data->antibody            = $d['abs'] == 'Positive' ? 'P' : 'N';
+                $antibody_data->antibody_by         = $user_id;
+                $antibody_data->antibody_verifier   = $verifier;
+                $r                                  = $antibody_data->save();
+            }
 
             // \Log::info($res);
             

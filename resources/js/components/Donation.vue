@@ -23,7 +23,7 @@
             </b-col>
 
             <b-col md="auto" class="ml-auto">
-                <label for="datepicker">Donation date</label>
+                <!-- <label for="datepicker">Donation date</label> -->
                 <b-input-group class="mb-3">
                     <b-form-datepicker
                         :state="checkDate"
@@ -135,7 +135,7 @@ export default {
     }, /* mounted */
 
     methods: {
-        getDonations(){
+        async getDonations(){
             this.isLoading = true
 
             if(this.donation_dt == ''){
@@ -145,7 +145,7 @@ export default {
             }
 
 
-            axios
+            await axios
             .post('/donation-list-data',{
                 donation_dt: this.donation_dt
             })

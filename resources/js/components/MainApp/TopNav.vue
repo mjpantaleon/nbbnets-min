@@ -15,6 +15,22 @@
                 </template>
                 <b-dropdown-item :to="{ path: '/pre-screened-list' }">Pre-Screened List</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/pre-screening' }">Pre-Screening</b-dropdown-item>
+                <b-dropdown-divider></b-dropdown-divider>
+
+                <b-dropdown-item :to="{ path: '/pre-screening-igg' }">IGG</b-dropdown-item>
+            </b-nav-item-dropdown>
+
+            <b-nav-item-dropdown right>
+                <template v-slot:button-content>
+                    BLOOD TESTING
+                </template>
+
+                <b-dropdown-item :to="{ path: '/blood-test-tti' }">TTI</b-dropdown-item>
+                <b-dropdown-divider></b-dropdown-divider>
+
+                <b-dropdown-item :to="{ path: '/blood-test-nat' }">NAT</b-dropdown-item>
+                <b-dropdown-item :to="{ path: '/blood-test-zika' }">ZIKA</b-dropdown-item>
+                <b-dropdown-item :to="{ path: '/blood-test-hna' }">HNA & HNL</b-dropdown-item>
             </b-nav-item-dropdown>
 
             <b-nav-item-dropdown right>
@@ -24,11 +40,12 @@
                 <b-dropdown-item :to="{ path: '/donation' }">New Walk-in</b-dropdown-item>
             </b-nav-item-dropdown>
 
+
             <b-nav-item-dropdown right>
                 <template v-slot:button-content>
                     BLOOD UNIT
                 </template>
-                <b-dropdown-item :to="{ path: '/blood-testing' }">Blood Testing</b-dropdown-item>
+                
                 <b-dropdown-item :to="{ path: '/blood-typing' }">Blood Typing</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/blood-processing' }">Blood Processing</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/labelling' }">Blood Label</b-dropdown-item>
@@ -42,6 +59,15 @@
                 </template>
                 <b-dropdown-item :to="{ path: '/release-to-inventory' }">Release to Inventory</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/available-stocks' }">Available Blood Stocks</b-dropdown-item>
+                <!-- <b-dropdown-item :to="{ path: '/aliquote' }">Aliquote</b-dropdown-item> -->
+                
+            </b-nav-item-dropdown>
+
+            <b-nav-item-dropdown right>
+                <template v-slot:button-content>
+                    BLOOD REQUEST & ISSUANCE
+                </template>
+                <b-dropdown-item :to="{ path: '/blood-request/list' }">Blood Request List</b-dropdown-item>
                 <!-- <b-dropdown-item :to="{ path: '/aliquote' }">Aliquote</b-dropdown-item> -->
                 
             </b-nav-item-dropdown>

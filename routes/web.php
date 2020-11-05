@@ -42,14 +42,19 @@ Route::group(['middleware' => ['auth']], function () {
     // Route::get('/mh-question-list', 'QuestionsController@getMH');
     // Route::get('/pe-question-list', 'QuestionsController@getPE');
     
-    // CANDIDATE DONORS
+    // PRE-SCREENING
     Route::get('/pre-screened-donors', 'PreScreenedDonorController@index');
     Route::get('/pre-screened-donor/{id}', 'PreScreenedDonorController@getDetails');
     Route::post('/get-prescreened-donor', 'PreScreenedDonorController@search');
     Route::post('/pre-screened-update/{id}', 'PreScreenedDonorController@update');
     Route::post('/submit-entry', 'PreScreenedDonorController@create');
+    // IGG TEST
+    Route::post('/donor-list-for-igg', 'PreScreenedDonorController@getDonorsForIgg');
+    Route::post('/save-igg-result', 'PreScreenedDonorController@saveIggResult');
+
     // FOR TESTING ENTRIES
     Route::get('/for-testing-list', 'PreScreenedDonorController@getList');
+    Route::post('/get-approved-donor-list', 'PreScreenedDonorController@getApprovedDonorList');
 
 
     // VERIFIER
@@ -59,7 +64,7 @@ Route::group(['middleware' => ['auth']], function () {
     // ---------------- BLOOD UNIT ------------------------ //
     // BLOOD TESTING
     Route::post('/get-donation-id-testing-details', 'TestingDetailsController@getDonationId');
-    Route::post('/save-blood-testing', 'TestingDetailsController@save');
+    Route::post('/save-tti-blood-test', 'TestingDetailsController@save');
     // MIN
     Route::post('/save-blood-test-result/{id}', 'TestingDetailsController@addResult');
 
@@ -79,6 +84,19 @@ Route::group(['middleware' => ['auth']], function () {
     //     return \Session::get('userInfo');
     // });
 
+    // ADDITIONAL BLOOD TEST
+    // NAT
+    Route::post('/components-for-nat-test', 'AdditionalTestController@getComponentsForNatTest');
+    Route::post('/save-nat-result', 'AdditionalTestController@saveNatResult');
+    // ZIKA
+    Route::post('/components-for-zika-test', 'AdditionalTestController@getComponentsForZikaTest');
+    Route::post('/save-zika-result', 'AdditionalTestController@saveZikaResult');
+    // HNA & HNL
+    Route::post('/components-for-hna-test', 'AdditionalTestController@getComponentsForHnaTest');
+    Route::post('/save-hna-result', 'AdditionalTestController@saveHnaResult');
+
+
+
 
     //SHOW PREVIEW
     Route::get('/preview', 'PreviewController@showPreview');
@@ -91,6 +109,18 @@ Route::group(['middleware' => ['auth']], function () {
     //AVAILABLE BLOOD STOCKS
     Route::get('/get-available-blood-stocks', 'AvailableBloodStocksController@getList');
     Route::post('/update-available-list', 'AvailableBloodStocksController@updateList');
+    
+    // BLOOD REQUEST
+    Route::post('/blood-request-list', 'BloodRequestController@bloodRequestList');
+    Route::get('/cp-components', 'BloodRequestController@getCpComponents');
+    Route::get('/for-look-up/{id}', 'BloodRequestController@forLookUp');
+    Route::post('/available-cp-components', 'BloodRequestController@getAvailableCpUnits');
+    Route::post('/reserve-blood-units', 'BloodRequestController@reserveBloodUnits');
+    // Route::get('/agency-list', 'BloodRequestController@getAgencies');
+    Route::post('/blood-request', 'BloodRequestController@create');
+    Route::get('/blood-request-details/{id}', 'BloodRequestController@getBloodRequestDetails');
+    Route::post('/issue-blood-request/{id}', 'BloodRequestController@issueBloodRequest');
+
 
     Route::get('/logout', 'LoginController@logout');
 
