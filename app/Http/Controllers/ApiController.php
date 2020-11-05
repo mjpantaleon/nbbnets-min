@@ -35,7 +35,17 @@ class ApiController extends Controller
 				    	]
 				    ]);
 				    return $res->getBody();
-		    	}else if($request->redirect == 'login'){
+		    	}else if($request->redirect == 'version'){
+		    		$res = $http->get(url('api/v1/android-version'), [
+				    	'headers' => [
+				    		'Authorization' => 'Bearer '.$auth->access_token,
+				    		'Accept'     => 'application/json',
+				    	]
+				    ]);
+				    return $res->getBody();		    		
+
+		    	}
+		    	else if($request->redirect == 'login'){
 					$res = $http->post(url('api/v1/android-login'), [
 				    	'form_params' => [
 				            'user_id' => $request->user_id,
@@ -57,6 +67,9 @@ class ApiController extends Controller
 				            'nationality' => $request->nationality,
 				            'gender' => $request->gender,
 				            'bdate' => $request->bdate,
+				            'been_pregnant' => $request->been_pregnant,
+				            'had_blood_transfusion' => $request->had_blood_transfusion,
+				            'facility_cd' => $request->facility_cd,
 				            'age' => $request->age,
 				            'weight' => $request->weight,
 				            'address' => $request->address,
@@ -172,6 +185,11 @@ class ApiController extends Controller
             $pre_screened_donor->gender = $gender;
             
             $pre_screened_donor->bdate = $request->bdate;
+
+			$pre_screened_donor->beenPregnant = $request->been_pregnant != null ? $request->been_pregnant : '';
+            $pre_screened_donor->hadBloodTransfusion = $request->had_blood_transfusion;
+            $pre_screened_donor->facility_cd = $request->facility_cd;
+
             $pre_screened_donor->age = $request->age;
             
             $pre_screened_donor->weight = $request->weight;
@@ -217,4 +235,8 @@ class ApiController extends Controller
                                                  orWhere('last_name', 'like', '%'.$input."%")->get();
         return response()->json($filteredDonors);        
     }    
+    
+    function version(){
+    	return response()->json(['version' => '1.0']);
+    }
 }
