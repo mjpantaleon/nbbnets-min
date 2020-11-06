@@ -58,9 +58,9 @@
                             <b-col class="lead"><b><b-icon icon="chat"></b-icon>&nbsp;Contact preferences:</b></b-col>
                             <b-col class="lead">
                                 <ul>
-                                    <li v-if="email != ''" class="text-primary  float-right"><b>{{email}}</b></li>
-                                    <li v-if="fb != ''" class="text-primary  float-right"><b>{{fb}}</b></li>
-                                    <li v-if="mobile_no != ''" class="text-primary  float-right"><b>{{mobile_no}}</b></li>
+                                    <li v-if="email != ''" class="text-primary float-right"><b>{{email}}</b></li>
+                                    <li v-if="fb != ''" class="text-primary float-right"><b>{{fb}}</b></li>
+                                    <li v-if="mobile_no != ''" class="text-primary float-right"><b>{{mobile_no}}</b></li>
                                 </ul>
                             </b-col>
                         </b-row>
@@ -101,6 +101,28 @@
                             <span v-else><b>Gender:</b> Female</span>
                         </b-col>
                     </b-row>
+
+                    <template v-if="gender == 'F'">
+                    <b-row>
+                        <b-col class="lead">
+                            <span>
+                                <b>Had been Pregnant:</b>
+                                <span v-if="been_pregnant == 'Y'">Yes</span>
+                                <span v-else>No</span>
+                            </span>
+                        </b-col>
+                    </b-row>
+
+                    <b-row>
+                        <b-col class="lead">
+                            <span>
+                                <b>Had blood Transfusion:</b>
+                                <span v-if="had_blood_transfusion == 'Y'">Yes</span>
+                                <span v-else>No</span>
+                            </span>
+                        </b-col>
+                    </b-row>
+                    </template>
                     
                     <b-row>
                         <b-col class="lead">
@@ -244,7 +266,11 @@ export default {
             weight: '',
             age: '',
 
-            gender: '',
+            gender: 'M',
+            // if Female
+            been_pregnant: '',
+            had_blood_transfusion: '',
+
             bdate: '',
 
             email: '',
@@ -284,6 +310,9 @@ export default {
                 this.age = response.data.age,
 
                 this.gender = response.data.gender,
+                this.been_pregnant = response.data.beenPregnant,
+                this.had_blood_transfusion = response.data.hadBloodTransfusion,
+
                 this.bdate = response.data.bdate,
 
                 this.email = response.data.email,

@@ -111,6 +111,38 @@
                     </b-col>
                 </b-row>
 
+                <template v-if="gender == 'F'">
+                <b-row>
+                    <b-col>
+                        <b-form-group
+                            id="fieldset-horizontal"
+                            label-cols-sm="3"
+                            label-cols-lg="3"
+                            description="select answer"
+                            label="Been Pregnant?"
+                            label-for="been_pregnant_option">
+                            <b-form-select v-model="been_pregnant" 
+                                    :options="yes_no_option" id="been_pregnant_option"></b-form-select>
+                        </b-form-group>
+                    </b-col>
+                </b-row>
+
+                <b-row>
+                    <b-col>
+                        <b-form-group
+                            id="fieldset-horizontal"
+                            label-cols-sm="3"
+                            label-cols-lg="3"
+                            description="select answer"
+                            label="Had Blood Transfusion?"
+                            label-for="had_transfusion_option">
+                            <b-form-select v-model="had_blood_transfusion" 
+                                    :options="yes_no_option" id="had_transfusion_option"></b-form-select>
+                        </b-form-group>
+                    </b-col>
+                </b-row>
+                </template>
+
                 <!-- bdate -->
                 <b-row>
                     <b-col>
@@ -325,7 +357,7 @@
             hide-header-close>
             
             <h5 class="alert-heading text-center">
-                <b-icon icon="person-check"></b-icon>&nbsp;New Entry has been added!
+                <b-icon icon="person-check"></b-icon>&nbsp;{{message}}
             </h5>
             
             <template v-slot:modal-footer="{ ok }">
@@ -365,6 +397,7 @@
 export default {
     data(){
         return{
+            message: '',
             // confirmation
             showSuccessMsg: false,
             disableBtn: false,
@@ -377,6 +410,10 @@ export default {
             name_suffix: '',
 
             gender: 'M',
+            // if Female
+            been_pregnant: 'N',
+            had_blood_transfusion: 'N',
+
             bdate: '',
             age: '',
 
@@ -394,6 +431,11 @@ export default {
 
             // first_answer
             first_answer: '',
+
+            yes_no_option: [
+                { value: 'Y', text: 'Yes' },
+                { value: 'N', text: 'No' },
+            ],
 
             gerder_list: [
                 { value: 'M', text: 'Male' },
@@ -502,11 +544,17 @@ export default {
     
                     first_answer : this.first_answer,
                     test_results : this.test_results,
-                    symptoms : this.symptoms
+                    symptoms : this.symptoms,
+
+                    been_pregnant: this.been_pregnant,
+                    had_blood_transfusion: this.had_blood_transfusion
                 })
                 .then(response =>{
-                    this.showSuccessMsg = true,
-                    this.disableBtn = true
+                    if(response.data){
+                         this.message = response.data.message
+                        this.showSuccessMsg = true,
+                        this.disableBtn = true
+                    }
                 })
                 .catch(error => console.log(error))
             }

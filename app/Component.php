@@ -50,9 +50,19 @@ class Component extends Model
     function cp_component_code_min(){
         return $this->belongsTo('App\RCpComponentCode','component_code','component_cd')->select('component_code','comp_name');
     }
+
+    function get_cp_details_min(){
+        return $this->belongsTo('App\RCpComponentCode','component_code','component_cd')
+                    ->select('component_code','comp_name', 'component_abbr');
+    }
     
     function additionaltest(){
         return $this->belongsTo('App\AdditionalTest','donation_id','donation_id');
+    }
+
+    function hla_hna_details(){
+        return $this->belongsTo('App\AdditionalHlaHnaTest', 'donation_id', 'donation_id')->select('donation_id')
+                ->with('pre_screened_donor');
     }
 
 

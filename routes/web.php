@@ -51,6 +51,10 @@ Route::group(['middleware' => ['auth']], function () {
     // IGG TEST
     Route::post('/donor-list-for-igg', 'PreScreenedDonorController@getDonorsForIgg');
     Route::post('/save-igg-result', 'PreScreenedDonorController@saveIggResult');
+    // HLA & HNA
+    Route::post('/donor-list-for-hla-hna', 'PreScreenedDonorController@getDonorsForHlaHna');
+    Route::post('/save-hla-hna-result', 'PreScreenedDonorController@saveHlaHnaResult');
+
 
     // FOR TESTING ENTRIES
     Route::get('/for-testing-list', 'PreScreenedDonorController@getList');
@@ -92,8 +96,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/components-for-zika-test', 'AdditionalTestController@getComponentsForZikaTest');
     Route::post('/save-zika-result', 'AdditionalTestController@saveZikaResult');
     // HNA & HNL
-    Route::post('/components-for-hna-test', 'AdditionalTestController@getComponentsForHnaTest');
-    Route::post('/save-hna-result', 'AdditionalTestController@saveHnaResult');
+    // Route::post('/components-for-hna-test', 'AdditionalTestController@getComponentsForHnaTest');
+    // Route::post('/save-hna-result', 'AdditionalTestController@saveHnaResult');
 
 
 

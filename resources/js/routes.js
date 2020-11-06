@@ -84,7 +84,7 @@ export const routes = [
     { name: 'blood-test-tti', path: '/blood-test-tti', component: TTI },
     { name: 'blood-test-nat', path: '/blood-test-nat', component: NAT },
     { name: 'blood-test-zika', path: '/blood-test-zika', component: ZIKA },
-    { name: 'blood-test-hna', path: '/blood-test-hna', component: HNA },
+    { name: 'hla-hna-test', path: '/hla-hna-test', component: HNA },
   
   
     // { name: 'register-blood', path: '/register-blood', component: RegisterUnit },

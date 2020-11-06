@@ -9,14 +9,14 @@
                     </b-breadcrumb-item>
                     <b-breadcrumb-item active>
                         <b-icon icon="droplet-half" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
-                        HNA & HNL
+                        HLA & HNA
                     </b-breadcrumb-item>
                 </b-breadcrumb>
 
           </b-col>
         </b-row>
 
-        <h4><b-icon icon="droplet-half" variant="warning"></b-icon> HNA & HNL</h4>
+        <h4><b-icon icon="droplet-half" variant="warning"></b-icon> HLA & HNA</h4>
         <hr>
 
         <b-row>
@@ -66,18 +66,31 @@
                         :fields="hna_fields"
                         :items="data">
 
+                        <template v-slot:cell(donor)="data">
+                            {{ data.item.first_name }} {{ data.item.middle_name ? data.item.middle_name : null }} {{ data.item.last_name }} {{ data.item.name_suffix ? data.item.name_suffix : null }}
+                        </template>
+
+                        <template v-slot:cell(gender)="data">
+                            <span class="text-primary" v-if="data.item.gender == 'F'">Female</span>
+                            <span class="text-danger" v-else>Male</span>
+                        </template>
+
                         <template v-slot:cell(donation_id)="data">
-                            {{ data.item.donation_id }}
+                            <b-form-input placeholder="Scan Donation ID" v-model="data.item.donation_id"></b-form-input>
                         </template>
 
-                        <template v-slot:cell(component_abbr)="data">
-                            {{ data.item.component_abbr }}
+
+                        <template v-slot:cell(test_1)="data">
+                            <b-form-select v-model="data.item.test_1" :options="hna_option"></b-form-select>
+                        </template>
+                        
+                        <template v-slot:cell(test_2)="data">
+                            <b-form-select v-model="data.item.test_2" :options="hna_option"></b-form-select>
                         </template>
 
-                        <template v-slot:cell(hna_hnl_result)="data">
-                            <b-form-select v-model="data.item.hna_hnl_result" :options="hna_option"></b-form-select>
+                        <template v-slot:cell(test_3)="data">
+                            <b-form-select v-model="data.item.test_3" :options="hna_option"></b-form-select>
                         </template>
-
                     </b-table>
                 </b-col>
             </b-row>
@@ -153,10 +166,13 @@ export default {
             ],
 
             hna_fields: [
+                { key: 'donor', label: 'Donor Name' },
+                { key: 'gender', label: 'Gender' },
                 { key: 'donation_id', label: 'Donation ID' },
-                { key: 'component_abbr', label: 'Component' },
-                { key: 'hna_hnl_result', label: 'HNA & HNL Result' },
-            ],
+                { key: 'test_1', label: 'Test 1' },
+                { key: 'test_2', label: 'Test 2' },
+                { key: 'test_3', label: 'Test 3' },
+            ]
 
         }
     }, /* data() */
@@ -165,7 +181,7 @@ export default {
     methods: {
         async getComponentsForHnaTest(){
             await axios
-            .post('/components-for-hna-test', {
+            .post('/donor-list-for-hla-hna', {
                 date_from: this.date_from,
                 date_to: this.date_to
             })
@@ -190,7 +206,7 @@ export default {
         async setUname(e){
 
             await axios
-                .post('/save-hna-result', {
+                .post('/save-hla-hna-result', {
                     hna_hnl_results: this.data,
                     verifier: e,
                 })
