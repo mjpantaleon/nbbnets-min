@@ -123,6 +123,23 @@
                                             <b-icon :icon="bvicon" class="h5 rounded"></b-icon>
                                         </div>
                                     </div>
+                                    <div v-else-if="data.item.units.m01">
+                                        <div v-if="data.item.units.m01 == 'AVA'">
+                                            <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
+                                        </div>
+                                        <b-form-checkbox
+                                            v-else-if="data.item.units.m01 == 'FBT'"
+                                            v-model="checked"
+                                            :value="data.item.donation_id + '-01'"
+                                            unchecked-value="0"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            class="text-center"
+                                            >
+                                        </b-form-checkbox>
+                                        <div v-else>
+                                            <b-icon :icon="bvicon" class="h5 rounded"></b-icon>
+                                        </div>
+                                    </div>
                                 </template>
 
                                 <template v-slot:cell(aliquote-02)="data">

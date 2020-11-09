@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Facility;
 use App\Component;
+use App\Donation;
 use App\Template;
 use Milon\Barcode\Facades\DNS1DFacade;
 
@@ -28,10 +29,14 @@ class PreviewController extends Controller
         } else{
 
             $split = explode("-", $method[0]);
-
             $facility_cd = Session::get('userInfo')['facility']['facility_cd'];
-    
-            $label = $this->prepareTemplate($facility_cd,$split[1],$split[0],$method[1]);
+
+            if(count($split) == 3){
+                $label = $this->prepareTemplate($facility_cd,$split[1] . "-" . $split[2],$split[0],$method[1]);
+            } else{
+                $label = $this->prepareTemplate($facility_cd,$split[1],$split[0],$method[1]);
+            }
+            
             return view('layouts.label')->withContent($label);
 
         }
@@ -54,16 +59,13 @@ class PreviewController extends Controller
             ->whereNotIn('comp_stat',['EXP','DIS','ISS'])
             ->get()->first();
 
-        if(strpos($donation_id, '-01')){
-            $tmp = str_replace("-01", "", $donation_id);
+        if($method == 'WB' && strpos($donation_id, '-')){
 
-            $count = Component::select('donation_id')
-                    ->where('source_donation_id', $tmp)
-                    ->count();
+            $donation_min = Donation::select('donation_id','sched_id','blood_bag','created_dt', 'collection_method', 'collection_type')
+                            ->where('donation_id', explode('-', $donation_id)[0])
+                            ->first();
 
-            if($count == 1){
-                $donation_id = $tmp;
-            }
+            $unit->donation_min = $donation_min;
 
         }
 

@@ -125,6 +125,21 @@
                                             >
                                         </b-form-checkbox>
                                     </div>
+
+                                    <div v-else-if="data.item.units.showM01">
+                                        <div v-if="data.item.units.hasm01">
+                                            <b-icon icon="check" variant="success" class="h5 border border-info rounded" style=""></b-icon>
+                                        </div>
+                                        <b-form-checkbox
+                                            v-else
+                                            v-model="checked"
+                                            :value="data.item.donation_id"
+                                            unchecked-value="0"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            class="text-center"
+                                            >
+                                        </b-form-checkbox>
+                                    </div>
                                 </template>
 
                                 <template v-slot:cell(aliquote-02)="data">
@@ -351,7 +366,7 @@ export default {
                 { key: 'donor', label: 'DONOR', thClass: 'text-center', tdClass: 'text-center'},
                 { key: 'bloodtype', label: 'BLOOD TYPE', thClass: 'text-center', tdClass: 'text-center'},
                 { key: 'bloodtest', label: 'BLOOD TEST', thClass: 'text-center', tdClass: 'text-center'},
-                { key: 'aliquote-01', label: 'Aliquote - 01', thClass: 'text-center', tdClass: 'text-center' },
+                { key: 'aliquote-01', label: 'Aliquote - 01 / WB', thClass: 'text-center', tdClass: 'text-center' },
                 { key: 'aliquote-02', label: 'Aliquote - 02', thClass: 'text-center', tdClass: 'text-center' },
                 { key: 'aliquote-03', label: 'Aliquote - 03', thClass: 'text-center', tdClass: 'text-center' },
             ],
