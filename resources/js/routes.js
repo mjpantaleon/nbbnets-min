@@ -1,6 +1,6 @@
 import Login from './components/MainApp/Login.vue';
 
-import Donation from './components/Donation.vue';
+import Donation from './components/Donation/Donation.vue';
 import NewWalkin from './components/Donation/NewWalkin.vue';
 
 import SearchDonor from './components/Donor/SearchDonor.vue';

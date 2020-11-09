@@ -19,7 +19,10 @@ class DonorController extends Controller
     public function donorDetails($id){
         // $donor = Donor::with('')
                     // ->where('seqno', $id)->first();
-        $donor = Donor::where('seqno', $id)->first();
+        $donor = Donor::where('seqno', $id)
+                    ->with('igg_result')
+                    ->with('hla_hna_result')
+                    ->first();
         return $donor;
     }
 

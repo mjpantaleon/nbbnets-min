@@ -11,6 +11,11 @@ use App\Helpers\ComputeExpiry;
 use Session;
 use DB;
 
+use App\AdditionalHlaHnaTest;
+use App\IggResult;
+use App\Testing;
+
+
 class DonationController extends Controller
 {
     public function index(Request $request){
@@ -44,6 +49,7 @@ class DonationController extends Controller
         return response()->json($donations);  
     }
 
+    // public function create()
     public function create(Request $request){
         $data = $request->except('_token');
 
@@ -52,17 +58,6 @@ class DonationController extends Controller
         $facility_user = Session::get('userInfo')['user_id'];
         $facility_cd = Session::get('userInfo')['facility_cd'];
         $verifier    = $request->get('verifier');
-
-        // initialize data
-        // $facility_user = $facility_user;
-        // $facility_cd = $facility_cd;
-        
-        // GENERATE A SEQNO BASED ON FACILITY CODE.YEAR.6DIGIT'
-        // $year_now = date('Y');
-        // $donation_count = Donation::count();
-        // $donation_count = $donation_count + 1;
-        // $seqno = $facility_cd.$year_now. sprintf("%06d", $donation_count); //130012020000001
-        // $seqno = Donation::generateSeqno($facility_cd);
 
         // initialize data
         $donation_id = $data['donation_id'];
@@ -103,36 +98,111 @@ class DonationController extends Controller
         $approved_by = $verifier;
         $updated_dt = date('Y-m-d H:i:s');
 
-        // CHECK IF DONATION ID ALREADY EXIST
-        // check first if donationID already exists
+        // CHECK GG TABLE
+        // $check_igg_details = IggResult::where('donation_id', $donation_id)
+        //                 ->where('donor_sn', $donor_sn)
+        //                 ->where('igg', '=', 'P')
+        //                 ->first();
+        // if($check_igg_details){
+
+        //     // CHECK HLA HNA TABLE
+        //     $check_hla_hna_details = AdditionalHlaHnaTest::where('donation_id', $donation_id)
+        //                 ->where('donor_sn', $donor_sn)
+        //                 ->where('result', '=', 'N')
+        //                 ->first();
+        //     if($check_hla_hna_details){
+
+        //             // CHECK TESTING TABLE
+        //             $check_testing_details = Testing::where('donation_id', $donation_id)
+        //                                 ->where('result', '=', 'N')
+        //                                 ->first();
+        //             if($check_testing_details){
+
+        //                 // CHECK DONATION TABLE
+        //                 $check_donation_details = Donation::where('donation_id', '=', $donation_id)
+        //                                         ->where('donor_sn', '=', $donor_sn)
+        //                                         ->first();
+
+        //                 // IF DONATION ID HAVE A MATCH THEN
+        //                 if($check_donation_details){
+                                    
+        //                     $check_donation_details->donation_type = $donation_type;
+        //                     $check_donation_details->collection_method = $collection_method;
+
+        //                     if($collection_method == 'WB'){
+        //                         $check_donation_details->blood_bag = $request->get('blood_bag');
+        //                         $check_donation_details->collection_type = "CPC19";
+        //                     }
+
+        //                     $check_donation_details->mh_pe_deferral = $mh_pe_deferral;
+        //                     $check_donation_details->mh_pe_question = $mh_pe_question;
+        //                     $check_donation_details->mh_pe_remark = $mh_pe_remark;
+        //                     $check_donation_details->mh_pe_stat = $mh_pe_stat;            
+                            
+        //                     $check_donation_details->collection_stat = $collection_stat;
+        //                     $check_donation_details->coluns_res = $coluns_res;
+                    
+        //                     $check_donation_details->created_by = $created_by;
+        //                     $check_donation_details->created_dt = $created_dt;
+        //                     $check_donation_details->approved_by = $approved_by;
+        //                     $check_donation_details->save();
+
+
+        //                     return response()->json([
+        //                         'message' => 'Donation has been successfully updated.',
+        //                         'status' => 1
+        //                     ], 200);
+        //                     \Log::info($id);
+        //                 }
+        //                 // IF DONATION ID HAVE A MATCH THEN
+
+        //                 // IF DONATION ID DOESNT MATCH
+        //                 else{
+                            
+        //                     return response()->json([
+        //                         'message' => 'Donation ID and donor DO NOT match',
+        //                         'status' => 0
+        //                     ], 200);
+        //                 } 
+        //                 // IF DONATION ID DOESNT MATCH
+
+        //             } else {
+        //                 return response()->json([
+        //                 'message' => 'ERROR! Please check Blood Test details of this donation',
+        //                 'status' => 0
+        //                 ], 200);
+        //             }
+
+        //     } else {
+        //         return response()->json([
+        //             'message' => 'ERROR! Please check HLA & HNA Test details of this donation',
+        //             'status' => 0
+        //         ], 200);
+        //     }
+
+        // } else {
+        //     return response()->json([
+        //         'message' => 'ERROR! Please check IGG Test details of this donation',
+        //         'status' => 0
+        //     ], 200);
+        // }
+
+
+        // CHECK IF DONATION ID AND DONOR ALREADY EXIST
         $check_donation_details = Donation::where('donation_id', '=', $donation_id)
                                 ->where('donor_sn', '=', $donor_sn)
                                 ->first();
 
-        // SAVE RECORD
+        // IF DONATION ID HAVE A MATCH THEN
         if($check_donation_details){
-            // $donation = new Donation;
-            // $donation->seqno = $seqno;
-            // $donation->donation_id = $donation_id;
-            // $donation->donor_sn = $donor_sn;
-            // $donation->sched_id = $sched_id;
-            // $donation->pre_registered = $pre_registered;
+                    
             $check_donation_details->donation_type = $donation_type;
             $check_donation_details->collection_method = $collection_method;
-            // $donation->facility_cd = $facility_cd;
-            
 
             if($collection_method == 'WB'){
                 $check_donation_details->blood_bag = $request->get('blood_bag');
                 $check_donation_details->collection_type = "CPC19";
             }
-
-            // CONFIRM: CONFIRM IF WHOLE BLOOD PHERESIS IS SAME AS WHOLE BLOOD
-
-            // elseif ($collection_method == 'WBP') {
-            //     $check_donation_details->blood_bag = $request->get('blood_bag');
-            //     $check_donation_details->collection_type = "PHE";
-            // }
 
             $check_donation_details->mh_pe_deferral = $mh_pe_deferral;
             $check_donation_details->mh_pe_question = $mh_pe_question;
@@ -148,63 +218,26 @@ class DonationController extends Controller
             $check_donation_details->save();
 
 
-            //If collection method is Pheresis, aliquote the donation ID into two
-
-            // if($collection_method == 'P'){
-
-            //     for($i = 0; $i <= 2; $i++){
-
-            //         if($i){
-
-            //             $comp = new Component;
-            //             $comp->donation_id          = $donation_id . '-0' . $i;
-            //             $comp->source_donation_id   = $donation_id;
-            //             $comp->aliqoute_by          = $facility_user;
-            //             $comp->aliqoute_dt          = date('Y-m-d');
-            //             $comp->component_cd         = 100;
-            //             $comp->location             = $facility_cd;
-            //             $comp->collection_dt        = date('Y-m-d');
-            //             $comp->expiration_dt        = ComputeExpiry::getExpiration(100, date('Y-m-d H:i:s'));
-            //             $comp->comp_stat            = 'FBT';
-            //             $comp->created_by           = $facility_user;
-            //             $comp->created_dt           = date('Y-m-d H:i:s');
-            //             $comp->save();
-
-            //         } else{
-
-            //             $comp = new Component;
-            //             $comp->donation_id          = $donation_id;
-            //             // $comp->source_donation_id   = null;
-            //             // $comp->aliqoute_by          = $facility_user;
-            //             // $comp->aliqoute_dt          = date('Y-m-d');
-            //             $comp->component_cd         = 100;
-            //             $comp->location             = $facility_cd;
-            //             $comp->collection_dt        = date('Y-m-d');
-            //             $comp->expiration_dt        = ComputeExpiry::getExpiration(100, date('Y-m-d H:i:s'));
-            //             $comp->comp_stat            = 'FBT';
-            //             $comp->created_by           = $facility_user;
-            //             $comp->created_dt           = date('Y-m-d H:i:s');
-            //             $comp->save();  
-
-            //         }
-
-            //     }
-
-            // }
-
             return response()->json([
                 'message' => 'Donation has been successfully updated.',
                 'status' => 1
             ], 200);
             \Log::info($id);
         }
+        // IF DONATION ID HAVE A MATCH THEN
+
+        // IF DONATION ID DOESNT MATCH
         else{
-            // return response('This donation ID already exists!', 200);
+            
             return response()->json([
                 'message' => 'Donation id and donor do not match',
                 'status' => 0
             ], 200);
         } 
-    }
+        // IF DONATION ID DOESNT MATCH
 
+
+    } // public function create()
+
+    
 }

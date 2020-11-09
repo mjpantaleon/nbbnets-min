@@ -57,6 +57,13 @@
             </b-col>
         </b-row>
 
+        <template v-if="isLoading">
+        <b-row>
+            <b-col class="text-center">
+                <b-spinner variant="danger" label="Please wait..."></b-spinner>
+            </b-col>
+        </b-row>
+        </template>
 
         <template v-if="data.length != 0">
             <b-row>
@@ -151,6 +158,7 @@ export default {
 
     data(){
         return{
+            isLoading: false,
             showSuccessMsg: false,
 
             date_from: '',
@@ -180,6 +188,8 @@ export default {
 
     methods: {
         async getComponentsForHnaTest(){
+            this.isLoading = true
+
             await axios
             .post('/donor-list-for-hla-hna', {
                 date_from: this.date_from,
@@ -187,8 +197,10 @@ export default {
             })
             .then(response => {
                 if(response.data){
+                    this.isLoading = false
                     this.data = response.data
                 } else {
+                    this.isLoading = false
                     this.data = []
                 }
             })
@@ -204,15 +216,17 @@ export default {
         },
 
         async setUname(e){
+            this.isLoading = true
 
             await axios
                 .post('/save-hla-hna-result', {
-                    hna_hnl_results: this.data,
+                    hla_hna_results: this.data,
                     verifier: e,
                 })
                 .then(response => {
 
                     if(response.data){
+                        this.isLoading = false
                         this.message = response.data.message
                         this.showSuccessMsg = true
                         this.getComponentsForHnaTest()

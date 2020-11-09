@@ -36,6 +36,14 @@
             </b-col>
         </b-row>
 
+        <template v-if="isLoading">
+        <b-row>
+            <b-col class="text-center">
+                <b-spinner variant="danger" label="Please wait..."></b-spinner>
+            </b-col>
+        </b-row>
+        </template>
+        
         <template v-if="data.length != 0">
         <b-row>
             <b-col>
@@ -83,7 +91,7 @@
         </b-row>
         </template>
 
-        <template v-else>
+        <template v-if="data.length == 0">
         <b-row>
             <b-col class="text-center">No record/s to this display</b-col>
         </b-row>
@@ -97,6 +105,7 @@
 export default {
     data(){
         return{
+            isLoading: false,
             showSuccessMsg: false,
 
             date_from: '',
@@ -127,6 +136,7 @@ export default {
 
     methods: {
         async getBloodRequests(){
+            this.isLoading = true
 
             if(this.selected_dt == ''){
                 const now = new Date()
@@ -144,6 +154,7 @@ export default {
             })
             .then(response => {
                 if(response.data){
+                    this.isLoading = false
                     this.data = response.data
                 } else {
                     this.data = []

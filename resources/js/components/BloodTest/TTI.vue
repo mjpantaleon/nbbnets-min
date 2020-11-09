@@ -56,6 +56,14 @@
                 </b-button>
             </b-col>
         </b-row>
+
+        <template v-if="isLoading">
+        <b-row>
+            <b-col class="text-center">
+                <b-spinner variant="danger" label="Please wait..."></b-spinner>
+            </b-col>
+        </b-row>
+        </template>
         
         <!-- DONT FORGET TO PLACE LOOP HERE -->
 
@@ -157,6 +165,7 @@ export default {
     },
     data(){
         return{
+            isLoading: false,
             showSuccessMsg: false,
             date_from: '',
             date_to: '',
@@ -207,6 +216,8 @@ export default {
 
     methods: {
         async getApprovedDonorList(){
+            this.isLoading = true
+
             await axios
             .post('/get-approved-donor-list',{
                 date_from: this.date_from,
@@ -214,8 +225,10 @@ export default {
             })
             .then(response => {
                 if(response.data){
+                    this.isLoading = false
                     this.data = response.data
                 } else {
+                    this.isLoading = false
                     this.data = []
                 }
             })
@@ -229,9 +242,10 @@ export default {
             this.modalOpen = !this.modalOpen;
         },
 
-        setUname(e){
+        async setUname(e){
+            this.isLoading = true
 
-            axios
+            await axios
                 .post('/save-tti-blood-test', {
                     blood_testing: this.data,
                     verifier: e,
@@ -239,6 +253,7 @@ export default {
                 .then(response => {
 
                     if(response.data){
+                        this.isLoading = false
                         this.message = response.data.message
                         this.showSuccessMsg = true
                         this.getApprovedDonorList()

@@ -56,6 +56,13 @@
             </b-col>
         </b-row>
 
+        <template v-if="isLoading">
+        <b-row>
+            <b-col class="text-center">
+                <b-spinner variant="danger" label="Please wait..."></b-spinner>
+            </b-col>
+        </b-row>
+        </template>
 
         <template v-if="data.length != 0">
         <b-row>
@@ -142,6 +149,7 @@ export default {
 
   data(){
     return{
+        isLoading: false,
         showSuccessMsg: false,
 
         date_from: '',
@@ -168,6 +176,8 @@ export default {
 
   methods: {
     async getDonorsForIgg(){
+      this.isLoading = true
+
       await axios
       .post('/donor-list-for-igg', {
           date_from: this.date_from,
@@ -175,8 +185,10 @@ export default {
       })
       .then(response =>{
           if(response.data){
+              this.isLoading = false
               this.data = response.data
           } else{
+              this.isLoading = false
               this.data = []
           }
       })
@@ -192,6 +204,7 @@ export default {
     },
 
     setUname(e){
+      this.isLoading = true
 
       axios
         .post('/save-igg-result', {
@@ -201,6 +214,7 @@ export default {
       .then(response => {
 
         if(response.data){
+            this.isLoading = false
             this.message = response.data.message
             this.showSuccessMsg = true
             this.getDonorsForIgg()

@@ -11,6 +11,7 @@ use App\Donation;
 use App\PreScreenedDonor;
 use App\Exam;
 use App\Donor;
+use App\IggResult;
 
 class TestingDetailsController extends Controller
 {
@@ -98,7 +99,9 @@ class TestingDetailsController extends Controller
         $check_donation_id = TestingDetails::where('donation_id', '=', $donation_id)->first();
         
         if($check_donation_id === null){
+            
             foreach($TTI as $key => $value){
+
                 // INSERT RECORD AT `bloodtest_dtls` table
                 $t2 = new TestingDetails;
                 $t2->bloodtest_no = $bloodtest_no;
@@ -216,10 +219,10 @@ class TestingDetailsController extends Controller
                 
                 // if donation id has no duplicate then
                 if($check_donation_id === null){
-                    
+
                     // loop each record
                     foreach($TTI as $key => $value){
-    
+            
                         // INSERT RECORD AT `bloodtest_dtls` table
                         $t2 = new TestingDetails;
                         $t2->bloodtest_no = $bloodtest_no;
@@ -229,6 +232,7 @@ class TestingDetailsController extends Controller
                         $t2->created_by = $facility_user;
                         $t2->created_dt = date('Y-m-d H:i:s');
                         $t2->save();  
+    
                     }
     
                     // INSET RECORD AT `bloodtest` table

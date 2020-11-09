@@ -126,4 +126,13 @@ class Donor extends Model
     function nation(){
         return $this->belongsTo('App\Nation','nationality','countrycode');
     }
+
+    function igg_result(){
+        return $this->belongsTo('App\IggResult', 'seqno', 'donor_sn');
+    }
+
+    function hla_hna_result(){
+        return $this->belongsTo('App\AdditionalHlaHnaTest', 'seqno', 'donor_sn');
+    }
+
 }

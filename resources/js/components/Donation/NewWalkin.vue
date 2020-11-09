@@ -243,7 +243,7 @@
             hide-header-close>
             
             <h4 class="alert-heading text-center">
-                <b-icon icon="droplet-half"></b-icon>&nbsp;New Walk-in donation has been added!
+                <b-icon icon="droplet-half"></b-icon>&nbsp;{{message}}
             </h4>
             
             <template v-slot:modal-footer="{ ok }">
@@ -291,6 +291,7 @@ export default {
         enableBtn: false,
         showSuccessMsg: false,
         showErrorMsg: false,
+        message: '',
         errMessage: '',
         mismatch_msg: '',
 
@@ -395,8 +396,8 @@ export default {
     }, /* mounted */
 
     methods: {
-        getDonorDetails(){
-            axios
+        async getDonorDetails(){
+            await axios
             .get('/donor-profile/' + this.$route.params.id)
             .then(response => (
                 this.fname = response.data.fname,
@@ -441,8 +442,8 @@ export default {
         },
 
         // LAST METHOD
-        setUname(e){
-            axios
+        async setUname(e){
+            await axios
                 .post('/create-new-walkin', {
                     created_dt: this.created_dt,
                     donor_sn: this.donor_sn,
@@ -472,6 +473,7 @@ export default {
                     
                     if(response.data.status){
                         this.enableBtn = true,
+                        this.message = response.data.message
                         this.showSuccessMsg = true
                     } else {
                         this.showErrorMsg = true
