@@ -308,39 +308,19 @@ class BloodProcessingController extends Controller
         foreach($parent as $val){
 
             $type = "";
+            $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
+            $col_date = Donation::select('created_dt')->where('donation_id', $val)->first();
+            $exp_date = self::getExpiration(100, $col_date['created_dt']);
 
             if(isset($blood_type[$val])){
                 $type = $blood_type[$val]['blood_type'];
             }
 
-            $total = $from_request[$val]['P01'] + $from_request[$val]['P02'] + $from_request[$val]['P03'];
-            $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
+            if(count($from_request) === 1){
 
-            $col_date = Donation::select('created_dt')->where('donation_id', $val)->first();
-            $exp_date = self::getExpiration(100, $col_date['created_dt']);
-
-            // create mother donation
-
-            $arr[$val] = array(
-                'donation_id'           => $val,
-                'source_donation_id'    => null,    
-                'aliqoute_by'           => $facility_cd,
-                'aliqoute_dt'           => date('Y-m-d'),
-                'component_cd'          => 100,
-                'blood_type'            => $type,
-                'location'              => $facility_cd,
-                'collection_dt'         => $col_date['created_dt'],
-                'expiration_dt'         => $exp_date,
-                'component_vol'         => $total,
-                'comp_stat'             => "FBT",
-                'created_by'            => $facility_cd,
-                'created_dt'            => date('Y-m-d'),
-            );
-
-            if($from_request[$val]['P01']){
-                $arr[$val . "-01"] = array(
-                    'donation_id'           => $val . "-01",
-                    'source_donation_id'    => $val,    
+                $arr[$val] = array(
+                    'donation_id'           => $val,
+                    'source_donation_id'    => null,    
                     'aliqoute_by'           => $facility_cd,
                     'aliqoute_dt'           => date('Y-m-d'),
                     'component_cd'          => 100,
@@ -352,13 +332,17 @@ class BloodProcessingController extends Controller
                     'comp_stat'             => "FBT",
                     'created_by'            => $facility_cd,
                     'created_dt'            => date('Y-m-d'),
-                );                
-            }
+                );
 
-            if($from_request[$val]['P02']){
-                $arr[$val . "-02"] = array(
-                    'donation_id'           => $val . "-02",
-                    'source_donation_id'    => $val,    
+            } else{
+
+                $total = $from_request[$val]['P01'] + $from_request[$val]['P02'] + $from_request[$val]['P03'];
+            
+                // create mother donation
+    
+                $arr[$val] = array(
+                    'donation_id'           => $val,
+                    'source_donation_id'    => null,    
                     'aliqoute_by'           => $facility_cd,
                     'aliqoute_dt'           => date('Y-m-d'),
                     'component_cd'          => 100,
@@ -366,30 +350,68 @@ class BloodProcessingController extends Controller
                     'location'              => $facility_cd,
                     'collection_dt'         => $col_date['created_dt'],
                     'expiration_dt'         => $exp_date,
-                    'component_vol'         => $from_request[$val]['P02'],
+                    'component_vol'         => $total,
                     'comp_stat'             => "FBT",
                     'created_by'            => $facility_cd,
                     'created_dt'            => date('Y-m-d'),
-                );                
+                );
+    
+                if($from_request[$val]['P01']){
+                    $arr[$val . "-01"] = array(
+                        'donation_id'           => $val . "-01",
+                        'source_donation_id'    => $val,    
+                        'aliqoute_by'           => $facility_cd,
+                        'aliqoute_dt'           => date('Y-m-d'),
+                        'component_cd'          => 100,
+                        'blood_type'            => $type,
+                        'location'              => $facility_cd,
+                        'collection_dt'         => $col_date['created_dt'],
+                        'expiration_dt'         => $exp_date,
+                        'component_vol'         => $from_request[$val]['P01'],
+                        'comp_stat'             => "FBT",
+                        'created_by'            => $facility_cd,
+                        'created_dt'            => date('Y-m-d'),
+                    );                
+                }
+    
+                if($from_request[$val]['P02']){
+                    $arr[$val . "-02"] = array(
+                        'donation_id'           => $val . "-02",
+                        'source_donation_id'    => $val,    
+                        'aliqoute_by'           => $facility_cd,
+                        'aliqoute_dt'           => date('Y-m-d'),
+                        'component_cd'          => 100,
+                        'blood_type'            => $type,
+                        'location'              => $facility_cd,
+                        'collection_dt'         => $col_date['created_dt'],
+                        'expiration_dt'         => $exp_date,
+                        'component_vol'         => $from_request[$val]['P02'],
+                        'comp_stat'             => "FBT",
+                        'created_by'            => $facility_cd,
+                        'created_dt'            => date('Y-m-d'),
+                    );                
+                }
+    
+                if($from_request[$val]['P03']){
+                    $arr[$val . "-03"] = array(
+                        'donation_id'           => $val . "-03",
+                        'source_donation_id'    => $val,    
+                        'aliqoute_by'           => $facility_cd,
+                        'aliqoute_dt'           => date('Y-m-d'),
+                        'component_cd'          => 100,
+                        'blood_type'            => $type,
+                        'location'              => $facility_cd,
+                        'collection_dt'         => $col_date['created_dt'],
+                        'expiration_dt'         => $exp_date,
+                        'component_vol'         => $from_request[$val]['P03'],
+                        'comp_stat'             => "FBT",
+                        'created_by'            => $facility_cd,
+                        'created_dt'            => date('Y-m-d'),
+                    );                
+                }
             }
 
-            if($from_request[$val]['P03']){
-                $arr[$val . "-03"] = array(
-                    'donation_id'           => $val . "-03",
-                    'source_donation_id'    => $val,    
-                    'aliqoute_by'           => $facility_cd,
-                    'aliqoute_dt'           => date('Y-m-d'),
-                    'component_cd'          => 100,
-                    'blood_type'            => $type,
-                    'location'              => $facility_cd,
-                    'collection_dt'         => $col_date['created_dt'],
-                    'expiration_dt'         => $exp_date,
-                    'component_vol'         => $from_request[$val]['P03'],
-                    'comp_stat'             => "FBT",
-                    'created_by'            => $facility_cd,
-                    'created_dt'            => date('Y-m-d'),
-                );                
-            }
+
         
         }
 

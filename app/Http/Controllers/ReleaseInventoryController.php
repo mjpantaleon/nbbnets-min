@@ -43,7 +43,7 @@ class ReleaseInventoryController extends Controller
                     $donation[$key]['units']["showP02"] = false;
                     $donation[$key]['units']["showP03"] = false;
 
-                    // $aliqoutes = Component::select('donation_id')->where('source_donation_id', $val['donation_id'])->get();
+                    $aliqoutes = Component::select('donation_id')->where('source_donation_id', $val['donation_id'])->get();
 
                     // foreach ($aliqoutes as $k => $v) {
                     //     $aliquote_number = explode("-", $v['donation_id']);
@@ -51,24 +51,34 @@ class ReleaseInventoryController extends Controller
 
                     // }
 
-                    $aliquote_arr = self::getCompStat($val['aliquote_component']);
+                    if(count($aliqoutes)){
 
-                    if($val['pheresis_label']){
+                        $aliquote_arr = self::getCompStat($val['aliquote_component']);
+
+                        if($val['pheresis_label']){
+        
+                            foreach($val['pheresis_label'] as $k => $v){
     
-                        foreach($val['pheresis_label'] as $k => $v){
-
-                            if( strpos($v->donation_id, "-01") !== false ){
-                                $donation[$key]['units']["p01"] = $aliquote_arr[$v->donation_id];
-                            } elseif( strpos($v->donation_id, "-02") !== false ){
-                                $donation[$key]['units']["p02"] = $aliquote_arr[$v->donation_id];
-                            } elseif( strpos($v->donation_id, "-03") !== false ){
-                                $donation[$key]['units']["p03"] = $aliquote_arr[$v->donation_id];
+                                if( strpos($v->donation_id, "-01") !== false ){
+                                    $donation[$key]['units']["p01"] = $aliquote_arr[$v->donation_id];
+                                } elseif( strpos($v->donation_id, "-02") !== false ){
+                                    $donation[$key]['units']["p02"] = $aliquote_arr[$v->donation_id];
+                                } elseif( strpos($v->donation_id, "-03") !== false ){
+                                    $donation[$key]['units']["p03"] = $aliquote_arr[$v->donation_id];
+                                }
+        
                             }
-    
+        
                         }
-    
+                    } else{
+
+                        $donation[$key]['units']["showM01"] = true;
+
+                        $aliqoutes = Component::select('comp_stat')->where('donation_id', $val['donation_id'])->first();
+                        $donation[$key]['units']["m01"] = $aliqoutes['comp_stat'];
+
                     }
-    
+
                 }
 
                 // \Log::info($donation);
@@ -90,6 +100,8 @@ class ReleaseInventoryController extends Controller
                                 ->where('collection_stat', $col_stat)
                                 ->whereCollectionType('CPC19')
                                 ->get();
+
+            \Log::info($request);
 
             if($donation){
 

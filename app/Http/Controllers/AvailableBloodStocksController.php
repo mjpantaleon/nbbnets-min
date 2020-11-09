@@ -24,10 +24,6 @@ class AvailableBloodStocksController extends Controller
                                 ->get()
                                 ->toArray();
 
-        // \Log::info($available);
-
-        
-
         $available = self::formatData($available);
         // return $available;
         return self::removeParent($available);
@@ -42,7 +38,7 @@ class AvailableBloodStocksController extends Controller
         if($id){
 
             $available = Component::select('blood_type','donation_id','component_vol','expiration_dt','component_cd', 'source_donation_id')
-                                ->with('donation_min')
+                                ->with('donation_min', 'aliqoute_donation')
                                 ->where('donation_id', 'LIKE', $id."%")
                                 ->whereLocation($facility_cd)
                                 ->whereCompStat('AVA')
@@ -126,8 +122,21 @@ class AvailableBloodStocksController extends Controller
         foreach($data as $key => $val){
 
             if($val['source_donation_id']){
-                $created_date = date('F j, Y', strtotime($arr[$val['source_donation_id']]['donation_min']['created_dt']));
-                $method       = "P";
+
+                foreach($data as $k => $v){
+                    if($val['source_donation_id'] == $v['donation_id']){
+                        if($v['donation_min']['collection_method'] == 'P'){
+                            $created_date = date('F j, Y', strtotime($arr[$val['source_donation_id']]['donation_min']['created_dt']));
+                            $method       = "P";
+                        } else{
+                            $created_date = date('F j, Y', strtotime($v['donation_min']['created_dt']));
+                            $method = "WB";
+                        }
+
+                        break;
+                    }
+                }
+                
             } else{
                 $created_date = date('F j, Y', strtotime($val['donation_min']['created_dt']));
 
@@ -140,11 +149,19 @@ class AvailableBloodStocksController extends Controller
 
             $diff = strtotime(date('Y-m-d H:i:s')) - strtotime($created_date);
 
+            if($method == 'P' && $abbr[$val['component_cd']] == 'CP'){
+                $comp_abbr = $abbr[$val['component_cd']] . " (Pheresis)";
+            } elseif($method == 'WB' && $abbr[$val['component_cd']] == 'CP'){
+                $comp_abbr = $abbr[$val['component_cd']] . " (WB)";
+            } else{
+                $comp_abbr = $abbr[$val['component_cd']];
+            }
+
             $ret[] = array(
 
                 'blood_type'        => $val['blood_type'],
                 'component_cd'      => $val['component_cd'],
-                'component_abbr'    => $abbr[$val['component_cd']],
+                'component_abbr'    => $comp_abbr,
                 'donation_id'       => $val['donation_id'],
                 'component_vol'     => $val['component_vol'],
                 'created_date'      => $created_date,
@@ -165,8 +182,12 @@ class AvailableBloodStocksController extends Controller
         foreach($data as $key => $value){
 
             if(!strpos($value['donation_id'], "-")){
-                if($value['method'] == 'P')
-                    unset($data[$key]);
+                if($value['method'] == 'P'){
+                    $if_has_aliquote = Component::select('donation_id')->where('source_donation_id', $value['donation_id'])->get();
+                    if(count($if_has_aliquote)){
+                        unset($data[$key]);
+                    }
+                }
             }
             
         }

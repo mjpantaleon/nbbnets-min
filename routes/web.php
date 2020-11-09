@@ -110,6 +110,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/get-available-blood-stocks', 'AvailableBloodStocksController@getList');
     Route::post('/update-available-list', 'AvailableBloodStocksController@updateList');
     
+    //ALIQUOTE
+    Route::post('/get-aliqoute-wb', 'AliquoteController@getAliquote');
+    Route::post('/save-aliquote-wb', 'AliquoteController@saveAliquote');
+    
     // BLOOD REQUEST
     Route::post('/blood-request-list', 'BloodRequestController@bloodRequestList');
     Route::get('/cp-components', 'BloodRequestController@getCpComponents');
