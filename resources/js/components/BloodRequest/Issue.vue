@@ -26,7 +26,7 @@
                 <b>Request Status : 
                     <span v-if="status == 'FLU'" class="text-danger">FOR LOOK UP</span>
                     <span v-if="status == 'RES'" class="text-success">RESERVED</span>
-                    <span v-if="status == 'Released'" class="text-primary">RELEASED</span>
+                    <span v-if="status == 'Released'" class="text-primary">ISSUED</span>
                 </b>
             </b-col>
             <b-col class="lead">
