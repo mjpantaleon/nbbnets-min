@@ -213,7 +213,7 @@ class TestingDetailsController extends Controller
                     'MALA'           => $bt['MALA'],
                     'RPR'            => $bt['RPR']
                 ];
-                
+
                 // check first if donationID already exists in bloodtest_dtls table and donation table
                 $check_donation_id = TestingDetails::where('donation_id', '=', $donation_id)->first();
                 
