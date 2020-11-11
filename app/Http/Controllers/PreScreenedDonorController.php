@@ -106,13 +106,16 @@ class PreScreenedDonorController extends Controller
         $from = date($request['date_from']);
         $to = date($request['date_to']);
 
+        // WILL GET RECORDS IF HAS NO NEGATIVE RESULT AT IGG RESULTS TABLE !!!!!
         // SELECT donor_sn, last_name, first_name, middle_name, name_suffix FROM pre_screened_donors WHERE facility_cd LIKE $facility_cd AND status = 1 AND approval_dt BETWEEN $from and $to
-        $query = "  SELECT donor_sn, last_name, first_name, middle_name, name_suffix
-                    FROM `pre_screened_donors`
-                    WHERE `facility_cd` LIKE $facility_cd 
-                    AND `status` = '1' 
-                    AND `approval_dt` BETWEEN '$from' AND '$to'
-                    ORDER BY `approval_dt` DESC "; 
+        $query = "  SELECT ps.donor_sn, ps.last_name, ps.first_name, ps.middle_name, ps.name_suffix
+                    FROM `pre_screened_donors` ps
+                    LEFT JOIN `igg_results` ig ON ig.donor_sn = ps.donor_sn
+                    WHERE ps.approval_dt BETWEEN '$from' AND '$to'
+                    AND ps.status = '1' 
+                    AND ig.igg != 'N'
+                    AND `facility_cd` LIKE $facility_cd
+                    ORDER BY ps.approval_dt DESC "; 
         $approved_donor_list = DB::select($query);
         
         $approved_donor_list = json_decode(json_encode($approved_donor_list), true);
