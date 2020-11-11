@@ -7,6 +7,7 @@ use App\Donation;
 use App\ComponentCode;
 use App\RCpComponentCode;
 use App\Component;
+use App\PheresisBloodLabel;
 use Session;
 
 class ReleaseInventoryController extends Controller
@@ -70,13 +71,23 @@ class ReleaseInventoryController extends Controller
                             }
         
                         }
+
                     } else{
 
-                        $donation[$key]['units']["showM01"] = true;
+                        $has_pheresis_save = PheresisBloodLabel::where('donation_id', $val['donation_id'])
+                                            ->get();
 
-                        $aliqoutes = Component::select('comp_stat')->where('donation_id', $val['donation_id'])->first();
-                        $donation[$key]['units']["m01"] = $aliqoutes['comp_stat'];
+                        \Log::info($val['donation_id']);
+                        \Log::info($has_pheresis_save);
 
+                        if(count($has_pheresis_save)){
+                            $donation[$key]['units']["showM01"] = true;
+
+                            $aliqoutes = Component::select('comp_stat')->where('donation_id', $val['donation_id'])->first();
+                            $donation[$key]['units']["m01"] = $aliqoutes['comp_stat'];
+                        } else{
+                            $donation[$key]['units']["showM01"] = false;
+                        }
                     }
 
                 }
@@ -100,8 +111,6 @@ class ReleaseInventoryController extends Controller
                                 ->where('collection_stat', $col_stat)
                                 ->whereCollectionType('CPC19')
                                 ->get();
-
-            \Log::info($request);
 
             if($donation){
 

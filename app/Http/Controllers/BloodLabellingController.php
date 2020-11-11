@@ -45,7 +45,7 @@ class BloodLabellingController extends Controller
     
                 foreach($donation as $key => $val){
 
-                    $aliqoutes = Component::select('donation_id')->where('source_donation_id', $val['donation_id'])->get();
+                    $aliqoutes = Component::select('donation_id', 'source_donation_id')->where('source_donation_id', $val['donation_id'])->get();
 
                     if(count($aliqoutes)){
 
@@ -70,6 +70,7 @@ class BloodLabellingController extends Controller
                             }
         
                         }
+
                     } else{
 
                         $donation[$key]['units']["showM01"] = true;

@@ -39,8 +39,6 @@ class BloodProcessingController extends Controller
 
             $donation = DB::select($sql);
 
-            \Log::info($donation);
-
             $donation = json_decode(json_encode($donation), true);
 
             
@@ -315,8 +313,10 @@ class BloodProcessingController extends Controller
             if(isset($blood_type[$val])){
                 $type = $blood_type[$val]['blood_type'];
             }
+            
+            \Log::info($from_request[$val]);
 
-            if(count($from_request) === 1){
+            if(is_null($from_request[$val]['P02']) && is_null($from_request[$val]['P03'])){
 
                 $arr[$val] = array(
                     'donation_id'           => $val,
@@ -410,8 +410,6 @@ class BloodProcessingController extends Controller
                     );                
                 }
             }
-
-
         
         }
 
