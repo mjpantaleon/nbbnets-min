@@ -32,7 +32,14 @@ class LoginController extends Controller
                 ));
             } else{
                 $status = false;
-                $error = "Login failed! Wrong password.";                
+                $error = "Login failed! Wrong password.";  
+
+                return [
+                    'status' => $status,
+                    'error' => $error,
+                    // 'user' => $user,
+                    // 'token' => $status ? $this->token() : null
+                ];              
             }
 
             // $user->username = $request->get('username');s

@@ -313,8 +313,6 @@ class BloodProcessingController extends Controller
             if(isset($blood_type[$val])){
                 $type = $blood_type[$val]['blood_type'];
             }
-            
-            \Log::info($from_request[$val]);
 
             if(is_null($from_request[$val]['P02']) && is_null($from_request[$val]['P03'])){
 
@@ -437,7 +435,6 @@ class BloodProcessingController extends Controller
             default:
                 return 0;
         }
-
 
     }
 

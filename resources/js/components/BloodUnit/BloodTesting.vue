@@ -338,6 +338,8 @@ export default {
         // LAST METHOD
         setUname(e){
 
+            this.isLoading = true
+
             axios
                 .post('/save-blood-testing', {
                     blood_testing: this.final_data,
@@ -347,7 +349,8 @@ export default {
 
                     if(response.data){
                         // this.donation_ids = response.data
-                        this.showSuccessMsg = true
+                        this.isLoading = false,
+                        this.showSuccessMsg = true,
                         this.checked = []
                         
                     }

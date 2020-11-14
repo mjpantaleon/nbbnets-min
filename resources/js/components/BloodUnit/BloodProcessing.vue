@@ -398,6 +398,8 @@ export default {
 
         async setUname(e){
 
+            this.isLoading = true
+
             await axios
                 .post('/save-blood-processing', {
                     blood_processing: this.final_data,
@@ -405,6 +407,8 @@ export default {
                     verifier: e,
                 })
                 .then(response => {
+
+                    this.isLoading = false
 
                     if(response.data){
                         // this.donation_ids = response.data
