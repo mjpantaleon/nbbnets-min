@@ -35,6 +35,28 @@
                 </b-col>
             </b-row>
         </div>
+
+
+        <b-modal v-model="showError" centered
+            title="Error"
+            header-bg-variant="danger"
+            body-bg-variant="light" 
+            footer-bg-variant="danger"
+            header-text-variant="light"
+            hide-header-close>
+            
+            <h5 class="alert-heading text-center">
+                <b-icon icon="person-bounding-box"></b-icon>&nbsp;{{ errorMessage }}
+            </h5>
+            
+            <template v-slot:modal-footer="{ ok }">
+                <b-link class="btn btn-danger"
+                    size="sm" variant="danger" @click="ok()">
+                    OK
+                </b-link>
+            </template>
+        </b-modal>
+
     </div>
 </template>
 
@@ -48,7 +70,6 @@ export default {
             showError: false,
             errorMessage: '',
             displayBlank: true,
-            
         }
     }, /* data */
 
@@ -80,8 +101,6 @@ export default {
         },
         
         login(){
-
-            this.showError = false
 
             axios
                 .post('/login-attempt', {

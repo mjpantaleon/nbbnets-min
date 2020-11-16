@@ -528,6 +528,8 @@ export default {
 
         setUname(e){
 
+            this.isLoading = true
+
             axios
                 .post('/update-blood-inventory', {
                     release_data: this.checked,
@@ -535,6 +537,8 @@ export default {
                     method: this.col_method,
                 })
                 .then(response => {
+
+                    this.isLoading = false
 
                     if(response.data){
                         this.showSuccessMsg = true

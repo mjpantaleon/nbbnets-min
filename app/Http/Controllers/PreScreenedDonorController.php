@@ -111,9 +111,11 @@ class PreScreenedDonorController extends Controller
         $query = "  SELECT ps.donor_sn, ps.last_name, ps.first_name, ps.middle_name, ps.name_suffix
                     FROM `pre_screened_donors` ps
                     LEFT JOIN `igg_results` ig ON ig.donor_sn = ps.donor_sn
+                    LEFT JOIN `additional_hla_hna_tests` hla ON hla.donor_sn = ps.donor_sn
                     WHERE ps.approval_dt BETWEEN '$from' AND '$to'
                     AND ps.status = '1' 
                     AND ig.igg != 'N'
+                    AND hla.result != 'P'
                     AND `facility_cd` LIKE $facility_cd
                     ORDER BY ps.approval_dt DESC "; 
         $approved_donor_list = DB::select($query);

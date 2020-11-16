@@ -312,12 +312,16 @@ export default {
 
         async setUname(e){
 
-             await axios
+            this.isLoading = true
+
+            await axios
                 .post('/save-blood-typing', {
                     blood_typing: this.final_data,
                     verifier: e,
                 })
                 .then(response => {
+
+                    this.isLoading = false
 
                     if(response.data){
                         // this.donation_ids = response.data
