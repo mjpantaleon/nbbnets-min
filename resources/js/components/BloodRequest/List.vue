@@ -57,7 +57,7 @@
                     </template>
 
                     <template v-slot:cell(patient_name)="data">
-                        {{ data.item.lastname }}
+                        {{ data.item.firstname }} {{ data.item.middlename }} {{ data.item.lastname }}
                     </template>
 
                     <template v-slot:cell(blood_type)="data">
@@ -75,16 +75,22 @@
                     </template>
 
                     <template v-slot:cell(action)="data">
-                        <router-link :to="{ path: '/blood-request/view/' + data.item.request_id }" title="View Blood Request Details">
+                        <router-link :to="{ path: '/blood-request/view/' + data.item.request_id }" title="View Blood Request Details" v-if="data.item.status == 'FLU'">
                             <b-icon icon="search" class="border border-primary p-1" variant="primary" font-scale="2.1"></b-icon>
                         </router-link>
-                        
-                        <!-- <template v-if="data.item.status == 'RES' && data.item.status != 'Released'"> -->
-                        <template>
-                        <router-link :to="{ path: '/blood-request/issue/' + data.item.request_id }" title="Issue Blood request">
+
+                        <router-link :to="{ path: '/blood-request/issue/' + data.item.request_id }" title="Issue Blood request" v-if="data.item.status == 'RES'">
                             <b-icon icon="check-circle" class="border border-success p-1" variant="success" font-scale="2.1"></b-icon>
+                        </router-link>                       
+
+                        <router-link  @click.native="asdf" :to="{}" title="Cancel Blood request" v-if="data.item.status != 'Released'">
+                            <b-icon icon="x-square" class="border border-danger p-1" variant="danger" font-scale="2.1"></b-icon>
                         </router-link>
-                        </template>
+<!-- 
+                        <b-button variant="outline-danger" class="border border-danger p-1" size="sm">
+                            <b-icon icon="x-square"></b-icon>
+                        </b-button> -->
+
                     </template>
                 </b-table>
             </b-col>
@@ -161,6 +167,11 @@ export default {
                 }
             })
         },
+
+        asdf(){
+            alert('Shitz')
+        }
+
     }, /* methods */
 
     watch: {

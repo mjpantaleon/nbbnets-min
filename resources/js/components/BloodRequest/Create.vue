@@ -240,6 +240,21 @@
             </b-col>
         </b-row>
 
+        <!-- hospital -->
+        <b-row>
+            <b-col md="8">
+                    <b-form-group
+                        id="fieldset-horizontal"
+                        label-cols-sm="2"
+                        label-cols-lg="2"
+                        description="Type-in hospital"
+                        label="Hospital"
+                        label-for="hospital">
+                        <b-form-input v-model="hospital" id="hospital"></b-form-input>
+                    </b-form-group>
+            </b-col>
+        </b-row>
+
         <!-- <h4 class="text-secondary mt-3"> <b-icon icon="exclamation"></b-icon> Additional Information</h4> -->
         <!-- Additional Information -->
         <!-- <b-row>
@@ -405,6 +420,7 @@ export default {
 
             mobile_no: '',
             email: '',
+            hospital: '',
 
             gerder_list: [
                 { value: 'M', text: 'Male' },
@@ -545,6 +561,7 @@ export default {
 
                 mobile_no: this.mobile_no,
                 email: this.email,
+                hospital: this.hospital,
                 requested_units: this.cp_components,
 
                 verifier: e,

@@ -163,7 +163,7 @@ class BloodProcessingController extends Controller
         if($status){
 
             return response()->json([
-                'message' => 'Blood Typing has been successfully added.',
+                'message' => 'Blood Processing has been successfully added.',
                 'status' => 1
             ], 200);
 

@@ -231,6 +231,8 @@ class BloodLabellingController extends Controller
         $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
         $user_id        = Session::get('userInfo')['user_id'];
 
+        \Log::info($request);
+
         if($method == 'P'){
             
             if(count($label_data) === 1){
@@ -245,6 +247,13 @@ class BloodLabellingController extends Controller
                 $label->component_cd = 100;
                 $label->reprint_count = 0;
                 $label->reason = null;
+
+                if(strpos($label_data[0], '-')){ // if only 1 aliquote will be saved, to prevent error in source_donation_id field
+
+                    $split = explode("-", $label_data[0]);
+                    $label->source_donation_id = $split[0];
+                }
+
                 $label->save();
 
             } else{
