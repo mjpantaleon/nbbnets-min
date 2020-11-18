@@ -261,6 +261,7 @@ class BloodRequestController extends Controller
     
                         'mobile_num'    => $request['mobile_no'],
                         'email'         => $request['email'],
+                        'hospital'      => $request['hospital'],
                     )
                 );
 

@@ -520,7 +520,7 @@ export default {
             // how to add number of blood units request? to avoid sending of empty request
             
             if(this.fname == "" || this.lname == "" || this.blood_type == "" || this.bdate == '' || this.diagnosis == ''
-                || this.dr_fname == '' || this.dr_lname == '' || this.mobile_no == '' || this.email == ''){
+                || this.dr_fname == '' || this.dr_lname == '' || this.mobile_no == '' || this.email == '' || this.hospital == ''){
                 return err = true
             }
             

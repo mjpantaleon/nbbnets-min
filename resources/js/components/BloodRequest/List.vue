@@ -83,7 +83,7 @@
                             <b-icon icon="check-circle" class="border border-success p-1" variant="success" font-scale="2.1"></b-icon>
                         </router-link>                       
 
-                        <router-link  @click.native="asdf" :to="{}" title="Cancel Blood request" v-if="data.item.status != 'Released'">
+                        <router-link  @click.native="cancelRequest" :to="{}" title="Cancel Blood request" v-if="data.item.status != 'Released'">
                             <b-icon icon="x-square" class="border border-danger p-1" variant="danger" font-scale="2.1"></b-icon>
                         </router-link>
 <!-- 
@@ -168,7 +168,7 @@ export default {
             })
         },
 
-        asdf(){
+        cancelRequest(){
             alert('Shitz')
         }
 
