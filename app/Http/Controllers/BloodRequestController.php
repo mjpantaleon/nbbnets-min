@@ -38,19 +38,29 @@ class BloodRequestController extends Controller
         AND brd.donation_id IS NULL
         */
 
-        $sql =" SELECT DISTINCT(br.request_id), br.reference, br.request_type, br.status, bp.patient_id, bp.firstname, bp.middlename, bp.lastname, bp.blood_type 
-                FROM `bau_blood_request` br
-                LEFT JOIN `bau_patient` bp ON bp.patient_id = br.patient_id
-                LEFT JOIN `bau_blood_request_dtls` brd ON br.request_id = brd.request_id
-                WHERE br.created_dt LIKE '%$selected_dt%'
-                AND facility_cd = '$facility_cd' ";
+        $sql = BauBloodRequest::select('request_id', 'reference', 'request_type', 'status', 'patient_id')->distinct()
+                            ->where('created_dt', 'LIKE', '%' .$selected_dt. '%')
+                            ->whereFacilityCd($facility_cd)
+                            ->with('details')
+                            ->with('patient_details')
+                            ->get()
+                            ->toArray();
+        \Log::info($sql);
+        return $sql;
 
-        $result = DB::select($sql);
-        // \Log::info($result);
+        // $sql =" SELECT DISTINCT(br.request_id), br.reference, br.request_type, br.status, bp.patient_id, bp.firstname, bp.middlename, bp.lastname, bp.blood_type 
+        //         FROM `bau_blood_request` br
+        //         LEFT JOIN `bau_patient` bp ON bp.patient_id = br.patient_id
+        //         LEFT JOIN `bau_blood_request_dtls` brd ON br.request_id = brd.request_id
+        //         WHERE br.created_dt LIKE '%$selected_dt%'
+        //         AND facility_cd = '$facility_cd' ";
+
+        // $result = DB::select($sql);
+        // // \Log::info($result);
         
-        $result = json_decode(json_encode($result), true);
-        // \Log::info($result);
-        return $result;
+        // $result = json_decode(json_encode($result), true);
+        // // \Log::info($result);
+        // return $result;
     }
 
     public function forLookUp($id){

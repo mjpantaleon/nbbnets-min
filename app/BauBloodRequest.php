@@ -33,5 +33,12 @@ class BauBloodRequest extends Model
                     ->select('request_component_id', 'request_id', 'blood_type', 'donation_id','component_cd');
     }
 
+    function blood_type(){
+        return $this->hasMany('App\BauBloodRequestDetail','request_id', 'request_id')
+                    ->select('request_component_id', 'request_id', 'blood_type', 'donation_id');
+    }
+
+
+
     
 }

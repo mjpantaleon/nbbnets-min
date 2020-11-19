@@ -57,11 +57,11 @@
                     </template>
 
                     <template v-slot:cell(patient_name)="data">
-                        {{ data.item.firstname }} {{ data.item.middlename }} {{ data.item.lastname }}
+                        {{ data.item.patient_details.firstname }} {{ data.item.patient_details.middlename }} {{ data.item.patient_details.lastname }}
                     </template>
 
                     <template v-slot:cell(blood_type)="data">
-                        <span class="text-danger"><b>{{data.item.blood_type}}</b></span>
+                        <span class="text-danger"><b>{{data.item.details[0].blood_type}}</b></span>
                     </template>
 
                     <template v-slot:cell(request_type)="data">
@@ -82,7 +82,7 @@
                         </router-link>
                      
                         <router-link :to="{ path: '/blood-request/issue/' + data.item.request_id }" title="Issue Blood request" 
-                        v-if="data.item.status == 'RES' && data.item.status != 'Cancelled'">
+                        v-if="data.item.details[0].donation_id != null && data.item.reference == '-' || data.item.status == 'RES'">
                             <b-icon icon="check-circle" class="border border-success p-1" variant="success" font-scale="2.1"></b-icon>
                         </router-link>                       
 
@@ -149,7 +149,7 @@ export default {
 
             request_fields: [
                 { key: 'reference_num', label: 'Reference #' },
-                { key: 'patient_name', label: 'Patient Last Name' },
+                { key: 'patient_name', label: 'Patient Name' },
                 { key: 'blood_type', label: 'Blood Type' },
                 { key: 'request_type', label: 'Request Type' },
                 { key: 'status', label: 'Status' },
