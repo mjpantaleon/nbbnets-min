@@ -461,6 +461,7 @@ export default {
 
     methods: {
         getDonationId (){
+        this.isLoading = true
 
             axios
                 .post('/get-donation-id-release', {
@@ -471,9 +472,11 @@ export default {
                 .then(response => {
 
                     if(response.data){
+                        this.isLoading = false
                         this.data = response.data.data
                     } else{
                         this.data = null
+                        this.isLoading = false
                     }
                     
                 })
