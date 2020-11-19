@@ -153,9 +153,7 @@ export default {
 
             await axios
             .post('/blood-request-list', {
-                // date_from: this.date_from,
-                // date_to: this.date_to
-
+                
                 selected_dt: this.selected_dt
             })
             .then(response => {
