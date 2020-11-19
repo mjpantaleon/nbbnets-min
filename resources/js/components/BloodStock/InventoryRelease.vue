@@ -462,7 +462,7 @@ export default {
     methods: {
         getDonationId (){
         this.isLoading = true
-
+    
             axios
                 .post('/get-donation-id-release', {
                     date_from: this.date_from,
