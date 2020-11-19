@@ -267,7 +267,6 @@ class TestingDetailsController extends Controller
                         $t->updated_dt = date('Y-m-d H:i:s');
                         $t->save();
     
-    
                         /*
                             Check if there are records in blood typing,
                             If there is an entry, change the status in Pre screened donor to 2

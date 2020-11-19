@@ -324,7 +324,6 @@ class PreScreenedDonorController extends Controller
                                 ->where('name_suffix', '=', $name_suffix)
                                 ->where('bdate', '=', $bdate)
                                 ->first();
-        \Log::info($check_existing_record);
 
         // if not exist then
         if($check_existing_record === null){
@@ -406,8 +405,6 @@ class PreScreenedDonorController extends Controller
                     AND ig.donation_id IS NULL ";
                 
         $donors_to_igg = DB::select($query);
-
-        \Log::info($donors_to_igg);
         
         $donors_to_igg = json_decode(json_encode($donors_to_igg), true);
         // return($donors_to_igg);
@@ -424,7 +421,6 @@ class PreScreenedDonorController extends Controller
                 $ids[$i]['igg_result'] = "";
             }
             
-            \Log::info($ids);
             return $ids;
         } else {
             return false;

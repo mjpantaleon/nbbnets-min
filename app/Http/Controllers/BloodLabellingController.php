@@ -103,8 +103,8 @@ class BloodLabellingController extends Controller
                                 ->whereNotNull('donor_sn')
                                 ->whereFacilityCd($facility_cd)
                                 ->whereSchedId($sched_id)
-                                // ->whereBetween('created_dt', [$from, $to])
-                                // ->where('collection_stat', $col_stat)
+                                ->whereBetween('created_dt', [$from, $to])
+                                ->where('collection_stat', $col_stat)
                                 ->where('collection_type', "CPC19")
                                 ->get();
 
@@ -230,8 +230,6 @@ class BloodLabellingController extends Controller
         $method         = $request->get('method');
         $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
         $user_id        = Session::get('userInfo')['user_id'];
-
-        \Log::info($request);
 
         if($method == 'P'){
             

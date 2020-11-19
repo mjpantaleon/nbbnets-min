@@ -190,11 +190,12 @@ class ReleaseInventoryController extends Controller
 
                 $split = explode("-", $val);
     
-                $comp = Component::whereDonationId($split[1])
-                                ->whereComponentCd($split[0])
-                                ->first();
-                $comp->comp_stat = 'AVA';
-                $comp->save();
+                Component::where('donation_id', $split[1])
+                        ->where('component_cd', intval($split[0]))
+                        ->update([
+                            'comp_stat' => 'AVA'
+                        ]);
+                
             }
     
             return response()->json([
