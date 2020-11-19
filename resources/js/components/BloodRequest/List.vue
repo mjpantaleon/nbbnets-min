@@ -72,24 +72,24 @@
                         <span class="text-danger" v-if="data.item.status == 'FLU'"><b>FOR LOOK UP</b></span>
                         <span class="text-success" v-if="data.item.status == 'RES'"><b>RESERVED</b></span>
                         <span class="text-primary" v-if="data.item.status == 'Released'"><b>ISSUED</b></span>
+                        <span class="text-secondary" v-if="data.item.status == 'Cancelled'"><b>CANCELLED</b></span>
                     </template>
 
                     <template v-slot:cell(action)="data">
-                        <router-link :to="{ path: '/blood-request/view/' + data.item.request_id }" title="View Blood Request Details" v-if="data.item.status == 'FLU'">
+                        <router-link :to="{ path: '/blood-request/view/' + data.item.request_id }" title="View Blood Request Details" 
+                        v-if="data.item.status == 'FLU' || data.item.status != 'Cancelled'">
                             <b-icon icon="search" class="border border-primary p-1" variant="primary" font-scale="2.1"></b-icon>
                         </router-link>
-
-                        <router-link :to="{ path: '/blood-request/issue/' + data.item.request_id }" title="Issue Blood request" v-if="data.item.status == 'RES'">
+                     
+                        <router-link :to="{ path: '/blood-request/issue/' + data.item.request_id }" title="Issue Blood request" 
+                        v-if="data.item.status == 'RES' && data.item.status != 'Cancelled'">
                             <b-icon icon="check-circle" class="border border-success p-1" variant="success" font-scale="2.1"></b-icon>
                         </router-link>                       
 
-                        <router-link  @click.native="cancelRequest" :to="{}" title="Cancel Blood request" v-if="data.item.status != 'Released'">
+                        <router-link  @click.native="cancelRequest(data.item.request_id)" :to="{}" title="Cancel Blood request" 
+                        v-if="data.item.status != 'Released' && data.item.status != 'Cancelled'">
                             <b-icon icon="x-square" class="border border-danger p-1" variant="danger" font-scale="2.1"></b-icon>
                         </router-link>
-<!-- 
-                        <b-button variant="outline-danger" class="border border-danger p-1" size="sm">
-                            <b-icon icon="x-square"></b-icon>
-                        </b-button> -->
 
                     </template>
                 </b-table>
@@ -102,6 +102,30 @@
             <b-col class="text-center">No record/s to this display</b-col>
         </b-row>
         </template>
+
+        <!-- =============== MODALS ================ -->
+        <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
+        <b-modal v-model="showSuccessMsg" centered
+            title="INFO"
+            header-bg-variant="info"
+            body-bg-variant="light" 
+            footer-bg-variant="info"
+            header-text-variant="light"
+            hide-header-close>
+            
+            <h5 class="alert-heading text-center">
+                <b-icon variant="danger" icon="droplet-half"></b-icon>&nbsp;{{message}}
+            </h5>
+            
+            <template v-slot:modal-footer="{ ok }">
+            <!-- <template v-slot:modal-footer="{ ok }"> -->
+                <b-link class="btn btn-info" :to="{ path: '/blood-request/list' }"
+                    size="sm" variant="info" @click="ok()">
+                    OK
+                </b-link>
+            </template>
+        </b-modal>
+        <!-- =============== MODALS ================ -->
 
 
   </div>
@@ -161,13 +185,36 @@ export default {
                     this.isLoading = false
                     this.data = response.data
                 } else {
+                    this.isLoading = false
                     this.data = []
                 }
             })
-        },
+        },      
 
-        cancelRequest(){
-            alert('Shitz')
+        async cancelRequest(id){
+            this.isLoading = true
+
+            var answer = window.confirm("Are you sure you want to cancel this request?");
+            if(answer){
+
+                await axios
+                .post('/cancel-blood-request', {
+                    request_id: id
+                })
+                .then(response => {
+                    if(response.data.status){
+                        this.isLoading = false
+                        this.showSuccessMsg = true
+                        this.message = response.data.message
+                        this.getBloodRequests()
+                        // console.log(response.data)
+                    }
+                })
+
+            } else{
+                this.isLoading = false
+            }
+
         }
 
     }, /* methods */

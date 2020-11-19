@@ -128,6 +128,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/blood-request', 'BloodRequestController@create');
     Route::get('/blood-request-details/{id}', 'BloodRequestController@getBloodRequestDetails');
     Route::post('/issue-blood-request/{id}', 'BloodRequestController@issueBloodRequest');
+    // Route::post('/cancel-blood-request/{id}', 'BloodRequestController@cancelBloodRequest');
+    Route::post('/cancel-blood-request', 'BloodRequestController@cancelBloodRequest');
 
 
     Route::get('/logout', 'LoginController@logout');

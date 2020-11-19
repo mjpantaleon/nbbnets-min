@@ -113,7 +113,7 @@
         </b-row>
         
         <b-row>
-            <b-col md="4" v-if="status != 'FLU' && status != 'Released' || details.donation_id != ''">
+            <b-col md="4" v-if="status != 'FLU' || status != 'Released' || details.donation_id != ''">
                 <b-button block
                     variant="success"
                     @click.prevent="showModal">

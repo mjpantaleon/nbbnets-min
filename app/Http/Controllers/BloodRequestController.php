@@ -448,6 +448,60 @@ class BloodRequestController extends Controller
     // ISSUE BLOOD UNIT MODULE ////////////////////////////////////////////////////////////////
     
 
+    public function cancelBloodRequest(Request $request){
+        $facility_user  = Session::get('userInfo')['user_id'];
+        $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
+        
+        $verifier       = $request->get('verifier');
+        
+        $blood_request_id   = $request->get('request_id'); 
+        // \Log::info($cancel_blood_request);
 
+        // FIRST CHECK BLOOD_REQUEST_DTLS IF THERE WERE RECORDS WITH DONATION ID UNDER THIS REQUEST_ID
+        $check_for_reserved_units = BauBloodRequestDetail::where('request_id', $blood_request_id)
+                            ->whereNotNull('donation_id')
+                            ->get()
+                            ->toArray();
+
+        // \Log::info($check_for_reserved_units);
+        // return $check_for_reserved_units;
+
+        // if there were NO reserved units under this request_id then proceed to
+        if(!$check_for_reserved_units){
+
+              // UPDATE BAU BLOOD REQUEST TABLE
+              BauBloodRequest::where('request_id', $blood_request_id)
+              ->update(['status' => 'Cancelled']);
+        }
+
+        // else if there were RESERVED units under this request_id then proceed to
+        else{
+
+            // get each record then proceed to
+            foreach($check_for_reserved_units as $key => $value){
+                $donation_id = $value['donation_id'];
+                $request_id = $value['request_id'];
+    
+                // UPDATE component SET comp_stat = 'AVA' WHERE donation_id = $donation_id
+                Component::where('donation_id', $donation_id)
+                        ->update(['comp_stat' => 'AVA']);
+    
+                // UPDATE BauBloodRequestDetail SET donation_id = null WHERE request_id = $blood_request_id
+                BauBloodRequestDetail::where('request_id', $blood_request_id)
+                                    ->update(['donation_id' => null]);
+    
+                // UPDATE BAU BLOOD REQUEST TABLE
+                BauBloodRequest::where('request_id', $blood_request_id)
+                                ->update(['status' => 'Cancelled']);
+            }
+        }
+
+        // return response after each loop
+        return response()->json([
+            'message' => "Blood request has been cancelled successfully",
+            'status' => 1
+        ], 200);
+
+    }
 
 }
