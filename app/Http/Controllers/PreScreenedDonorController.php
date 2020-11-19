@@ -112,13 +112,18 @@ class PreScreenedDonorController extends Controller
         
         // $query = "  SELECT ps.donor_sn, ps.last_name, ps.first_name, ps.middle_name, ps.name_suffix, ig.donation_id
         $query = "  SELECT ps.donor_sn, ig.donation_id
+                    , bt.bloodtest_no
                     FROM `pre_screened_donors` ps
                     LEFT JOIN `igg_results` ig ON ig.donor_sn = ps.donor_sn
+                    LEFT JOIN `bloodtest` bt ON bt.donation_id = ig.donation_id
+                    COLLATE utf8_general_ci
                     WHERE ps.approval_dt BETWEEN '$from' AND '$to'
                     AND ps.status = '1' 
                     AND ig.igg != 'N'
-                    AND `facility_cd` LIKE $facility_cd
+                    AND ps.facility_cd LIKE $facility_cd
+                    AND bt.bloodtest_no IS NULL
                     ORDER BY ps.approval_dt ASC "; 
+
         $approved_donor_list = DB::select($query);
         
         $approved_donor_list = json_decode(json_encode($approved_donor_list), true);
@@ -139,8 +144,6 @@ class PreScreenedDonorController extends Controller
                 $ids[$i]['MALA'] = "";
                 $ids[$i]['RPR'] = "";
             }
-
-            \Log::info(gettype($ids));
 
             return $ids;
             // \Log::info($approved_donor_list);
@@ -166,7 +169,6 @@ class PreScreenedDonorController extends Controller
         // initialize data
         $facility_user = $facility_user;
         $facility_cd = $facility_cd;
-        \Log::info($facility_user);
 
         $year_now = date('Y');              // 2020
         $donors_count = Donor::count(); 
@@ -322,7 +324,6 @@ class PreScreenedDonorController extends Controller
                                 ->where('name_suffix', '=', $name_suffix)
                                 ->where('bdate', '=', $bdate)
                                 ->first();
-        \Log::info($check_existing_record);
 
         // if not exist then
         if($check_existing_record === null){
@@ -404,8 +405,6 @@ class PreScreenedDonorController extends Controller
                     AND ig.donation_id IS NULL ";
                 
         $donors_to_igg = DB::select($query);
-
-        \Log::info($donors_to_igg);
         
         $donors_to_igg = json_decode(json_encode($donors_to_igg), true);
         // return($donors_to_igg);
@@ -422,7 +421,6 @@ class PreScreenedDonorController extends Controller
                 $ids[$i]['igg_result'] = "";
             }
             
-            \Log::info($ids);
             return $ids;
         } else {
             return false;
