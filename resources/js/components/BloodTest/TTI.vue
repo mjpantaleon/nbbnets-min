@@ -75,13 +75,13 @@
                     :fields="tti_fields"
                     :items="data">
 
-                    <template v-slot:cell(donor)="data">
+                    <!-- <template v-slot:cell(donor)="data">
                         {{ data.item.first_name }} {{ data.item.middle_name ? data.item.middle_name : null }} {{ data.item.last_name }} {{ data.item.name_suffix ? data.item.name_suffix : null }}    
-                    </template>
+                    </template> -->
 
                     <template v-slot:cell(donation_id)="data">
-                        <b-form-input placeholder="Scan Donation ID" v-model="data.item.donation_id"></b-form-input>
-                        
+                        <!-- <b-form-input placeholder="Scan Donation ID" v-model="data.item.donation_id"></b-form-input> -->
+                        {{data.item.donation_id}}
                     </template>
 
                     <template v-slot:cell(HBSAG)="data">
@@ -203,7 +203,7 @@ export default {
             ],
 
             tti_fields: [
-                { key: 'donor', label: 'Donor' },
+                // { key: 'donor', label: 'Donor' },
                 { key: 'donation_id', label: 'Donation ID' },
                 { key: 'HBSAG', label: 'Hbsag' },
                 { key: 'HCV', label: 'Hcv' },

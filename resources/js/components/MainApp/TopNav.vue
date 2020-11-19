@@ -27,6 +27,7 @@
                 </template>
 
                 <b-dropdown-item :to="{ path: '/blood-test-tti' }">TTI</b-dropdown-item>
+                <b-dropdown-item :to="{ path: '/blood-typing' }">Blood Typing</b-dropdown-item>
                 <b-dropdown-divider></b-dropdown-divider>
 
                 <b-dropdown-item :to="{ path: '/blood-test-nat' }">NAT</b-dropdown-item>
@@ -46,7 +47,6 @@
                     BLOOD UNIT
                 </template>
                 
-                <b-dropdown-item :to="{ path: '/blood-typing' }">Blood Typing</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/blood-processing' }">Blood Processing</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/labelling' }">Blood Label</b-dropdown-item>
                 <!-- <b-dropdown-item :to="{ path: '/aliquote' }">Aliquote</b-dropdown-item> -->

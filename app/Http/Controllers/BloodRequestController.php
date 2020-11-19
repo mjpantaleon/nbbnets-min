@@ -38,7 +38,7 @@ class BloodRequestController extends Controller
         AND brd.donation_id IS NULL
         */
 
-        $sql =" SELECT DISTINCT(br.request_id), br.reference, br.request_type, br.status, bp.patient_id, bp.firstname, bp.lastname, bp.blood_type 
+        $sql =" SELECT DISTINCT(br.request_id), br.reference, br.request_type, br.status, bp.patient_id, bp.firstname, bp.middlename, bp.lastname, bp.blood_type 
                 FROM `bau_blood_request` br
                 LEFT JOIN `bau_patient` bp ON bp.patient_id = br.patient_id
                 LEFT JOIN `bau_blood_request_dtls` brd ON br.request_id = brd.request_id
@@ -147,7 +147,7 @@ class BloodRequestController extends Controller
                     ORDER BY c.created_dt ASC
         */
 
-        $sql = "    SELECT c.donation_id, c.component_cd, c.blood_type, c.comp_stat , cp.comp_name, d.gender
+        $sql = "    SELECT c.donation_id, c.component_cd, c.blood_type, c.comp_stat , cp.comp_name, d.gender, dd.collection_method
                     FROM `component` c
                     LEFT JOIN `r_cp_component_codes` cp ON c.component_cd = cp.component_code
                     LEFT JOIN `donation` dd ON dd.donation_id = c.donation_id
@@ -157,10 +157,10 @@ class BloodRequestController extends Controller
                     AND `location` = '$facility_cd'
                     AND `component_cd` >= 100
                     AND `expiration_dt` >= '$date'
+                    AND (dd.collection_method = 'WB' OR ISNULL(dd.collection_method))
                     ORDER BY c.created_dt ASC ";
         
         $available_cp_units = DB::select($sql);
-        \Log::info($available_cp_units);
 
         // $available_cp_units = Component::where('blood_type', $blood_type)
         //                 ->select('donation_id', 'component_cd', 'blood_type', 'comp_stat')
@@ -261,6 +261,7 @@ class BloodRequestController extends Controller
     
                         'mobile_num'    => $request['mobile_no'],
                         'email'         => $request['email'],
+                        'hospital'      => $request['hospital'],
                     )
                 );
 

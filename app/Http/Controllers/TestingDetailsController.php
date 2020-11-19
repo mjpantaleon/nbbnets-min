@@ -271,6 +271,8 @@ class TestingDetailsController extends Controller
                     $d->pre_registered = 'Y';
                     $d->sched_id = $sched_id;
                     $d->donation_stat = $fail ? 'REA' : 'Y';
+                    $d->mh_pe_stat = 'PD';
+                    $d->mh_pe_deferral = 'TTI';
                     $d->facility_cd = $facility_cd;
                     // $d->created_dt = date('Y-m-d H:i:s');
                     $d->save();
@@ -278,7 +280,8 @@ class TestingDetailsController extends Controller
                     //Update 'Donor' table
                     $donor_update_arr = array(
                         'donation_stat' => $fail ? 'N' : 'Y',
-                        'donor_stat' => $fail ? 'PD' : 'A'                
+                        'donor_stat' => $fail ? 'PD' : 'A',                
+                        'deferral_basis' => $fail ? 'TTI' : null                
                     );
     
                     $stat = Donor::where('seqno', $donor_sn)

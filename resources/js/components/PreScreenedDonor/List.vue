@@ -80,7 +80,7 @@
                     striped>
 
                     <template v-slot:cell(fullname)="data">
-                        {{ data.item.first_name }} {{ data.item.middle_name }}, {{ data.item.last_name }}
+                        {{ data.item.first_name }} {{ data.item.middle_name }} {{ data.item.last_name }}
                     </template>
 
                     <template v-slot:cell(gender)="data">
