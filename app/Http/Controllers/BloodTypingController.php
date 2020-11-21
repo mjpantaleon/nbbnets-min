@@ -100,6 +100,26 @@ class BloodTypingController extends Controller
             $donation_id = $d['donation_id'];
             $donor_sn = $d['donor_sn'];
 
+            \Log::info($d);
+
+            $antibody               = 'N';
+            $donation_stat          = 'Y';
+            $donation_stat_donor    = 'Y';
+            $mh_pe_stat             = 'A';
+            $mh_pe_deferral         = null;
+            $donor_stat             = 'A';
+            $deferral_basis         = null;
+
+            if($d['abs'] == 'Pos'){
+                $antibody               = 'P';
+                $donation_stat          = 'REA';
+                $donation_stat_donor    = 'R';
+                $mh_pe_stat             = 'PD';
+                $mh_pe_deferral         = 'TTI';
+                $donor_stat             = 'PD';
+                $deferral_basis         = 'ABS';
+            }
+
             // $bloodtyping_arr[] = array(
             //     'facility_cd'           => $facility_cd,
             //     'bloodtyping_dt'        => date('Y-m-d H:i:s'),
@@ -131,14 +151,14 @@ class BloodTypingController extends Controller
                 if($antibody){
                     AdditionalTest::where('donation_id', 'LIKE', $d['donation_id'] . '%')
                                 ->update([
-                                    'antibody' => $d['abs'] == 'Pos' ? 'P' : 'N',
+                                    'antibody' => $antibody,
                                     'antibody_by' => $user_id,
                                     'antibody_verifier' => $verifier,
                                 ]);
                 } else{
                     $antibody_data = new AdditionalTest;
                     $antibody_data->donation_id         = $d['donation_id'];
-                    $antibody_data->antibody            = $d['abs'] == 'Pos' ? 'P' : 'N';
+                    $antibody_data->antibody            = $antibody;
                     $antibody_data->antibody_by         = $user_id;
                     $antibody_data->antibody_verifier   = $verifier;
                     $r                                  = $antibody_data->save();
@@ -161,9 +181,9 @@ class BloodTypingController extends Controller
                     
                     Donation::where('donation_id', $donation_id)
                             ->update([
-                                'donation_stat' => $d['abs'] == 'Pos' ? 'REA' : 'Y',
-                                'mh_pe_stat' => 'Pos' ? 'PD' : 'A',
-                                'mh_pe_deferral' => 'Pos' ? 'TTI' : null
+                                'donation_stat' => $donation_stat,
+                                'mh_pe_stat' => $mh_pe_stat,
+                                'mh_pe_deferral' => $mh_pe_deferral
                             ]);
                     
                 } else{
@@ -177,24 +197,36 @@ class BloodTypingController extends Controller
                     $d->donor_sn = $donor_sn;
                     $d->pre_registered = 'Y';
                     $d->sched_id = $sched_id;
-                    $d->donation_stat = $d['abs'] == 'Pos' ? 'REA' : 'Y';
-                    $d->mh_pe_stat = $d['abs'] == 'Pos' ? 'PD' : 'A';
-                    $d->mh_pe_deferral = $d['abs'] == 'Pos' ? 'TTI' : null;
+                    $d->donation_stat = $donation_stat;
+                    $d->mh_pe_stat = $mh_pe_stat;
+                    $d->mh_pe_deferral = $mh_pe_deferral;
                     $d->facility_cd = $facility_cd;
-                    $d->created_dt = date('Y-m-d H:i:s');
+                    // $d->created_dt = date('Y-m-d H:i:s'); # leave this blank
                     $d->save();
                 }
     
     
                 // Update 'Donor' table
                 $donor_update_arr = array(
-                    'donation_stat' => $d['abs'] == 'Pos' ? 'N' : 'Y',
-                    'donor_stat' => $d['abs'] == 'Pos' ? 'PD' : 'A',                
-                    'deferral_basis' => $d['abs'] == 'Pos' ? 'ABS' : null                
+                    'donation_stat' => $donation_stat_donor,
+                    'donor_stat' => $donor_stat,                
+                    'deferral_basis' => $deferral_basis               
                 );
+
+                \Log::info($donor_update_arr);
+                
     
+                // $stat = Donor::where('seqno', $donor_sn);
+                // $stat->donation_stat    = $d['abs'] == 'Pos' ? 'N' : 'Y';
+                // $stat->donor_stat       = $d['abs'] == 'Pos' ? 'PD' : 'A';
+                // $stat->deferral_basis   = $d['abs'] == 'Pos' ? 'ABS' : null;
+                // $stat->save();
+
+
                 $stat = Donor::where('seqno', $donor_sn)
                                 ->update($donor_update_arr);
+
+                \Log::info($stat);
     
     
                 // $res2 = Component::where('donation_id', 'LIKE', $d['donation_id'] . '%')
