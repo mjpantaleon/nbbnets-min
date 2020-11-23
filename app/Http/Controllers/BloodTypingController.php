@@ -171,32 +171,42 @@ class BloodTypingController extends Controller
                     // INSERT record at `donation` table
                     $seqno = Donation::generateSeqno($facility_cd);
     
-                    $d = new Donation;
-                    $d->seqno = $seqno;
-                    $d->donation_id = $donation_id;
-                    $d->donor_sn = $donor_sn;
-                    $d->pre_registered = 'Y';
-                    $d->sched_id = $sched_id;
-                    $d->donation_stat = $d['abs'] == 'Pos' ? 'REA' : 'Y';
-                    $d->mh_pe_stat = $d['abs'] == 'Pos' ? 'PD' : 'A';
-                    $d->mh_pe_deferral = $d['abs'] == 'Pos' ? 'TTI' : null;
-                    $d->facility_cd = $facility_cd;
-                    $d->created_dt = date('Y-m-d H:i:s');
-                    $d->save();
+                    $dn = new Donation;
+                    $dn->seqno = $seqno;
+                    $dn->donation_id = $donation_id;
+                    $dn->donor_sn = $donor_sn;
+                    $dn->pre_registered = 'Y';
+                    $dn->sched_id = $sched_id;
+                    $dn->donation_stat = $d['abs'] == 'Pos' ? 'REA' : 'Y';
+                    $dn->mh_pe_stat = $d['abs'] == 'Pos' ? 'PD' : 'A';
+                    $dn->mh_pe_deferral = $d['abs'] == 'Pos' ? 'TTI' : null;
+                    $dn->facility_cd = $facility_cd;
+                    $dn->created_dt = date('Y-m-d H:i:s');
+                    $dn->save();
                 }
+
+                /**
+                 *  Check if donation_stat is Y
+                 *  If Y, update the donor
+                 *  If N, do not overwrite the donation_stat
+                 * 
+                 */
     
-    
-                // Update 'Donor' table
-                $donor_update_arr = array(
-                    'donation_stat' => $d['abs'] == 'Pos' ? 'N' : 'Y',
-                    'donor_stat' => $d['abs'] == 'Pos' ? 'PD' : 'A',                
-                    'deferral_basis' => $d['abs'] == 'Pos' ? 'ABS' : null                
-                );
-    
-                $stat = Donor::where('seqno', $donor_sn)
-                                ->update($donor_update_arr);
-    
-    
+                $stat = Donor::select('donation_stat')->where('seqno', $donor_sn)->first();
+
+                if($stat['donation_stat'] == 'Y'){
+
+                    // Update 'Donor' table
+                    $donor_update_arr = array(
+                        'donation_stat' => $d['abs'] == 'Pos' ? 'N' : 'Y',
+                        'donor_stat' => $d['abs'] == 'Pos' ? 'PD' : 'A',                
+                        'deferral_basis' => $d['abs'] == 'Pos' ? 'ABS' : null                
+                    );
+
+                    $stat = Donor::where('seqno', $donor_sn)
+                    ->update($donor_update_arr);
+                }
+
                 // $res2 = Component::where('donation_id', 'LIKE', $d['donation_id'] . '%')
                 //                 ->update(['blood_type' => $d['abo'].' '.$d['rh']]);
                             // ->get();

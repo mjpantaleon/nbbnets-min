@@ -320,17 +320,29 @@ class TestingDetailsController extends Controller
                             $d->created_dt = date('Y-m-d H:i:s');
                             $d->save();
                         }
-        
+
+                        /**
+                         *  Check if donation_stat is Y
+                         *  If Y, update the donor
+                         *  If N, do not overwrite the donation_stat
+                         * 
+                         */
+                        
+                        $stat = Donor::select('donation_stat')->where('seqno', $donor_sn)->first();
+
+                        if($stat['donation_stat'] == 'Y'){
     
-                        //Update 'Donor' table
-                        $donor_update_arr = array(
-                            'donation_stat' => $fail ? 'N' : 'Y',
-                            'donor_stat' => $fail ? 'PD' : 'A',                
-                            'deferral_basis' => $fail ? 'TTI' : null                
-                        );
-        
-                        $stat = Donor::where('seqno', $donor_sn)
-                                        ->update($donor_update_arr);
+                            //Update 'Donor' table
+                            $donor_update_arr = array(
+                                'donation_stat' => $fail ? 'N' : 'Y',
+                                'donor_stat' => $fail ? 'PD' : 'A',                
+                                'deferral_basis' => $fail ? 'TTI' : null                
+                            );
+            
+                            $stat = Donor::where('seqno', $donor_sn)
+                                            ->update($donor_update_arr);
+                        }
+
                     } else{ // if donation id already exist then
     
                         // concut/ list down donation ids
