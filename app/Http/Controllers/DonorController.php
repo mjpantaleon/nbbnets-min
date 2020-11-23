@@ -28,10 +28,11 @@ class DonorController extends Controller
 
     public function donorHistory($id){
         // SELECT * FROM `donation` WHERE `donor_sn` = '$id'
-        $sql = "    SELECT rf.`facility_name`, d.`created_dt`  
+        $sql = "    SELECT rf.`facility_name`, d.`created_dt`, d.`donation_stat`, d.`mh_pe_stat`, d.`mh_pe_deferral`  
                     FROM `donation` d 
                     LEFT JOIN `r_facility` rf ON d.facility_cd = rf.facility_cd
-                    WHERE d.`donor_sn` = $id AND d.`created_dt` IS NOT NULL ";
+                    WHERE d.`donor_sn` = $id 
+                    AND d.`created_dt` IS NOT NULL ";
         $donor_history = DB::select($sql);
         $donor_history = json_decode(json_encode($donor_history), true);
 

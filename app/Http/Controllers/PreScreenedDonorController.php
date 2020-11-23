@@ -120,6 +120,7 @@ class PreScreenedDonorController extends Controller
                     WHERE ps.approval_dt BETWEEN '$from' AND '$to'
                     AND ps.status = '1' 
                     AND ig.igg != 'N'
+                    AND ig.igg IS NOT NULL
                     AND ps.facility_cd LIKE $facility_cd
                     AND bt.bloodtest_no IS NULL
                     ORDER BY ps.approval_dt ASC "; 

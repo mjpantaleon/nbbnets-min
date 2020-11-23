@@ -317,7 +317,7 @@ class TestingDetailsController extends Controller
                             $d->mh_pe_stat = $fail ? 'PD' : 'A';
                             $d->mh_pe_deferral = $fail ? 'TTI' : null;
                             $d->facility_cd = $facility_cd;
-                            $d->created_dt = date('Y-m-d H:i:s');
+                            // $d->created_dt = date('Y-m-d H:i:s');
                             $d->save();
                         }
 

@@ -159,12 +159,16 @@ class BloodTypingController extends Controller
     
                 if(count($has_donation)){
                     
+                    // $update_donation = Donation::where('donation_id', $donation_id)
                     Donation::where('donation_id', $donation_id)
                             ->update([
                                 'donation_stat' => $d['abs'] == 'Pos' ? 'REA' : 'Y',
-                                'mh_pe_stat' => 'Pos' ? 'PD' : 'A',
-                                'mh_pe_deferral' => 'Pos' ? 'TTI' : null
+                                'mh_pe_stat' => $d['abs'] == 'Pos' ? 'PD' : 'A',
+                                'mh_pe_deferral' => $d['abs'] == 'Pos' ? 'ABS' : null,
+                                'approved_by' => $verifier
                             ]);
+
+                    // \Log::info($update_donation);
                     
                 } else{
     
@@ -179,9 +183,10 @@ class BloodTypingController extends Controller
                     $dn->sched_id = $sched_id;
                     $dn->donation_stat = $d['abs'] == 'Pos' ? 'REA' : 'Y';
                     $dn->mh_pe_stat = $d['abs'] == 'Pos' ? 'PD' : 'A';
-                    $dn->mh_pe_deferral = $d['abs'] == 'Pos' ? 'TTI' : null;
+                    $dn->mh_pe_deferral = $d['abs'] == 'Pos' ? 'ABS' : null;
                     $dn->facility_cd = $facility_cd;
-                    $dn->created_dt = date('Y-m-d H:i:s');
+                    // $dn->created_dt = date('Y-m-d H:i:s');
+                    $dn->approved_by = $verifier;
                     $dn->save();
                 }
 
@@ -191,11 +196,26 @@ class BloodTypingController extends Controller
                  *  If N, do not overwrite the donation_stat
                  * 
                  */
-    
+                
+                //  *Initial value of donation_stat after pre-screening is null -MJ
                 $stat = Donor::select('donation_stat')->where('seqno', $donor_sn)->first();
 
                 if($stat['donation_stat'] == 'Y'){
 
+                    // Update 'Donor' table
+                    $donor_update_arr = array(
+                        'donation_stat' => $d['abs'] == 'Pos' ? 'N' : 'Y',
+                        'donor_stat' => $d['abs'] == 'Pos' ? 'PD' : 'A',                
+                        'deferral_basis' => $d['abs'] == 'Pos' ? 'ABS' : null                
+                    );
+
+                    $stat = Donor::where('seqno', $donor_sn)
+                    ->update($donor_update_arr);
+
+                } 
+                
+                // *added by -MJ
+                elseif($stat['donation_stat'] == null){
                     // Update 'Donor' table
                     $donor_update_arr = array(
                         'donation_stat' => $d['abs'] == 'Pos' ? 'N' : 'Y',
@@ -231,6 +251,10 @@ class BloodTypingController extends Controller
                 /** 
                  *  Duplicate Donation ID
                 */
+                return response()->json([
+                    'message' => "This donation IDs already exist: \n $donation_id",
+                    'status' => 1
+                ], 200);
 
             }
 

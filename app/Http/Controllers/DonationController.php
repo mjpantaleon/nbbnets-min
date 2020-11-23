@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Donation;
+use App\Donor;
 use App\Component;
 use App\RCpComponentCode;
 use App\Helpers\ComputeExpiry;
@@ -41,6 +42,7 @@ class DonationController extends Controller
                     AND d.sched_id = 'Walk-in' 
                     AND d.donation_stat = 'Y'
                     AND d.facility_cd LIKE '%$facility_cd%'
+                    AND dd.donor_stat IS NOT NULL
                     ORDER by d.created_dt DESC ";
 
         $donations = DB::select($query);
@@ -98,96 +100,6 @@ class DonationController extends Controller
         $approved_by = $verifier;
         $updated_dt = date('Y-m-d H:i:s');
 
-        // CHECK GG TABLE
-        // $check_igg_details = IggResult::where('donation_id', $donation_id)
-        //                 ->where('donor_sn', $donor_sn)
-        //                 ->where('igg', '=', 'P')
-        //                 ->first();
-        // if($check_igg_details){
-
-        //     // CHECK HLA HNA TABLE
-        //     $check_hla_hna_details = AdditionalHlaHnaTest::where('donation_id', $donation_id)
-        //                 ->where('donor_sn', $donor_sn)
-        //                 ->where('result', '=', 'N')
-        //                 ->first();
-        //     if($check_hla_hna_details){
-
-        //             // CHECK TESTING TABLE
-        //             $check_testing_details = Testing::where('donation_id', $donation_id)
-        //                                 ->where('result', '=', 'N')
-        //                                 ->first();
-        //             if($check_testing_details){
-
-        //                 // CHECK DONATION TABLE
-        //                 $check_donation_details = Donation::where('donation_id', '=', $donation_id)
-        //                                         ->where('donor_sn', '=', $donor_sn)
-        //                                         ->first();
-
-        //                 // IF DONATION ID HAVE A MATCH THEN
-        //                 if($check_donation_details){
-                                    
-        //                     $check_donation_details->donation_type = $donation_type;
-        //                     $check_donation_details->collection_method = $collection_method;
-
-        //                     if($collection_method == 'WB'){
-        //                         $check_donation_details->blood_bag = $request->get('blood_bag');
-        //                         $check_donation_details->collection_type = "CPC19";
-        //                     }
-
-        //                     $check_donation_details->mh_pe_deferral = $mh_pe_deferral;
-        //                     $check_donation_details->mh_pe_question = $mh_pe_question;
-        //                     $check_donation_details->mh_pe_remark = $mh_pe_remark;
-        //                     $check_donation_details->mh_pe_stat = $mh_pe_stat;            
-                            
-        //                     $check_donation_details->collection_stat = $collection_stat;
-        //                     $check_donation_details->coluns_res = $coluns_res;
-                    
-        //                     $check_donation_details->created_by = $created_by;
-        //                     $check_donation_details->created_dt = $created_dt;
-        //                     $check_donation_details->approved_by = $approved_by;
-        //                     $check_donation_details->save();
-
-
-        //                     return response()->json([
-        //                         'message' => 'Donation has been successfully updated.',
-        //                         'status' => 1
-        //                     ], 200);
-        //                     \Log::info($id);
-        //                 }
-        //                 // IF DONATION ID HAVE A MATCH THEN
-
-        //                 // IF DONATION ID DOESNT MATCH
-        //                 else{
-                            
-        //                     return response()->json([
-        //                         'message' => 'Donation ID and donor DO NOT match',
-        //                         'status' => 0
-        //                     ], 200);
-        //                 } 
-        //                 // IF DONATION ID DOESNT MATCH
-
-        //             } else {
-        //                 return response()->json([
-        //                 'message' => 'ERROR! Please check Blood Test details of this donation',
-        //                 'status' => 0
-        //                 ], 200);
-        //             }
-
-        //     } else {
-        //         return response()->json([
-        //             'message' => 'ERROR! Please check HLA & HNA Test details of this donation',
-        //             'status' => 0
-        //         ], 200);
-        //     }
-
-        // } else {
-        //     return response()->json([
-        //         'message' => 'ERROR! Please check IGG Test details of this donation',
-        //         'status' => 0
-        //     ], 200);
-        // }
-
-
         // CHECK IF DONATION ID AND DONOR ALREADY EXIST
         $check_donation_details = Donation::where('donation_id', '=', $donation_id)
                                 ->where('donor_sn', '=', $donor_sn)
@@ -217,6 +129,10 @@ class DonationController extends Controller
             $check_donation_details->approved_by = $approved_by;
             $check_donation_details->save();
 
+          
+            // UPDATE `pre_screened_donors` table
+            Donor::where('seqno', $donor_sn)
+                ->update(['donation_stat' => 'Y', 'donor_stat' => 'A']);
 
             return response()->json([
                 'message' => 'Donation has been successfully updated.',
