@@ -70,7 +70,7 @@ export const routes = [
     // BLOOD STOCKS
     { name: 'inventory-release', path: '/release-to-inventory', component: InventoryRelease },
     { name: 'available-stocks', path: '/available-stocks', component: AvailableBloodStocks },
-    
+
     { name: 'units', path: '/unit/:id/:comp/:mtd', component: Units },
 
     // BLOOD REQUEST

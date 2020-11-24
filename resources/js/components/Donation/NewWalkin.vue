@@ -25,7 +25,7 @@
 
         <b-alert show variant="danger" v-if="errMessage"><h3>{{ errMessage }}</h3></b-alert>
         
-        <!-- {{questions}} {{ hemoglobin }} {{body_weight}} {{blood_pressure}} {{pulse_rate}} {{temperature}} -->
+        <!-- {{questions}} {{ hemoglobin }} {{body_weight}} {{blood_pressure}} {{pulse_rate}} {{temperature}} {{other_reason}} -->
         <b-row>
             <b-col md="6">
                 <!-- <b-card no-body bg-variant="dark" text-variant="light" header="Donor Details"></b-card> -->
@@ -166,46 +166,11 @@
                         </tr>
                         </template>
 
-                        <!-- VERFIER USER ID -->
-                        <!-- <tr>
-                            <td>
-                                <b-form-group
-                                    id="fieldset-horizontal"
-                                    label-cols-sm="4"
-                                    label-cols-lg="3"
-                                    description="type-in verifier User ID"
-                                    label="Verifier User ID"
-                                    label-for="approved_by">
-
-                                    <b-form-input v-model="approved_by"
-                                        :state="checkVerifier" id="approved_by"></b-form-input>
-                                </b-form-group>
-                            </td>
-                        </tr> -->
-
-                        <!-- PASSWORD -->
-                        <!-- <tr>
-                            <td>
-                                <b-form-group
-                                    id="fieldset-horizontal"
-                                    label-cols-sm="4"
-                                    label-cols-lg="3"
-                                    description="type-in verifier Password"
-                                    label="Password"
-                                    label-for="password">
-
-                                    <b-form-input type="password" v-model="password"
-                                        :state="checkPassword" id="password"></b-form-input>
-                                </b-form-group>
-                            </td>
-                        </tr> -->
-                        
-
                         <tr>
                             <td>
                                 <b-button block variant="success"
                                     :disabled="enableBtn"
-                                    @click.prevent="showModal">
+                                    @click.prevent="showModal(mh_pe_stat)">
                                     <b-icon icon="check-circle"></b-icon> VERIFY AND PROCEED</b-button>
                             </td>
                         </tr>
@@ -216,14 +181,16 @@
 
             <!-- !ONLY SHOW THIS PART IF MH_PE_STAT IS NOT EQUAL TO A -->
             <!-- <b-col md="6"> -->
-            <b-col v-if="mh_pe_stat != 'A'" md="6">
+            <b-col>
                 <!-- imported component -->
-                <mhpe-question @questionSelected="questionSelected" 
+                <mhpe-question v-if="mh_pe_stat != 'A'" md="6"
+                    @questionSelected="questionSelected" 
                     @hemoglobinSelected="hemoglobinSelected"
                     @bodyWeightSelected="bodyWeightSelected"
                     @pulseRateSelected="pulseRateSelected"
                     @bloodPressureSelected="bloodPressureSelected"
-                    @temparatureSelected="temparatureSelected"></mhpe-question>
+                    @temparatureSelected="temparatureSelected"
+                    @otherReason="otherReason"></mhpe-question>
             </b-col>
         </b-row>
 
@@ -308,7 +275,7 @@ export default {
 
         mh_pe_deferral: '',
         // mh_pe_question: '',
-        mh_pe_remark: '',
+        // mh_pe_remark: '',
         mh_pe_stat: 'A',
 
         // MH
@@ -320,6 +287,9 @@ export default {
         blood_pressure: '',
         pulse_rate: '',
         temperature: '',
+
+        // other reason
+        other_reason: '',
 
         collection_method: 'WB',
         collection_stat: 'COL',
@@ -388,6 +358,9 @@ export default {
         },
         checkReasonUns(){
             return this.coluns_res.length > 3 ? true : false
+        },
+        checkReasonUnsBULGE(){
+            return this.coluns_res_list > 3 ? true : false
         }
     },
 
@@ -409,13 +382,13 @@ export default {
         },
 
         // MODAL
-        showModal(){
+        showModal(status){
             // alert('button has been clicked');
             var err
             this.errMessage = ''
 
             // check first for errors
-            err = this.checkError()
+            err = this.checkError(status)
 
             // if there were errors found
             if(err){
@@ -429,15 +402,26 @@ export default {
 
         },
 
-        checkError(){
-
+        checkError(status){
+            // alert(status);
             var err = false;
             
-            if(this.donation_id == "" || this.created_dt == ""){
-                return err = true
+            if(status == 'A'){
+
+                if(this.donation_id == "" || this.created_dt == ""){
+                    return err = true
+                }
+
+                return err
+
+            } else{
+                if(this.created_dt == ''){
+                    return err = true
+                }
+
+                return err
             }
             
-            return err
 
         },
 
@@ -458,8 +442,9 @@ export default {
 
                     mh_pe_deferral: this.mh_pe_deferral,
                     mh_pe_question: this.questions,
-                    mh_pe_remark: this.mh_pe_remark,
+                    mh_pe_remark: this.other_reason,    /* change to from mh_pe_remarks to other_reason */
                     mh_pe_stat: this.mh_pe_stat,
+
 
                     collection_method: this.collection_method,
                     collection_stat: this.collection_stat,
@@ -507,7 +492,12 @@ export default {
 
         temparatureSelected(e){
             this.temperature = e
+        },
+
+        otherReason(e){
+            this.other_reason = e
         }
+
         
     }
 }

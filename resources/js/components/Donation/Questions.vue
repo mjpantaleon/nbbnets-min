@@ -1,6 +1,6 @@
 <template>
   <div class="main-d">
-      <b-card no-body>
+    <b-card no-body>
         <b-tabs card active-nav-item-class="font-weight-bold text-danger">
             <!-- =============== MEDICAL HISTORY TAB ================= -->
             <b-tab title="Medical History" active>
@@ -256,31 +256,29 @@
                       </tr>
                    </tbody>
                   </table>
-                <!-- DYNAMIC -->
-                 <!-- <table class="table table-bordered" v-for="(pe_question, i) in pe_questions" :key="i">
-                    <th class="bg-info" colspan="2">{{ pe_question.header_text }}</th>
-                     <tr>
-                       <td>
-                         {{ pe_question.q_text }}
-                         <b-form-checkbox class="float-right" 
-                            v-model="mh_selected" :value="pe_question.q_text"></b-form-checkbox>
-                       </td>
-                     </tr>
-                 </table> -->
-                 <!-- <table class="table table-bordered" v-for="(mh_question, i) in mh_questions" :key="i">
-                    <th class="bg-info" colspan="2">{{ mh_question.header_text }}</th>
-                     <tr>
-                       <td>
-                         {{ mh_question.q_text }}
-                         <b-form-checkbox class="float-right" 
-                            v-model="mh_selected" :value="mh_question.q_no"></b-form-checkbox>
-                       </td>
-                     </tr>
-                 </table> -->
-
                 </b-card-text>
             </b-tab>
             <!-- =============== PYSICAL EXAM TAB ================= -->
+
+             <!-- =============== OTHER REASON TAB ================= -->
+            <b-tab title="Other Reason">
+                <b-card-text>
+                  <table class="table table-bordered table-striped">
+                    <th class="bg-secondary text-light">
+                      Please specify reason:</th>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <b-form-textarea v-model="other_reason" 
+                            id="other_reason"></b-form-textarea>
+                        </td>
+                      </tr>
+                   </tbody>
+                  </table>
+
+                </b-card-text>
+            </b-tab>
+            <!-- =============== OTHER REASON TAB ================= -->
         </b-tabs>
     </b-card>
   </div>
@@ -300,6 +298,9 @@ export default {
       blood_pressure: '',
       pulse_rate: '',
       temperature: '',
+
+      // IF INDEFINITE
+      other_reason: '',
 
       // dynamic fields
       // mh_questions: [],
@@ -359,6 +360,10 @@ export default {
 
     temperature(e){
       this.$emit('temparatureSelected', e)
+    },
+
+    other_reason(e){
+      this.$emit('otherReason', e)
     }
   }
 }

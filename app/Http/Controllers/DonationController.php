@@ -80,15 +80,13 @@ class DonationController extends Controller
         // push all PE selection to an array using array_push
         $mh_pe_deferral = array();
         array_push($mh_pe_deferral, $hemoglobin, $body_weight, $blood_pressure, $pulse_rate, $temperature);
-        
-        // check if PE selection is empty
     
         // convert pushed array to string separated by ,
         $mh_pe_deferral = $mh_pe_deferral != null ? json_encode($mh_pe_deferral) : '';
         // $mh_pe_deferral = implode(',',$mh_pe_deferral);
         $mh_pe_question = $data['mh_pe_question'] != null ? json_encode($data['mh_pe_question']) : '';  // MH CHOICE/S *use implode to convert array to string
         // $mh_pe_question = implode(',', $data['mh_pe_question']);  // MH CHOICE/S *use implode to convert array to string
-        $mh_pe_remark = $data['mh_pe_remark'];      // OPTIONAL
+        $mh_pe_remark = $data['mh_pe_remark'];      // * from other reason
         $mh_pe_stat = $data['mh_pe_stat'];          // A, TD, PD, ID
 
         $collection_stat = $data['collection_stat'];
@@ -100,36 +98,86 @@ class DonationController extends Controller
         $approved_by = $verifier;
         $updated_dt = date('Y-m-d H:i:s');
 
-        // CHECK IF DONATION ID AND DONOR ALREADY EXIST
-        $check_donation_details = Donation::where('donation_id', '=', $donation_id)
-                                ->where('donor_sn', '=', $donor_sn)
-                                ->first();
 
-        // IF DONATION ID HAVE A MATCH THEN
-        if($check_donation_details){
-                    
-            $check_donation_details->donation_type = $donation_type;
-            $check_donation_details->collection_method = $collection_method;
+        // CHECK FIRST IF THERE IS A DONATION ID
+        if($donation_id){
+
+            // CHECK IF DONATION ID AND DONOR ALREADY EXIST
+            $check_donation_details = Donation::where('donation_id', '=', $donation_id)
+                                    ->where('donor_sn', '=', $donor_sn)
+                                    ->first();
+    
+            // IF DONATION ID HAVE A MATCH THEN
+            if($check_donation_details){
+                        
+                $check_donation_details->donation_type = $donation_type;
+                $check_donation_details->collection_method = $collection_method;
+    
+                if($collection_method == 'WB'){
+                    $check_donation_details->blood_bag = $request->get('blood_bag');
+                    $check_donation_details->collection_type = "CPC19";
+                }
+    
+                $check_donation_details->mh_pe_deferral = $mh_pe_deferral;
+                $check_donation_details->mh_pe_question = $mh_pe_question;
+                $check_donation_details->mh_pe_remark = $mh_pe_remark;
+                $check_donation_details->mh_pe_stat = $mh_pe_stat;            
+                
+                $check_donation_details->collection_stat = $collection_stat;
+                $check_donation_details->coluns_res = $coluns_res;
+        
+                $check_donation_details->created_by = $created_by;
+                $check_donation_details->created_dt = $created_dt;
+                $check_donation_details->approved_by = $approved_by;
+                $check_donation_details->save();
+    
+              
+                // UPDATE `pre_screened_donors` table
+                Donor::where('seqno', $donor_sn)
+                    ->update(['donation_stat' => 'Y', 'donor_stat' => 'A']);
+    
+                return response()->json([
+                    'message' => 'Donation has been successfully updated.',
+                    'status' => 1
+                ], 200);
+                \Log::info($id);
+            }
+            // IF DONATION ID HAVE A MATCH THEN
+    
+            // IF DONATION ID DOESNT MATCH
+            else{
+                
+                return response()->json([
+                    'message' => 'Donation id and donor do not match',
+                    'status' => 0
+                ], 200);
+            } 
+            // IF DONATION ID DOESNT MATCH
+
+        } else{
+
+            $d = new Donation;
+            $d->donation_type = $donation_type;
+            $d->collection_method = $collection_method;
 
             if($collection_method == 'WB'){
-                $check_donation_details->blood_bag = $request->get('blood_bag');
-                $check_donation_details->collection_type = "CPC19";
+                $d->blood_bag = $request->get('blood_bag');
+                $d->collection_type = "CPC19";
             }
 
-            $check_donation_details->mh_pe_deferral = $mh_pe_deferral;
-            $check_donation_details->mh_pe_question = $mh_pe_question;
-            $check_donation_details->mh_pe_remark = $mh_pe_remark;
-            $check_donation_details->mh_pe_stat = $mh_pe_stat;            
+            $d->mh_pe_deferral = $mh_pe_deferral;
+            $d->mh_pe_question = $mh_pe_question;
+            $d->mh_pe_remark = $mh_pe_remark;
+            $d->mh_pe_stat = $mh_pe_stat;            
             
-            $check_donation_details->collection_stat = $collection_stat;
-            $check_donation_details->coluns_res = $coluns_res;
+            $d->collection_stat = $collection_stat;
+            $d->coluns_res = $coluns_res;
     
-            $check_donation_details->created_by = $created_by;
-            $check_donation_details->created_dt = $created_dt;
-            $check_donation_details->approved_by = $approved_by;
-            $check_donation_details->save();
-
-          
+            $d->created_by = $created_by;
+            $d->created_dt = $created_dt;
+            $d->approved_by = $approved_by;
+            $d->save();
+            
             // UPDATE `pre_screened_donors` table
             Donor::where('seqno', $donor_sn)
                 ->update(['donation_stat' => 'Y', 'donor_stat' => 'A']);
@@ -140,17 +188,6 @@ class DonationController extends Controller
             ], 200);
             \Log::info($id);
         }
-        // IF DONATION ID HAVE A MATCH THEN
-
-        // IF DONATION ID DOESNT MATCH
-        else{
-            
-            return response()->json([
-                'message' => 'Donation id and donor do not match',
-                'status' => 0
-            ], 200);
-        } 
-        // IF DONATION ID DOESNT MATCH
 
 
     } // public function create()

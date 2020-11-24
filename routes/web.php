@@ -74,7 +74,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     //BLOOD TYPING
     Route::post('/get-donation-id', 'BloodTypingController@getDonationId');
-    Route::post('/save-blood-typing', 'BloodTypingController@save');
+Route::post('/save-blood-typing', 'BloodTypingController@save');
 
     //BLOOD PROCESSING
     Route::post('/get-donation-id-processing', 'BloodProcessingController@getDonationId');
