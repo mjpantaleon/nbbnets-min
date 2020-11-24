@@ -106,7 +106,8 @@ class BloodLabellingController extends Controller
                                 ->whereBetween('created_dt', [$from, $to])
                                 ->where('collection_stat', $col_stat)
                                 ->where('collection_type', "CPC19")
-                                ->get();
+                                ->get()->toArray();
+            \Log::info($donation);
 
             if($donation){
 

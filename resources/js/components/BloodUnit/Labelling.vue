@@ -467,7 +467,7 @@ export default {
                 return false
             }else{
             //   if(d.additionaltest.nat != null && d.additionaltest.antibody != null){
-                if(d.additionaltest.nat  && d.additionaltest.antibody){
+                if(d.additionaltest.nat  && d.additionaltest.antibody && d.additionaltest.zika){
                     return true
                 }else{
                     return false
