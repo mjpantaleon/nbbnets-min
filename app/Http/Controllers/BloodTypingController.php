@@ -146,9 +146,9 @@ class BloodTypingController extends Controller
                 $res = $bloodtype->save();
     
                 // ADDED: Save in Antibody Screening Table
-                $antibody = AdditionalTest::where('donation_id', $d['donation_id'])->first();
+                $has_antibody = AdditionalTest::where('donation_id', $d['donation_id'])->first();
     
-                if($antibody){
+                if($has_antibody){
                     AdditionalTest::where('donation_id', 'LIKE', $d['donation_id'] . '%')
                                 ->update([
                                     'antibody' => $antibody,
@@ -162,6 +162,7 @@ class BloodTypingController extends Controller
                     $antibody_data->antibody_by         = $user_id;
                     $antibody_data->antibody_verifier   = $verifier;
                     $r                                  = $antibody_data->save();
+                    \Log::info($r);
                 }
     
                 

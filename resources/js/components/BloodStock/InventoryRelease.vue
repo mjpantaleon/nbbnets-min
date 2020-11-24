@@ -98,7 +98,7 @@
                                 </template>
 
                                 <template v-slot:cell(bloodtest)="data">
-                                    <span v-if="data.item.test && hasAdditionalTest(data.item) == false">
+                                    <span v-if="data.item.test && hasAdditionalTest(data.item.additionaltest)">
                                         <span class="text-success" v-if="data.item.test.result == 'N'">NR</span>
                                         <span class="text-danger" v-if="data.item.test.result == 'R'">R</span>
                                     </span>
@@ -115,7 +115,7 @@
                                             v-model="checked"
                                             :value="data.item.donation_id + '-01'"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item.additionaltest))"
                                             class="text-center"
                                             >
                                         </b-form-checkbox>
@@ -132,7 +132,7 @@
                                             v-model="checked"
                                             :value="data.item.donation_id + '-01'"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item.additionaltest))"
                                             class="text-center"
                                             >
                                         </b-form-checkbox>
@@ -152,7 +152,7 @@
                                             v-model="checked"
                                             :value="data.item.donation_id + '-02'"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item.additionaltest))"
                                             class="text-center"
                                             >
                                         </b-form-checkbox>
@@ -172,7 +172,7 @@
                                             v-model="checked"
                                             :value="data.item.donation_id + '-03'"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item.additionaltest))"
                                             class="text-center"
                                             >
                                         </b-form-checkbox>
@@ -211,7 +211,7 @@
                                 </template>
 
                                 <template v-slot:cell(bloodtest)="data">
-                                    <span v-if="data.item.test && hasAdditionalTest(data.item) == false">
+                                    <span v-if="data.item.test && hasAdditionalTest(data.item.additionaltest)">
                                         <span class="text-success" v-if="data.item.test.result == 'N'">NR</span>
                                         <span class="text-danger" v-if="data.item.test.result == 'R'">R</span>
                                     </span>
@@ -232,7 +232,7 @@
                                             v-model="checked"
                                             :value="'100-' + data.item.donation_id"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !hasAdditionalTest(data.item.additionaltest))"
                                             class="text-center"
                                             >
                                         </b-form-checkbox>
@@ -255,7 +255,7 @@
                                             v-model="checked"
                                             :value="'101-' + data.item.donation_id"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !hasAdditionalTest(data.item.additionaltest))"
                                             >
                                         </b-form-checkbox>
                                         <div v-else>
@@ -272,7 +272,7 @@
                                             v-model="checked"
                                             :value="'103-' + data.item.donation_id"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !hasAdditionalTest(data.item.additionaltest))"
                                             >
                                         </b-form-checkbox>
                                         <div v-else>
@@ -293,7 +293,7 @@
                                             v-model="checked"
                                             :value="'102-' + data.item.donation_id"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !hasAdditionalTest(data.item.additionaltest))"
                                             >
                                         </b-form-checkbox>
                                         <div v-else>
@@ -311,7 +311,7 @@
                                             v-model="checked"
                                             :value="'104-' + data.item.donation_id"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !hasAdditionalTest(data.item.additionaltest))"
                                             >
                                         </b-form-checkbox>
                                         <div v-else>
@@ -485,16 +485,33 @@ export default {
 
         hasAdditionalTest(d){
 
-            if(!d.additionaltest){
-                return false
-            }else{
-            //   if(d.additionaltest.nat != null && d.additionaltest.antibody != null){
-                if(d.additionaltest.nat && d.additionaltest.antibody){
-                    return true
-                }else{
-                    return false
+            // if there are antibody results found
+            if(d.additionaltest){
+
+                if(d.additionaltest.nat){   //check if nat exists
+                    if(d.additionaltest.nat == 'P'){ //check if nat is P
+                        return false;
+                    }
                 }
+
+                if(d.additionaltest.antibody){   //check if antibody exists
+                    if(d.additionaltest.antibody == 'P'){ //check if antibody is P
+                        return false;
+                    }
+                }
+
+                if(d.additionaltest.zika){   //check if zika exists
+                    if(d.additionaltest.zika == 'P'){ //check if zika is P
+                        return false;
+                    }
+                }
+
+                return true;
+                
             }
+            
+            // if no antibody results found
+            return true;
         },
 
         proceed(){
