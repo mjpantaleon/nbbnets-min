@@ -30,10 +30,6 @@ class DonationController extends Controller
 
         $donation_dt = $data['donation_dt'];
 
-        // SELECT * FROM donations 
-        // LEFT JOIN donors ON donations.donor_sn = donor.seqno
-        // WHERE created_dt = '$donation_dt'
-        // ORDER by created_dt DESC
         $query = "  SELECT d.donation_type, d.mh_pe_stat, d.collection_method, d.collection_stat,  d.donation_id,  
                     dd.fname, dd.mname, dd.lname, d.facility_cd
                     FROM donation d
@@ -46,9 +42,10 @@ class DonationController extends Controller
                     ORDER by d.created_dt DESC ";
 
         $donations = DB::select($query);
+        $donations = json_decode(json_encode($donations), true);
         
         \Log::info($donations);
-        return response()->json($donations);  
+        return $donations;  
     }
 
     // public function create()
@@ -99,66 +96,111 @@ class DonationController extends Controller
         $updated_dt = date('Y-m-d H:i:s');
 
 
-        // CHECK FIRST IF THERE IS A DONATION ID
+        /*
+            CHECK FIRST IF THERE IS A DONATION ID
+        */
         if($donation_id){
-
-            // CHECK IF DONATION ID AND DONOR ALREADY EXIST
-            $check_donation_details = Donation::where('donation_id', '=', $donation_id)
-                                    ->where('donor_sn', '=', $donor_sn)
-                                    ->first();
-    
-            // IF DONATION ID HAVE A MATCH THEN
-            if($check_donation_details){
-                        
-                $check_donation_details->donation_type = $donation_type;
-                $check_donation_details->collection_method = $collection_method;
-    
-                if($collection_method == 'WB'){
-                    $check_donation_details->blood_bag = $request->get('blood_bag');
-                    $check_donation_details->collection_type = "CPC19";
-                }
-    
-                $check_donation_details->mh_pe_deferral = $mh_pe_deferral;
-                $check_donation_details->mh_pe_question = $mh_pe_question;
-                $check_donation_details->mh_pe_remark = $mh_pe_remark;
-                $check_donation_details->mh_pe_stat = $mh_pe_stat;            
-                
-                $check_donation_details->collection_stat = $collection_stat;
-                $check_donation_details->coluns_res = $coluns_res;
+        \Log::info($donation_id);
         
-                $check_donation_details->created_by = $created_by;
-                $check_donation_details->created_dt = $created_dt;
-                $check_donation_details->approved_by = $approved_by;
-                $check_donation_details->save();
-    
-              
-                // UPDATE `pre_screened_donors` table
-                Donor::where('seqno', $donor_sn)
-                    ->update(['donation_stat' => 'Y', 'donor_stat' => 'A']);
-    
-                return response()->json([
+            // CHECK IF DONATION ID AND DONOR ALREADY EXIST
+            $check_donation_details = Donation::where('donation_id', '=', $donation_id)->first();
+            // ->where('donor_sn', '=', $donor_sn)
+            \Log::info($check_donation_details);
+            
+            // IF DONATION ID HAVE NO MATCH THEN
+            if(!$check_donation_details){
+                // CHECK AT TESTING IF THIS DONATION ID AND DONOR EXISTS
+                $check_tests = Testing::where('donation_id', '=', $donation_id)
+                                    ->first();
+                \Log::info($check_tests);
+
+                // if donation_id have match then
+                if($check_tests){
+
+                    // proceed saving donation
+                    $seqno = Donation::generateSeqno($facility_cd);
+
+                    $d = new Donation;
+                    $d->seqno = $seqno; 
+                    $d->donation_id = $donation_id; 
+
+                    $d->donor_sn = $donor_sn;
+                    $d->sched_id = "Walk-in";
+                    $d->pre_registered = "Y";
+                    $d->donation_type = $donation_type;
+                    $d->collection_method = $collection_method;
+                    $d->donation_stat = "Y";
+                    $d->facility_cd = $facility_cd;
+
+                    if($d == 'WB'){
+                        $d->blood_bag = $request->get('blood_bag');
+                        $d->collection_type = "CPC19";
+                    }
+
+                    $d->mh_pe_deferral = $mh_pe_deferral;
+                    $d->mh_pe_question = $mh_pe_question;
+                    $d->mh_pe_remark = $mh_pe_remark;
+                    $d->mh_pe_stat = $mh_pe_stat;            
+
+                    $d->collection_stat = $collection_stat;
+                    $d->coluns_res = $coluns_res;
+
+                    $d->created_by = $created_by;
+                    $d->created_dt = $created_dt;
+                    $d->approved_by = $approved_by;
+                    $d->save();
+
+
+                    // UPDATE `pre_screened_donors` table
+                    Donor::where('seqno', $donor_sn)
+                        ->update(['donation_stat' => 'Y', 'donor_stat' => 'A']);
+
+                    return response()->json([
                     'message' => 'Donation has been successfully updated.',
                     'status' => 1
-                ], 200);
-                \Log::info($id);
+                    ], 200);
+                    \Log::info($id);
+
+                } else {
+
+                    return response()->json([
+                        'message' => "This Donation ID have not been Tested yet: \n $donation_id",
+                        'status' => 0
+                    ], 200);
+                } /* check_tests */
+
             }
-            // IF DONATION ID HAVE A MATCH THEN
-    
-            // IF DONATION ID DOESNT MATCH
+            // IF DONATION ID HAVE NO MATCH THEN
+
+            // IF DONATION ID HAVE MATCH
             else{
-                
+
                 return response()->json([
-                    'message' => 'Donation id and donor do not match',
-                    'status' => 0
+                'message' => "This Donation ID already exist: \n $donation_id",
+                'status' => 0
                 ], 200);
             } 
             // IF DONATION ID DOESNT MATCH
 
-        } else{
+            
+
+        } 
+        /*
+            Reason for no Donation ID is when the donor is either Temporary deferred (TD), Permanent deferred (PD) or Indefinite deferred (ID)
+        */
+        else{
+
+            $seqno = Donation::generateSeqno($facility_cd);
 
             $d = new Donation;
+            $d->seqno = $seqno;
+            $d->donor_sn = $donor_sn;
+            $d->sched_id = "Walk-in";
+            $d->pre_registered = "Y";
             $d->donation_type = $donation_type;
             $d->collection_method = $collection_method;
+            $d->donation_stat = "Y";
+            $d->facility_cd = $facility_cd;
 
             if($collection_method == 'WB'){
                 $d->blood_bag = $request->get('blood_bag');
@@ -178,9 +220,9 @@ class DonationController extends Controller
             $d->approved_by = $approved_by;
             $d->save();
             
-            // UPDATE `pre_screened_donors` table
-            Donor::where('seqno', $donor_sn)
-                ->update(['donation_stat' => 'Y', 'donor_stat' => 'A']);
+            // // UPDATE `pre_screened_donors` table
+            // Donor::where('seqno', $donor_sn)
+            //     ->update(['donation_stat' => 'Y', 'donor_stat' => 'A']);
 
             return response()->json([
                 'message' => 'Donation has been successfully updated.',

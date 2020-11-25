@@ -1,9 +1,9 @@
 <template>
-  <div class="main-d">
+  <div>
     <b-card no-body>
-        <b-tabs card active-nav-item-class="font-weight-bold text-danger">
+        <b-tabs card active-nav-item-class="font-weight-bold text-primary">
             <!-- =============== MEDICAL HISTORY TAB ================= -->
-            <b-tab title="Medical History" active>
+            <b-tab :title="MH" active>
             <!-- {{ questions }} -->
                 <b-card-text>
                   <!-- STATIC -->
@@ -289,6 +289,9 @@
 export default {
   data(){
     return{
+      // tabs
+      MH: "Medical History",
+
       // static fields
       questions: [],
       
@@ -369,6 +372,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

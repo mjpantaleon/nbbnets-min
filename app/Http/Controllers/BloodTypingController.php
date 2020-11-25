@@ -173,43 +173,43 @@ class BloodTypingController extends Controller
                     Redundant function, may be enhanced by creating a new class
                 */
     
-                $has_donation = Donation::select('donation_id')
-                            ->where('donation_id', $donation_id)
-                            ->get();
+                // $has_donation = Donation::select('donation_id')
+                //             ->where('donation_id', $donation_id)
+                //             ->get();
     
     
-                if(count($has_donation)){
+                // if(count($has_donation)){
                     
-                    // $update_donation = Donation::where('donation_id', $donation_id)
-                    Donation::where('donation_id', $donation_id)
-                            ->update([
-                                'donation_stat' => $d['abs'] == 'Pos' ? 'REA' : 'Y',
-                                'mh_pe_stat' => $d['abs'] == 'Pos' ? 'PD' : 'A',
-                                'mh_pe_deferral' => $d['abs'] == 'Pos' ? 'ABS' : null,
-                                'approved_by' => $verifier
-                            ]);
+                //     // $update_donation = Donation::where('donation_id', $donation_id)
+                //     Donation::where('donation_id', $donation_id)
+                //             ->update([
+                //                 'donation_stat' => $d['abs'] == 'Pos' ? 'REA' : 'Y',
+                //                 'mh_pe_stat' => $d['abs'] == 'Pos' ? 'PD' : 'A',
+                //                 'mh_pe_deferral' => $d['abs'] == 'Pos' ? 'ABS' : null,
+                //                 'approved_by' => $verifier
+                //             ]);
 
-                    // \Log::info($update_donation);
+                //     // \Log::info($update_donation);
                     
-                } else{
+                // } else{
     
-                    // INSERT record at `donation` table
-                    $seqno = Donation::generateSeqno($facility_cd);
+                //     // INSERT record at `donation` table
+                //     $seqno = Donation::generateSeqno($facility_cd);
     
-                    $dn = new Donation;
-                    $dn->seqno = $seqno;
-                    $dn->donation_id = $donation_id;
-                    $dn->donor_sn = $donor_sn;
-                    $dn->pre_registered = 'Y';
-                    $dn->sched_id = $sched_id;
-                    $dn->donation_stat = $d['abs'] == 'Pos' ? 'REA' : 'Y';
-                    $dn->mh_pe_stat = $d['abs'] == 'Pos' ? 'PD' : 'A';
-                    $dn->mh_pe_deferral = $d['abs'] == 'Pos' ? 'ABS' : null;
-                    $dn->facility_cd = $facility_cd;
-                    // $dn->created_dt = date('Y-m-d H:i:s');
-                    $dn->approved_by = $verifier;
-                    $dn->save();
-                }
+                //     $dn = new Donation;
+                //     $dn->seqno = $seqno;
+                //     $dn->donation_id = $donation_id;
+                //     $dn->donor_sn = $donor_sn;
+                //     $dn->pre_registered = 'Y';
+                //     $dn->sched_id = $sched_id;
+                //     $dn->donation_stat = $d['abs'] == 'Pos' ? 'REA' : 'Y';
+                //     $dn->mh_pe_stat = $d['abs'] == 'Pos' ? 'PD' : 'A';
+                //     $dn->mh_pe_deferral = $d['abs'] == 'Pos' ? 'ABS' : null;
+                //     $dn->facility_cd = $facility_cd;
+                //     // $dn->created_dt = date('Y-m-d H:i:s');
+                //     $dn->approved_by = $verifier;
+                //     $dn->save();
+                // }
 
                 /**
                  *  Check if donation_stat is Y

@@ -288,38 +288,38 @@ class TestingDetailsController extends Controller
                             If not exists, create
                         */
     
-                        $has_donation = Donation::select('donation_id')
-                                    ->where('donation_id', $donation_id)
-                                    ->get();
+                        // $has_donation = Donation::select('donation_id')
+                        //             ->where('donation_id', $donation_id)
+                        //             ->get();
     
     
-                        if(count($has_donation)){
+                        // if(count($has_donation)){
                             
-                            Donation::where('donation_id', $donation_id)
-                                    ->update([
-                                        'donation_stat' => $fail ? 'REA' : 'Y',
-                                        'mh_pe_stat' => $fail ? 'PD' : 'A',
-                                        'mh_pe_deferral' => $fail ? 'TTI' : null
-                                    ]);
+                        //     Donation::where('donation_id', $donation_id)
+                        //             ->update([
+                        //                 'donation_stat' => $fail ? 'REA' : 'Y',
+                        //                 'mh_pe_stat' => $fail ? 'PD' : 'A',
+                        //                 'mh_pe_deferral' => $fail ? 'TTI' : null
+                        //             ]);
                             
-                        } else{
+                        // } else{
     
-                            // INSERT record at `donation` table
-                            $seqno = Donation::generateSeqno($facility_cd);
+                        //     // INSERT record at `donation` table
+                        //     $seqno = Donation::generateSeqno($facility_cd);
     
-                            $d = new Donation;
-                            $d->seqno = $seqno;
-                            $d->donation_id = $donation_id;
-                            $d->donor_sn = $donor_sn;
-                            $d->pre_registered = 'Y';
-                            $d->sched_id = $sched_id;
-                            $d->donation_stat = $fail ? 'REA' : 'Y';
-                            $d->mh_pe_stat = $fail ? 'PD' : 'A';
-                            $d->mh_pe_deferral = $fail ? 'TTI' : null;
-                            $d->facility_cd = $facility_cd;
-                            // $d->created_dt = date('Y-m-d H:i:s');
-                            $d->save();
-                        }
+                        //     $d = new Donation;
+                        //     $d->seqno = $seqno;
+                        //     $d->donation_id = $donation_id;
+                        //     $d->donor_sn = $donor_sn;
+                        //     $d->pre_registered = 'Y';
+                        //     $d->sched_id = $sched_id;
+                        //     $d->donation_stat = $fail ? 'REA' : 'Y';
+                        //     $d->mh_pe_stat = $fail ? 'PD' : 'A';
+                        //     $d->mh_pe_deferral = $fail ? 'TTI' : null;
+                        //     $d->facility_cd = $facility_cd;
+                        //     // $d->created_dt = date('Y-m-d H:i:s');
+                        //     $d->save();
+                        // }
 
                         /**
                          *  Check if donation_stat is Y
