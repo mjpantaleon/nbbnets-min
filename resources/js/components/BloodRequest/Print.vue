@@ -23,7 +23,7 @@
         <div class="issuance-form" id="printableArea">
             <table width="800" height="100" align="center">
                 <tr>
-                    <td width="25%" align="center"><img src="/images/doh.png" width="90" height="90"></td>
+                    <td width="25%" align="center"><img src="/images/doh.png" width="90"></td>
                     <td align="center" width="50%"><br>
                     Republic of the Philippines
                     <br>Department of Health
