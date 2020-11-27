@@ -9,7 +9,7 @@
 
         <b-collapse id="nav-collapse" is-nav v-if="showMenu">
         <b-navbar-nav v-if="showMenu">
-            <b-nav-item-dropdown right v-if="uLevel == '-1' || uLevel == '0' || uLevel == '1' || uLevel == '3'">
+            <b-nav-item-dropdown right v-if="uLevel === -1 || uLevel === 1 || uLevel === 3">
                 <template v-slot:button-content>
                     PRE-SCREENING
                 </template>
@@ -21,7 +21,7 @@
                 <b-dropdown-item :to="{ path: '/hla-hna-test' }">HLA & HNA</b-dropdown-item>
             </b-nav-item-dropdown>
 
-            <b-nav-item-dropdown right v-if="uLevel == '-1' || uLevel == '0' || uLevel == '1' || uLevel == '7'">
+            <b-nav-item-dropdown right v-if="uLevel === -1 || uLevel === 1 || uLevel === 7">
                 <template v-slot:button-content>
                     BLOOD TESTING
                 </template>
@@ -34,7 +34,7 @@
                 <b-dropdown-item :to="{ path: '/blood-test-zika' }">ZIKA</b-dropdown-item>
             </b-nav-item-dropdown>
 
-            <b-nav-item-dropdown right v-if="uLevel == '-1' || uLevel == '0' || uLevel == '1' || uLevel == '3'">
+            <b-nav-item-dropdown right v-if="uLevel === -1 || uLevel === 1 || uLevel === 3">
                 <template v-slot:button-content>
                     DONOR & DONATION
                 </template>
@@ -42,7 +42,7 @@
             </b-nav-item-dropdown>
 
 
-            <b-nav-item-dropdown right v-if="uLevel == '-1' || uLevel == '0' || uLevel == '1' || uLevel == '4'">
+            <b-nav-item-dropdown right v-if="uLevel === -1 || uLevel === 1 || uLevel === 4">
                 <template v-slot:button-content>
                     BLOOD UNIT
                 </template>
@@ -53,7 +53,7 @@
                 
             </b-nav-item-dropdown>
 
-            <b-nav-item-dropdown right v-if="uLevel == '-1' || uLevel == '0' || uLevel == '1' || uLevel == '4'">
+            <b-nav-item-dropdown right v-if="uLevel === -1 || uLevel === 1 || uLevel === 4">
                 <template v-slot:button-content>
                     BLOOD STOCKS
                 </template>
@@ -63,7 +63,7 @@
                 
             </b-nav-item-dropdown>
 
-            <b-nav-item-dropdown right v-if="uLevel == '-1' || uLevel == '0' || uLevel == '1' || uLevel == '4'">
+            <b-nav-item-dropdown right v-if="uLevel === -1 || uLevel === 1 || uLevel === 4">
                 <template v-slot:button-content>
                     BLOOD REQUEST & ISSUANCE
                 </template>
@@ -72,8 +72,6 @@
                 
             </b-nav-item-dropdown>
             
-
-
             <!-- 
             <b-nav-item-dropdown right>
                 <template v-slot:button-content>
@@ -156,7 +154,7 @@ export default {
 
                     if(response.data.status){
                         this.fullname = response.data.name,
-                        this.uLevel = String(response.data.ulevel),
+                        this.uLevel = response.data.ulevel,
                         this.showMenu = true
                     } else{
                         console.log(response.data.error)
@@ -186,7 +184,7 @@ export default {
     watch:{
         isUserLogged: function(val){
             this.getUser()
-            this.$forceUpdate()
+            // this.$forceUpdate()
         }
     }
 
