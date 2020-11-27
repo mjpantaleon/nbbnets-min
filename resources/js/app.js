@@ -10,6 +10,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import {routes} from './routes';
 
+import {ac_routes} from './access_routes.js';
+
 import {store} from './store.js'
 
 // Use BootstrapVue
@@ -45,7 +47,7 @@ Vue.mixin({
 
 // avoid illegal access of routes
 router.beforeEach((to, from , next) => {
-    
+    console.log(ac_routes)
     axios
         .get('/get-user')
         .then(response => {
