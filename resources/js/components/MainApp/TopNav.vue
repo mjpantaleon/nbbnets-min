@@ -9,6 +9,8 @@
 
         <b-collapse id="nav-collapse" is-nav v-if="showMenu">
         <b-navbar-nav v-if="showMenu">
+            <b-nav-item :to="{ path: '/home' }">HOME</b-nav-item>
+
             <b-nav-item-dropdown right v-if="uLevel === -1 || uLevel === 1 || uLevel === 3">
                 <template v-slot:button-content>
                     PRE-SCREENING

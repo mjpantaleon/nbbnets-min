@@ -1,7 +1,26 @@
 <template>
     <div class="main-div">
+        <b-row id="bb-crumb-sticky">
+          <b-col>
+                <b-breadcrumb>
+                    <b-breadcrumb-item active>
+                        <b-icon icon="file-text" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
+                        Blood Request & Issuance
+                    </b-breadcrumb-item>
+
+                    <b-breadcrumb-item :to="{ path: '/blood-request/list' }">
+                        <b-icon icon="file-text" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
+                        Blood Request List
+                    </b-breadcrumb-item>
+
+                    <b-breadcrumb-item active>
+                        Print Blood Issuance Form
+                    </b-breadcrumb-item>
+                </b-breadcrumb>
+          </b-col>
+        </b-row>
       
-        <div class="issuance-form">
+        <div class="issuance-form" id="printableArea">
             <center>    
             <div class="row">
                 <div class="col"><img src="\images\doh.png" alt=""></div>
@@ -20,12 +39,10 @@
             <div class="mt-5">
                 <div class="row">
                     <div class="col-lg">Issued to: <u><b>ST LUKES MEDICAN CENTER - GLOBAL CITY</b></u></div>
-                    <div class="col">&nbsp;</div>
                     <div class="col-sm">Date/Time Issued: <u><b>11-26-2020 02:50 PM</b></u></div>
                 </div>
                 <div class="row">
                     <div class="col">Type of Request: <u><b>CONVALESCENT PLASMA</b></u></div>
-                    <div class="col">&nbsp;</div>
                     <div class="col">&nbsp;</div>
                 </div>
                 <div class="row">
@@ -35,12 +52,13 @@
             </div>
         </div>
 
+
         <b-row class="mt-5">
             <b-col md="4">
-                <b-button block
-                    variant="primary"
-                    @click.prevent="printMe">
-                    <b-icon icon="file-post"></b-icon>&nbsp;PRINT
+                <b-button
+                    variant="secondary"
+                    @click="printDiv()">
+                    <b-icon icon="file-post p1"></b-icon>&nbsp;PRINT
                 </b-button>
             </b-col>
         </b-row>
@@ -51,21 +69,20 @@
 <script>
 export default {
     methods: {
-        printMe(){
-            window.print();
+        printDiv(){
+            window.print()
         }
     }
 }
 </script>
 
 <style scoped>
-.main-div{
-    font-family: 'Times New Roman', Times, serif;
-    size: 14px;
-}
 .issuance-form{
     padding: 48px;
-    width: 2480;
+    width: 595;
+    height: 842;
     border: 1px solid #333;
+    font-family: 'Times New Roman', Times, serif;
+    size: 14px;
 }
 </style>
