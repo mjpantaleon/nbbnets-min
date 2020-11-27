@@ -67,6 +67,7 @@ class LoginController extends Controller
             return array(
                 'status' => true,
                 'name' => $session['user_fname'] . " " . $session['user_mname'] . " " . $session['user_lname'],
+                'ulevel' => $session['ulevel'],
             );
         } else{
             return array(

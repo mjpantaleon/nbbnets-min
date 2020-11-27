@@ -45,6 +45,7 @@ Vue.mixin({
 
 // avoid illegal access of routes
 router.beforeEach((to, from , next) => {
+    
     axios
         .get('/get-user')
         .then(response => {
