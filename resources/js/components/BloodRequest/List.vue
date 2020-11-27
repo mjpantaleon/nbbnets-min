@@ -77,8 +77,13 @@
 
                     <template v-slot:cell(action)="data">
                         <router-link :to="{ path: '/blood-request/view/' + data.item.request_id }" title="View Blood Request Details" 
-                        v-if="data.item.status == 'FLU' || data.item.status != 'Cancelled'">
+                        v-if="data.item.status == 'FLU' || data.item.status != 'Cancelled' && data.item.reference == '-'">
                             <b-icon icon="search" class="border border-primary p-1" variant="primary" font-scale="2.1"></b-icon>
+                        </router-link>
+
+                        <router-link :to="{ path: '/blood-request/print/' + data.item.request_id }" title="View Issuance form" 
+                        v-if="data.item.details[0].donation_id != null && data.item.reference != '-'">
+                            <b-icon icon="file-post" variant="secondary" font-scale="2.1"></b-icon>
                         </router-link>
                      
                         <router-link :to="{ path: '/blood-request/issue/' + data.item.request_id }" title="Issue Blood request" 

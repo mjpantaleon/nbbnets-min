@@ -40,6 +40,7 @@ import BloodRequestList from './components/BloodRequest/List.vue';
 import CreateBloodRequest from './components/BloodRequest/Create.vue';
 import BloodRequestInfo from './components/BloodRequest/View.vue';
 import IssueBloodRequest from './components/BloodRequest/Issue.vue';
+import PrintIssuace from './components/BloodRequest/Print.vue';
 
 export const routes = [
     { name: 'login', path: '/', component: Login },
@@ -78,6 +79,7 @@ export const routes = [
     { name: 'blood-request/create', path: '/blood-request/create', component: CreateBloodRequest },
     { name: 'blood-request/view/:id', path: '/blood-request/view/:id', component: BloodRequestInfo },
     { name: 'blood-request/issue/:id', path: '/blood-request/issue/:id', component: IssueBloodRequest },
+    { name: '/blood-request/print/:id', path: '/blood-request/print/:id', component: PrintIssuace },
 
 
     // BLOOD TEST
