@@ -6,6 +6,5 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
     state: {
         isLogged: false,
-        userInfo: '',
     }
 })
