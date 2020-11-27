@@ -1,4 +1,5 @@
 import Login from './components/MainApp/Login.vue';
+import Home from './components/MainApp/Home.vue';
 
 import Donation from './components/Donation/Donation.vue';
 import NewWalkin from './components/Donation/NewWalkin.vue';
@@ -44,6 +45,7 @@ import PrintIssuace from './components/BloodRequest/Print.vue';
 
 export const routes = [
     { name: 'login', path: '/', component: Login },
+    { name: 'home', path: '/home', component: Home },
 
     /* ------------------ BCU ------------------------------- */
     { name: 'pre-screened-list', path: '/pre-screened-list', component: PreScreenedList },

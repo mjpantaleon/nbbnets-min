@@ -1,6 +1,6 @@
 export const ac_routes = [
 
-    { BCM : {
+    { 'BCM' : [
         'pre-screened-list',
         'pre-screened-info' ,
         'pre-screening',
@@ -10,9 +10,9 @@ export const ac_routes = [
         'new-walk-in',
         'search-donor',
         'donor-details',
-    }},
+    ]},
 
-    { MT = [
+    { 'MT' : [
         'blood-processing',
         'labelling',
         'inventory-release',
@@ -25,11 +25,11 @@ export const ac_routes = [
         'blood-request-print',
     ]},
 
-    HBBM = [
+    { 'HBBM' : [
         'blood-typing',
         'blood-test-tti',
         'blood-test-nat',
         'blood-test-zika',
-    ],
+    ]},
 
 ];

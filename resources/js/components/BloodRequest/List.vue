@@ -1,6 +1,6 @@
 <template>
   <div class="main-div">
-      <b-row id="bb-crumb-sticky">
+        <b-row id="bb-crumb-sticky">
           <b-col>
                 <b-breadcrumb>
                     <b-breadcrumb-item active>

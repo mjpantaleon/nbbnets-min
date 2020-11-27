@@ -93,7 +93,7 @@ export default {
                 .then(response => {
 
                     if(response.data.status){
-                        this.$router.push('pre-screened-list')
+                        this.$router.push('home')
                     } else{
                         this.displayBlank = false
                     }
@@ -110,7 +110,7 @@ export default {
 
                     if(response.data.status){
                         this.$store.state.isLogged = true
-                        this.$router.push('pre-screened-list')
+                        this.$router.push('home')
                     } else{
                         this.showError = true
                         this.errorMessage = response.data.error
