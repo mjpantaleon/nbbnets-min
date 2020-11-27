@@ -130,6 +130,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/issue-blood-request/{id}', 'BloodRequestController@issueBloodRequest');
     // Route::post('/cancel-blood-request/{id}', 'BloodRequestController@cancelBloodRequest');
     Route::post('/cancel-blood-request', 'BloodRequestController@cancelBloodRequest');
+    Route::get('/data-for-issuance/{id}', 'BloodRequestController@getDataForIssuance');
 
 
     Route::get('/logout', 'LoginController@logout');
