@@ -1,6 +1,6 @@
-export const ac_routes = [
+export const ac_routes =
 
-    { 'BCM' : [
+    {'BCM' : [
         'pre-screened-list',
         'pre-screened-info' ,
         'pre-screening',
@@ -10,9 +10,11 @@ export const ac_routes = [
         'new-walk-in',
         'search-donor',
         'donor-details',
-    ]},
+        'home',
+        'unauthorized',
+    ],
 
-    { 'MT' : [
+    'MT' : [
         'blood-processing',
         'labelling',
         'inventory-release',
@@ -23,13 +25,15 @@ export const ac_routes = [
         'blood-request-view',
         'blood-request-issue',
         'blood-request-print',
-    ]},
+        'home',
+        'unauthorized',
+    ],
 
-    { 'HBBM' : [
+    'HBBM' : [
         'blood-typing',
         'blood-test-tti',
         'blood-test-nat',
         'blood-test-zika',
-    ]},
-
-];
+        'home',
+        'unauthorized',
+    ]}

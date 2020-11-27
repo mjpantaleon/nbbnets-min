@@ -47,13 +47,39 @@ Vue.mixin({
 
 // avoid illegal access of routes
 router.beforeEach((to, from , next) => {
-    console.log(ac_routes)
+
     axios
         .get('/get-user')
         .then(response => {
 
             if(response.data.status){
-                next()
+
+                var ual = [];
+
+                if(response.data.ulevel == 3){
+                    ual = ac_routes.BCM
+                } else if(response.data.ulevel == 4){
+                    ual = ac_routes.MT
+                } else if(response.data.ulevel == 7){
+                    ual = ac_routes.HBBM
+                }
+
+                // console.log(to.name)
+                // console.log(ual.indexOf('blood-typings'))
+
+                if(ual.length){
+                    if(ual.indexOf(to.name) === -1){
+                        next('/unauthorized')
+                    } else{
+                        next()                         
+                    }
+                } else{
+                    next()
+                }
+
+                // next()
+
+                
             } else{
                 if (to.path !== '/') {
                     next('/')
