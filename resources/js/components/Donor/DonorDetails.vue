@@ -128,6 +128,18 @@
                             <!-- {{ data.item.created_dt | moment("dddd, MMMM Do YYYY, h:mm:ss a") }} -->
                             {{ data.item.created_dt | moment("MMMM DD, YYYY - h:mm:ss a") }}
                         </template>
+
+                         <template v-slot:cell(donation_stat)="data">
+                            {{ data.item.donation_stat }}
+                        </template>
+
+                         <template v-slot:cell(mh_pe_stat)="data">
+                            {{ data.item.mh_pe_stat }}
+                        </template>
+
+                         <template v-slot:cell(mh_pe_deferral)="data">
+                            {{ data.item.mh_pe_deferral }}
+                        </template>
                     </b-table>
                 </b-card>
 
@@ -160,7 +172,10 @@ export default {
         data: [],
         fields: [
             { key: 'facility_name', label: 'Facility' },
-            { key: 'created_dt', label: 'Donation Date' }
+            { key: 'created_dt', label: 'Donation Date' },
+            { key: 'donation_stat', label: 'Donation Status' },
+            { key: 'mh_pe_stat', label: 'MH/PE Status' },
+            { key: 'mh_pe_deferral', label: 'Deferral Reason' }
         ]
       }
     }, /*data */

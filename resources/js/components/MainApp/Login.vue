@@ -87,22 +87,21 @@ export default {
     }, /* mounted */
 
     methods: {
-        getUser(){
-            axios
+        async getUser(){
+            await axios
                 .get('/get-user')
                 .then(response => {
 
                     if(response.data.status){
-                        this.$router.push('pre-screened-list')
+                        this.$router.push('home')
                     } else{
                         this.displayBlank = false
                     }
                 })
         },
         
-        login(){
-
-            axios
+        async login(){
+            await axios
                 .post('/login-attempt', {
                     userId: this.username,
                     password: this.password
@@ -111,8 +110,7 @@ export default {
 
                     if(response.data.status){
                         this.$store.state.isLogged = true
-                        // this.$store.state.userInfo = response.data.user
-                        this.$router.push('pre-screened-list')
+                        this.$router.push('home')
                     } else{
                         this.showError = true
                         this.errorMessage = response.data.error

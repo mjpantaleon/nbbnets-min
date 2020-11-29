@@ -103,10 +103,11 @@ class BloodLabellingController extends Controller
                                 ->whereNotNull('donor_sn')
                                 ->whereFacilityCd($facility_cd)
                                 ->whereSchedId($sched_id)
-                                // ->whereBetween('created_dt', [$from, $to])
-                                // ->where('collection_stat', $col_stat)
+                                ->whereBetween('created_dt', [$from, $to])
+                                ->where('collection_stat', $col_stat)
                                 ->where('collection_type', "CPC19")
-                                ->get();
+                                ->get()->toArray();
+            \Log::info($donation);
 
             if($donation){
 
@@ -245,6 +246,13 @@ class BloodLabellingController extends Controller
                 $label->component_cd = 100;
                 $label->reprint_count = 0;
                 $label->reason = null;
+
+                if(strpos($label_data[0], '-')){ // if only 1 aliquote will be saved, to prevent error in source_donation_id field
+
+                    $split = explode("-", $label_data[0]);
+                    $label->source_donation_id = $split[0];
+                }
+
                 $label->save();
 
             } else{

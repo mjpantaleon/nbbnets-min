@@ -10,6 +10,8 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import {routes} from './routes';
 
+import {ac_routes} from './access_routes.js';
+
 import {store} from './store.js'
 
 // Use BootstrapVue
@@ -40,17 +42,54 @@ Vue.mixin({
                 // w.close();
             };
         },
+
+        // printIssuanceForm(id){
+        //     let url =  'http://'+window.location.host+'/preview?data='+id;
+        //     let w = window.open(url,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=595,height=842');
+        //     w.onload = () => {
+        //         w.print();
+        //         setTimeout(function(){w.close();}, 3000);
+        //         // w.close();
+        //     };
+        // }
     }
 });
 
 // avoid illegal access of routes
 router.beforeEach((to, from , next) => {
+
     axios
         .get('/get-user')
         .then(response => {
 
             if(response.data.status){
-                next()
+
+                var ual = [];
+
+                if(response.data.ulevel == 3){
+                    ual = ac_routes.BCM
+                } else if(response.data.ulevel == 4){
+                    ual = ac_routes.MT
+                } else if(response.data.ulevel == 7){
+                    ual = ac_routes.HBBM
+                }
+
+                // console.log(to.name)
+                // console.log(ual.indexOf('blood-typings'))
+
+                if(ual.length){
+                    if(ual.indexOf(to.name) === -1){
+                        next('/unauthorized')
+                    } else{
+                        next()                         
+                    }
+                } else{
+                    next()
+                }
+
+                // next()
+
+                
             } else{
                 if (to.path !== '/') {
                     next('/')

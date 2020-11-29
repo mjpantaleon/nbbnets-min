@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\PreScreenedDonor;
 use App\IggResult;
+use App\Donation;
 use App\AdditionalHlaHnaTest;
 use DB;
 
@@ -108,16 +109,22 @@ class PreScreenedDonorController extends Controller
 
         // WILL GET RECORDS IF HAS NO NEGATIVE RESULT AT IGG RESULTS TABLE !!!!!
         // SELECT donor_sn, last_name, first_name, middle_name, name_suffix FROM pre_screened_donors WHERE facility_cd LIKE $facility_cd AND status = 1 AND approval_dt BETWEEN $from and $to
-        $query = "  SELECT ps.donor_sn, ps.last_name, ps.first_name, ps.middle_name, ps.name_suffix
+        
+        // $query = "  SELECT ps.donor_sn, ps.last_name, ps.first_name, ps.middle_name, ps.name_suffix, ig.donation_id
+        $query = "  SELECT ps.donor_sn, ig.donation_id
+                    , bt.bloodtest_no
                     FROM `pre_screened_donors` ps
                     LEFT JOIN `igg_results` ig ON ig.donor_sn = ps.donor_sn
-                    LEFT JOIN `additional_hla_hna_tests` hla ON hla.donor_sn = ps.donor_sn
+                    LEFT JOIN `bloodtest` bt ON bt.donation_id = ig.donation_id
+                    COLLATE utf8_general_ci
                     WHERE ps.approval_dt BETWEEN '$from' AND '$to'
                     AND ps.status = '1' 
                     AND ig.igg != 'N'
-                    AND hla.result != 'P'
-                    AND `facility_cd` LIKE $facility_cd
-                    ORDER BY ps.approval_dt DESC "; 
+                    AND ig.igg IS NOT NULL
+                    AND ps.facility_cd LIKE $facility_cd
+                    AND bt.bloodtest_no IS NULL
+                    ORDER BY ps.approval_dt ASC "; 
+
         $approved_donor_list = DB::select($query);
         
         $approved_donor_list = json_decode(json_encode($approved_donor_list), true);
@@ -125,20 +132,19 @@ class PreScreenedDonorController extends Controller
         if($approved_donor_list){
 
             for ($i=0; $i < count($approved_donor_list); $i++) { 
-                $ids[$i]['first_name'] = $approved_donor_list[$i]['first_name'];
-                $ids[$i]['middle_name'] = $approved_donor_list[$i]['middle_name'];
-                $ids[$i]['last_name'] = $approved_donor_list[$i]['last_name'];
-                $ids[$i]['name_suffix'] = $approved_donor_list[$i]['name_suffix'];
+                // $ids[$i]['first_name'] = $approved_donor_list[$i]['first_name'];
+                // $ids[$i]['middle_name'] = $approved_donor_list[$i]['middle_name'];
+                // $ids[$i]['last_name'] = $approved_donor_list[$i]['last_name'];
+                // $ids[$i]['name_suffix'] = $approved_donor_list[$i]['name_suffix'];
                 $ids[$i]['donor_sn'] = $approved_donor_list[$i]['donor_sn'];
-                $ids[$i]['donation_id'] = "";
+                $ids[$i]['donation_id'] = $approved_donor_list[$i]['donation_id'];
+                // $ids[$i]['donation_id'] = "";
                 $ids[$i]['HBSAG'] = "";
                 $ids[$i]['HCV'] = "";
                 $ids[$i]['HIV'] = "";
                 $ids[$i]['MALA'] = "";
                 $ids[$i]['RPR'] = "";
             }
-
-            \Log::info(gettype($ids));
 
             return $ids;
             // \Log::info($approved_donor_list);
@@ -164,7 +170,6 @@ class PreScreenedDonorController extends Controller
         // initialize data
         $facility_user = $facility_user;
         $facility_cd = $facility_cd;
-        \Log::info($facility_user);
 
         $year_now = date('Y');              // 2020
         $donors_count = Donor::count(); 
@@ -320,7 +325,6 @@ class PreScreenedDonorController extends Controller
                                 ->where('name_suffix', '=', $name_suffix)
                                 ->where('bdate', '=', $bdate)
                                 ->first();
-        \Log::info($check_existing_record);
 
         // if not exist then
         if($check_existing_record === null){
@@ -402,8 +406,6 @@ class PreScreenedDonorController extends Controller
                     AND ig.donation_id IS NULL ";
                 
         $donors_to_igg = DB::select($query);
-
-        \Log::info($donors_to_igg);
         
         $donors_to_igg = json_decode(json_encode($donors_to_igg), true);
         // return($donors_to_igg);
@@ -420,7 +422,6 @@ class PreScreenedDonorController extends Controller
                 $ids[$i]['igg_result'] = "";
             }
             
-            \Log::info($ids);
             return $ids;
         } else {
             return false;
@@ -450,32 +451,44 @@ class PreScreenedDonorController extends Controller
                 $cut_off_val = $ig['cut_off_val'];
                 $igg_result = $ig['igg_result'];
 
-                // CHECK DONATION ID IF ALREADY EXIST AT `igg_results` table
-                $check_donation_id = IggResult::where('donation_id', '=',  $donation_id)->first();
+                // CHECK IF DONATION IF ALREADY EXIST AT `donation` TABLE
+                $check_id_at_donation_table = Donation::where('donation_id', '=', $donation_id)->first();
 
-                // IF DONATION ID DOES NOT EXIST
-                if($check_donation_id === null){
+                // if donation id not exist then proceed to
+                if($check_id_at_donation_table === null){
 
-                    // THEN INSERT NEW 
-                    $igg = new  IggResult;
-                    $igg->donor_sn = $donor_sn;
-                    $igg->donation_id = $donation_id;
-                    $igg->cut_off_val = $cut_off_val;
-                    $igg->igg = $igg_result;
+                    // CHECK DONATION ID IF ALREADY EXIST AT `igg_results` table
+                    $check_donation_id = IggResult::where('donation_id', '=',  $donation_id)->first();
 
-                    $igg->result_by = $facility_user;
-                    $igg->result_dt = date("Y-m-d H:i:s");
-                    $igg->approved_by = $verifier;
-                    $igg->approval_dt = date("Y-m-d H:i:s");
-                    $igg->save();
-                }
+                    // IF DONATION ID DOES NOT EXIST
+                    if($check_donation_id === null){
 
-                // ELSE IF DONATION ALREADY EXIST
-                else{
+                        // THEN INSERT NEW 
+                        $igg = new  IggResult;
+                        $igg->donor_sn = $donor_sn;
+                        $igg->donation_id = $donation_id;
+                        $igg->cut_off_val = $cut_off_val;
+                        $igg->igg = $igg_result;
 
+                        $igg->result_by = $facility_user;
+                        $igg->result_dt = date("Y-m-d H:i:s");
+                        $igg->approved_by = $verifier;
+                        $igg->approval_dt = date("Y-m-d H:i:s");
+                        $igg->save();
+                    } /* $check_donation_id */
+
+                    // ELSE IF DONATION ALREADY EXIST
+                    else{
+
+                        // LIST DOWN DUPLICATED DONATION ID
+                        $duplicated_id = $duplicated_id.' '.$ig['donation_id'];
+                    }
+
+                } else{
                     // LIST DOWN DUPLICATED DONATION ID
                     $duplicated_id = $duplicated_id.' '.$ig['donation_id'];
-                }
+                } /* $check_id_at_donation_table */
+
             } /* if($ig) */
 
         } /* end foreach */
@@ -497,7 +510,6 @@ class PreScreenedDonorController extends Controller
                 'status' => 1
             ], 200);
         }
-
     }
 
     // HLA & HNA
@@ -581,41 +593,53 @@ class PreScreenedDonorController extends Controller
 
                 // return $donor_sn;
 
-                // CHECK DONATION ID IF ALREADY EXIST AT `hla_hna_results` table
-                $check_donation_id = AdditionalHlaHnaTest::where('donation_id', '=',  $donation_id)->first();
+                // CHECK IF DONATION IF ALREADY EXIST AT `donation` TABLE
+                $check_id_at_donation_table = Donation::where('donation_id', '=', $donation_id)->first();
 
-                // IF DONATION ID DOES NOT EXIST
-                if($check_donation_id === null){
+                // if donation id not exist then proceed to
+                if($check_id_at_donation_table === null){
+                    // CHECK DONATION ID IF ALREADY EXIST AT `hla_hna_results` table
+                    $check_donation_id = AdditionalHlaHnaTest::where('donation_id', '=',  $donation_id)->first();
 
-                    // THEN INSERT NEW 
-                    $hla = new  AdditionalHlaHnaTest;
-                    $hla->donation_id = $donation_id;
-                    $hla->donor_sn = $donor_sn;
-                    $hla->test_1 = $test_1;
-                    $hla->test_2 = $test_2;
-                    $hla->test_3 = $test_3;
+                    // IF DONATION ID DOES NOT EXIST
+                    if($check_donation_id === null){
 
-                    // loop test_1, test_2 and test_3, if any of result is = 'P' then result must be equal to = 'P' otherwise = 'N'
-                    if($test_1 == 'P' || $test_2 == 'P' || $test_3 == 'P'){ 
-                        $result = 'P'; 
-                    } else {
-                        $result = 'N'; 
+                        // THEN INSERT NEW 
+                        $hla = new  AdditionalHlaHnaTest;
+                        $hla->donation_id = $donation_id;
+                        $hla->donor_sn = $donor_sn;
+                        $hla->test_1 = $test_1;
+                        $hla->test_2 = $test_2;
+                        $hla->test_3 = $test_3;
+
+                        // loop test_1, test_2 and test_3, if any of result is = 'P' then result must be equal to = 'P' otherwise = 'N'
+                        if($test_1 == 'P' || $test_2 == 'P' || $test_3 == 'P'){ 
+                            $result = 'P'; 
+                        } else {
+                            $result = 'N'; 
+                        }
+                        
+                        $hla->result = $result;
+                        $hla->result_by = $facility_user;
+                        $hla->result_dt = date("Y-m-d H:i:s");
+                        $hla->approved_by = $verifier;
+                        $hla->approval_dt = date("Y-m-d H:i:s");
+                        $hla->save();
+                    } /* $check_donation_id */
+
+                    // ELSE IF DONATION ALREADY EXIST
+                    else{
+
+                        // LIST DOWN DUPLICATED DONATION ID
+                        $duplicated_id = $duplicated_id.' '.$val['donation_id'];
                     }
-                    
-                    $hla->result = $result;
-                    $hla->result_by = $facility_user;
-                    $hla->result_dt = date("Y-m-d H:i:s");
-                    $hla->approved_by = $verifier;
-                    $hla->approval_dt = date("Y-m-d H:i:s");
-                    $hla->save();
-                }
-
-                // ELSE IF DONATION ALREADY EXIST
+                }  /* $check_id_at_donation_table */
                 else{
 
                     // LIST DOWN DUPLICATED DONATION ID
                     $duplicated_id = $duplicated_id.' '.$val['donation_id'];
                 }
+
             } /* if($ig) */
 
         } /* end foreach */

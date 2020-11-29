@@ -70,6 +70,10 @@
                             <th class="lead">Age : </th>
                             <th class="lead">{{age}}</th>
                         </tr>
+                        <tr>
+                            <th class="lead">Hospital : </th>
+                            <th class="lead">{{hospital}}</th>
+                        </tr>
                     </tbody>
                 </table>
             </b-col>
@@ -113,7 +117,7 @@
         </b-row>
         
         <b-row>
-            <b-col md="4" v-if="status != 'FLU' && status != 'Released' || details.donation_id != ''">
+            <b-col md="4" v-if="status != 'FLU' || status != 'Released' || details.donation_id != ''">
                 <b-button block
                     variant="success"
                     @click.prevent="showModal">
@@ -189,11 +193,15 @@ export default {
             dr_lname: '',
             dr_name_suffix: '',
 
+            hospital: '',
+
             mobile_no: '',
             email: '',
 
             // blood unit
             details: '',
+            donation_id: '',
+            component_cd: '',
             
             status: '',
             reference: '',
@@ -232,11 +240,14 @@ export default {
                 this.dr_mname = response.data.physician_details.mname,
                 this.dr_lname = response.data.physician_details.lname,
                 this.dr_name_suffix = response.data.physician_details.name_suffix,
+                this.hospital = response.data.physician_details.hospital,
 
                 this.mobile_no = response.data.physician_details.mobile_num,
                 this.email = response.data.physician_details.email,
 
                 this.details = response.data.details,
+                this.donation_id = response.data.details.donation_id,
+                this.component_cd = response.data.details.component_name.component_cd,
 
                 this.status = response.data.status,
                 this.reference = response.data.reference
@@ -259,7 +270,9 @@ export default {
         async setUname(e){
 
             await axios
-            .post('/issue-blood-request/' + this.$route.params.id)
+            .post('/issue-blood-request/' + this.$route.params.id, {
+                details : this.details
+            })
             .then(response => {
 
                 // this.data = response.data
@@ -272,6 +285,7 @@ export default {
             })
 
         },
+
 
     }, /* methods */
 }

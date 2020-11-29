@@ -16,7 +16,7 @@ class AvailableBloodStocksController extends Controller
         $available = Component::select('blood_type','donation_id','component_vol','expiration_dt','component_cd', 'source_donation_id')
                                 ->with('donation_min')
                                 ->whereLocation($facility_cd)
-                                ->whereIn('comp_stat', array('AVA', 'FLU', 'RES', 'Released')) // Add status after comp_stat = AVA
+                                ->whereIn('comp_stat', array('AVA', 'FLU', 'RES')) // Add status after comp_stat = AVA # removed 'Released' from filter
                                 ->where('component_cd', '>=', 100)
                                 ->where('expiration_dt','>=', date('Y-m-d') )
                                 ->orderBy('created_dt','desc')

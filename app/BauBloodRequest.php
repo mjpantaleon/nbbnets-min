@@ -25,13 +25,22 @@ class BauBloodRequest extends Model
 
     function physician_details(){
         return $this->belongsTo('App\BauPhysician', 'request_id','request_id')
-                    ->select('id','request_id','fname', 'mname', 'lname', 'name_suffix', 'mobile_num', 'email');
+                    ->select('id','request_id','fname', 'mname', 'lname', 'name_suffix', 'mobile_num', 'email', 'hospital');
     }
 
     function details(){
-        return $this->hasMany('App\BauBloodRequestDetail','request_id', 'request_id')->with('component_name')
+        return $this->hasMany('App\BauBloodRequestDetail','request_id', 'request_id')
+                    ->with('component_name')
+                    // ->with('reserved_unit_name')
                     ->select('request_component_id', 'request_id', 'blood_type', 'donation_id','component_cd');
     }
+
+    function blood_type(){
+        return $this->hasMany('App\BauBloodRequestDetail','request_id', 'request_id')
+                    ->select('request_component_id', 'request_id', 'blood_type', 'donation_id');
+    }
+
+
 
     
 }

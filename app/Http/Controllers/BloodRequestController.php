@@ -38,19 +38,29 @@ class BloodRequestController extends Controller
         AND brd.donation_id IS NULL
         */
 
-        $sql =" SELECT DISTINCT(br.request_id), br.reference, br.request_type, br.status, bp.patient_id, bp.firstname, bp.lastname, bp.blood_type 
-                FROM `bau_blood_request` br
-                LEFT JOIN `bau_patient` bp ON bp.patient_id = br.patient_id
-                LEFT JOIN `bau_blood_request_dtls` brd ON br.request_id = brd.request_id
-                WHERE br.created_dt LIKE '%$selected_dt%'
-                AND facility_cd = '$facility_cd' ";
+        $sql = BauBloodRequest::select('request_id', 'reference', 'request_type', 'status', 'patient_id')->distinct()
+                            ->where('created_dt', 'LIKE', '%' .$selected_dt. '%')
+                            ->whereFacilityCd($facility_cd)
+                            ->with('details')
+                            ->with('patient_details')
+                            ->get()
+                            ->toArray();
+        \Log::info($sql);
+        return $sql;
 
-        $result = DB::select($sql);
-        // \Log::info($result);
+        // $sql =" SELECT DISTINCT(br.request_id), br.reference, br.request_type, br.status, bp.patient_id, bp.firstname, bp.middlename, bp.lastname, bp.blood_type 
+        //         FROM `bau_blood_request` br
+        //         LEFT JOIN `bau_patient` bp ON bp.patient_id = br.patient_id
+        //         LEFT JOIN `bau_blood_request_dtls` brd ON br.request_id = brd.request_id
+        //         WHERE br.created_dt LIKE '%$selected_dt%'
+        //         AND facility_cd = '$facility_cd' ";
+
+        // $result = DB::select($sql);
+        // // \Log::info($result);
         
-        $result = json_decode(json_encode($result), true);
-        // \Log::info($result);
-        return $result;
+        // $result = json_decode(json_encode($result), true);
+        // // \Log::info($result);
+        // return $result;
     }
 
     public function forLookUp($id){
@@ -73,31 +83,6 @@ class BloodRequestController extends Controller
                                             ->first()
                                             ->toArray();    
         return $blood_request_detail;
-        
-        // if($blood_request_detail){
-        //     return $blood_request_detail->toArray();
-        // } else{
-        //     return [];
-        // }
-        
-        // \Log::info($blood_request_detail);
-        
-
-        
-                                                
-        // $sql =" SELECT br.request_id, br.reference, br.request_type, br.status, bp.patient_id, bp.firstname, bp.middlename, bp.lastname, bp.name_suffix, bp.blood_type 
-        //         FROM `bau_blood_request` br
-        //         LEFT JOIN `bau_patient` bp ON bp.patient_id = br.patient_id
-        //         WHERE br.request_id = '$id'
-        //         AND facility_cd = '$facility_cd'
-        //         AND br.status = 'FLU' ";
-
-        // $blood_request_detail = DB::select($sql);
-        // \Log::info($blood_request_detail);
-        
-        // $blood_request_detail = json_decode(json_encode($blood_request_detail), true);
-        // \Log::info($blood_request_detail);
-        // return $blood_request_detail;
     }
 
     public function getCpComponents(){
@@ -147,7 +132,7 @@ class BloodRequestController extends Controller
                     ORDER BY c.created_dt ASC
         */
 
-        $sql = "    SELECT c.donation_id, c.component_cd, c.blood_type, c.comp_stat , cp.comp_name, d.gender
+        $sql = "    SELECT c.donation_id, c.component_cd, c.blood_type, c.comp_stat , cp.comp_name, d.gender, dd.collection_method
                     FROM `component` c
                     LEFT JOIN `r_cp_component_codes` cp ON c.component_cd = cp.component_code
                     LEFT JOIN `donation` dd ON dd.donation_id = c.donation_id
@@ -157,10 +142,10 @@ class BloodRequestController extends Controller
                     AND `location` = '$facility_cd'
                     AND `component_cd` >= 100
                     AND `expiration_dt` >= '$date'
+                    AND (dd.collection_method = 'WB' OR ISNULL(dd.collection_method))
                     ORDER BY c.created_dt ASC ";
         
         $available_cp_units = DB::select($sql);
-        \Log::info($available_cp_units);
 
         // $available_cp_units = Component::where('blood_type', $blood_type)
         //                 ->select('donation_id', 'component_cd', 'blood_type', 'comp_stat')
@@ -261,6 +246,7 @@ class BloodRequestController extends Controller
     
                         'mobile_num'    => $request['mobile_no'],
                         'email'         => $request['email'],
+                        'hospital'      => $request['hospital'],
                     )
                 );
 
@@ -332,7 +318,7 @@ class BloodRequestController extends Controller
                 $request_id = $cdv['request_id'];
                 $request_component_id = $cdv['request_component_id'];
                 
-                // CHECK IF REQUEST ID EXISTS ATbau_ blood_request_details TABLE
+                // CHECK IF REQUEST ID EXISTS AT bau_ blood_request_details TABLE
                 $check_request_id = BauBloodRequestDetail::where('request_id', '=', $request_id)
                                                         ->first();
     
@@ -427,7 +413,11 @@ class BloodRequestController extends Controller
         return $request_details;
     }
 
-    public function issueBloodRequest($id){
+    public function issueBloodRequest(Request $request, $id){
+        $details = $request->get('details');
+        // \Log::info($details);
+        // return $details;
+
         $year_now = date('Y');              // 2020
         $request_count = BauBloodRequest::count(); 
         $request_count = $request_count + 1;
@@ -437,6 +427,19 @@ class BloodRequestController extends Controller
                     ->update(['status' => 'Released', 'reference' => $reference]);
         \Log::info($issue_blood_request);
 
+
+        foreach($details as $key => $value){
+            $request_id = $value['request_id'];
+            $donation_id = $value['donation_id'];
+            $component_cd = $value['component_cd'];
+            
+            $update_component = Component::where('donation_id', $donation_id)
+                                    ->where('component_cd', $component_cd)
+                                    ->update(['comp_stat' => 'REL']);
+            \Log::info($update_component);
+        }
+
+
         return response()->json([
             'message' => "Blood request has been issued successfully",
             'status' => 1
@@ -444,9 +447,91 @@ class BloodRequestController extends Controller
 
     }
     
-    // ISSUE BLOOD UNIT MODULE ////////////////////////////////////////////////////////////////
+    // ISSUE BLOOD UNIT MODULE ///////////////////////////////////////////////////////////////
+    public function cancelBloodRequest(Request $request){
+        $facility_user  = Session::get('userInfo')['user_id'];
+        $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
+        
+        $verifier       = $request->get('verifier');
+        
+        $blood_request_id   = $request->get('request_id'); 
+        // \Log::info($cancel_blood_request);
+
+        // FIRST CHECK BLOOD_REQUEST_DTLS IF THERE WERE RECORDS WITH DONATION ID UNDER THIS REQUEST_ID
+        $check_for_reserved_units = BauBloodRequestDetail::where('request_id', $blood_request_id)
+                            ->whereNotNull('donation_id')
+                            ->get()
+                            ->toArray();
+
+        // \Log::info($check_for_reserved_units);
+        // return $check_for_reserved_units;
+
+        // if there were NO reserved units under this request_id then proceed to
+        if(!$check_for_reserved_units){
+
+              // UPDATE BAU BLOOD REQUEST TABLE
+              BauBloodRequest::where('request_id', $blood_request_id)
+              ->update(['status' => 'Cancelled']);
+        }
+
+        // else if there were RESERVED units under this request_id then proceed to
+        else{
+
+            // get each record then proceed to
+            foreach($check_for_reserved_units as $key => $value){
+                $donation_id = $value['donation_id'];
+                $request_id = $value['request_id'];
     
+                // UPDATE component SET comp_stat = 'AVA' WHERE donation_id = $donation_id
+                Component::where('donation_id', $donation_id)
+                        ->update(['comp_stat' => 'AVA']);
+    
+                // UPDATE BauBloodRequestDetail SET donation_id = null WHERE request_id = $blood_request_id
+                BauBloodRequestDetail::where('request_id', $blood_request_id)
+                                    ->update(['donation_id' => null]);
+    
+                // UPDATE BAU BLOOD REQUEST TABLE
+                BauBloodRequest::where('request_id', $blood_request_id)
+                                ->update(['status' => 'Cancelled']);
+            }
+        }
 
+        // return response after each loop
+        return response()->json([
+            'message' => "Blood request has been cancelled successfully",
+            'status' => 1
+        ], 200);
 
+    }
+
+    public function getDataForIssuance($id){
+        $data_for_issuance = BauBloodRequest::where('request_id', $id)
+                        ->with('patient_details')
+                        ->with('physician_details')
+                        // ->with('details')
+                        ->first()
+                        ->toArray();
+        // \Log::info($data_for_issuance);
+
+        return $data_for_issuance;
+    }
+
+    public function issuedBloodUnits($id){
+        $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
+
+        $sql = "    SELECT DISTINCT(cp.component_abbr), c.donation_id, c.collection_dt, c.expiration_dt, c.comp_stat 
+                    FROM `bau_blood_request_dtls` brd
+                    LEFT JOIN `component` c ON c.donation_id = brd.donation_id
+                    LEFT JOIN `r_cp_component_codes` cp ON cp.component_code = c.component_cd
+                    WHERE brd.request_id = '$id' 
+                    AND c.comp_stat = 'REL' 
+                    AND c.location = '$facility_cd' 
+                    ORDER BY c.created_dt ASC   ";
+        $issued_units = DB::select($sql);
+
+        $issued_units = json_decode(json_encode($issued_units), true);
+        
+        return $issued_units;
+    }
 
 }

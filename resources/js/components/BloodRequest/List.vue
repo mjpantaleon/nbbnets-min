@@ -1,6 +1,6 @@
 <template>
   <div class="main-div">
-      <b-row id="bb-crumb-sticky">
+        <b-row id="bb-crumb-sticky">
           <b-col>
                 <b-breadcrumb>
                     <b-breadcrumb-item active>
@@ -57,11 +57,11 @@
                     </template>
 
                     <template v-slot:cell(patient_name)="data">
-                        {{ data.item.lastname }}
+                        {{ data.item.patient_details.firstname }} {{ data.item.patient_details.middlename }} {{ data.item.patient_details.lastname }}
                     </template>
 
                     <template v-slot:cell(blood_type)="data">
-                        <span class="text-danger"><b>{{data.item.blood_type}}</b></span>
+                        <span class="text-danger"><b>{{data.item.details[0].blood_type}}</b></span>
                     </template>
 
                     <template v-slot:cell(request_type)="data">
@@ -72,19 +72,32 @@
                         <span class="text-danger" v-if="data.item.status == 'FLU'"><b>FOR LOOK UP</b></span>
                         <span class="text-success" v-if="data.item.status == 'RES'"><b>RESERVED</b></span>
                         <span class="text-primary" v-if="data.item.status == 'Released'"><b>ISSUED</b></span>
+                        <span class="text-secondary" v-if="data.item.status == 'Cancelled'"><b>CANCELLED</b></span>
                     </template>
 
                     <template v-slot:cell(action)="data">
-                        <router-link :to="{ path: '/blood-request/view/' + data.item.request_id }" title="View Blood Request Details">
+                        <router-link :to="{ path: '/blood-request/view/' + data.item.request_id }" title="View Blood Request Details" 
+                        v-if="data.item.status == 'FLU' || data.item.status != 'Cancelled' && data.item.reference == '-'">
                             <b-icon icon="search" class="border border-primary p-1" variant="primary" font-scale="2.1"></b-icon>
                         </router-link>
-                        
-                        <!-- <template v-if="data.item.status == 'RES' && data.item.status != 'Released'"> -->
-                        <template>
-                        <router-link :to="{ path: '/blood-request/issue/' + data.item.request_id }" title="Issue Blood request">
-                            <b-icon icon="check-circle" class="border border-success p-1" variant="success" font-scale="2.1"></b-icon>
+
+                        <router-link :to="{ path: '/blood-request/print/' + data.item.request_id }"
+                            v-if="data.item.details[0].donation_id != null && data.item.reference != '-'">
+                            <b-icon icon="file-post" variant="secondary" font-scale="2.1"></b-icon>
                         </router-link>
-                        </template>
+                        <!-- <router-link @click.native="fromModalId(data.item.request_id)" title="View Issuance form" :to="{}" -->
+                            <!--   -->
+                     
+                        <router-link :to="{ path: '/blood-request/issue/' + data.item.request_id }" title="Issue Blood request" 
+                        v-if="data.item.details[0].donation_id != null && data.item.reference == '-' || data.item.status == 'RES'">
+                            <b-icon icon="check-circle" class="border border-success p-1" variant="success" font-scale="2.1"></b-icon>
+                        </router-link>                       
+
+                        <router-link  @click.native="cancelRequest(data.item.request_id)" :to="{}" title="Cancel Blood request" 
+                        v-if="data.item.status != 'Released' && data.item.status != 'Cancelled'">
+                            <b-icon icon="x-square" class="border border-danger p-1" variant="danger" font-scale="2.1"></b-icon>
+                        </router-link>
+
                     </template>
                 </b-table>
             </b-col>
@@ -97,12 +110,41 @@
         </b-row>
         </template>
 
+        <!-- <issuance-form @fromModalId="fromModalId"></issuance-form> -->
+
+        <!-- =============== MODALS ================ -->
+        <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
+        <b-modal v-model="showSuccessMsg" centered
+            title="INFO"
+            header-bg-variant="info"
+            body-bg-variant="light" 
+            footer-bg-variant="info"
+            header-text-variant="light"
+            hide-header-close>
+            
+            <h5 class="alert-heading text-center">
+                <b-icon variant="danger" icon="droplet-half"></b-icon>&nbsp;{{message}}
+            </h5>
+            
+            <template v-slot:modal-footer="{ ok }">
+            <!-- <template v-slot:modal-footer="{ ok }"> -->
+                <b-link class="btn btn-info" :to="{ path: '/blood-request/list' }"
+                    size="sm" variant="info" @click="ok()">
+                    OK
+                </b-link>
+            </template>
+        </b-modal>
+        <!-- =============== MODALS ================ -->
+
 
   </div>
 </template>
 
 <script>
+// import IssuanceForm from '../BloodRequest/Print.vue';
+
 export default {
+    // components: {IssuanceForm},
     data(){
         return{
             isLoading: false,
@@ -119,7 +161,7 @@ export default {
 
             request_fields: [
                 { key: 'reference_num', label: 'Reference #' },
-                { key: 'patient_name', label: 'Patient Last Name' },
+                { key: 'patient_name', label: 'Patient Name' },
                 { key: 'blood_type', label: 'Blood Type' },
                 { key: 'request_type', label: 'Request Type' },
                 { key: 'status', label: 'Status' },
@@ -147,9 +189,7 @@ export default {
 
             await axios
             .post('/blood-request-list', {
-                // date_from: this.date_from,
-                // date_to: this.date_to
-
+                
                 selected_dt: this.selected_dt
             })
             .then(response => {
@@ -157,10 +197,47 @@ export default {
                     this.isLoading = false
                     this.data = response.data
                 } else {
+                    this.isLoading = false
                     this.data = []
                 }
             })
+        },      
+
+        async cancelRequest(id){
+            this.isLoading = true
+
+            var answer = window.confirm("Are you sure you want to cancel this request?");
+            if(answer){
+
+                await axios
+                .post('/cancel-blood-request', {
+                    request_id: id
+                })
+                .then(response => {
+                    if(response.data.status){
+                        this.isLoading = false
+                        this.showSuccessMsg = true
+                        this.message = response.data.message
+                        this.getBloodRequests()
+                        // console.log(response.data)
+                    }
+                })
+
+            } else{
+                this.isLoading = false
+            }
+
         },
+
+        fromModalId(id){
+            
+            this.printIssuanceForm(id);
+            // if(data[1] == true){
+            //     // display preview
+            // }
+            
+        },
+
     }, /* methods */
 
     watch: {

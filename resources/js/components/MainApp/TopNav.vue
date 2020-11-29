@@ -9,7 +9,9 @@
 
         <b-collapse id="nav-collapse" is-nav v-if="showMenu">
         <b-navbar-nav v-if="showMenu">
-            <b-nav-item-dropdown right>
+            <b-nav-item :to="{ path: '/home' }">HOME</b-nav-item>
+
+            <b-nav-item-dropdown right v-if="uLevel === -1 || uLevel === 1 || uLevel === 3">
                 <template v-slot:button-content>
                     PRE-SCREENING
                 </template>
@@ -21,19 +23,20 @@
                 <b-dropdown-item :to="{ path: '/hla-hna-test' }">HLA & HNA</b-dropdown-item>
             </b-nav-item-dropdown>
 
-            <b-nav-item-dropdown right>
+            <b-nav-item-dropdown right v-if="uLevel === -1 || uLevel === 1 || uLevel === 7">
                 <template v-slot:button-content>
                     BLOOD TESTING
                 </template>
 
                 <b-dropdown-item :to="{ path: '/blood-test-tti' }">TTI</b-dropdown-item>
+                <b-dropdown-item :to="{ path: '/blood-typing' }">Blood Typing</b-dropdown-item>
                 <b-dropdown-divider></b-dropdown-divider>
 
                 <b-dropdown-item :to="{ path: '/blood-test-nat' }">NAT</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/blood-test-zika' }">ZIKA</b-dropdown-item>
             </b-nav-item-dropdown>
 
-            <b-nav-item-dropdown right>
+            <b-nav-item-dropdown right v-if="uLevel === -1 || uLevel === 1 || uLevel === 3">
                 <template v-slot:button-content>
                     DONOR & DONATION
                 </template>
@@ -41,19 +44,18 @@
             </b-nav-item-dropdown>
 
 
-            <b-nav-item-dropdown right>
+            <b-nav-item-dropdown right v-if="uLevel === -1 || uLevel === 1 || uLevel === 4">
                 <template v-slot:button-content>
                     BLOOD UNIT
                 </template>
                 
-                <b-dropdown-item :to="{ path: '/blood-typing' }">Blood Typing</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/blood-processing' }">Blood Processing</b-dropdown-item>
                 <b-dropdown-item :to="{ path: '/labelling' }">Blood Label</b-dropdown-item>
                 <!-- <b-dropdown-item :to="{ path: '/aliquote' }">Aliquote</b-dropdown-item> -->
                 
             </b-nav-item-dropdown>
 
-            <b-nav-item-dropdown right>
+            <b-nav-item-dropdown right v-if="uLevel === -1 || uLevel === 1 || uLevel === 4">
                 <template v-slot:button-content>
                     BLOOD STOCKS
                 </template>
@@ -63,7 +65,7 @@
                 
             </b-nav-item-dropdown>
 
-            <b-nav-item-dropdown right>
+            <b-nav-item-dropdown right v-if="uLevel === -1 || uLevel === 1 || uLevel === 4">
                 <template v-slot:button-content>
                     BLOOD REQUEST & ISSUANCE
                 </template>
@@ -71,7 +73,7 @@
                 <!-- <b-dropdown-item :to="{ path: '/aliquote' }">Aliquote</b-dropdown-item> -->
                 
             </b-nav-item-dropdown>
-
+            
             <!-- 
             <b-nav-item-dropdown right>
                 <template v-slot:button-content>
@@ -124,7 +126,8 @@ export default {
         return{
             // user: '',
             showMenu: false,
-            fullname: ''
+            fullname: '',
+            uLevel: ''
         }
     }, /* data */
 
@@ -136,9 +139,6 @@ export default {
             set(value){
                 this.value = this.$store.state.isLogged
             }
-            // if(this.$store.state.fullName){
-            //     return this.$store.state.fullName
-            // }
         }
     }, /* computed */
 
@@ -148,21 +148,22 @@ export default {
 
     methods: {
 
-        getUser(){
+        async getUser(){
 
-            axios
+             await axios
                 .get('/get-user')
                 .then(response => {
 
                     if(response.data.status){
                         this.fullname = response.data.name,
-                        this.showMenu = true,
-                        this.$forceUpdate()
+                        this.uLevel = response.data.ulevel,
+                        this.showMenu = true
                     } else{
                         console.log(response.data.error)
                     }
 
                 })
+
         },
 
         logout(){
@@ -171,8 +172,7 @@ export default {
                 .get('/logout')
                 .then(response => {
                     if(response.data.status){
-                        // this.$store.state.isLogged = false
-                        // this.$store.state.userInfo = ''
+                        this.$store.state.isLogged = false
                         this.showMenu = false
                         this.$router.push('/')
                     } else{
@@ -186,6 +186,7 @@ export default {
     watch:{
         isUserLogged: function(val){
             this.getUser()
+            // this.$forceUpdate()
         }
     }
 
