@@ -413,7 +413,11 @@ class BloodRequestController extends Controller
         return $request_details;
     }
 
-    public function issueBloodRequest($id){
+    public function issueBloodRequest(Request $request, $id){
+        $details = $request->get('details');
+        // \Log::info($details);
+        // return $details;
+
         $year_now = date('Y');              // 2020
         $request_count = BauBloodRequest::count(); 
         $request_count = $request_count + 1;
@@ -422,6 +426,19 @@ class BloodRequestController extends Controller
         $issue_blood_request = BauBloodRequest::where('request_id', $id)
                     ->update(['status' => 'Released', 'reference' => $reference]);
         \Log::info($issue_blood_request);
+
+
+        foreach($details as $key => $value){
+            $request_id = $value['request_id'];
+            $donation_id = $value['donation_id'];
+            $component_cd = $value['component_cd'];
+            
+            $update_component = Component::where('donation_id', $donation_id)
+                                    ->where('component_cd', $component_cd)
+                                    ->update(['comp_stat' => 'REL']);
+            \Log::info($update_component);
+        }
+
 
         return response()->json([
             'message' => "Blood request has been issued successfully",
@@ -488,20 +505,6 @@ class BloodRequestController extends Controller
     }
 
     public function getDataForIssuance($id){
-        /* 
-            SELECT br.request_id, bd.hospital, p.firstname, p.middlename, p.lastname, p.name_suffix, p.age, p.gender, p.blood_type, c.donation_id, c.collection_dt, c.expiration_dt
-            FROM `bau_blood_request` br
-            LEFT JOIN `bau_blood_request_dtls` brd ON brd.request_id = br.request_id
-            LEFT JOIN `bau_patient` p ON p.patient_id = br.patient_id
-            LEFT JOIN `bau_physicians` bd ON bd.request_id = br.request_id
-            LEFT JOIN `component` c ON c.donation_id = brd.donation_id
-            WHERE br.request_id = '50061'
-            AND c.comp_stat = 'RES'
-            AND p.blood_type = brd.blood_type
-            AND br.reference IS NOT NULL
-
-        */
-
         $data_for_issuance = BauBloodRequest::where('request_id', $id)
                         ->with('patient_details')
                         ->with('physician_details')
@@ -521,7 +524,7 @@ class BloodRequestController extends Controller
                     LEFT JOIN `component` c ON c.donation_id = brd.donation_id
                     LEFT JOIN `r_cp_component_codes` cp ON cp.component_code = c.component_cd
                     WHERE brd.request_id = '$id' 
-                    AND c.comp_stat = 'RES' 
+                    AND c.comp_stat = 'REL' 
                     AND c.location = '$facility_cd' 
                     ORDER BY c.created_dt ASC   ";
         $issued_units = DB::select($sql);
@@ -529,13 +532,6 @@ class BloodRequestController extends Controller
         $issued_units = json_decode(json_encode($issued_units), true);
         
         return $issued_units;
-
-        // $issued_units = BauBloodRequestDetail::where('request_id', $id)
-        //                 ->where('donation_id', '!=' , null)
-        //                 ->with('reserved_units')
-        //                 ->get()
-        //                 ->toArray();
-        // \Log::info($issued_units);
     }
 
 }

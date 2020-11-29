@@ -74,7 +74,7 @@
                         </tr>
 
                         <tr align="center" v-for="(issued_unit, i) in issued_units" :key="i">
-                            <template v-if="issued_unit.comp_stat == 'RES'">
+                            <template v-if="issued_unit.comp_stat == 'REL'">
                                 <td>{{ issued_unit.donation_id }}</td>
                                 <td>{{ issued_unit.collection_dt }}</td>
                                 <td>{{ issued_unit.expiration_dt }}</td>
