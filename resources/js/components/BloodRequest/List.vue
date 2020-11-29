@@ -81,10 +81,12 @@
                             <b-icon icon="search" class="border border-primary p-1" variant="primary" font-scale="2.1"></b-icon>
                         </router-link>
 
-                        <router-link :to="{ path: '/blood-request/print/' + data.item.request_id }" title="View Issuance form" 
-                        v-if="data.item.details[0].donation_id != null && data.item.reference != '-'">
+                        <router-link :to="{ path: '/blood-request/print/' + data.item.request_id }"
+                            v-if="data.item.details[0].donation_id != null && data.item.reference != '-'">
                             <b-icon icon="file-post" variant="secondary" font-scale="2.1"></b-icon>
                         </router-link>
+                        <!-- <router-link @click.native="fromModalId(data.item.request_id)" title="View Issuance form" :to="{}" -->
+                            <!--   -->
                      
                         <router-link :to="{ path: '/blood-request/issue/' + data.item.request_id }" title="Issue Blood request" 
                         v-if="data.item.details[0].donation_id != null && data.item.reference == '-' || data.item.status == 'RES'">
@@ -107,6 +109,8 @@
             <b-col class="text-center">No record/s to this display</b-col>
         </b-row>
         </template>
+
+        <!-- <issuance-form @fromModalId="fromModalId"></issuance-form> -->
 
         <!-- =============== MODALS ================ -->
         <!-- SHOW THIS MODAL AFTER SUCCESSFUL ACTION -->
@@ -137,7 +141,10 @@
 </template>
 
 <script>
+// import IssuanceForm from '../BloodRequest/Print.vue';
+
 export default {
+    // components: {IssuanceForm},
     data(){
         return{
             isLoading: false,
@@ -220,7 +227,16 @@ export default {
                 this.isLoading = false
             }
 
-        }
+        },
+
+        fromModalId(id){
+            
+            this.printIssuanceForm(id);
+            // if(data[1] == true){
+            //     // display preview
+            // }
+            
+        },
 
     }, /* methods */
 

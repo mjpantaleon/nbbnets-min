@@ -83,31 +83,6 @@ class BloodRequestController extends Controller
                                             ->first()
                                             ->toArray();    
         return $blood_request_detail;
-        
-        // if($blood_request_detail){
-        //     return $blood_request_detail->toArray();
-        // } else{
-        //     return [];
-        // }
-        
-        // \Log::info($blood_request_detail);
-        
-
-        
-                                                
-        // $sql =" SELECT br.request_id, br.reference, br.request_type, br.status, bp.patient_id, bp.firstname, bp.middlename, bp.lastname, bp.name_suffix, bp.blood_type 
-        //         FROM `bau_blood_request` br
-        //         LEFT JOIN `bau_patient` bp ON bp.patient_id = br.patient_id
-        //         WHERE br.request_id = '$id'
-        //         AND facility_cd = '$facility_cd'
-        //         AND br.status = 'FLU' ";
-
-        // $blood_request_detail = DB::select($sql);
-        // \Log::info($blood_request_detail);
-        
-        // $blood_request_detail = json_decode(json_encode($blood_request_detail), true);
-        // \Log::info($blood_request_detail);
-        // return $blood_request_detail;
     }
 
     public function getCpComponents(){
@@ -530,27 +505,37 @@ class BloodRequestController extends Controller
         $data_for_issuance = BauBloodRequest::where('request_id', $id)
                         ->with('patient_details')
                         ->with('physician_details')
-                        ->with('details')
+                        // ->with('details')
                         ->first()
                         ->toArray();
-        \Log::info($data_for_issuance);
+        // \Log::info($data_for_issuance);
 
         return $data_for_issuance;
+    }
 
-        // $sql = "    SELECT br.request_id, bd.hospital, p.firstname, p.middlename, p.lastname, p.name_suffix, p.age, p.gender, p.blood_type, c.donation_id, c.collection_dt, c.expiration_dt
-        //             FROM `bau_blood_request` br
-        //             LEFT JOIN `bau_blood_request_dtls` brd ON brd.request_id = br.request_id
-        //             LEFT JOIN `bau_patient` p ON p.patient_id = br.patient_id
-        //             LEFT JOIN `bau_physicians` bd ON bd.request_id = br.request_id
-        //             LEFT JOIN `component` c ON c.donation_id = brd.donation_id
-        //             WHERE br.request_id = '$id'
-        //             AND c.comp_stat = 'RES'
-        //             AND p.blood_type = brd.blood_type
-        //             AND br.reference IS NOT NULL    ";
+    public function issuedBloodUnits($id){
+        $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
 
-        // $data_for_issuance = DB::select($sql);
-        // $data_for_issuance = json_decode(json_encode($data_for_issuance), true);
+        $sql = "    SELECT DISTINCT(cp.component_abbr), c.donation_id, c.collection_dt, c.expiration_dt, c.comp_stat 
+                    FROM `bau_blood_request_dtls` brd
+                    LEFT JOIN `component` c ON c.donation_id = brd.donation_id
+                    LEFT JOIN `r_cp_component_codes` cp ON cp.component_code = c.component_cd
+                    WHERE brd.request_id = '$id' 
+                    AND c.comp_stat = 'RES' 
+                    AND c.location = '$facility_cd' 
+                    ORDER BY c.created_dt ASC   ";
+        $issued_units = DB::select($sql);
+
+        $issued_units = json_decode(json_encode($issued_units), true);
         
+        return $issued_units;
+
+        // $issued_units = BauBloodRequestDetail::where('request_id', $id)
+        //                 ->where('donation_id', '!=' , null)
+        //                 ->with('reserved_units')
+        //                 ->get()
+        //                 ->toArray();
+        // \Log::info($issued_units);
     }
 
 }

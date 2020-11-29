@@ -42,6 +42,16 @@ Vue.mixin({
                 // w.close();
             };
         },
+
+        // printIssuanceForm(id){
+        //     let url =  'http://'+window.location.host+'/preview?data='+id;
+        //     let w = window.open(url,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=595,height=842');
+        //     w.onload = () => {
+        //         w.print();
+        //         setTimeout(function(){w.close();}, 3000);
+        //         // w.close();
+        //     };
+        // }
     }
 });
 
