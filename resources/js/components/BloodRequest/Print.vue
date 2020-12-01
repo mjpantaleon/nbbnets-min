@@ -29,7 +29,7 @@
                 <div class="issuance-form" id="printableArea">
                     <table width="800" height="100" align="center">
                         <tr>
-                            <td width="25%" align="center"><img src="/images/doh.png" width="90"></td>
+                            <td width="25%" align="center"><img src="/images/doh.png" width="110"></td>
                             <td align="center" width="50%"><br>
                             Republic of the Philippines
                             <br>Department of Health
@@ -46,7 +46,7 @@
                             <td width="15%">Issued to: </td>
                             <td class="fill"> {{ hospital }}</td>
                             <td width="18%" class="subs">Date/Time Issued: </td>
-                            <td class="fill">{{ created_dt }}</td>
+                            <td class="fill">{{ created_dt | moment("MMMM DD, YYYY - h:mm:ss a") }}</td>
                         </tr>
                         <tr>
                             <td>Type of Request:</td>
@@ -65,7 +65,7 @@
                         </tr>
                     </table>
 
-                    <table width="600" align="center" cellspacing="5" cellpadding="2" style="size: 11px !important">
+                    <table width="800" align="center" cellspacing="5" cellpadding="2" style="size: 11px !important">
                         <tr align="center">
                             <th>Serial Number</th>
                             <th>Date of Collection</th>
@@ -76,8 +76,8 @@
                         <tr align="center" v-for="(issued_unit, i) in issued_units" :key="i">
                             <template v-if="issued_unit.comp_stat == 'REL'">
                                 <td>{{ issued_unit.donation_id }}</td>
-                                <td>{{ issued_unit.collection_dt }}</td>
-                                <td>{{ issued_unit.expiration_dt }}</td>
+                                <td>{{ issued_unit.collection_dt | moment("MMMM DD, YYYY - h:mm:ss a") }}</td>
+                                <td>{{ issued_unit.expiration_dt | moment("MMMM DD, YYYY - h:mm:ss a") }}</td>
                                 <td>{{ issued_unit.component_abbr }}</td>
                             </template>
                         </tr>
@@ -86,7 +86,19 @@
 
                     <table width="800" align="center" border="0">
                         <tr>
-                            <td colspan="4">RESULT OF TEST DONE: 	<b>NON-REACTIVE to HBsAg, Syphilis, HIV, HCV, Malaria</b>
+                            <td colspan="4">
+                                <p>RESULT OF TEST DONE: <b>NON-REACTIVE Donation tested for specific markers for HIV 1 & 2, Hepatitis B & C, 
+                                Malaria and Syphilis
+                                <span v-for="(issued_unit, i) in issued_units" :key="i">
+                                    <span v-if="issued_unit.antibody != null">
+                                        ANTIBODY SCREEN: {{ issued_unit.antibody != 'P' ? issued_unit.antibody = 'NEGATIVE' : issued_unit.antibody = 'POSITIVE' }}</span>
+                                    <span v-if="issued_unit.nat != null">
+                                        ID NAT: {{ issued_unit.nat  != 'P' ? issued_unit.nat = 'NEGATIVE' : issued_unit.nat = 'POSITIVE' }}</span>
+                                    <span v-if="issued_unit.zika != null">
+                                        {{ issued_unit.zika }}</span>
+                                </span>
+                                </b></p>
+                                
                             </td>	
                         </tr>
                         <tr>

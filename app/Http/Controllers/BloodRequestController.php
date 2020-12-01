@@ -519,10 +519,11 @@ class BloodRequestController extends Controller
     public function issuedBloodUnits($id){
         $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
 
-        $sql = "    SELECT DISTINCT(cp.component_abbr), c.donation_id, c.collection_dt, c.expiration_dt, c.comp_stat 
+        $sql = "    SELECT DISTINCT(cp.component_abbr), c.donation_id, c.collection_dt, c.expiration_dt, c.comp_stat, adt.antibody, adt.nat, adt.zika
                     FROM `bau_blood_request_dtls` brd
                     LEFT JOIN `component` c ON c.donation_id = brd.donation_id
                     LEFT JOIN `r_cp_component_codes` cp ON cp.component_code = c.component_cd
+                    LEFT JOIN `additionaltest` adt ON adt.donation_id = c.donation_id
                     WHERE brd.request_id = '$id' 
                     AND c.comp_stat = 'REL' 
                     AND c.location = '$facility_cd' 
