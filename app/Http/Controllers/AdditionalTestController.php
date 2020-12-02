@@ -101,21 +101,29 @@ class AdditionalTestController extends Controller
                     $n->nat_verifier = $verifier;
                     $n->save();
 
-                    // UPDATE `component.comp_stat` FROM `FBT` TO `FBL`, 
-                    // * `updated_by` and `updated_dt`
-                    // Component::where('donation_id', $donation_id)
-                    //         ->where('location', $facility_cd)
-                    //         ->update(['comp_stat' => 'FBL', 'updated_by' => $facility_user, 'updated_dt' => date('Y-m-d H:i:s')]);
+                    // CHECK ADDITIONAL TEST FOR ANTIBODY SCREEN RESULT
+                    AdditionalTest::where('donation_id', $donation_id)
+                    ->update([
+                        'antibody' => 'N', 
+                        'antibody_by' => $facility_user, 
+                        'antibody_verifier' => $verifier,
+                        'updated_at' => date('Y-m-d H:i:s') ]);
                 }
                 
                 //  ELSE IF EXISTS
                 else{
                     // THEN UPDATE RECORD IN THE `additionaltest` TABLE
                     AdditionalTest::where('donation_id', $donation_id)
-                            ->update(['nat' => $nat_result, 
-                            'nat_by' => $facility_user, 
-                            'nat_verifier' => $verifier,
-                            'updated_at' => date('Y-m-d H:i:s')]);
+                            ->update([
+                                'nat' => $nat_result, 
+                                'nat_by' => $facility_user, 
+                                'nat_verifier' => $verifier,
+                                // incase zika test is done
+                                'antibody' => 'N', 
+                                'antibody_by' => $facility_user, 
+                                'antibody_verifier' => $verifier,
+                                // incase zika test is done
+                                'updated_at' => date('Y-m-d H:i:s') ]);
                 }
                 
                 // RETURN RESPONSE
