@@ -31,24 +31,28 @@ class AdditionalTestController extends Controller
         $to             = date($request['date_to']);
         $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
         
-        $sql =" SELECT c.donation_id, c.component_cd, rc.component_abbr
+        $sql =" SELECT c.donation_id, c.component_cd, rc.component_abbr, c.source_donation_id, d.collection_method as method
                 FROM component c
                 LEFT JOIN r_cp_component_codes rc ON c.component_cd = rc.component_code
                 LEFT JOIN additionaltest ad ON c.donation_id = ad.donation_id
+                LEFT JOIN donation d ON c.donation_id = d.donation_id
                 WHERE c.created_dt BETWEEN '$from' AND '$to'
                 AND c.location = '$facility_cd'
                 AND c.comp_stat = 'FBT'
                 AND c.component_cd >= 100
                 -- AND c.source_donation_id != c.donation_id
                 AND rc.component_abbr IS NOT NULL 
-                AND ad.nat IS NULL AND ad.nat_by IS NULL ";
+                AND ad.nat IS NULL AND ad.nat_by IS NULL ";  
 
         $nat = DB::select($sql);
 
-        \Log::info($nat);
-        
+        // \Log::info($nat);
         $nat = json_decode(json_encode($nat), true);
         
+        // \Log::info(self::removeParent($nat));
+
+        $nat = self::removeParent($nat);
+
         if($nat){
             for($i = 0; $i < count($nat); $i++){
                 $ids[$i]['donation_id'] = $nat[$i]['donation_id'];
@@ -56,7 +60,7 @@ class AdditionalTestController extends Controller
                 $ids[$i]['nat_result'] = "";
             }
             
-            \Log::info($ids);
+            // \Log::info($ids);
             return $ids;
         } else {
             return false;
@@ -242,4 +246,27 @@ class AdditionalTestController extends Controller
     // ///////////////////////////////////////////////// ZIKA ///////////////////////////////////
 
     // ///////////////////////////////////////////////// HNA & HNL ///////////////////////////////////
+
+
+
+    private function removeParent($data){
+
+        foreach($data as $key => $value){
+
+            if(!strpos($value['donation_id'], "-")){
+                if($value['method'] == 'P'){
+                    $if_has_aliquote = Component::select('donation_id')->where('source_donation_id', $value['donation_id'])->get();
+                    if(count($if_has_aliquote)){
+                        unset($data[$key]);
+                    }
+                }
+            }
+            
+        }
+
+        return array_values($data);
+
+    }
+
+
 }
