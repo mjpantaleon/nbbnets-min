@@ -91,11 +91,17 @@
                                 Malaria and Syphilis
                                 <span v-for="(issued_unit, i) in issued_units" :key="i">
                                     <span v-if="issued_unit.antibody != null">
-                                        ANTIBODY SCREEN: {{ issued_unit.antibody != 'P' ? issued_unit.antibody = 'NEGATIVE' : issued_unit.antibody = 'POSITIVE' }}</span>
+                                        <span v-if="issued_unit.antibody == 'P'">, ANTIBODY SCREEN: POSITIVE</span>
+                                        <span v-if="issued_unit.antibody == 'N'">, ANTIBODY SCREEN: NEGATIVE</span>
+                                    </span>
                                     <span v-if="issued_unit.nat != null">
-                                        ID NAT: {{ issued_unit.nat  != 'P' ? issued_unit.nat = 'NEGATIVE' : issued_unit.nat = 'POSITIVE' }}</span>
+                                        <span v-if="issued_unit.nat == 'P'">, ID NAT: POSITIVE</span>
+                                        <span v-if="issued_unit.nat == 'N'">, ID NAT: NEGATIVE</span>
+                                    </span>
                                     <span v-if="issued_unit.zika != null">
-                                        {{ issued_unit.zika }}</span>
+                                        <span v-if="issued_unit.zika == 'P'">, ZIKA: POSITIVE</span>
+                                        <span v-if="issued_unit.zika == 'N'">, ZIKA: NEGATIVE</span>
+                                    </span>
                                 </span>
                                 </b></p>
                                 

@@ -52,6 +52,7 @@ class AdditionalTestController extends Controller
         // \Log::info(self::removeParent($nat));
 
         $nat = self::removeParent($nat);
+        \Log::info($nat);
 
         if($nat){
             for($i = 0; $i < count($nat); $i++){
@@ -149,10 +150,11 @@ class AdditionalTestController extends Controller
         $to             = date($request['date_to']);
         $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
         
-        $sql =" SELECT c.donation_id, c.component_cd, rc.component_abbr
+        $sql =" SELECT c.donation_id, c.component_cd, rc.component_abbr, c.source_donation_id, d.collection_method as method
                 FROM component c
                 LEFT JOIN r_cp_component_codes rc ON c.component_cd = rc.component_code
                 LEFT JOIN additionaltest ad ON c.donation_id = ad.donation_id
+                LEFT JOIN donation d ON c.donation_id = d.donation_id
                 WHERE c.created_dt BETWEEN '$from' AND '$to'
                 AND c.location = '$facility_cd'
                 AND c.comp_stat = 'FBT'
@@ -163,10 +165,12 @@ class AdditionalTestController extends Controller
 
         $zika = DB::select($sql);
 
-        \Log::info($zika);
-        
+        // \Log::info($zika);
         $zika = json_decode(json_encode($zika), true);
         // return($zika);
+
+        $zika = self::removeParent($zika);
+        \Log::info($zika);
         
         if($zika){
             for($i = 0; $i < count($zika); $i++){
