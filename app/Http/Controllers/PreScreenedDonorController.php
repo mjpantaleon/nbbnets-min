@@ -19,7 +19,7 @@ class PreScreenedDonorController extends Controller
     public function index(){
         // GET THE USER INFO
         // $session = Session::get('userInfo');
-        // $facility_cd = Session::get('userInfo')['facility_cd'];
+        $facility_cd = Session::get('userInfo')['facility_cd'];
 
         /*  SELECT id, donor_sn, first_name, middle_name, last_name, name_suffix, gender, 
             bdate, address, created_dt, status
@@ -30,6 +30,7 @@ class PreScreenedDonorController extends Controller
         $query = "  SELECT id, donor_sn, first_name, middle_name, last_name, name_suffix, gender, 
                     bdate, address, created_dt, approval_dt, status
                     FROM `pre_screened_donors`
+                    WHERE `facility_cd` = '$facility_cd'
                     ORDER BY `created_dt` DESC ";
         $pre_screened_donors = DB::select($query);
 
