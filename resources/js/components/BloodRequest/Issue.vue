@@ -247,7 +247,7 @@ export default {
 
                 this.details = response.data.details,
                 this.donation_id = response.data.details.donation_id,
-                this.component_cd = response.data.details.component_name.component_cd,
+                this.component_cd = response.data.details.component_cd,
 
                 this.status = response.data.status,
                 this.reference = response.data.reference

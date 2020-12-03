@@ -120,7 +120,7 @@
                                             v-model="checked"
                                             :value="data.item.donation_id + '-01'"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item.additionaltest))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !data.item.units[0] || !hasAdditionalTest(data.item.additionaltest))"
                                             class="text-center"
                                             >
                                         </b-form-checkbox>
@@ -135,7 +135,7 @@
                                             v-model="checked"
                                             :value="data.item.donation_id"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item.additionaltest))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !data.item.units[0] || !hasAdditionalTest(data.item.additionaltest))"
                                             class="text-center"
                                             >
                                         </b-form-checkbox>
@@ -152,7 +152,7 @@
                                             v-model="checked"
                                             :value="data.item.donation_id + '-02'"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item.additionaltest))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !data.item.units[0] || !hasAdditionalTest(data.item.additionaltest))"
                                             >
                                         </b-form-checkbox>
                                     </div>
@@ -168,7 +168,7 @@
                                             v-model="checked"
                                             :value="data.item.donation_id + '-03'"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || hasAdditionalTest(data.item.additionaltest))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !data.item.units[0] || !hasAdditionalTest(data.item.additionaltest))"
                                             >
                                         </b-form-checkbox>
                                     </div>
@@ -223,7 +223,7 @@
                                             v-model="checked"
                                             :value="'100-' + data.item.donation_id"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !hasAdditionalTest(data.item.additionaltest))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !data.item.units[0] || !hasAdditionalTest(data.item.additionaltest))"
                                             class="text-center"
                                             >
                                         </b-form-checkbox>
@@ -241,7 +241,7 @@
                                             v-model="checked"
                                             :value="'103-' + data.item.donation_id"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !hasAdditionalTest(data.item.additionaltest))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !data.item.units[0] || !hasAdditionalTest(data.item.additionaltest))"
                                             >
                                         </b-form-checkbox>
                                     </div>
@@ -255,7 +255,7 @@
                                             v-model="checked"
                                             :value="'101-' + data.item.donation_id"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !hasAdditionalTest(data.item.additionaltest))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !data.item.units[0] || !hasAdditionalTest(data.item.additionaltest))"
                                             >
                                         </b-form-checkbox>
                                     </div>
@@ -273,7 +273,7 @@
                                             v-model="checked"
                                             :value="'102-' + data.item.donation_id"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !hasAdditionalTest(data.item.additionaltest))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !data.item.units[0] || !hasAdditionalTest(data.item.additionaltest))"
                                             >
                                         </b-form-checkbox>
                                     </div>
@@ -287,7 +287,7 @@
                                             v-model="checked"
                                             :value="'104-' + data.item.donation_id"
                                             unchecked-value="0"
-                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !hasAdditionalTest(data.item.additionaltest))"
+                                            :disabled="(!data.item.type || !data.item.test || !data.item.donor_min || !data.item.units[0] || !hasAdditionalTest(data.item.additionaltest))"
                                             >
                                         </b-form-checkbox>
                                     </div>                                      
@@ -436,9 +436,10 @@ export default {
     }, /* mounted */
 
     methods: {
-        getDonationId (){
+        async getDonationId (){
+            this.isLoading = true
 
-            axios
+            await axios
                 .post('/get-donation-id-labelling', {
                     date_from: this.date_from,
                     date_to: this.date_to,
@@ -448,12 +449,14 @@ export default {
 
                     if(response.data){
                         this.data = response.data.data
+                        this.isLoading = false
                         // this.checked = response.data.checked
                         // console.log(response.data.data)
 
 
                     } else{
                         this.data = null
+                        this.isLoading = false
                         // this.select_id_notice = "No Data Found"
                     }
                     
@@ -536,11 +539,11 @@ export default {
 
         },
 
-        setUname(e){
+        async setUname(e){
 
             this.isLoading = true
 
-            axios
+            await axios
                 .post('/save-blood-labelling', {
                     label_data: this.checked,
                     verifier: e,
