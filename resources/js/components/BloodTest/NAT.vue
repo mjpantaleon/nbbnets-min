@@ -77,9 +77,9 @@
                         {{ data.item.donation_id }}
                     </template>
 
-                    <template v-slot:cell(component_abbr)="data">
+                    <!-- <template v-slot:cell(component_abbr)="data">
                         {{ data.item.component_abbr }}
-                    </template>
+                    </template> -->
 
                     <template v-slot:cell(nat_result)="data">
                          <b-form-select v-model="data.item.nat_result" :options="nat_option"></b-form-select>
@@ -164,7 +164,7 @@ export default {
 
             nat_fields: [
                 { key: 'donation_id', label: 'Donation ID' },
-                { key: 'component_abbr', label: 'Component' },
+                // { key: 'component_abbr', label: 'Component' },
                 { key: 'nat_result', label: 'NAT Result' },
 
             ],

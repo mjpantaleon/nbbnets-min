@@ -31,19 +31,29 @@ class AdditionalTestController extends Controller
         $to             = date($request['date_to']);
         $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
         
-        $sql =" SELECT c.donation_id, c.component_cd, rc.component_abbr, c.source_donation_id, d.collection_method as method
-                FROM component c
-                LEFT JOIN r_cp_component_codes rc ON c.component_cd = rc.component_code
-                LEFT JOIN additionaltest ad ON c.donation_id = ad.donation_id
-                LEFT JOIN donation d ON c.donation_id = d.donation_id
-                WHERE c.created_dt BETWEEN '$from' AND '$to'
-                AND c.location = '$facility_cd'
-                AND c.comp_stat = 'FBT'
-                AND c.component_cd >= 100
-                -- AND c.source_donation_id != c.donation_id
-                AND rc.component_abbr IS NOT NULL 
-                AND ad.nat IS NULL AND ad.nat_by IS NULL ";  
+        // $sql =" SELECT c.donation_id, c.component_cd, rc.component_abbr, c.source_donation_id, d.collection_method as method
+        //         FROM `donation` c
+        //         LEFT JOIN r_cp_component_codes rc ON c.component_cd = rc.component_code
+        //         LEFT JOIN additionaltest ad ON c.donation_id = ad.donation_id
+        //         LEFT JOIN donation d ON c.donation_id = d.donation_id
+        //         WHERE c.created_dt BETWEEN '$from' AND '$to'
+        //         AND c.location = '$facility_cd'
+        //         AND c.comp_stat = 'FBT'
+        //         AND c.component_cd >= 100
+        //         -- AND c.source_donation_id != c.donation_id
+        //         AND rc.component_abbr IS NOT NULL 
+        //         AND ad.nat IS NULL AND ad.nat_by IS NULL ";  
+        /**/
 
+        $sql = "    SELECT d.donation_id, ad.nat
+                    FROM `donation` d
+                    LEFT JOIN additionaltest ad ON d.donation_id = ad.donation_id
+                    WHERE d.created_dt BETWEEN '2020-11-01' AND '2020-11-30'
+                    AND d.facility_cd = '11001'
+                    AND d.donation_id IS NOT NULL
+                    AND d.sched_id = 'Walk-in'
+                    AND d.collection_stat = 'COL'
+                    AND ad.nat IS NULL AND ad.nat_by IS NULL    ";
         $nat = DB::select($sql);
 
         // \Log::info($nat);
@@ -51,13 +61,13 @@ class AdditionalTestController extends Controller
         
         // \Log::info(self::removeParent($nat));
 
-        $nat = self::removeParent($nat);
+        // $nat = self::removeParent($nat);
         \Log::info($nat);
 
         if($nat){
             for($i = 0; $i < count($nat); $i++){
                 $ids[$i]['donation_id'] = $nat[$i]['donation_id'];
-                $ids[$i]['component_abbr'] = $nat[$i]['component_abbr'];
+                // $ids[$i]['component_abbr'] = $nat[$i]['component_abbr'];
                 $ids[$i]['nat_result'] = "";
             }
             
@@ -158,18 +168,27 @@ class AdditionalTestController extends Controller
         $to             = date($request['date_to']);
         $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
         
-        $sql =" SELECT c.donation_id, c.component_cd, rc.component_abbr, c.source_donation_id, d.collection_method as method
-                FROM component c
-                LEFT JOIN r_cp_component_codes rc ON c.component_cd = rc.component_code
-                LEFT JOIN additionaltest ad ON c.donation_id = ad.donation_id
-                LEFT JOIN donation d ON c.donation_id = d.donation_id
-                WHERE c.created_dt BETWEEN '$from' AND '$to'
-                AND c.location = '$facility_cd'
-                AND c.comp_stat = 'FBT'
-                AND c.component_cd >= 100
-                -- AND c.source_donation_id != c.donation_id
-                AND rc.component_abbr IS NOT NULL 
-                AND ad.zika IS NULL AND ad.zika_by IS NULL ";
+        // $sql =" SELECT c.donation_id, c.component_cd, rc.component_abbr, c.source_donation_id, d.collection_method as method
+        //         FROM component c
+        //         LEFT JOIN r_cp_component_codes rc ON c.component_cd = rc.component_code
+        //         LEFT JOIN additionaltest ad ON c.donation_id = ad.donation_id
+        //         LEFT JOIN donation d ON c.donation_id = d.donation_id
+        //         WHERE c.created_dt BETWEEN '$from' AND '$to'
+        //         AND c.location = '$facility_cd'
+        //         AND c.comp_stat = 'FBT'
+        //         AND c.component_cd >= 100
+        //         AND rc.component_abbr IS NOT NULL 
+        //         AND ad.zika IS NULL AND ad.zika_by IS NULL ";
+
+        $sql = "    SELECT d.donation_id, ad.nat
+                    FROM `donation` d
+                    LEFT JOIN additionaltest ad ON d.donation_id = ad.donation_id
+                    WHERE d.created_dt BETWEEN '2020-11-01' AND '2020-11-30'
+                    AND d.facility_cd = '11001'
+                    AND d.donation_id IS NOT NULL
+                    AND d.sched_id = 'Walk-in'
+                    AND d.collection_stat = 'COL'
+                    AND ad.zika IS NULL AND ad.zika_by IS NULL    ";
 
         $zika = DB::select($sql);
 
@@ -177,13 +196,13 @@ class AdditionalTestController extends Controller
         $zika = json_decode(json_encode($zika), true);
         // return($zika);
 
-        $zika = self::removeParent($zika);
+        // $zika = self::removeParent($zika);
         \Log::info($zika);
         
         if($zika){
             for($i = 0; $i < count($zika); $i++){
                 $ids[$i]['donation_id'] = $zika[$i]['donation_id'];
-                $ids[$i]['component_abbr'] = $zika[$i]['component_abbr'];
+                // $ids[$i]['component_abbr'] = $zika[$i]['component_abbr'];
                 $ids[$i]['zika_result'] = "";
             }
             
