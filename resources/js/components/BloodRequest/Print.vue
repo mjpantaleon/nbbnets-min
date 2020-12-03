@@ -46,7 +46,7 @@
                             <td width="15%">Issued to: </td>
                             <td class="fill"> {{ hospital }}</td>
                             <td width="18%" class="subs">Date/Time Issued: </td>
-                            <td class="fill">{{ created_dt | moment("MMMM DD, YYYY - h:mm:ss a") }}</td>
+                            <td class="fill">{{ created_dt | moment("MMM DD, YYYY - h:mm:ss a") }}</td>
                         </tr>
                         <tr>
                             <td>Type of Request:</td>
@@ -71,14 +71,22 @@
                             <th>Date of Collection</th>
                             <th>Expiration Date</th>
                             <th>Blood Product</th>
+                            <th>N</th>
+                            <th>Z</th>
                         </tr>
 
                         <tr align="center" v-for="(issued_unit, i) in issued_units" :key="i">
                             <template v-if="issued_unit.comp_stat == 'REL'">
                                 <td>{{ issued_unit.donation_id }}</td>
-                                <td>{{ issued_unit.collection_dt | moment("MMMM DD, YYYY - h:mm:ss a") }}</td>
-                                <td>{{ issued_unit.expiration_dt | moment("MMMM DD, YYYY - h:mm:ss a") }}</td>
+                                <td>{{ issued_unit.collection_dt | moment("MMM DD, YYYY - h:mm:ss a") }}</td>
+                                <td>{{ issued_unit.expiration_dt | moment("MMM DD, YYYY - h:mm:ss a") }}</td>
                                 <td>{{ issued_unit.component_abbr }}</td>
+                                <td v-if="issued_unit.nat != null">
+                                    <span v-if="issued_unit.nat == 'N'" class="">Neg</span></td>
+                                <td v-else>-</td>
+                                <td v-if="issued_unit.zika != null"> 
+                                    <span v-if="issued_unit.zika == 'N'" class="">Neg</span></td>
+                                <td v-else>-</td>
                             </template>
                         </tr>
                     </table>
@@ -88,21 +96,7 @@
                         <tr>
                             <td colspan="4">
                                 <p>RESULT OF TEST DONE: <b>NON-REACTIVE Donation tested for specific markers for HIV 1 & 2, Hepatitis B & C, 
-                                Malaria and Syphilis
-                                <span v-for="(issued_unit, i) in issued_units" :key="i">
-                                    <span v-if="issued_unit.antibody != null">
-                                        <span v-if="issued_unit.antibody == 'P'">, ANTIBODY SCREEN: POSITIVE</span>
-                                        <span v-if="issued_unit.antibody == 'N'">, ANTIBODY SCREEN: NEGATIVE</span>
-                                    </span>
-                                    <span v-if="issued_unit.nat != null">
-                                        <span v-if="issued_unit.nat == 'P'">, ID NAT: POSITIVE</span>
-                                        <span v-if="issued_unit.nat == 'N'">, ID NAT: NEGATIVE</span>
-                                    </span>
-                                    <span v-if="issued_unit.zika != null">
-                                        <span v-if="issued_unit.zika == 'P'">, ZIKA: POSITIVE</span>
-                                        <span v-if="issued_unit.zika == 'N'">, ZIKA: NEGATIVE</span>
-                                    </span>
-                                </span>
+                                Malaria and Syphilis, ANTIBODY SCREEN: NEGATIVE
                                 </b></p>
                                 
                             </td>	
@@ -220,9 +214,7 @@ export default {
 
                 this.gender = response.data.patient_details.gender,
                 this.age = response.data.patient_details.age,
-                this.blood_type = response.data.patient_details.blood_type,
-
-                this.comp_name = response.data.details.comp_name
+                this.blood_type = response.data.patient_details.blood_type
             ))
         },
 

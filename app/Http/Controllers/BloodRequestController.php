@@ -523,7 +523,7 @@ class BloodRequestController extends Controller
                     FROM `bau_blood_request_dtls` brd
                     LEFT JOIN `component` c ON c.donation_id = brd.donation_id
                     LEFT JOIN `r_cp_component_codes` cp ON cp.component_code = c.component_cd
-                    LEFT JOIN `additionaltest` adt ON adt.donation_id = c.donation_id
+                    LEFT JOIN `additionaltest` adt ON adt.donation_id = SUBSTRING(c.donation_id, 1, 16)
                     WHERE brd.request_id = '$id' 
                     AND c.comp_stat = 'REL' 
                     AND c.location = '$facility_cd' 
@@ -531,7 +531,8 @@ class BloodRequestController extends Controller
         $issued_units = DB::select($sql);
 
         $issued_units = json_decode(json_encode($issued_units), true);
-        
+        \Log::info($issued_units);
+
         return $issued_units;
     }
 

@@ -48,8 +48,8 @@ class AdditionalTestController extends Controller
         $sql = "    SELECT d.donation_id, ad.nat
                     FROM `donation` d
                     LEFT JOIN additionaltest ad ON d.donation_id = ad.donation_id
-                    WHERE d.created_dt BETWEEN '2020-11-01' AND '2020-11-30'
-                    AND d.facility_cd = '11001'
+                    WHERE d.created_dt BETWEEN '$from' AND '$to'
+                    AND d.facility_cd = '$facility_cd'
                     AND d.donation_id IS NOT NULL
                     AND d.sched_id = 'Walk-in'
                     AND d.collection_stat = 'COL'
@@ -111,13 +111,6 @@ class AdditionalTestController extends Controller
                     $n->nat_verifier = $verifier;
                     $n->save();
 
-                    // CHECK ADDITIONAL TEST FOR ANTIBODY SCREEN RESULT
-                    AdditionalTest::where('donation_id', $donation_id)
-                    ->update([
-                        'antibody' => 'N', 
-                        'antibody_by' => $facility_user, 
-                        'antibody_verifier' => $verifier,
-                        'updated_at' => date('Y-m-d H:i:s') ]);
                 }
                 
                 //  ELSE IF EXISTS
@@ -128,11 +121,6 @@ class AdditionalTestController extends Controller
                                 'nat' => $nat_result, 
                                 'nat_by' => $facility_user, 
                                 'nat_verifier' => $verifier,
-                                // incase zika test is done
-                                'antibody' => 'N', 
-                                'antibody_by' => $facility_user, 
-                                'antibody_verifier' => $verifier,
-                                // incase zika test is done
                                 'updated_at' => date('Y-m-d H:i:s') ]);
                 }
                 
@@ -183,8 +171,8 @@ class AdditionalTestController extends Controller
         $sql = "    SELECT d.donation_id, ad.nat
                     FROM `donation` d
                     LEFT JOIN additionaltest ad ON d.donation_id = ad.donation_id
-                    WHERE d.created_dt BETWEEN '2020-11-01' AND '2020-11-30'
-                    AND d.facility_cd = '11001'
+                    WHERE d.created_dt BETWEEN '$from' AND '$to'
+                    AND d.facility_cd = '$facility_cd'
                     AND d.donation_id IS NOT NULL
                     AND d.sched_id = 'Walk-in'
                     AND d.collection_stat = 'COL'
@@ -280,24 +268,24 @@ class AdditionalTestController extends Controller
 
 
 
-    private function removeParent($data){
+    // private function removeParent($data){
 
-        foreach($data as $key => $value){
+    //     foreach($data as $key => $value){
 
-            if(!strpos($value['donation_id'], "-")){
-                if($value['method'] == 'P'){
-                    $if_has_aliquote = Component::select('donation_id')->where('source_donation_id', $value['donation_id'])->get();
-                    if(count($if_has_aliquote)){
-                        unset($data[$key]);
-                    }
-                }
-            }
+    //         if(!strpos($value['donation_id'], "-")){
+    //             if($value['method'] == 'P'){
+    //                 $if_has_aliquote = Component::select('donation_id')->where('source_donation_id', $value['donation_id'])->get();
+    //                 if(count($if_has_aliquote)){
+    //                     unset($data[$key]);
+    //                 }
+    //             }
+    //         }
             
-        }
+    //     }
 
-        return array_values($data);
+    //     return array_values($data);
 
-    }
+    // }
 
 
 }

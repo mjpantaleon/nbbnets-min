@@ -436,9 +436,10 @@ export default {
     }, /* mounted */
 
     methods: {
-        getDonationId (){
+        async getDonationId (){
+            this.isLoading = true
 
-            axios
+            await axios
                 .post('/get-donation-id-labelling', {
                     date_from: this.date_from,
                     date_to: this.date_to,
@@ -448,12 +449,14 @@ export default {
 
                     if(response.data){
                         this.data = response.data.data
+                        this.isLoading = false
                         // this.checked = response.data.checked
                         // console.log(response.data.data)
 
 
                     } else{
                         this.data = null
+                        this.isLoading = false
                         // this.select_id_notice = "No Data Found"
                     }
                     
@@ -536,11 +539,11 @@ export default {
 
         },
 
-        setUname(e){
+        async setUname(e){
 
             this.isLoading = true
 
-            axios
+            await axios
                 .post('/save-blood-labelling', {
                     label_data: this.checked,
                     verifier: e,
