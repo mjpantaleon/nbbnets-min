@@ -30,6 +30,7 @@ class BauBloodRequest extends Model
 
     function details(){
         return $this->hasMany('App\BauBloodRequestDetail','request_id', 'request_id')
+                    ->with('blood_unit_dtls')
                     ->with('component_name')
                     // ->with('reserved_unit_name')
                     ->select('request_component_id', 'request_id', 'blood_type', 'donation_id','component_cd');
