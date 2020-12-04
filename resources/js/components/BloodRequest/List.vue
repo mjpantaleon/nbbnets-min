@@ -77,7 +77,7 @@
 
                     <template v-slot:cell(action)="data">
                         <router-link :to="{ path: '/blood-request/view/' + data.item.request_id }" title="View Blood Request Details" 
-                        v-if="data.item.status == 'FLU' || data.item.status != 'Cancelled' && data.item.reference == '-'">
+                        v-if="data.item.status == 'FLU' || data.item.status != 'Cancelled' && data.item.status != 'RES' && data.item.reference == '-'">
                             <b-icon icon="search" class="border border-primary p-1" variant="primary" font-scale="2.1"></b-icon>
                         </router-link>
 

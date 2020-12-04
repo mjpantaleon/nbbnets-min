@@ -7,6 +7,7 @@ use App\Facility;
 use App\Component;
 use App\Donation;
 use App\Template;
+use App\AdditionalTest;
 use Milon\Barcode\Facades\DNS1DFacade;
 
 use Storage;
@@ -53,7 +54,7 @@ class PreviewController extends Controller
         //             ->whereNotIn('comp_stat',['EXP','DIS','ISS'])
         //             ->get()->first();
 
-        $unit = Component::with('cp_component_code','donation_min','additionaltest','aliqoute_donation')
+        $unit = Component::with('cp_component_code','donation_min','aliqoute_donation')
             ->whereDonationId($donation_id)
             ->whereComponentCd($component_cd)
             ->whereNotIn('comp_stat',['EXP','DIS','ISS'])
@@ -135,10 +136,39 @@ class PreviewController extends Controller
         $template = str_replace('{{EXPIRATION_DATE}}',date('M d, Y',strtotime($unit->expiration_dt)).' 23:59:00',$template);
         $template = str_replace('{{STORE}}','Store at '.$unit->cp_component_code->min_storage.' to '.$unit->cp_component_code->max_storage.' &deg;C',$template);
 
-        
-        $template = str_replace('{{NAT}}','ID NAT',$template);
-        $template = str_replace('{{ZIKA}}','(HBV, HCV, HIV and ZIKA)',$template);
-        $template = str_replace('{{ANTIBODY}}','ANTIBODY SCREENING : NEGATIVE',$template);
+        $main_donation = $donation_id;
+
+        if(strpos($donation_id, '-') !== 0){
+            $main_donation = explode('-',$donation_id)[0];
+        }
+
+
+        $add_test_result = AdditionalTest::select('antibody', 'nat', 'zika')
+                                            ->where('donation_id', $main_donation)
+                                            ->first();
+
+
+        if($add_test_result){
+
+            if($add_test_result['nat'] == 'N'){
+                $template = str_replace('{{NAT}}','ID NAT',$template);
+            } else{
+                $template = str_replace('{{NAT}}', '' ,$template);
+            }
+            
+            if($add_test_result['zika']  == 'N'){
+                $template = str_replace('{{ZIKA}}','(HBV, HCV, HIV and ZIKA)',$template);
+            } else{
+                $template = str_replace('{{ZIKA}}','',$template);
+            }
+
+            if($add_test_result['antibody'] == 'N'){
+                $template = str_replace('{{ANTIBODY}}','ANTIBODY SCREENING : NEGATIVE',$template);
+            } else{
+                $template = str_replace('{{ANTIBODY}}','',$template);
+            }
+
+        }
 
         // if($unit->donation){
         //     if($unit->additionaltest){

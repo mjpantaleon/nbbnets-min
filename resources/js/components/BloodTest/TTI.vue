@@ -182,15 +182,15 @@ export default {
             // RPR: '',
             
             hbsag_option: [
-                { text: 'N', value: 'n' },
+                { text: 'NR', value: 'n' },
                 { text: 'R', value: 'r' }
             ],
             hcv_option: [
-                { text: 'N', value: 'n' },
+                { text: 'NR', value: 'n' },
                 { text: 'R', value: 'r' }
             ],
             hiv_option: [
-                { text: 'N', value: 'n' },
+                { text: 'NR', value: 'n' },
                 { text: 'R', value: 'r' }
             ],
             mala_option: [
@@ -198,7 +198,7 @@ export default {
                 { text: 'Positive', value: 'r' }
             ],
             rpr_option: [
-                { text: 'N', value: 'n' },
+                { text: 'NR', value: 'n' },
                 { text: 'R', value: 'r' }
             ],
 
