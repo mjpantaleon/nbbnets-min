@@ -107,7 +107,7 @@
                     <b-button block
                         variant="success"
                         @click.prevent="showModal">
-                        <b-icon icon="check-circle"></b-icon>&nbsp;SUBMIT HNA & HNL RESULTS
+                        <b-icon icon="check-circle"></b-icon>&nbsp;SUBMIT HLA & HNA
                     </b-button>
                 </b-col>
             </b-row>
@@ -177,9 +177,9 @@ export default {
                 { key: 'donor', label: 'Donor Name' },
                 { key: 'gender', label: 'Gender' },
                 { key: 'donation_id', label: 'Donation ID' },
-                { key: 'test_1', label: 'Test 1' },
-                { key: 'test_2', label: 'Test 2' },
-                { key: 'test_3', label: 'Test 3' },
+                { key: 'test_1', label: 'HLA Class 1' },
+                { key: 'test_2', label: 'HLA Class 2' },
+                { key: 'test_3', label: 'HNA' },
             ]
 
         }

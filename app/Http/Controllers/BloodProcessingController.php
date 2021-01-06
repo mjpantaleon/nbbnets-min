@@ -35,6 +35,7 @@ class BloodProcessingController extends Controller
                     AND t1.created_dt BETWEEN '$from' AND '$to'
                     AND t1.collection_stat = '$col_stat'
                     AND t1.collection_method = 'P'
+                    -- AND t2.component_cd >= 100
                     ORDER BY t1.created_dt";
 
             $donation = DB::select($sql);
@@ -80,7 +81,8 @@ class BloodProcessingController extends Controller
             AND t1.sched_id = '$sched_id'
             AND t1.created_dt BETWEEN '$from' AND '$to'
             AND t1.collection_stat = '$col_stat'        
-            AND t1.collection_type = 'CPC19'";
+            AND t2.component_cd >= 100
+            AND t1.collection_type = 'CPC19' ";
 
             $donation = DB::select($sql);
 

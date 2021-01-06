@@ -246,7 +246,7 @@
             hide-header-close>
             
             <h5 class="alert-heading text-center">
-                <b-icon icon="person-check"></b-icon>&nbsp;Blood Typing entry has been successfully added!
+                <b-icon icon="person-check"></b-icon>&nbsp;Blood Processing entry has been successfully added!
             </h5>
             
             <template v-slot:modal-footer="{ ok }">

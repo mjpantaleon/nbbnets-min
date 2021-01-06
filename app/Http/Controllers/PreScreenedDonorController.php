@@ -626,6 +626,21 @@ class PreScreenedDonorController extends Controller
                         $hla->approved_by = $verifier;
                         $hla->approval_dt = date("Y-m-d H:i:s");
                         $hla->save();
+
+                        // UPDATE `donor` IF result = P
+                        if($result =='P'){
+                            $donor_update_arr = array(
+                                'donation_stat' => 'N',
+                                'donor_stat' => 'PD',                
+                                'deferral_basis' => 'TTI' 
+                            );
+
+                            $stat = Donor::where('seqno', $donor_sn)
+                                        ->update($donor_update_arr);        
+                        }
+            
+                        
+
                     } /* $check_donation_id */
 
                     // ELSE IF DONATION ALREADY EXIST
