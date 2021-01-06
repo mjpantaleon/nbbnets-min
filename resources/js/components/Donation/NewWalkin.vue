@@ -318,7 +318,7 @@ export default {
 
         collection_method_list: [
           { value: 'WB', text: 'Whole Blood' },
-          { value: 'P', text: 'Pheresis' },
+          { value: 'CP', text: 'Pheresis' },
         //   { value: 'WBP', text: 'Whole Blood Pheresis' },
         ],
 
