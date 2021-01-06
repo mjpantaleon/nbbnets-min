@@ -8,6 +8,7 @@ use App\ComponentCode;
 use App\RCpComponentCode;
 use App\Component;
 use App\PheresisBloodLabel;
+use App\Donor;
 use Session;
 
 class ReleaseInventoryController extends Controller
@@ -24,7 +25,9 @@ class ReleaseInventoryController extends Controller
 
         if($request['col_method'] == 'P'){      // PHERESIS PROCESS
 
-            $donation = Donation::with('type','pheresis_label','test','additionaltest','units','donor_min','aliquote_component')
+
+            // $donation = Donation::with('type','pheresis_label','test','additionaltest','units','donor_min','aliquote_component')
+            $donation = Donation::with('type','pheresis_label','test','additionaltest','units','aliquote_component')
                                 ->whereNotNull('donation_id')
                                 ->whereNotNull('donor_sn')
                                 ->whereFacilityCd($facility_cd)
@@ -39,6 +42,18 @@ class ReleaseInventoryController extends Controller
                 $checked = [];
     
                 foreach($donation as $key => $val){
+
+
+                    // ***************************** FIX FOR NULL donor_min ********************************************* //
+                    // ***************************** Not pushed in repositories ***************************************** //
+                    
+                    $donor = Donor::select('seqno','fname','lname')->where('seqno', $val['donor_sn'])->first();
+
+                    $donation[$key]['donor_min'] = $donor;
+
+                    // ***************************** Not pushed in repositories ***************************************** //
+
+
 
                     $donation[$key]['units']["showP01"] = false;
                     $donation[$key]['units']["showP02"] = false;
@@ -77,9 +92,6 @@ class ReleaseInventoryController extends Controller
                         $has_pheresis_save = PheresisBloodLabel::where('donation_id', $val['donation_id'])
                                             ->get();
 
-                        \Log::info($val['donation_id']);
-                        \Log::info($has_pheresis_save);
-
                         if(count($has_pheresis_save)){
                             $donation[$key]['units']["showM01"] = true;
 
@@ -91,8 +103,6 @@ class ReleaseInventoryController extends Controller
                     }
 
                 }
-
-                // \Log::info($donation);
                 
                 return array('data' => $donation, 'checked' => $checked);
                 
@@ -102,7 +112,8 @@ class ReleaseInventoryController extends Controller
 
         } else{                                 // WHOLE BLOOD PROCESS
 
-            $donation = Donation::with('type','labels','test','additionaltest','units','donor_min')
+            // $donation = Donation::with('type','labels','test','additionaltest','units','donor_min')
+            $donation = Donation::with('type','labels','test','additionaltest','units')
                                 ->whereNotNull('donation_id')
                                 ->whereNotNull('donor_sn')
                                 ->whereFacilityCd($facility_cd)
@@ -117,6 +128,15 @@ class ReleaseInventoryController extends Controller
                 $checked = [];
 
                 foreach($donation as $key => $val){
+
+                    // ***************************** FIX FOR NULL donor_min ********************************************* //
+                    // ***************************** Not pushed in repositories ***************************************** //
+                    
+                    $donor = Donor::select('seqno','fname','lname')->where('seqno', $val['donor_sn'])->first();
+
+                    $donation[$key]['donor_min'] = $donor;
+
+                    // ***************************** Not pushed in repositories ***************************************** //
 
                     if($val['units']){
 

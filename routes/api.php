@@ -29,6 +29,7 @@ Route::post('authorization', "ApiController@authorization");
 Route::post('v1/android-login', 'ApiController@login')->middleware('client');
 Route::post('v1/android-search-donors', 'ApiController@searchDonor')->middleware('client');
 Route::post('v1/android-submit-entry', 'ApiController@androidCreate')->middleware('client');
+Route::post('v1/android-status', 'ApiController@checkStatus')->middleware('client');
 Route::get('v1/android-donors', 'ApiController@getAllDonors')->middleware('client');
 Route::get('v1/android-version', 'ApiController@version')->middleware('client');
  
