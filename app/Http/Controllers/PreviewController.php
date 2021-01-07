@@ -195,7 +195,7 @@ class PreviewController extends Controller
         $template = Template::whereFacilityCd($facility_cd)->first();
 
         if($template){
-            return $template->template;
+            // return $template->template;
         }
 
         $file = Storage::get('label-template.html');
