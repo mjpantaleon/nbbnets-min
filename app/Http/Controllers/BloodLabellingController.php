@@ -26,7 +26,7 @@ class BloodLabellingController extends Controller
 
         $donation       = ""; 
 
-        if($request['col_method'] == 'P'){      // PHERESIS PROCESS
+        if($request['col_method'] == 'CP'){      // PHERESIS PROCESS
 
             //$donation = Donation::with('type','labels','test','additionaltest','units', 'donor_min', pheresis_label')
             $donation = Donation::with('type','labels','test','additionaltest','units', 'pheresis_label')
@@ -36,7 +36,7 @@ class BloodLabellingController extends Controller
                                 ->whereSchedId($sched_id)
                                 ->whereBetween('created_dt', [$from, $to])
                                 ->where('collection_stat', $col_stat)
-                                ->where('collection_method', "P")
+                                ->where('collection_method', "CP")
                                 ->get();
 
             // \Log::info($donation);
@@ -253,7 +253,7 @@ class BloodLabellingController extends Controller
         $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
         $user_id        = Session::get('userInfo')['user_id'];
 
-        if($method == 'P'){
+        if($method == 'CP'){
             
             if(count($label_data) === 1){
 

@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
 use App\Donor;
+use App\PreScreenedDonor;
 
 class PreScreenedDonorSeeder extends Seeder
 {
@@ -20,7 +21,7 @@ class PreScreenedDonorSeeder extends Seeder
 
         foreach (range(1,10) as $index) {
 
-            $donors_count = Donor::count(); 
+            $donors_count = PreScreenedDonor::count(); 
             $donors_count = $donors_count + $index;
     
             $seqno = $facility_cd . $year_now . sprintf("%07d", $donors_count);

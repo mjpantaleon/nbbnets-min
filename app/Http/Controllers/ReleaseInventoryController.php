@@ -23,7 +23,7 @@ class ReleaseInventoryController extends Controller
         $sched_id       = 'Walk-in';
         $col_stat       = 'COL';
 
-        if($request['col_method'] == 'P'){      // PHERESIS PROCESS
+        if($request['col_method'] == 'CP'){      // PHERESIS PROCESS
 
 
             // $donation = Donation::with('type','pheresis_label','test','additionaltest','units','donor_min','aliquote_component')
@@ -34,7 +34,7 @@ class ReleaseInventoryController extends Controller
                                 ->whereSchedId($sched_id)
                                 ->whereBetween('created_dt', [$from, $to])
                                 ->where('collection_stat', $col_stat)
-                                ->whereCollectionMethod('P')
+                                ->whereCollectionMethod('CP')
                                 ->get();
 
             if($donation){
@@ -192,7 +192,7 @@ class ReleaseInventoryController extends Controller
         $user_id        = Session::get('userInfo')['user_id'];
         $method         = $request->get('method');
 
-        if($method == 'P'){
+        if($method == 'CP'){
 
             $all_id = self::mergeMotherDonationId($comp_data);
 

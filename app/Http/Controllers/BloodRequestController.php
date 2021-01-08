@@ -43,6 +43,7 @@ class BloodRequestController extends Controller
                             ->whereFacilityCd($facility_cd)
                             ->with('details')
                             ->with('patient_details')
+                            ->where('request_type', '=', 'CP')
                             ->get()
                             ->toArray();
         \Log::info($sql);

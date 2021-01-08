@@ -112,8 +112,7 @@ class PreScreenedDonorController extends Controller
         // SELECT donor_sn, last_name, first_name, middle_name, name_suffix FROM pre_screened_donors WHERE facility_cd LIKE $facility_cd AND status = 1 AND approval_dt BETWEEN $from and $to
         
         // $query = "  SELECT ps.donor_sn, ps.last_name, ps.first_name, ps.middle_name, ps.name_suffix, ig.donation_id
-        $query = "  SELECT ps.donor_sn, ig.donation_id
-                    , bt.bloodtest_no
+        $query = "  SELECT ps.donor_sn, ig.donation_id, bt.bloodtest_no
                     FROM `pre_screened_donors` ps
                     LEFT JOIN `igg_results` ig ON ig.donor_sn = ps.donor_sn
                     LEFT JOIN `bloodtest` bt ON bt.donation_id = ig.donation_id
