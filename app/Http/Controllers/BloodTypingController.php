@@ -55,7 +55,7 @@ class BloodTypingController extends Controller
                     LEFT JOIN `blood_typing` bt ON bt.donation_id = ig.donation_id
                     COLLATE utf8_general_ci
                     WHERE ps.approval_dt BETWEEN '$from' AND '$to'
-                    AND ps.status = '1'
+                    AND ps.status = '3'
                     AND ig.igg != 'N'
                     AND ps.facility_cd LIKE $facility_cd
                     AND bt.bloodtyping_no IS NULL

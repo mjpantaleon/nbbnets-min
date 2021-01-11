@@ -118,7 +118,7 @@ class PreScreenedDonorController extends Controller
                     LEFT JOIN `bloodtest` bt ON bt.donation_id = ig.donation_id
                     COLLATE utf8_general_ci
                     WHERE ps.approval_dt BETWEEN '$from' AND '$to'
-                    AND ps.status = '1' 
+                    AND ps.status = '3' 
                     AND ig.igg != 'N'
                     AND ig.igg IS NOT NULL
                     AND ps.facility_cd LIKE $facility_cd
@@ -394,7 +394,6 @@ class PreScreenedDonorController extends Controller
         WHERE ps.approval_dt BETWEEN '2020-07-01' AND '2020-10-17'
         AND ps.facility_cd = '13109'
         AND ps.status = '1'
-        AND ig.donation_id IS NULL
         */
 
         $query = "  SELECT ps.donor_sn, ps.last_name, ps.first_name, ps.middle_name, ps.name_suffix
@@ -403,7 +402,8 @@ class PreScreenedDonorController extends Controller
                     WHERE ps.approval_dt BETWEEN '$from' AND '$to'
                     AND ps.facility_cd = '$facility_cd'
                     AND ps.status = '1'
-                    AND ig.donation_id IS NULL ";
+                    -- AND ig.donation_id IS NULL
+                     ";
                 
         $donors_to_igg = DB::select($query);
         
@@ -475,6 +475,13 @@ class PreScreenedDonorController extends Controller
                         $igg->approved_by = $verifier;
                         $igg->approval_dt = date("Y-m-d H:i:s");
                         $igg->save();
+
+                        // ----------------- FIX FOR REPEAT DONATION ON PRE-SCREENING
+                        // ----------------- UPDATE `pre_screened_donors` table
+                        PreScreenedDonor::where('donor_sn', $donor_sn)
+                                        ->update(['status' => '3']);    // 3 = IGG tested
+                        // ----------------- FIX FOR REPEAT DONATION ON PRE-SCREENING
+
                     } /* $check_donation_id */
 
                     // ELSE IF DONATION ALREADY EXIST
@@ -534,8 +541,9 @@ class PreScreenedDonorController extends Controller
                     LEFT JOIN `additional_hla_hna_tests` hh ON hh.donor_sn = ps.donor_sn
                     WHERE ps.approval_dt BETWEEN '$from' AND '$to'
                     AND ps.facility_cd = '$facility_cd'
-                    AND ps.status = '1'
-                    AND hh.donation_id IS NULL ";
+                    AND ps.status = '3'
+                    -- AND hh.donation_id IS NULL 
+                    ";
                 
         $donors_for_hla_hna = DB::select($query);
 
