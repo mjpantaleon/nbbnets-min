@@ -319,6 +319,7 @@ class PreScreenedDonorController extends Controller
         $created_dt = date('Y-m-d H:i:s');
 
         \Log::info($created_dt);
+        \Log::info(config('app.timezone'));
 
         // check if record exists before inserting new record
         $check_existing_record = PreScreenedDonor::where('first_name', '=', $fname)
@@ -365,6 +366,7 @@ class PreScreenedDonorController extends Controller
 
             $pre_screened_donor->save();
             \Log::info($pre_screened_donor);
+            
 
 
             return response()->json([
