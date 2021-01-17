@@ -78,7 +78,7 @@
                             Check All
                         </b-form-checkbox>
 
-                        <b-list-group v-if="col_method == 'P'">
+                        <b-list-group v-if="col_method == 'CP'">
                             <b-list-group-item  
                                 v-for="(val, key) in donation_ids" 
                                 v-bind:key="key">
@@ -133,7 +133,7 @@
                         <template v-if="data.length != 0">
 
                             <b-table
-                                v-if="col_method == 'P'"
+                                v-if="col_method == 'CP'"
                                 id="main-table"
                                 responsive="sm"
                                 striped hover
@@ -246,7 +246,7 @@
             hide-header-close>
             
             <h5 class="alert-heading text-center">
-                <b-icon icon="person-check"></b-icon>&nbsp;Blood Typing entry has been successfully added!
+                <b-icon icon="person-check"></b-icon>&nbsp;Blood Processing entry has been successfully added!
             </h5>
             
             <template v-slot:modal-footer="{ ok }">
@@ -325,7 +325,7 @@ export default {
 
             col_method_list: [
                 { value: 'WB', text: 'Whole Blood' },
-                { value: 'P', text: 'Pheresis' },
+                { value: 'CP', text: 'Pheresis' },
                 // { value: 'WBP', text: 'Whole Blood Pheresis' },
             ],
             

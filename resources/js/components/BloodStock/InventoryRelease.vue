@@ -73,7 +73,7 @@
                         <template v-if="data.length != 0">
 
                             <b-table
-                                v-if="col_method == 'P'"
+                                v-if="col_method == 'CP'"
                                 id="main-table"
                                 responsive="sm"
                                 striped hover
@@ -449,7 +449,7 @@ export default {
 
             col_method_list: [
                 { value: 'WB', text: 'Whole Blood' },
-                { value: 'P', text: 'Pheresis' },
+                { value: 'CP', text: 'Pheresis' },
             ],
 
         }

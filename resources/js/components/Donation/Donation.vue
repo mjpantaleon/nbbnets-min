@@ -72,8 +72,8 @@
                     </template>
 
                     <template v-slot:cell(collectionMethod)="data">
-                        <span v-if="data.item.collection_method == 'WB'">Whole Blood</span>
-                        <span v-if="data.item.collection_method == 'P'">Pheresis</span>
+                        <span v-if="data.item.collection_method == 'WB'">WHOLE BLOOD</span>
+                        <span v-if="data.item.collection_method == 'CP'">PHERESIS</span>
                     </template>
 
                     <template v-slot:cell(collectionStat)="data">

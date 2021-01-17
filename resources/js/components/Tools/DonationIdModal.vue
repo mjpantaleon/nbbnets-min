@@ -81,7 +81,7 @@
 
                 var method = this.item.split(",")
 
-                if(method[1] == 'P'){
+                if(method[1] == 'CP'){
 
                     var id = method[0].split("-")   // split mother donation id to its aliquote number (=01, -02)
 

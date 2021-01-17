@@ -9,6 +9,7 @@ use App\Component;
 use App\RCpComponentCode;
 use App\Label;
 use App\PheresisBloodLabel;
+use App\Donor;
 use Session;
 
 class BloodLabellingController extends Controller
@@ -25,16 +26,17 @@ class BloodLabellingController extends Controller
 
         $donation       = ""; 
 
-        if($request['col_method'] == 'P'){      // PHERESIS PROCESS
+        if($request['col_method'] == 'CP'){      // PHERESIS PROCESS
 
-            $donation = Donation::with('type','labels','test','additionaltest','units','donor_min', 'pheresis_label')
+            //$donation = Donation::with('type','labels','test','additionaltest','units', 'donor_min', pheresis_label')
+            $donation = Donation::with('type','labels','test','additionaltest','units', 'pheresis_label')
                                 ->whereNotNull('donation_id')
                                 ->whereNotNull('donor_sn')
                                 ->whereFacilityCd($facility_cd)
                                 ->whereSchedId($sched_id)
                                 ->whereBetween('created_dt', [$from, $to])
                                 ->where('collection_stat', $col_stat)
-                                ->where('collection_method', "P")
+                                ->where('collection_method', "CP")
                                 ->get();
 
             // \Log::info($donation);
@@ -44,6 +46,15 @@ class BloodLabellingController extends Controller
                 $checked = [];
     
                 foreach($donation as $key => $val){
+
+                    // ***************************** FIX FOR NULL donor_min ********************************************* //
+                    // ***************************** Not pushed in repositories ***************************************** //
+                    
+                    $donor = Donor::select('seqno','fname','lname')->where('seqno', $val['donor_sn'])->first();
+
+                    $donation[$key]['donor_min'] = $donor;
+
+                    // ***************************** Not pushed in repositories ***************************************** //
 
                     $aliqoutes = Component::select('donation_id', 'source_donation_id')->where('source_donation_id', $val['donation_id'])->get();
 
@@ -98,7 +109,8 @@ class BloodLabellingController extends Controller
 
         elseif($request['col_method'] == 'WB'){                                 // WHOLE BLOOD PROCESS
 
-            $donation = Donation::with('type','labels','test','additionaltest','units','donor_min')
+            // $donation = Donation::with('type','labels','test','additionaltest','units','donor_min')
+            $donation = Donation::with('type','labels','test','additionaltest','units')
                                 ->whereNotNull('donation_id')
                                 ->whereNotNull('donor_sn')
                                 ->whereFacilityCd($facility_cd)
@@ -107,13 +119,22 @@ class BloodLabellingController extends Controller
                                 ->where('collection_stat', $col_stat)
                                 ->where('collection_type', "CPC19")
                                 ->get()->toArray();
-            \Log::info($donation);
 
             if($donation){
 
                 $checked = [];
     
                 foreach($donation as $key => $val){
+
+
+                    // ***************************** FIX FOR NULL donor_min ********************************************* //
+                    // ***************************** Not pushed in repositories ***************************************** //
+                    
+                    $donor = Donor::select('seqno','fname','lname')->where('seqno', $val['donor_sn'])->first();
+
+                    $donation[$key]['donor_min'] = $donor;
+
+                    // ***************************** Not pushed in repositories ***************************************** //
     
                     if($val['units']){
     
@@ -232,7 +253,7 @@ class BloodLabellingController extends Controller
         $facility_cd    = Session::get('userInfo')['facility']['facility_cd'];
         $user_id        = Session::get('userInfo')['user_id'];
 
-        if($method == 'P'){
+        if($method == 'CP'){
             
             if(count($label_data) === 1){
 

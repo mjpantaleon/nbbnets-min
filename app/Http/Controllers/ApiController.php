@@ -87,6 +87,22 @@ class ApiController extends Controller
 				    	]
 				    ]);
 				    return $res->getBody();
+		    	}else if($request->redirect == 'searchStatus'){
+					$res = $http->post(url('api/v1/android-status'), [
+				    	'form_params' => [
+				            // $request->all()		
+				            'fname' => $request->fname,
+				            'mname' => $request->mname,
+				            'lname' => $request->lname,
+				            'email' => $request->email,
+				        ],
+				    	'headers' => [
+				    		'Authorization' => 'Bearer '.$auth->access_token,
+				    		'Accept'     => 'application/json',
+				    	]
+				    ]);
+				    return $res->getBody();
+
 		    	}else if($request->redirect == 'donors'){
 		    		$res = $http->get(url('api/v1/android-donors'), [
 				    	'headers' => [
@@ -225,18 +241,33 @@ class ApiController extends Controller
     }
 
     function getAllDonors(){
-        return response()->json(PreScreenedDonor::all());
+        return response()->json(PreScreenedDonor::where('status', 1)->get());
     }
 
     function searchDonor(Request $request){
         $input = $request->searchString;
-        $filteredDonors = \App\PreScreenedDonor::where('first_name', 'like', '%'.$input."%")->
-                                                 orWhere('middle_name', 'like', '%'.$input."%")->
-                                                 orWhere('last_name', 'like', '%'.$input."%")->get();
+        $filteredDonors = \App\PreScreenedDonor::where(function($query) use ($input){
+                                                 	$query->where('status', 1);
+                                                 	$query->where('first_name', 'like', '%'.$input."%");
+                                                 })->
+                                                 orWhere(function($query) use ($input){
+                                                 	$query->where('status', 1);
+                                                 	$query->where('middle_name', 'like', '%'.$input."%");
+                                                 })->
+                                                 orWhere(function($query) use ($input){
+                                                 	$query->where('status', 1);
+                                                 	$query->where('last_name', 'like', '%'.$input."%");
+                                                 })->get();
         return response()->json($filteredDonors);        
     }    
     
     function version(){
     	return response()->json(['version' => '1.0']);
+    }
+
+    public function checkStatus(Request $request){
+    	// dd($request->all());
+    	$pre_screened_donor = PreScreenedDonor::where('first_name', $request->fname)->where('last_name', $request->lname)->where('email', $request->email)->first();
+    	return $pre_screened_donor;
     }
 }

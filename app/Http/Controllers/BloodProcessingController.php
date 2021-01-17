@@ -24,7 +24,7 @@ class BloodProcessingController extends Controller
         $sched_id       = 'Walk-in';
         $col_stat       = 'COL';
 
-        if($request['col_method'] == 'P'){      // PHERESIS PROCESS
+        if($request['col_method'] == 'CP'){      // PHERESIS PROCESS
 
             $sql = "SELECT t1.donation_id
                     FROM donation t1
@@ -34,7 +34,7 @@ class BloodProcessingController extends Controller
                     AND t1.sched_id = '$sched_id'
                     AND t1.created_dt BETWEEN '$from' AND '$to'
                     AND t1.collection_stat = '$col_stat'
-                    AND t1.collection_method = 'P'
+                    AND t1.collection_method = 'CP'
                     ORDER BY t1.created_dt";
 
             $donation = DB::select($sql);
@@ -79,8 +79,8 @@ class BloodProcessingController extends Controller
             AND t1.facility_cd = '$facility_cd'
             AND t1.sched_id = '$sched_id'
             AND t1.created_dt BETWEEN '$from' AND '$to'
-            AND t1.collection_stat = '$col_stat'        
-            AND t1.collection_type = 'CPC19'";
+            AND t1.collection_stat = '$col_stat' 
+            AND t1.collection_type = 'CPC19' ";
 
             $donation = DB::select($sql);
 
@@ -150,7 +150,7 @@ class BloodProcessingController extends Controller
         $verifier           = $request->get('verifier');
         $status             = "";
 
-        if($collection_method == 'P'){  // PHERESIS PROCESS
+        if($collection_method == 'CP'){  // PHERESIS PROCESS
 
             $status = self::pheresisSave($blood_processing, $verifier);
 

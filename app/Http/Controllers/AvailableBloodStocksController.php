@@ -125,9 +125,9 @@ class AvailableBloodStocksController extends Controller
 
                 foreach($data as $k => $v){
                     if($val['source_donation_id'] == $v['donation_id']){
-                        if($v['donation_min']['collection_method'] == 'P'){
+                        if($v['donation_min']['collection_method'] == 'CP'){
                             $created_date = date('F j, Y', strtotime($arr[$val['source_donation_id']]['donation_min']['created_dt']));
-                            $method       = "P";
+                            $method       = "CP";
                         } else{
                             $created_date = date('F j, Y', strtotime($v['donation_min']['created_dt']));
                             $method = "WB";
@@ -140,8 +140,8 @@ class AvailableBloodStocksController extends Controller
             } else{
                 $created_date = date('F j, Y', strtotime($val['donation_min']['created_dt']));
 
-                if($val['donation_min']['collection_method'] == 'P'){
-                    $method = "P";
+                if($val['donation_min']['collection_method'] == 'CP'){
+                    $method = "CP";
                 } elseif($val['donation_min']['collection_type'] == 'CPC19'){
                     $method = "WB";
                 }
@@ -149,7 +149,7 @@ class AvailableBloodStocksController extends Controller
 
             $diff = strtotime(date('Y-m-d H:i:s')) - strtotime($created_date);
 
-            if($method == 'P' && $abbr[$val['component_cd']] == 'CP'){
+            if($method == 'CP' && $abbr[$val['component_cd']] == 'CP'){
                 $comp_abbr = $abbr[$val['component_cd']] . " (Pheresis)";
             } elseif($method == 'WB' && $abbr[$val['component_cd']] == 'CP'){
                 $comp_abbr = $abbr[$val['component_cd']] . " (WB)";
@@ -182,7 +182,7 @@ class AvailableBloodStocksController extends Controller
         foreach($data as $key => $value){
 
             if(!strpos($value['donation_id'], "-")){
-                if($value['method'] == 'P'){
+                if($value['method'] == 'CP'){
                     $if_has_aliquote = Component::select('donation_id')->where('source_donation_id', $value['donation_id'])->get();
                     if(count($if_has_aliquote)){
                         unset($data[$key]);

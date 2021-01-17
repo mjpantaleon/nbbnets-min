@@ -78,7 +78,7 @@
                         <template v-if="data.length != 0">
 
                             <b-table
-                                v-if="col_method == 'P'"
+                                v-if="col_method == 'CP'"
                                 id="main-table"
                                 responsive="sm"
                                 striped hover
@@ -423,7 +423,7 @@ export default {
 
             col_method_list: [
                 { value: 'WB', text: 'Whole Blood' },
-                { value: 'P', text: 'Pheresis' },
+                { value: 'CP', text: 'Pheresis' },
                 // { value: 'WBP', text: 'Whole Blood Pheresis' },
             ],
             
@@ -605,8 +605,8 @@ export default {
                         continue;
                     } else{
 
-                        if(this.col_method == 'P'){
-                            this.lastChecked = val[i] + ",P"
+                        if(this.col_method == 'CP'){
+                            this.lastChecked = val[i] + ",CP"
                             this.prev_checked = val
                             // this.last
                             break;

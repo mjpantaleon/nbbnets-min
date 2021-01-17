@@ -20,7 +20,7 @@ class PreviewController extends Controller
 
         $method = explode(",", $data->get('data'));
 
-        if($method[1] == 'P'){
+        if($method[1] == 'CP'){
 
             $facility_cd = Session::get('userInfo')['facility']['facility_cd'];
     
@@ -114,7 +114,7 @@ class PreviewController extends Controller
 
         $anticoagulant = "";
 
-        if($method == 'P'){
+        if($method == 'CP'){
             $anticoagulant = "ACD Anticoagulant";
         } else{
 
@@ -195,7 +195,7 @@ class PreviewController extends Controller
         $template = Template::whereFacilityCd($facility_cd)->first();
 
         if($template){
-            return $template->template;
+            // return $template->template;
         }
 
         $file = Storage::get('label-template.html');
