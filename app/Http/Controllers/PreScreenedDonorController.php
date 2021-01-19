@@ -116,15 +116,14 @@ class PreScreenedDonorController extends Controller
         $query = "  SELECT ps.id, ps.donor_sn, ig.donation_id
                     FROM `pre_screened_donors` ps
                     LEFT JOIN `igg_results` ig ON ig.donor_sn = ps.donor_sn
-                    LEFT JOIN `bloodtest` bt ON bt.donation_id = ig.donation_id
-                    COLLATE utf8_general_ci
+                    -- LEFT JOIN `bloodtest` bt ON bt.donation_id = ig.donation_id
+                    -- COLLATE utf8_general_ci
                     WHERE ps.approval_dt BETWEEN '$from' AND '$to'
-                    AND ps.status > 3
-                    -- AND ig.igg != 'N'
-                    -- AND ig.igg IS NOT NULL
+                    AND ps.status IN (3, 4)
                     AND ps.facility_cd LIKE $facility_cd
-                    AND bt.bloodtest_no IS NULL
-                    ORDER BY ps.approval_dt ASC "; 
+                    -- AND bt.bloodtest_no IS NULL
+                    -- ORDER BY ps.approval_dt ASC 
+                "; 
 
         // $query = "      SELECT ps.id, ps.donor_sn, donation_id
         //                 FROM `pre_screened_donors` ps
