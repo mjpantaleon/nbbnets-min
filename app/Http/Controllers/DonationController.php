@@ -91,7 +91,7 @@ class DonationController extends Controller
         $coluns_res = $data['coluns_res'];          // BULGE, FAINT, CLOT
 
         $created_by = $facility_user;
-        $created_dt = date('Y-m-d H:i:s');
+        $created_dt = $data['created_dt'];
         $approved_by = $verifier;
         $updated_dt = date('Y-m-d H:i:s');
 
