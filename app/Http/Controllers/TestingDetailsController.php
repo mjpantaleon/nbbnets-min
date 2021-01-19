@@ -203,7 +203,7 @@ class TestingDetailsController extends Controller
 
                 // GENERATE 
                 $bloodtest_no = Testing::generateNo($facility_cd);
-    
+                $id = $bt['id'];
                 $donation_id = $bt['donation_id'];
                 $donor_sn = $bt['donor_sn'];
 
@@ -279,6 +279,7 @@ class TestingDetailsController extends Controller
                         if(count($has_typing)){
                             // UPDATE `pre_screened_donors` table
                             PreScreenedDonor::where('donor_sn', $donor_sn)
+                                            ->where('id', $id)
                                             ->update(['status' => '2']);
                         }
         

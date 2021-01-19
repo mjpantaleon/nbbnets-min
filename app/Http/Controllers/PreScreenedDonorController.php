@@ -112,33 +112,38 @@ class PreScreenedDonorController extends Controller
         // SELECT donor_sn, last_name, first_name, middle_name, name_suffix FROM pre_screened_donors WHERE facility_cd LIKE $facility_cd AND status = 1 AND approval_dt BETWEEN $from and $to
         
         // $query = "  SELECT ps.donor_sn, ps.last_name, ps.first_name, ps.middle_name, ps.name_suffix, ig.donation_id
-        $query = "  SELECT ps.donor_sn, ig.donation_id, bt.bloodtest_no
+        
+        $query = "  SELECT ps.id, ps.donor_sn, ig.donation_id
                     FROM `pre_screened_donors` ps
                     LEFT JOIN `igg_results` ig ON ig.donor_sn = ps.donor_sn
                     LEFT JOIN `bloodtest` bt ON bt.donation_id = ig.donation_id
                     COLLATE utf8_general_ci
                     WHERE ps.approval_dt BETWEEN '$from' AND '$to'
-                    AND ps.status = '3' 
-                    AND ig.igg != 'N'
-                    AND ig.igg IS NOT NULL
+                    AND ps.status > 3
+                    -- AND ig.igg != 'N'
+                    -- AND ig.igg IS NOT NULL
                     AND ps.facility_cd LIKE $facility_cd
                     AND bt.bloodtest_no IS NULL
                     ORDER BY ps.approval_dt ASC "; 
 
+        // $query = "      SELECT ps.id, ps.donor_sn, donation_id
+        //                 FROM `pre_screened_donors` ps
+
+        
+        // ";
+        
         $approved_donor_list = DB::select($query);
         
         $approved_donor_list = json_decode(json_encode($approved_donor_list), true);
+    
 
         if($approved_donor_list){
 
             for ($i=0; $i < count($approved_donor_list); $i++) { 
-                // $ids[$i]['first_name'] = $approved_donor_list[$i]['first_name'];
-                // $ids[$i]['middle_name'] = $approved_donor_list[$i]['middle_name'];
-                // $ids[$i]['last_name'] = $approved_donor_list[$i]['last_name'];
-                // $ids[$i]['name_suffix'] = $approved_donor_list[$i]['name_suffix'];
+               
+                $ids[$i]['id'] = $approved_donor_list[$i]['id'];
                 $ids[$i]['donor_sn'] = $approved_donor_list[$i]['donor_sn'];
                 $ids[$i]['donation_id'] = $approved_donor_list[$i]['donation_id'];
-                // $ids[$i]['donation_id'] = "";
                 $ids[$i]['HBSAG'] = "";
                 $ids[$i]['HCV'] = "";
                 $ids[$i]['HIV'] = "";
@@ -147,8 +152,6 @@ class PreScreenedDonorController extends Controller
             }
 
             return $ids;
-            // \Log::info($approved_donor_list);
-            // return $approved_donor_list;
             
         } else{
             return false;
@@ -400,7 +403,7 @@ class PreScreenedDonorController extends Controller
         AND ps.status = '1'
         */
 
-        $query = "  SELECT ps.donor_sn, ps.last_name, ps.first_name, ps.middle_name, ps.name_suffix
+        $query = "  SELECT ps.id, ps.donor_sn, ps.last_name, ps.first_name, ps.middle_name, ps.name_suffix
                     FROM pre_screened_donors ps
                     LEFT JOIN igg_results ig ON ig.donor_sn = ps.donor_sn
                     WHERE ps.approval_dt BETWEEN '$from' AND '$to'
@@ -416,6 +419,7 @@ class PreScreenedDonorController extends Controller
 
         if($donors_to_igg){
             for($i = 0; $i < count($donors_to_igg); $i++){
+                $ids[$i]['id'] = $donors_to_igg[$i]['id'];
                 $ids[$i]['donor_sn'] = $donors_to_igg[$i]['donor_sn'];
                 $ids[$i]['last_name'] = $donors_to_igg[$i]['last_name'];
                 $ids[$i]['first_name'] = $donors_to_igg[$i]['first_name'];
@@ -450,6 +454,7 @@ class PreScreenedDonorController extends Controller
             
             // FOR NON EMPTY FIELDS
             if($ig['igg_result']){
+                $id = $ig['id'];
                 $donor_sn = $ig['donor_sn'];
                 $donation_id = $ig['donation_id'];
                 $cut_off_val = $ig['cut_off_val'];
@@ -484,6 +489,7 @@ class PreScreenedDonorController extends Controller
                         // ----------------- FIX FOR REPEAT DONATION ON PRE-SCREENING
                         // ----------------- UPDATE `pre_screened_donors` table
                         PreScreenedDonor::where('donor_sn', $donor_sn)
+                                        ->where('id', $id)
                                         ->update(['status' => '3']);    // 3 = IGG tested
                         // ----------------- FIX FOR REPEAT DONATION ON PRE-SCREENING
 
@@ -534,20 +540,22 @@ class PreScreenedDonorController extends Controller
         /*
         SELECT ps.donor_sn, ps.last_name, ps.first_name, ps.middle_name, ps.name_suffix
         FROM pre_screened_donors ps
-        LEFT JOIN igg_results ig ON ig.donor_sn = ps.donor_sn
+        LEFT JOIN `additional_hla_hna_tests` ig ON ig.donor_sn = ps.donor_sn
         WHERE ps.approval_dt BETWEEN '2020-07-01' AND '2020-10-17'
         AND ps.facility_cd = '13109'
         AND ps.status = '1'
-        AND ig.donation_id IS NULL
         */
 
-        $query = "  SELECT ps.donor_sn, ps.last_name, ps.first_name, ps.middle_name, ps.name_suffix, ps.gender
+        $query = "  SELECT ps.id, ps.donor_sn, ps.last_name, ps.first_name, ps.middle_name, ps.name_suffix, ps.gender
                     FROM `pre_screened_donors` ps
                     LEFT JOIN `additional_hla_hna_tests` hh ON hh.donor_sn = ps.donor_sn
+                    -- LEFT JOIN `donor` d ON d.seqno = ps.donor_sn
+                    -- COLLATE utf8_general_ci
                     WHERE ps.approval_dt BETWEEN '$from' AND '$to'
+                    -- AND d.deferral_basis IS NULL
                     AND ps.facility_cd = '$facility_cd'
+                    AND ps.gender = 'F'
                     AND ps.status = '3'
-                    -- AND hh.donation_id IS NULL 
                     ";
                 
         $donors_for_hla_hna = DB::select($query);
@@ -559,6 +567,7 @@ class PreScreenedDonorController extends Controller
 
         if($donors_for_hla_hna){
             for($i = 0; $i < count($donors_for_hla_hna); $i++){
+                $ids[$i]['id'] = $donors_for_hla_hna[$i]['id'];
                 $ids[$i]['donor_sn'] = $donors_for_hla_hna[$i]['donor_sn'];
                 $ids[$i]['last_name'] = $donors_for_hla_hna[$i]['last_name'];
                 $ids[$i]['first_name'] = $donors_for_hla_hna[$i]['first_name'];
@@ -597,6 +606,7 @@ class PreScreenedDonorController extends Controller
             
             // FOR NON EMPTY FIELDS
             if($val['donation_id']){
+                $id             = $val['id'];
                 $donor_sn       = $val['donor_sn'];
                 $donation_id    = $val['donation_id'];
                 $test_1         = $val['test_1'];
@@ -644,12 +654,17 @@ class PreScreenedDonorController extends Controller
                             $donor_update_arr = array(
                                 'donation_stat' => 'N',
                                 'donor_stat' => 'PD',                
-                                'deferral_basis' => 'TTI' 
+                                'deferral_basis' => 'HLA' 
                             );
 
                             $stat = Donor::where('seqno', $donor_sn)
                                         ->update($donor_update_arr);        
                         }
+
+                        // ----------------- UPDATE `pre_screened_donors` table
+                        PreScreenedDonor::where('donor_sn', $donor_sn)
+                                        ->where('id', $id)
+                                        ->update(['status' => '4']);    // 3 = HLA tested
             
                         
 
