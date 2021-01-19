@@ -554,6 +554,8 @@ export default {
                          this.message = response.data.message
                         this.showSuccessMsg = true,
                         this.disableBtn = true
+
+                        console.log(response.data)
                     }
                 })
                 .catch(error => console.log(error))

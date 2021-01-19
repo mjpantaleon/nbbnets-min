@@ -318,6 +318,9 @@ class PreScreenedDonorController extends Controller
         $created_by = $facility_user;
         $created_dt = date('Y-m-d H:i:s');
 
+        \Log::info($created_dt);
+        \Log::info(config('app.timezone'));
+
         // check if record exists before inserting new record
         $check_existing_record = PreScreenedDonor::where('first_name', '=', $fname)
                                 ->where('middle_name', '=', $mname)
@@ -363,6 +366,7 @@ class PreScreenedDonorController extends Controller
 
             $pre_screened_donor->save();
             \Log::info($pre_screened_donor);
+            
 
 
             return response()->json([
@@ -475,7 +479,8 @@ class PreScreenedDonorController extends Controller
                         $igg->approved_by = $verifier;
                         $igg->approval_dt = date("Y-m-d H:i:s");
                         $igg->save();
-
+                        
+                        \Log::info($igg->result_dt = date("Y-m-d H:i:s"));
                         // ----------------- FIX FOR REPEAT DONATION ON PRE-SCREENING
                         // ----------------- UPDATE `pre_screened_donors` table
                         PreScreenedDonor::where('donor_sn', $donor_sn)

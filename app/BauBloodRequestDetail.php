@@ -17,10 +17,6 @@ class BauBloodRequestDetail extends Model
         return $this->belongsTo('App\RCpComponentCode','component_cd', 'component_code')->select('component_code','comp_name');
     }
 
-    // function blood_unit_name(){
-    //     return $this->belongsTo('App\RCpComponentCode','component_cd', 'component_code')->select('component_code','comp_name');
-    // }
-
     function blood_units(){
         return $this->hasMany('App\Component','component_cd', 'component_code')
                     ->select('donation_id','component_cd','collection_dt', 'expiration_dt', 'comp_stat');

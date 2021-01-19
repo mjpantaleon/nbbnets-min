@@ -218,6 +218,8 @@ export default {
             this.message = response.data.message
             this.showSuccessMsg = true
             this.getDonorsForIgg()
+
+            console.log(response.data)
         }
           
       })

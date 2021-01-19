@@ -138,8 +138,8 @@ class DonationController extends Controller
                         $d->donor_sn = $donor_sn;
                         $d->sched_id = "Walk-in";
                         $d->pre_registered = "Y";
-                        $d->donation_type = $donation_type;
-                        $d->collection_method = $collection_method;
+                        $d->donation_type = $donation_type;         
+                        $d->collection_method = $collection_method;     /* if P or WB */
                         $d->donation_stat = "Y";
                         $d->facility_cd = $facility_cd;
 
@@ -218,7 +218,7 @@ class DonationController extends Controller
             $d->sched_id = "Walk-in";
             $d->pre_registered = "Y";
             $d->donation_type = $donation_type;
-            $d->collection_method = $collection_method;
+            $d->collection_method = $collection_method; /* if P or WB */
             $d->donation_stat = "Y";
             $d->facility_cd = $facility_cd;
 
