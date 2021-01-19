@@ -109,32 +109,37 @@ class PreScreenedDonorController extends Controller
         $to = date($request['date_to']);
 
         // WILL GET RECORDS IF HAS NO NEGATIVE RESULT AT IGG RESULTS TABLE !!!!!
-        // SELECT donor_sn, last_name, first_name, middle_name, name_suffix FROM pre_screened_donors WHERE facility_cd LIKE $facility_cd AND status = 1 AND approval_dt BETWEEN $from and $to
-        
-        // $query = "  SELECT ps.donor_sn, ps.last_name, ps.first_name, ps.middle_name, ps.name_suffix, ig.donation_id
-        
-        $query = "  SELECT ps.id, ps.donor_sn, ig.donation_id
+         
+        $query = "  SELECT ig.donation_id, ps.id, ps.donor_sn
                     FROM `pre_screened_donors` ps
                     LEFT JOIN `igg_results` ig ON ig.donor_sn = ps.donor_sn
-                    -- LEFT JOIN `bloodtest` bt ON bt.donation_id = ig.donation_id
-                    -- COLLATE utf8_general_ci
+                    LEFT JOIN `bloodtest` bt ON bt.donation_id = ig.donation_id
+                    COLLATE utf8_general_ci
                     WHERE ps.approval_dt BETWEEN '$from' AND '$to'
+                    AND ig.igg != 'N'
                     AND ps.status IN (3, 4)
                     AND ps.facility_cd LIKE $facility_cd
-                    -- AND bt.bloodtest_no IS NULL
-                    -- ORDER BY ps.approval_dt ASC 
+                    AND bt.bloodtest_no IS NULL
+                    ORDER BY ps.approval_dt ASC 
                 "; 
 
-        // $query = "      SELECT ps.id, ps.donor_sn, donation_id
-        //                 FROM `pre_screened_donors` ps
-
-        
-        // ";
-        
-        $approved_donor_list = DB::select($query);
+         $approved_donor_list = DB::select($query);
         
         $approved_donor_list = json_decode(json_encode($approved_donor_list), true);
-    
+
+        // $approved_donor_list = PreScreenedDonor::select('id', 'donor_sn', 'first_name', 'middle_name', 'last_name') 
+        //                         ->whereBetween('approval_dt', [$from, $to])
+        //                         ->whereFacilityCd($facility_cd)
+        //                         ->whereIn('status', array('3', '4'))
+        //                         // ->with('igg_detail')
+        //                         ->orderBy('approval_dt', 'ASC')
+        //                         ->get()
+        //                         ->toArray();
+
+       
+        \Log::info($approved_donor_list);
+        // return($approved_donor_list);
+
 
         if($approved_donor_list){
 
@@ -415,6 +420,7 @@ class PreScreenedDonorController extends Controller
         
         $donors_to_igg = json_decode(json_encode($donors_to_igg), true);
         // return($donors_to_igg);
+        // \Log::info($donors_to_igg);
 
         if($donors_to_igg){
             for($i = 0; $i < count($donors_to_igg); $i++){

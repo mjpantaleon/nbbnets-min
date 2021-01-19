@@ -20,4 +20,10 @@ class PreScreenedDonor extends Model
     function facility(){
         return $this->belongsTo('App\Facility','facility_cd','facility_cd');
     }
+
+    // get donation_id at igg table
+    function igg_detail(){
+        return $this->hasMany('App\IggResult', 'donor_sn', 'donor_sn')
+                    ->select('donor_sn','donation_id');
+    }
 }

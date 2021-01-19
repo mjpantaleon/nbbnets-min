@@ -81,6 +81,7 @@
 
                     <template v-slot:cell(donation_id)="data">
                         <!-- <b-form-input placeholder="Scan Donation ID" v-model="data.item.donation_id"></b-form-input> -->
+                        <!-- {{data.item.igg_detail.donation_id}} -->
                         {{data.item.donation_id}}
                     </template>
 
