@@ -131,7 +131,7 @@ class PreScreenedDonorController extends Controller
         //                         ->whereBetween('approval_dt', [$from, $to])
         //                         ->whereFacilityCd($facility_cd)
         //                         ->whereIn('status', array('3', '4'))
-        //                         // ->with('igg_detail')
+        //                         ->with('igg_detail')
         //                         ->orderBy('approval_dt', 'ASC')
         //                         ->get()
         //                         ->toArray();
