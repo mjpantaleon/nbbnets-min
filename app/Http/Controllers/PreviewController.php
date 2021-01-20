@@ -105,7 +105,8 @@ class PreviewController extends Controller
 
         // Add Riboflavin
         if($component_cd == 100){
-            $template = str_replace('{{ADDRB}}', "+ 35 ml Riboflavin", $template);
+            // $template = str_replace('{{ADDRB}}', "+ 35 ml Riboflavin", $template); *old value
+            $template = str_replace('{{ADDRB}}', "",$template);
         } else{
             $template = str_replace('{{ADDRB}}', "", $template);
         }
@@ -115,13 +116,15 @@ class PreviewController extends Controller
         $anticoagulant = "";
 
         if($method == 'CP'){
-            $anticoagulant = "ACD Anticoagulant";
+            $anticoagulant = "Anticoagulant: ACD-A";
         } else{
 
             if($unit->donation_min->blood_bag == 'Q'){
-                $anticoagulant = "CPD Anticoagulant";
+                // $anticoagulant = "CPD Anticoagulant"; *old value
+                $anticoagulant = "Anticoagulant: CPD";
             } else{
-                $anticoagulant = "CPDA-1 Anticoagulant";
+                // $anticoagulant = "CPDA-1 Anticoagulant"; *old value
+                $anticoagulant = "Anticoagulant: CPD";
             }
 
             if($component_cd == 101 || $component_cd == 103){
