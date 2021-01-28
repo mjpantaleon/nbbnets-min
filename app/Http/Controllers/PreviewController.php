@@ -137,7 +137,7 @@ class PreviewController extends Controller
         
         $template = str_replace('{{COLLECTION_DATE}}',$collection_dt,$template);
         $template = str_replace('{{EXPIRATION_DATE}}',date('M d, Y',strtotime($unit->expiration_dt)).' 23:59:00',$template);
-        $template = str_replace('{{STORE}}','Store at '.$unit->cp_component_code->min_storage.' to '.$unit->cp_component_code->max_storage.' &deg;C',$template);
+        $template = str_replace('{{STORE}}','Store and transport at '.$unit->cp_component_code->min_storage.' to '.$unit->cp_component_code->max_storage.' &deg;C',$template);
 
         $main_donation = $donation_id;
 
@@ -154,13 +154,15 @@ class PreviewController extends Controller
         if($add_test_result){
 
             if($add_test_result['nat'] == 'N'){
-                $template = str_replace('{{NAT}}','ID NAT',$template);
+                // * old value: line 164 for zika negative result, changed ! @Jan 28, 2021: CHANGED comp_name from 'COVID-19 CONVALESCENT PLASMA' to 'CONVALESCENT PLASMA' where component_code = '100'
+                $template = str_replace('{{NAT}}','ID NAT (HBV, HCV, HIV),',$template);
             } else{
                 $template = str_replace('{{NAT}}', '' ,$template);
             }
             
             if($add_test_result['zika']  == 'N'){
-                $template = str_replace('{{ZIKA}}','(HBV, HCV, HIV and ZIKA)',$template);
+                // * remove (HBV, HCV, HIV) then add 'ZIKA: NEGATIVE'
+                $template = str_replace('{{ZIKA}}','ZIKA: NEGATIVE,',$template);
             } else{
                 $template = str_replace('{{ZIKA}}','',$template);
             }
