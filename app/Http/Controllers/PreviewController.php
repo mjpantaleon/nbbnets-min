@@ -137,7 +137,7 @@ class PreviewController extends Controller
         
         $template = str_replace('{{COLLECTION_DATE}}',$collection_dt,$template);
         $template = str_replace('{{EXPIRATION_DATE}}',date('M d, Y',strtotime($unit->expiration_dt)).' 23:59:00',$template);
-        $template = str_replace('{{STORE}}','Store and transport at '.$unit->cp_component_code->min_storage.' to '.$unit->cp_component_code->max_storage.' &deg;C',$template);
+        $template = str_replace('{{STORE}}','Store and transport at <br>'.$unit->cp_component_code->min_storage.' to '.$unit->cp_component_code->max_storage.' &deg;C',$template);
 
         $main_donation = $donation_id;
 
