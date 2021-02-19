@@ -30,19 +30,21 @@ class DonationController extends Controller
 
         $donation_dt = $data['donation_dt'];
 
-        $query = "  SELECT d.donation_type, d.mh_pe_stat, d.collection_method, d.collection_stat,  d.donation_id,  
-                    dd.fname, dd.mname, dd.lname, d.facility_cd
+        $query = "  SELECT d.donation_type, d.mh_pe_stat, d.collection_method, d.collection_stat,  d.donation_id,  d.facility_cd,
+                    dd.fname, dd.mname, dd.lname,
                     FROM donation d
-                    LEFT JOIN donor dd ON d.donor_sn = dd.seqno 
+                    LEFT JOIN donor dd ON dd.seqno = d.donor_sn 
                     WHERE d.created_dt like '%$donation_dt%' 
                     AND d.sched_id = 'Walk-in' 
-                    AND d.donation_stat = 'Y'
+                    AND d.collection_stat = 'COL'
                     AND d.facility_cd LIKE '%$facility_cd%'
                     AND dd.donor_stat IS NOT NULL
                     ORDER by d.created_dt DESC ";
 
         $donations = DB::select($query);
         $donations = json_decode(json_encode($donations), true);
+
+
         
         \Log::info($donations);
         return $donations;  
