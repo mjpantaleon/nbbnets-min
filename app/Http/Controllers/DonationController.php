@@ -31,7 +31,7 @@ class DonationController extends Controller
         $donation_dt = $data['donation_dt'];
 
         $query = "  SELECT d.donation_type, d.mh_pe_stat, d.collection_method, d.collection_stat,  d.donation_id,  d.facility_cd,
-                    dd.fname, dd.mname, dd.lname,
+                    dd.fname, dd.mname, dd.lname
                     FROM donation d
                     LEFT JOIN donor dd ON dd.seqno = d.donor_sn 
                     WHERE d.created_dt like '%$donation_dt%' 
